@@ -3,7 +3,10 @@ package nl.utwente.di.team26.resources;
 import nl.utwente.di.team26.dao.StaticResourceDao;
 import nl.utwente.di.team26.model.Static;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -33,6 +36,18 @@ public class StaticResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Static getStaticResource(@PathParam("staticId") String staticId) {
         return StaticResourceDao.instance.getStaticResource(staticId);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void createEvent(Static staticResource) {
+        StaticResourceDao.instance.addStaticResource(staticResource);
+    }
+
+    @DELETE
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void deleteMap(Static staticResource) {
+        StaticResourceDao.instance.removeStaticResource(staticResource.getResource_id());
     }
 
 }

@@ -22,4 +22,11 @@ public enum StaticResourceDao {
         return this.staticResources.get(id);
     }
 
+    public void addStaticResource(Static staticResource) {
+        //TODO
+    }
+
+    public void removeStaticResource(int resource_id) {
+        //TODO
+    }
 }

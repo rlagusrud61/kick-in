@@ -22,4 +22,11 @@ public enum TypeOfResourceDao {
         return this.typeOfResources.get(id);
     }
 
+    public void removeType(int resource_id) {
+        //TODO
+    }
+
+    public void addType(TypeOfResource type) {
+        //TODO
+    }
 }
