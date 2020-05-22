@@ -23,4 +23,7 @@ public enum FreeDrawDao {
         return this.freeDrawings.get(id);
     }
 
+    public void addFreeDraw(FreeDraw freeDraw) {
+        this.freeDrawings.put(String.valueOf(freeDraw.getFree_draw_id()), freeDraw);
+    }
 }

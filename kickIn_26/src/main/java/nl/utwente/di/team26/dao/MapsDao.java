@@ -4,6 +4,7 @@ import nl.utwente.di.team26.model.Maps;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public enum MapsDao {
     instance;
@@ -26,4 +27,14 @@ public enum MapsDao {
         return this.maps.get(id);
     }
 
+    public Map<String, Maps> getAllMapsForEvent(String eventId) {
+        Map<String, Maps> mapsForEvent = new HashMap<>();
+        Set<String> mapIds = EventMapDao.instance.getMapForEvent(eventId);
+        for (Maps map : MapsDao.instance.maps.values()) {
+            if (mapIds.contains(String.valueOf(map.getMap_id()))) {
+                mapsForEvent.put(String.valueOf(map.getMap_id()), map);
+            }
+        }
+        return mapsForEvent;
+    }
 }

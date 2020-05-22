@@ -1,8 +1,6 @@
 package nl.utwente.di.team26.resources;
 
-import nl.utwente.di.team26.dao.ResourcesDao;
 import nl.utwente.di.team26.dao.TypeOfResourceDao;
-import nl.utwente.di.team26.model.Resources;
 import nl.utwente.di.team26.model.TypeOfResource;
 
 import javax.ws.rs.GET;

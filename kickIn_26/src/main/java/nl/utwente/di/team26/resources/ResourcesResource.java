@@ -11,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.List;
 
+@Path("/{mapId}/resources")
 public class ResourcesResource {
 
     @Path("all")
@@ -20,18 +21,25 @@ public class ResourcesResource {
         return new ArrayList<>(ResourcesDao.instance.getAllResources().values());
     }
 
+    @Path("allForMap")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Resources> getAllResourcesForMap(@PathParam("mapId") String mapId) {
+        return new ArrayList<>(ResourcesDao.instance.getAllResourcesForMap(mapId).values());
+    }
+
     @Path("count")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String getCount() {
-        return String.valueOf(ResourcesDao.instance.getAllResources().size());
+    public String getCount(@PathParam("mapId") String mapId) {
+        return String.valueOf(ResourcesDao.instance.getAllResourcesForMap(mapId).size());
     }
 
     @GET
-    @Path("{resourceId}")
+    @Path("{objectId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Resources getResource(@PathParam("resourceId") String resourceId) {
-        return ResourcesDao.instance.getResource(resourceId);
+    public Resources getResource(@PathParam("objectId") String objectId) {
+        return ResourcesDao.instance.getResource(objectId);
     }
 
 }
