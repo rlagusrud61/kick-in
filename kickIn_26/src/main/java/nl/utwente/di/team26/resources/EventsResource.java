@@ -1,7 +1,7 @@
 package nl.utwente.di.team26.resources;
 
-import nl.utwente.di.team26.dao.MapsDao;
-import nl.utwente.di.team26.model.Maps;
+import nl.utwente.di.team26.dao.EventDao;
+import nl.utwente.di.team26.model.Event;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -11,29 +11,28 @@ import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.List;
 
-@Path("/maps")
-public class MapsResource {
+@Path("/events")
+public class EventsResource {
 
     @Path("all")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Maps> getAllMaps() {
-        return new ArrayList<>(MapsDao.instance.getAllMaps().values());
+    public List<Event> getAllEvents() {
+        return new ArrayList<>(EventDao.instance.getAllEvents().values());
     }
 
     @Path("count")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String getCount() {
-        return String.valueOf(MapsDao.instance.getAllMaps().size());
+        return String.valueOf(EventDao.instance.getAllEvents().size());
     }
 
     @GET
-    @Path("{eventId}")
+    @Path("{mapId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Maps getMap(@PathParam("eventId") String eventId) {
-        return MapsDao.instance.getMap(eventId);
+    public Event getEvent(@PathParam("mapId") String eventId) {
+        return EventDao.instance.getEvent(eventId);
     }
-
 
 }
