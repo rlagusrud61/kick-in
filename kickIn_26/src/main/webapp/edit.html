@@ -5,95 +5,104 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="css/editstyle.css">
+    <meta charset="utf-8">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" type= "text/css" href="style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+  <!-- Material Design Bootstrap -->
+  <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.18.0/css/mdb.min.css" rel="stylesheet"> -->
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    
 </head>
 <body>
-    <div class="menu">
-        <div class="left-menu">
-            <a href="#">
-                <img alt="go home" src="images/home.png">
-            </a>
-            <a href="#">
-                <img alt="back" src="images/arrow.png">
-            </a>
-        </div>
-        <div class="right-menu">
-            <a href="#">
-                Log Out
-            </a>
+    <div class="topnav">
+        <a id="home" href = "#"><i class="glyphicon glyphicon-home"></i></a>
+        <a id="arrow" href="#"><i class="glyphicon glyphicon-arrow-left"></i></a>
+        <a id="logout" href="#">Logout</a>
+    </div>    
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <h1>Edit Your Event</h1>
+            </div>
+            <div class="col-4" style="display: flex; justify-content: flex-end;">
+                <button type="button" class="myButton btn btn-success btn-circle btn-xl align-self-end" id="myBtn"> + </button>
+            </div>
         </div>
     </div>
-    <div>
-        <h1>Edit Your Event</h1>
+    <div class="container">
+        <div class="jumbotron">
+            <div class="row">
+                <div class="col-3">
+                    Name
+                </div>
+                <div class="col-4">
+                    <textarea class="form-control" rows="1">
+
+                    </textarea>
+                </div>
+            </div>
+        </hr>
+            <div class="row">
+                <div class="col-3">
+                    Description
+                </div>
+                <div class="col-md-9">
+                    <textarea class="form-control" rows="10" cols="45">
+
+                    </textarea>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3">
+                    Date
+                </div>
+                <div class="col-2">
+                    <input type="date" class="form-control" />
+                </div>       
+            </div>
+            
+            <div class="row">
+                <div class="col-3">
+                    Time
+                </div>
+                <div class="col-2">
+                    <input type="time" class="form-control"/>
+                </div>
+                <div class="col-lg-1">
+                    <input name="btn" type="radio"/>
+                    A.M.
+                </div>
+                <div class="col-lg-1">
+                    <input name="btn" type="radio"/>
+                    P.M.
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    Location
+                </div>
+                <div class="col-4">
+                    <textarea class="form-control" rows="1">
+
+                    </textarea>
+                </div> 
+            </div>        
+        </div>
     </div>
-    <div class="content flex">
-        <div class="flex1">
-            <ul>
-                <li>
-                    <h3>Name</h3>
-                </li>
-                <li>
-                    <textarea rows="0" cols="30">
-    
-                    </textarea>
-                </li>
-            </ul>       
-        </div>
-        <div class="flex2">
-            <ul>
-                <li>
-                    <h3>Description</h3>
-                </li>
-                <li>
-                    <textarea rows="10" cols="100">
-    
-                    </textarea>
-                </li>
-            </ul>
-        </div>
-        <div class="flex3">
-            <ul>
-                <li>
-                    <h3>Date</h3>
-                </li>
-                <li>
-                    <input type="date" />
-                </li>
-            </ul>       
-        </div>
-        <div class="flex4">
-            <ul>
-                <li>
-                    <h3>Time</h3>
-                </li>
-                <li>
-                    <input type="time" />
-                </li>
-                <li>
-                    <input name="btn" type="radio" />
-                    <h3>A.M.</h3>
-                </li>
-                <li>
-                    <input name="btn" type="radio" />
-                    <h3>P.M.</h3>
-                </li>
-            </ul>       
-        </div>
-        <div class="flex5">
-            <ul>
-                <li>
-                    <h3>Location</h3>
-                </li>
-                <li>
-                    <textarea rows="0" cols="30">
-    
-                    </textarea>
-                </li>
-                <li>
-                    <input type="image" src="images/check.png" alt="Submit" />
-                </li>
-            </ul>       
-        </div>        
-    </div>
-    
+        
 </body>
 </html>
