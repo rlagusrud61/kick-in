@@ -6,13 +6,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Static {
 
     int resource_id;
-    int picture;
+    String picture;
 
     public Static() {
 
     }
 
-    public Static(int resource_id, int picture) {
+    public Static(int resource_id, String picture) {
         this.resource_id = resource_id;
         this.picture = picture;
     }
@@ -25,11 +25,11 @@ public class Static {
         this.resource_id = resource_id;
     }
 
-    public int getPicture() {
+    public String getPicture() {
         return picture;
     }
 
-    public void setPicture(int picture) {
+    public void setPicture(String picture) {
         this.picture = picture;
     }
 

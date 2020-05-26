@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Rotation</title>
+    <title>Edit-Map</title>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
@@ -17,71 +17,101 @@
     <script src="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/leaflet.distortableimage.js"></script>
     <script src='https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/leaflet.distortableimage.js.map'></script>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <script src="https://unpkg.com/konva@4.0.0/konva.min.js"></script>
 
     <link rel="stylesheet" href="css/mapEdit.css">
-    <script src="js/crop.js"></script>
+    <script src="js/util/crop.js"></script>
 
 </head>
 <body>
 <div id="mapContainer">
-    <div id="mapid">
-    </div>
+    <div id="mapid"></div>
 </div>
 <button type="button" onclick="callEnterFreeHand()">Free Hand Drawing Control</button>
 <button type="button" onclick="getGeoJSON()">getGeoJSON</button>
+
+<div>
+    <div id="search-container">
+        <input type="text" id="materialsSearch" onkeyup="filterOn()" placeholder="Search for resource...">
+    </div>
+    <div id="materialsContainer">
+
+    </div>
+</div>
+
 </body>
 <script>
-
-    let map = L.map('mapid').setView([52.2413, -353.1531], 16);
+    //inits the map and properties.
+    let map = L.map('mapid', {
+        center: [52.2413, -353.1531],
+        zoom: 16,
+        keyboard: false
+    });
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-
-    let imgGroup = [];
-
     let editToggle = L.easyButton({
-       id: 'edit-mode-toggle',
-       states: [{
-           stateName: 'disable-editing',
-           icon: 'fa-map-marker',
-           //TODO: add an image for this icon.
-           title: 'Disable Editing',
-           onClick: function (control) {
-               imgGroup.forEach(function (img) {
-                   img.editing.disable();
-               });
-               control.state('enable-editing');
-           }
-       }, {
-           stateName: 'enable-editing',
-           icon: 'fa-map-marker',
-           //TODO: add an image for this icon.
-           title: 'Enable Editing',
-           onClick: function(control) {
-               imgGroup.forEach(function (img) {
-                   img.editing.enable();
-               });
-               control.state('disable-editing');
-           }
-       }]
+        id: 'edit-mode-toggle',
+        states: [{
+            stateName: 'disable-editing',
+            icon: 'fa-edit',
+            title: 'Disable Editing',
+            onClick: function (control) {
+                imgGroup.forEach(function (img) {
+                    img.editing.disable();
+                });
+                control.state('enable-editing');
+            }
+        }, {
+            stateName: 'enable-editing',
+            icon: 'fa-window-close',
+            title: 'Enable Editing',
+            onClick: function(control) {
+                imgGroup.forEach(function (img) {
+                    img.editing.enable();
+                });
+                control.state('disable-editing');
+            }
+        }]
     });
     editToggle.addTo(map);
 
-    let img = L.distortableImageOverlay('..\\resources\\testImages\\example.jpg', {
-        actions: [L.RotateAction, L.DragAction, L.ScaleAction, L.DeleteAction]
-    }).addTo(map);
-    imgGroup.push(img);
-    img.on('remove', function() {
-        const index = imgGroup.indexOf(img);
-        if (index !== -1) {
-            imgGroup.splice(index, 1);
-        }
-    });
-
+    //the array in which all the images added are stored
+    let imgGroup = [];
+    //boolean to check weather free hand drawing is being done.
     let inFreeHand = false;
+
+    let materialsList = null;
+
+    let objReq = new XMLHttpRequest();
+    objReq.onreadystatechange = function() {
+        console.log("something")
+        if (this.readyState === 4 && this.status === 200) {
+            materialsList = JSON.parse(objReq.responseText);
+            console.log(materialsList)
+        } else {
+            console.log("failure")
+        }
+    }
+    objReq.open("GET", ("http://localhost:8080/kickInTeam26/rest/typeOfResource/all"));
+    objReq.send();
+
+    // let img = L.distortableImageOverlay('..\\resources\\testImages\\example.jpg', {
+    //     actions: [L.RotateAction, L.DragAction, L.ScaleAction, L.DeleteAction]
+    // }).addTo(map);
+    // imgGroup.push(img);
+    // img.on('remove', function() {
+    //     const index = imgGroup.indexOf(img);
+    //     if (index !== -1) {
+    //         imgGroup.splice(index, 1);
+    //     }
+    // });
+
+    //function to enter free hand, if already in free hand, we exit free hand drawing.
     function callEnterFreeHand() {
         if (!inFreeHand) {
             enterFreeDrawingMode();
@@ -90,6 +120,7 @@
         }
     }
 
+    //enter free hand drawing.
     function enterFreeDrawingMode() {
         inFreeHand = true;
         map.dragging.disable();
@@ -134,7 +165,7 @@
         layer.draw();
     }
 
-
+    //exit free hand drawing.
     function exitFreeDraw() {
         let data;
         try {
@@ -197,10 +228,16 @@
         inFreeHand = false;
     }
 
+    //get the geoJSON data that can be used to reconstruct the map if needed.
     function getGeoJSON() {
         imgGroup.forEach(function (image) {
             console.log('{corners: [' + image.getCorners() + '], url: ' + image._url + '}');
         })
+    }
+
+    //for filtering materials depending on entered text
+    function filterOn() {
+
     }
 
 </script>

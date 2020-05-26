@@ -23,10 +23,10 @@ public enum StaticResourceDao {
     }
 
     public void addStaticResource(Static staticResource) {
-        //TODO
+        this.staticResources.put(String.valueOf(staticResource.getResource_id()), staticResource);
     }
 
     public void removeStaticResource(int resource_id) {
-        //TODO
+        this.staticResources.remove(String.valueOf(resource_id));
     }
 }
