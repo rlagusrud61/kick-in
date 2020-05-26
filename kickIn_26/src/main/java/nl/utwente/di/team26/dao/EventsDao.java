@@ -1,7 +1,7 @@
 package nl.utwente.di.team26.dao;
 
 import nl.utwente.di.team26.Exceptions.NotFoundException;
-import nl.utwente.di.team26.model.TypeOfResource;
+import nl.utwente.di.team26.model.Events;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,16 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
-/**
- * TypeOfResource Data Access Object (DAO).
- * This class contains all database handling that is needed to
- * permanently store and retrieve TypeOfResource object instances.
- */
-
-public class TypeOfResourceDao {
-
-
+public class EventsDao {
 
     /**
      * createValueObject-method. This method is used when the Dao class needs
@@ -29,8 +20,8 @@ public class TypeOfResourceDao {
      * NOTE: If you extend the valueObject class, make sure to override the
      * clone() method in it!
      */
-    public TypeOfResource createValueObject() {
-        return new TypeOfResource();
+    public Events createValueObject() {
+        return new Events();
     }
 
 
@@ -40,10 +31,10 @@ public class TypeOfResourceDao {
      * for the real load-method which accepts the valueObject as a parameter. Returned
      * valueObject will be created using the createValueObject() method.
      */
-    public TypeOfResource getObject(Connection conn, int resourceId) throws NotFoundException, SQLException {
+    public Events getObject(Connection conn, int eventId) throws NotFoundException, SQLException {
 
-        TypeOfResource valueObject = createValueObject();
-        valueObject.setResourceId(resourceId);
+        Events valueObject = createValueObject();
+        valueObject.setEventId(eventId);
         load(conn, valueObject);
         return valueObject;
     }
@@ -61,12 +52,12 @@ public class TypeOfResourceDao {
      * @param valueObject  This parameter contains the class instance to be loaded.
      *                     Primary-key field must be set for this to work properly.
      */
-    public void load(Connection conn, TypeOfResource valueObject) throws NotFoundException, SQLException {
+    public void load(Connection conn, Events valueObject) throws NotFoundException, SQLException {
 
-        String sql = "SELECT * FROM TypeOfResource WHERE (resourceId = ? ) ";
+        String sql = "SELECT * FROM Events WHERE (eventId = ? ) ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, valueObject.getResourceId());
+            stmt.setInt(1, valueObject.getEventId());
 
             singleQuery(conn, stmt, valueObject);
 
@@ -83,9 +74,9 @@ public class TypeOfResourceDao {
      *
      * @param conn         This method requires working database connection.
      */
-    public List<TypeOfResource> loadAll(Connection conn) throws SQLException {
+    public List<Events> loadAll(Connection conn) throws SQLException {
 
-        String sql = "SELECT * FROM TypeOfResource ORDER BY resourceId ASC ";
+        String sql = "SELECT * FROM Events ORDER BY eventId ASC ";
 
         return listQuery(conn, conn.prepareStatement(sql));
     }
@@ -105,19 +96,23 @@ public class TypeOfResourceDao {
      *                     If automatic surrogate-keys are not used the Primary-key
      *                     field must be set for this to work properly.
      */
-    public synchronized void create(Connection conn, TypeOfResource valueObject) throws SQLException {
+    public synchronized void create(Connection conn, Events valueObject) throws SQLException {
 
         String sql = "";
         PreparedStatement stmt = null;
         ResultSet result = null;
 
         try {
-            sql = "INSERT INTO TypeOfResource (resourceId, name, description) VALUES (?, ?, ?) ";
+            sql = "INSERT INTO Events ( eventId, name, description, "
+                    + "location, createdBy, lastEditedBy) VALUES (?, ?, ?, ?, ?, ?) ";
             stmt = conn.prepareStatement(sql);
 
-            stmt.setInt(1, valueObject.getResourceId());
+            stmt.setInt(1, valueObject.getEventId());
             stmt.setString(2, valueObject.getName());
             stmt.setString(3, valueObject.getDescription());
+            stmt.setString(4, valueObject.getLocation());
+            stmt.setString(5, valueObject.getCreatedBy());
+            stmt.setString(6, valueObject.getLastEditedBy());
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount != 1) {
@@ -145,16 +140,22 @@ public class TypeOfResourceDao {
      * @param valueObject  This parameter contains the class instance to be saved.
      *                     Primary-key field must be set for this to work properly.
      */
-    public void save(Connection conn, TypeOfResource valueObject)
+    public void save(Connection conn, Events valueObject)
             throws NotFoundException, SQLException {
 
-        String sql = "UPDATE TypeOfResource SET name = ?, description = ? WHERE (resourceId = ? ) ";
+        String sql = "UPDATE Events SET name = ?, description = ?, location = ?, "
+                + "createdBy = ?, lastEditedBy = ? WHERE (eventId = ? ) ";
+        PreparedStatement stmt = null;
 
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try {
+            stmt = conn.prepareStatement(sql);
             stmt.setString(1, valueObject.getName());
             stmt.setString(2, valueObject.getDescription());
+            stmt.setString(3, valueObject.getLocation());
+            stmt.setString(4, valueObject.getCreatedBy());
+            stmt.setString(5, valueObject.getLastEditedBy());
 
-            stmt.setInt(3, valueObject.getResourceId());
+            stmt.setInt(6, valueObject.getEventId());
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount == 0) {
@@ -165,6 +166,9 @@ public class TypeOfResourceDao {
                 //System.out.println("PrimaryKey Error when updating DB! (Many objects were affected!)");
                 throw new SQLException("PrimaryKey Error when updating DB! (Many objects were affected!)");
             }
+        } finally {
+            if (stmt != null)
+                stmt.close();
         }
     }
 
@@ -181,13 +185,15 @@ public class TypeOfResourceDao {
      * @param valueObject  This parameter contains the class instance to be deleted.
      *                     Primary-key field must be set for this to work properly.
      */
-    public void delete(Connection conn, TypeOfResource valueObject)
+    public void delete(Connection conn, Events valueObject)
             throws NotFoundException, SQLException {
 
-        String sql = "DELETE FROM TypeOfResource WHERE (resourceId = ? ) ";
+        String sql = "DELETE FROM Events WHERE (eventId = ? ) ";
+        PreparedStatement stmt = null;
 
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, valueObject.getResourceId());
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, valueObject.getEventId());
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount == 0) {
@@ -198,6 +204,9 @@ public class TypeOfResourceDao {
                 //System.out.println("PrimaryKey Error when updating DB! (Many objects were deleted!)");
                 throw new SQLException("PrimaryKey Error when updating DB! (Many objects were deleted!)");
             }
+        } finally {
+            if (stmt != null)
+                stmt.close();
         }
     }
 
@@ -215,10 +224,15 @@ public class TypeOfResourceDao {
      */
     public void deleteAll(Connection conn) throws SQLException {
 
-        String sql = "DELETE FROM TypeOfResource";
+        String sql = "DELETE FROM Events";
+        PreparedStatement stmt = null;
 
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try {
+            stmt = conn.prepareStatement(sql);
             int rowcount = databaseUpdate(conn, stmt);
+        } finally {
+            if (stmt != null)
+                stmt.close();
         }
     }
 
@@ -233,7 +247,7 @@ public class TypeOfResourceDao {
      */
     public int countAll(Connection conn) throws SQLException {
 
-        String sql = "SELECT count(*) FROM TypeOfResource";
+        String sql = "SELECT count(*) FROM Events";
         PreparedStatement stmt = null;
         ResultSet result = null;
         int allRows = 0;
@@ -267,16 +281,16 @@ public class TypeOfResourceDao {
      * @param valueObject  This parameter contains the class instance where search will be based.
      *                     Primary-key field should not be set.
      */
-    public List<TypeOfResource> searchMatching(Connection conn, TypeOfResource valueObject) throws SQLException {
+    public List<Events> searchMatching(Connection conn, Events valueObject) throws SQLException {
 
-        List<TypeOfResource> searchResults;
+        List<Events> searchResults;
 
         boolean first = true;
-        StringBuilder sql = new StringBuilder("SELECT * FROM TypeOfResource WHERE 1=1 ");
+        StringBuffer sql = new StringBuffer("SELECT * FROM Events WHERE 1=1 ");
 
-        if (valueObject.getResourceId() != 0) {
+        if (valueObject.getEventId() != 0) {
             if (first) { first = false; }
-            sql.append("AND resourceId = ").append(valueObject.getResourceId()).append(" ");
+            sql.append("AND eventId = ").append(valueObject.getEventId()).append(" ");
         }
 
         if (valueObject.getName() != null) {
@@ -289,13 +303,28 @@ public class TypeOfResourceDao {
             sql.append("AND description LIKE '").append(valueObject.getDescription()).append("%' ");
         }
 
+        if (valueObject.getLocation() != null) {
+            if (first) { first = false; }
+            sql.append("AND location LIKE '").append(valueObject.getLocation()).append("%' ");
+        }
 
-        sql.append("ORDER BY resourceId ASC ");
+        if (valueObject.getCreatedBy() != null) {
+            if (first) { first = false; }
+            sql.append("AND createdBy LIKE '").append(valueObject.getCreatedBy()).append("%' ");
+        }
+
+        if (valueObject.getLastEditedBy() != null) {
+            if (first) { first = false; }
+            sql.append("AND lastEditedBy LIKE '").append(valueObject.getLastEditedBy()).append("%' ");
+        }
+
+
+        sql.append("ORDER BY eventId ASC ");
 
         // Prevent accidential full table results.
         // Use loadAll if all rows must be returned.
         if (first)
-            searchResults = new ArrayList<TypeOfResource>();
+            searchResults = new ArrayList<>();
         else
             searchResults = listQuery(conn, conn.prepareStatement(sql.toString()));
 
@@ -323,7 +352,9 @@ public class TypeOfResourceDao {
      */
     protected int databaseUpdate(Connection conn, PreparedStatement stmt) throws SQLException {
 
-        return stmt.executeUpdate();
+        int result = stmt.executeUpdate();
+
+        return result;
     }
 
 
@@ -337,20 +368,18 @@ public class TypeOfResourceDao {
      * @param stmt         This parameter contains the SQL statement to be excuted.
      * @param valueObject  Class-instance where resulting data will be stored.
      */
-    protected void singleQuery(Connection conn, PreparedStatement stmt, TypeOfResource valueObject)
+    protected void singleQuery(Connection conn, PreparedStatement stmt, Events valueObject)
             throws NotFoundException, SQLException {
 
         try (ResultSet result = stmt.executeQuery()) {
 
             if (result.next()) {
 
-                valueObject.setResourceId(result.getInt("resourceId"));
-                valueObject.setName(result.getString("name"));
-                valueObject.setDescription(result.getString("description"));
+                setPropertiesOfObject(result, valueObject);
 
             } else {
-                //System.out.println("TypeOfResource Object Not Found!");
-                throw new NotFoundException("TypeOfResource Object Not Found!");
+                //System.out.println("Events Object Not Found!");
+                throw new NotFoundException("Events Object Not Found!");
             }
         } finally {
             if (stmt != null)
@@ -367,19 +396,15 @@ public class TypeOfResourceDao {
      * @param conn         This method requires working database connection.
      * @param stmt         This parameter contains the SQL statement to be excuted.
      */
-    protected List<TypeOfResource> listQuery(Connection conn, PreparedStatement stmt) throws SQLException {
+    protected List<Events> listQuery(Connection conn, PreparedStatement stmt) throws SQLException {
 
-        ArrayList<TypeOfResource> searchResults = new ArrayList<TypeOfResource>();
+        ArrayList<Events> searchResults = new ArrayList<>();
 
         try (ResultSet result = stmt.executeQuery()) {
 
             while (result.next()) {
-                TypeOfResource temp = createValueObject();
-
-                temp.setResourceId(result.getInt("resourceId"));
-                temp.setName(result.getString("name"));
-                temp.setDescription(result.getString("description"));
-
+                Events temp = createValueObject();
+                setPropertiesOfObject(result, temp);
                 searchResults.add(temp);
             }
 
@@ -390,4 +415,15 @@ public class TypeOfResourceDao {
 
         return searchResults;
     }
+
+    private void setPropertiesOfObject(ResultSet result, Events temp) throws SQLException {
+        temp.setEventId(result.getInt("eventId"));
+        temp.setName(result.getString("name"));
+        temp.setDescription(result.getString("description"));
+        temp.setLocation(result.getString("location"));
+        temp.setCreatedBy(result.getString("createdBy"));
+        temp.setLastEditedBy(result.getString("lastEditedBy"));
+    }
+
+
 }

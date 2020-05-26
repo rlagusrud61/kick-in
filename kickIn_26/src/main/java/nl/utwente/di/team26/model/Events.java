@@ -4,20 +4,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 /**
- * Maps Value Object.
+ * Events Value Object.
  * This class is value object representing database table Events
  * This class is intended to be used together with associated Dao object.
  */
 @XmlRootElement
-public class Maps implements Serializable {
+public class Events implements Serializable {
 
     /**
      * Persistent Instance variables. This data is directly
      * mapped to the columns of database table.
      */
-    private int mapId;
+    private int eventId;
     private String name;
     private String description;
+    private String location;
     private String createdBy;
     private String lastEditedBy;
 
@@ -30,13 +31,13 @@ public class Maps implements Serializable {
      * argument, which is the primary key of the corresponding table.
      */
 
-    public Maps () {
+    public Events () {
 
     }
 
-    public Maps (int mapIdIn) {
+    public Events (int eventIdIn) {
 
-        this.mapId = mapIdIn;
+        this.eventId = eventIdIn;
 
     }
 
@@ -47,11 +48,11 @@ public class Maps implements Serializable {
      * so these might require some manual additions.
      */
 
-    public int getMapId() {
-        return this.mapId;
+    public int getEventId() {
+        return this.eventId;
     }
-    public void setMapId(int mapIdIn) {
-        this.mapId = mapIdIn;
+    public void setEventId(int eventIdIn) {
+        this.eventId = eventIdIn;
     }
 
     public String getName() {
@@ -66,6 +67,13 @@ public class Maps implements Serializable {
     }
     public void setDescription(String descriptionIn) {
         this.description = descriptionIn;
+    }
+
+    public String getLocation() {
+        return this.location;
+    }
+    public void setLocation(String locationIn) {
+        this.location = locationIn;
     }
 
     public String getCreatedBy() {
@@ -92,29 +100,31 @@ public class Maps implements Serializable {
      * individual set-methods.
      */
 
-    public void setAll(int mapIdIn,
+    public void setAll(int eventIdIn,
                        String nameIn,
                        String descriptionIn,
+                       String locationIn,
                        String createdByIn,
                        String lastEditedByIn) {
-        this.mapId = mapIdIn;
+        this.eventId = eventIdIn;
         this.name = nameIn;
         this.description = descriptionIn;
+        this.location = locationIn;
         this.createdBy = createdByIn;
         this.lastEditedBy = lastEditedByIn;
     }
 
 
     /**
-     * hasEqualMapping-method will compare two Maps instances
+     * hasEqualMapping-method will compare two Events instances
      * and return true if they contain same values in all persistent instance
      * variables. If hasEqualMapping returns true, it does not mean the objects
      * are the same instance. However it does mean that in that moment, they
      * are mapped to the same row in database.
      */
-    public boolean hasEqualMapping(Maps valueObject) {
+    public boolean hasEqualMapping(Events valueObject) {
 
-        if (valueObject.getMapId() != this.mapId) {
+        if (valueObject.getEventId() != this.eventId) {
             return(false);
         }
         if (this.name == null) {
@@ -127,6 +137,12 @@ public class Maps implements Serializable {
             if (valueObject.getDescription() != null)
                 return(false);
         } else if (!this.description.equals(valueObject.getDescription())) {
+            return(false);
+        }
+        if (this.location == null) {
+            if (valueObject.getLocation() != null)
+                return(false);
+        } else if (!this.location.equals(valueObject.getLocation())) {
             return(false);
         }
         if (this.createdBy == null) {
@@ -148,11 +164,12 @@ public class Maps implements Serializable {
      * possibly when application is writing object states in textlog.
      */
     public String toString() {
-        return "\nclass Maps, mapping to table Maps\n" +
+        return "\nclass Events, mapping to table Events\n" +
                 "Persistent attributes: \n" +
-                "mapId = " + this.mapId + "\n" +
+                "eventId = " + this.eventId + "\n" +
                 "name = " + this.name + "\n" +
                 "description = " + this.description + "\n" +
+                "location = " + this.location + "\n" +
                 "createdBy = " + this.createdBy + "\n" +
                 "lastEditedBy = " + this.lastEditedBy + "\n";
     }

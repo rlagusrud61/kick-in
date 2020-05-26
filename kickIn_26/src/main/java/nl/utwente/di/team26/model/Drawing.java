@@ -1,23 +1,24 @@
 package nl.utwente.di.team26.model;
 
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 /**
- * TypeOfResource Value Object.
- * This class is value object representing database table TypeOfResource
+ * Drawing Value Object.
+ * This class is value object representing database table Drawing
  * This class is intented to be used together with associated Dao object.
  */
-@XmlRootElement
-public class TypeOfResource implements Serializable {
+
+
+
+public class Drawing implements Serializable {
 
     /**
      * Persistent Instance variables. This data is directly
      * mapped to the columns of database table.
      */
     private int resourceId;
-    private String name;
-    private String description;
+    private String image;
+
 
 
     /**
@@ -27,12 +28,14 @@ public class TypeOfResource implements Serializable {
      * argument, which is the primary key of the corresponding table.
      */
 
-    public TypeOfResource () {
+    public Drawing () {
 
     }
 
-    public TypeOfResource (int resourceIdIn) {
+    public Drawing (int resourceIdIn) {
+
         this.resourceId = resourceIdIn;
+
     }
 
 
@@ -49,18 +52,11 @@ public class TypeOfResource implements Serializable {
         this.resourceId = resourceIdIn;
     }
 
-    public String getName() {
-        return this.name;
+    public String getImage() {
+        return this.image;
     }
-    public void setName(String nameIn) {
-        this.name = nameIn;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-    public void setDescription(String descriptionIn) {
-        this.description = descriptionIn;
+    public void setImage(String imageIn) {
+        this.image = imageIn;
     }
 
 
@@ -74,35 +70,27 @@ public class TypeOfResource implements Serializable {
      */
 
     public void setAll(int resourceIdIn,
-                       String nameIn,
-                       String descriptionIn) {
+                       String imageIn) {
         this.resourceId = resourceIdIn;
-        this.name = nameIn;
-        this.description = descriptionIn;
+        this.image = imageIn;
     }
 
 
     /**
-     * hasEqualMapping-method will compare two TypeOfResource instances
+     * hasEqualMapping-method will compare two Drawing instances
      * and return true if they contain same values in all persistent instance
      * variables. If hasEqualMapping returns true, it does not mean the objects
      * are the same instance. However it does mean that in that moment, they
      * are mapped to the same row in database.
      */
-    public boolean hasEqualMapping(TypeOfResource valueObject) {
+    public boolean hasEqualMapping(Drawing valueObject) {
 
         if (valueObject.getResourceId() != this.resourceId) {
             return(false);
         }
-        if (this.name == null) {
-            if (valueObject.getName() != null)
-                return(false);
-        } else if (!this.name.equals(valueObject.getName())) {
-            return(false);
-        }
-        if (this.description == null) {
-            return valueObject.getDescription() == null;
-        } else return this.description.equals(valueObject.getDescription());
+        if (this.image == null) {
+            return valueObject.getImage() == null;
+        } else return this.image.equals(valueObject.getImage());
     }
 
 
@@ -113,11 +101,10 @@ public class TypeOfResource implements Serializable {
      * possibly when application is writing object states in textlog.
      */
     public String toString() {
-        String out = "\nclass TypeOfResource, mapping to table TypeOfResource\n" +
+        return "\nclass Drawing, mapping to table Drawing\n" +
                 "Persistent attributes: \n" +
                 "resourceId = " + this.resourceId + "\n" +
-                "name = " + this.name + "\n" +
-                "description = " + this.description + "\n";
-        return out;
+                "image = " + this.image + "\n";
     }
+
 }

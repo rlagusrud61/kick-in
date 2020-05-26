@@ -4,21 +4,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 /**
- * TypeOfResource Value Object.
- * This class is value object representing database table TypeOfResource
- * This class is intented to be used together with associated Dao object.
+ * MapObjects Value Object.
+ * This class is value object representing database table MapObjects
+ * This class is intended to be used together with associated Dao object.
  */
 @XmlRootElement
-public class TypeOfResource implements Serializable {
+public class MapObjects implements Serializable {
 
     /**
      * Persistent Instance variables. This data is directly
      * mapped to the columns of database table.
      */
+    private int objectId;
+    private int mapId;
     private int resourceId;
-    private String name;
-    private String description;
-
+    private String latLangs;
 
     /**
      * Constructors. DaoGen generates two constructors by default.
@@ -27,12 +27,12 @@ public class TypeOfResource implements Serializable {
      * argument, which is the primary key of the corresponding table.
      */
 
-    public TypeOfResource () {
+    public MapObjects () {
 
     }
 
-    public TypeOfResource (int resourceIdIn) {
-        this.resourceId = resourceIdIn;
+    public MapObjects (int objectIdIn) {
+        this.objectId = objectIdIn;
     }
 
 
@@ -42,6 +42,20 @@ public class TypeOfResource implements Serializable {
      * so these might require some manual additions.
      */
 
+    public int getObjectId() {
+        return this.objectId;
+    }
+    public void setObjectId(int objectIdIn) {
+        this.objectId = objectIdIn;
+    }
+
+    public int getMapId() {
+        return this.mapId;
+    }
+    public void setMapId(int mapIdIn) {
+        this.mapId = mapIdIn;
+    }
+
     public int getResourceId() {
         return this.resourceId;
     }
@@ -49,18 +63,11 @@ public class TypeOfResource implements Serializable {
         this.resourceId = resourceIdIn;
     }
 
-    public String getName() {
-        return this.name;
+    public String getLatLangs() {
+        return this.latLangs;
     }
-    public void setName(String nameIn) {
-        this.name = nameIn;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-    public void setDescription(String descriptionIn) {
-        this.description = descriptionIn;
+    public void setLatLangs(String latLangsIn) {
+        this.latLangs = latLangsIn;
     }
 
 
@@ -73,36 +80,38 @@ public class TypeOfResource implements Serializable {
      * individual set-methods.
      */
 
-    public void setAll(int resourceIdIn,
-                       String nameIn,
-                       String descriptionIn) {
+    public void setAll(int objectIdIn,
+                       int mapIdIn,
+                       int resourceIdIn,
+                       String latLangsIn) {
+        this.objectId = objectIdIn;
+        this.mapId = mapIdIn;
         this.resourceId = resourceIdIn;
-        this.name = nameIn;
-        this.description = descriptionIn;
+        this.latLangs = latLangsIn;
     }
 
 
     /**
-     * hasEqualMapping-method will compare two TypeOfResource instances
+     * hasEqualMapping-method will compare two MapObjects instances
      * and return true if they contain same values in all persistent instance
      * variables. If hasEqualMapping returns true, it does not mean the objects
      * are the same instance. However it does mean that in that moment, they
      * are mapped to the same row in database.
      */
-    public boolean hasEqualMapping(TypeOfResource valueObject) {
+    public boolean hasEqualMapping(MapObjects valueObject) {
 
+        if (valueObject.getObjectId() != this.objectId) {
+            return(false);
+        }
+        if (valueObject.getMapId() != this.mapId) {
+            return(false);
+        }
         if (valueObject.getResourceId() != this.resourceId) {
             return(false);
         }
-        if (this.name == null) {
-            if (valueObject.getName() != null)
-                return(false);
-        } else if (!this.name.equals(valueObject.getName())) {
-            return(false);
-        }
-        if (this.description == null) {
-            return valueObject.getDescription() == null;
-        } else return this.description.equals(valueObject.getDescription());
+        if (this.latLangs == null) {
+            return valueObject.getLatLangs() == null;
+        } else return this.latLangs.equals(valueObject.getLatLangs());
     }
 
 
@@ -113,11 +122,12 @@ public class TypeOfResource implements Serializable {
      * possibly when application is writing object states in textlog.
      */
     public String toString() {
-        String out = "\nclass TypeOfResource, mapping to table TypeOfResource\n" +
+        return "\nclass MapObjects, mapping to table MapObjects\n" +
                 "Persistent attributes: \n" +
+                "objectId = " + this.objectId + "\n" +
+                "mapId = " + this.mapId + "\n" +
                 "resourceId = " + this.resourceId + "\n" +
-                "name = " + this.name + "\n" +
-                "description = " + this.description + "\n";
-        return out;
+                "latLangs = " + this.latLangs + "\n";
     }
+
 }
