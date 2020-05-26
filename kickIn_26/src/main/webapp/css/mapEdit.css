@@ -1,0 +1,28 @@
+#mapid {height: 500px; z-index: 1}
+#container {
+    margin: 8px;
+    height: 500px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+.state-remove-markers,
+.state-add-markers{
+    transition-duration: .5s;
+    transform: scaleY(0);
+    position: absolute;
+    display: block;
+    top: 0;
+    width: 100%;}
+
+.state-remove-markers{
+    transform-origin: 50% 0; }
+.state-add-markers{
+    transform-origin: 50% 100%; }
+
+.state-remove-markers.remove-markers-active{
+    transform: scaleY(1); }
+
+.state-add-markers.add-markers-active{
+    transform: scaleY(1); }
