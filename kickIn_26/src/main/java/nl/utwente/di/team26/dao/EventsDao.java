@@ -102,16 +102,15 @@ public class EventsDao {
         ResultSet result = null;
 
         try {
-            sql = "INSERT INTO Events ( eventId, name, description, "
-                    + "location, createdBy, lastEditedBy) VALUES (?, ?, ?, ?, ?, ?) ";
+            sql = "INSERT INTO Events (name, description, "
+                    + "location, createdBy, lastEditedBy) VALUES (?, ?, ?, ?, ?) ";
             stmt = conn.prepareStatement(sql);
 
-            stmt.setInt(1, valueObject.getEventId());
-            stmt.setString(2, valueObject.getName());
-            stmt.setString(3, valueObject.getDescription());
-            stmt.setString(4, valueObject.getLocation());
-            stmt.setString(5, valueObject.getCreatedBy());
-            stmt.setString(6, valueObject.getLastEditedBy());
+            stmt.setString(1, valueObject.getName());
+            stmt.setString(2, valueObject.getDescription());
+            stmt.setString(3, valueObject.getLocation());
+            stmt.setString(4, valueObject.getCreatedBy());
+            stmt.setString(5, valueObject.getLastEditedBy());
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount != 1) {
@@ -144,10 +143,8 @@ public class EventsDao {
 
         String sql = "UPDATE Events SET name = ?, description = ?, location = ?, "
                 + "createdBy = ?, lastEditedBy = ? WHERE (eventId = ? ) ";
-        PreparedStatement stmt = null;
 
-        try {
-            stmt = conn.prepareStatement(sql);
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, valueObject.getName());
             stmt.setString(2, valueObject.getDescription());
             stmt.setString(3, valueObject.getLocation());
@@ -165,9 +162,6 @@ public class EventsDao {
                 //System.out.println("PrimaryKey Error when updating DB! (Many objects were affected!)");
                 throw new SQLException("PrimaryKey Error when updating DB! (Many objects were affected!)");
             }
-        } finally {
-            if (stmt != null)
-                stmt.close();
         }
     }
 
@@ -188,10 +182,8 @@ public class EventsDao {
             throws NotFoundException, SQLException {
 
         String sql = "DELETE FROM Events WHERE (eventId = ? ) ";
-        PreparedStatement stmt = null;
 
-        try {
-            stmt = conn.prepareStatement(sql);
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, valueObject.getEventId());
 
             int rowcount = databaseUpdate(conn, stmt);
@@ -203,9 +195,6 @@ public class EventsDao {
                 //System.out.println("PrimaryKey Error when updating DB! (Many objects were deleted!)");
                 throw new SQLException("PrimaryKey Error when updating DB! (Many objects were deleted!)");
             }
-        } finally {
-            if (stmt != null)
-                stmt.close();
         }
     }
 
@@ -224,14 +213,9 @@ public class EventsDao {
     public void deleteAll(Connection conn) throws SQLException {
 
         String sql = "DELETE FROM Events";
-        PreparedStatement stmt = null;
 
-        try {
-            stmt = conn.prepareStatement(sql);
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             int rowcount = databaseUpdate(conn, stmt);
-        } finally {
-            if (stmt != null)
-                stmt.close();
         }
     }
 
@@ -285,12 +269,10 @@ public class EventsDao {
         List<Events> searchResults;
 
         boolean first = true;
-        StringBuffer sql = new StringBuffer("SELECT * FROM Events WHERE 1=1 ");
+        StringBuilder sql = new StringBuilder("SELECT * FROM Events WHERE 1=1 ");
 
         if (valueObject.getEventId() != 0) {
-            if (first) {
-                first = false;
-            }
+            first = false;
             sql.append("AND eventId = ").append(valueObject.getEventId()).append(" ");
         }
 

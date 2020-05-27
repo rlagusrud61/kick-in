@@ -58,7 +58,7 @@ public class EventMapResource {
     }
 
     @DELETE
-    @Path("/event/{eventId}")
+    @Path("event/{eventId}")
     @Produces(MediaType.TEXT_PLAIN)
     public String clearEvent(@PathParam("eventId") int eventId) {
         try (Connection conn = CONSTANTS.getConnection()) {

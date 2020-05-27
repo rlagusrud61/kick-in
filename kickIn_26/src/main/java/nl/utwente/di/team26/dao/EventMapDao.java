@@ -176,16 +176,11 @@ public class EventMapDao {
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, eventToClear.getEventId());
-            stmt.setInt(2, eventToClear.getMapId());
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount == 0) {
                 //System.out.println("Object could not be deleted (PrimaryKey not found)");
                 throw new NotFoundException("Object could not be deleted! (PrimaryKey not found)");
-            }
-            if (rowcount > 1) {
-                //System.out.println("PrimaryKey Error when updating DB! (Many objects were deleted!)");
-                throw new SQLException("PrimaryKey Error when updating DB! (Many objects were deleted!)");
             }
         }
     }

@@ -1,6 +1,8 @@
 package nl.utwente.di.team26.dao;
 
 import nl.utwente.di.team26.Exceptions.NotFoundException;
+import nl.utwente.di.team26.model.Drawing;
+import nl.utwente.di.team26.model.Materials;
 import nl.utwente.di.team26.model.TypeOfResource;
 
 import java.sql.Connection;
@@ -108,14 +110,31 @@ public class TypeOfResourceDao {
         String sql = "";
         PreparedStatement stmt = null;
         ResultSet result = null;
+        String subClass = "";
+        String image = "";
 
+        if (valueObject instanceof Drawing) {
+            subClass = "Drawing";
+            image = ((Drawing) valueObject).getImage();
+        } else if (valueObject instanceof Materials) {
+            subClass = "Materials";
+            image = ((Materials) valueObject).getImage();
+        }
         try {
-            sql = "INSERT INTO TypeOfResource (resourceId, name, description) VALUES (?, ?, ?) ";
+            sql = "WITH super AS (" +
+                    "INSERT INTO TypeOfResource (name, description) " +
+                    "VALUES (?, ?) " +
+                    "RETURNING resourceId" +
+                    ") " +
+                    "INSERT INTO ? (resourceId, image) " +
+                    "SELECT super.resourceId, ? " +
+                    "FROM super ";
             stmt = conn.prepareStatement(sql);
 
-            stmt.setInt(1, valueObject.getResourceId());
-            stmt.setString(2, valueObject.getName());
-            stmt.setString(3, valueObject.getDescription());
+            stmt.setString(1, valueObject.getName());
+            stmt.setString(2, valueObject.getDescription());
+            stmt.setString(3, subClass);
+            stmt.setString(4, image);
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount != 1) {
@@ -212,8 +231,6 @@ public class TypeOfResourceDao {
      * @param conn This method requires working database connection.
      */
     public void deleteAll(Connection conn) throws SQLException {
-        (new MaterialsDao()).deleteAll(conn);
-        (new DrawingDao()).deleteAll(conn);
 
         String sql = "DELETE FROM TypeOfResource";
 

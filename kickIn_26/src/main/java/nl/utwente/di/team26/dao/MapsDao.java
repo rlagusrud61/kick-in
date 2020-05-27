@@ -103,15 +103,14 @@ public class MapsDao {
         ResultSet result = null;
 
         try {
-            sql = "INSERT INTO Maps ( mapId, name, description, "
-                    + "createdBy, lastEditedBy) VALUES (?, ?, ?, ?, ?) ";
+            sql = "INSERT INTO Maps (name, description, "
+                    + "createdBy, lastEditedBy) VALUES (?, ?, ?, ?) ";
             stmt = conn.prepareStatement(sql);
 
-            stmt.setInt(1, valueObject.getMapId());
-            stmt.setString(2, valueObject.getName());
-            stmt.setString(3, valueObject.getDescription());
-            stmt.setString(4, valueObject.getCreatedBy());
-            stmt.setString(5, valueObject.getLastEditedBy());
+            stmt.setString(1, valueObject.getName());
+            stmt.setString(2, valueObject.getDescription());
+            stmt.setString(3, valueObject.getCreatedBy());
+            stmt.setString(4, valueObject.getLastEditedBy());
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount != 1) {

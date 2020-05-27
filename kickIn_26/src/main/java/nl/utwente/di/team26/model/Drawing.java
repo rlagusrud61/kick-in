@@ -28,13 +28,13 @@ public class Drawing extends TypeOfResource implements Serializable {
 
     }
 
+    public Drawing(int resourceId) {
+        super(resourceId);
+    }
+
     public Drawing(int resourceId, String name, String description, String image) {
         super(resourceId, name, description);
         this.image = image;
-    }
-
-    public Drawing(int resourceId) {
-        super(resourceId);
     }
 
     /**
