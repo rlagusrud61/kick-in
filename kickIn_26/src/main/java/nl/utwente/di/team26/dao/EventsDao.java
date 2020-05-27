@@ -182,10 +182,10 @@ public class EventsDao {
      * NotFoundException will be thrown.
      *
      * @param conn         This method requires working database connection.
-     * @param valueObject  This parameter contains the class instance to be deleted.
+     * @param eventId      This parameter is the primary key of the resource to be deleted.
      *                     Primary-key field must be set for this to work properly.
      */
-    public void delete(Connection conn, Events valueObject)
+    public void delete(Connection conn, int eventId)
             throws NotFoundException, SQLException {
 
         String sql = "DELETE FROM Events WHERE (eventId = ? ) ";
@@ -193,7 +193,7 @@ public class EventsDao {
 
         try {
             stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, valueObject.getEventId());
+            stmt.setInt(1, eventId);
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount == 0) {
@@ -331,16 +331,6 @@ public class EventsDao {
         return searchResults;
     }
 
-
-    /**
-     * getDaogenVersion will return information about
-     * generator which created these sources.
-     */
-    public String getDaogenVersion() {
-        return "DaoGen version 2.4.1";
-    }
-
-
     /**
      * databaseUpdate-method. This method is a helper method for internal use. It will execute
      * all database handling that will change the information in tables. SELECT queries will
@@ -352,9 +342,7 @@ public class EventsDao {
      */
     protected int databaseUpdate(Connection conn, PreparedStatement stmt) throws SQLException {
 
-        int result = stmt.executeUpdate();
-
-        return result;
+        return stmt.executeUpdate();
     }
 
 
