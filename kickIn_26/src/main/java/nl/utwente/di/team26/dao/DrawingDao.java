@@ -1,7 +1,8 @@
 package nl.utwente.di.team26.dao;
 
 import nl.utwente.di.team26.Exceptions.NotFoundException;
-import nl.utwente.di.team26.model.Maps;
+import nl.utwente.di.team26.model.Drawing;
+import nl.utwente.di.team26.model.TypeOfResource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,7 +11,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapsDao {
+
+/**
+ * Drawing Data Access Object (DAO).
+ * This class contains all database handling that is needed to
+ * permanently store and retrieve Drawing object instances.
+ */
+
+
+public class DrawingDao {
 
 
     /**
@@ -21,8 +30,8 @@ public class MapsDao {
      * NOTE: If you extend the valueObject class, make sure to override the
      * clone() method in it!
      */
-    public Maps createValueObject() {
-        return new Maps();
+    public Drawing createValueObject() {
+        return new Drawing();
     }
 
 
@@ -32,10 +41,10 @@ public class MapsDao {
      * for the real load-method which accepts the valueObject as a parameter. Returned
      * valueObject will be created using the createValueObject() method.
      */
-    public Maps getObject(Connection conn, int mapId) throws NotFoundException, SQLException {
+    public Drawing getObject(Connection conn, int resourceId) throws NotFoundException, SQLException {
 
-        Maps valueObject = createValueObject();
-        valueObject.setMapId(mapId);
+        Drawing valueObject = createValueObject();
+        valueObject.setResourceId(resourceId);
         load(conn, valueObject);
         return valueObject;
     }
@@ -53,12 +62,14 @@ public class MapsDao {
      * @param valueObject This parameter contains the class instance to be loaded.
      *                    Primary-key field must be set for this to work properly.
      */
-    public void load(Connection conn, Maps valueObject) throws NotFoundException, SQLException {
+    public void load(Connection conn, Drawing valueObject) throws NotFoundException, SQLException {
 
-        String sql = "SELECT * FROM Maps WHERE (mapId = ? ) ";
+        String sql = "SELECT * " +
+                "FROM Drawing d INNER JOIN TypeOfResource tor ON d.resourceId = tor.resourceId " +
+                "WHERE (tor.resourceId = ? ) ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, valueObject.getMapId());
+            stmt.setInt(1, valueObject.getResourceId());
 
             singleQuery(conn, stmt, valueObject);
 
@@ -75,9 +86,11 @@ public class MapsDao {
      *
      * @param conn This method requires working database connection.
      */
-    public List<Maps> loadAll(Connection conn) throws SQLException {
+    public List<Drawing> loadAll(Connection conn) throws SQLException {
 
-        String sql = "SELECT * FROM Maps ORDER BY mapId ASC ";
+        String sql = "SELECT * " +
+                "FROM Drawing d INNER JOIN TypeOfResource tor ON d.resourceId = tor.resourceId " +
+                "ORDER BY tor.resourceId ASC";
 
         return listQuery(conn, conn.prepareStatement(sql));
     }
@@ -96,22 +109,27 @@ public class MapsDao {
      *                    If automatic surrogate-keys are not used the Primary-key
      *                    field must be set for this to work properly.
      */
-    public synchronized void create(Connection conn, Maps valueObject) throws SQLException {
+    public synchronized void create(Connection conn, Drawing valueObject) throws SQLException {
 
         String sql = "";
         PreparedStatement stmt = null;
         ResultSet result = null;
 
         try {
-            sql = "INSERT INTO Maps ( mapId, name, description, "
-                    + "createdBy, lastEditedBy) VALUES (?, ?, ?, ?, ?) ";
+
+            (new TypeOfResourceDao()).create(conn,
+                    new TypeOfResource(
+                            valueObject.getResourceId(),
+                            valueObject.getName(),
+                            valueObject.getDescription()
+                    )
+            );
+
+            sql = "INSERT INTO Drawing ( resourceId, image) VALUES (?, ?) ";
             stmt = conn.prepareStatement(sql);
 
-            stmt.setInt(1, valueObject.getMapId());
-            stmt.setString(2, valueObject.getName());
-            stmt.setString(3, valueObject.getDescription());
-            stmt.setString(4, valueObject.getCreatedBy());
-            stmt.setString(5, valueObject.getLastEditedBy());
+            stmt.setInt(1, valueObject.getResourceId());
+            stmt.setString(2, valueObject.getImage());
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount != 1) {
@@ -139,19 +157,23 @@ public class MapsDao {
      * @param valueObject This parameter contains the class instance to be saved.
      *                    Primary-key field must be set for this to work properly.
      */
-    public void save(Connection conn, Maps valueObject)
+    public void save(Connection conn, Drawing valueObject)
             throws NotFoundException, SQLException {
 
-        String sql = "UPDATE Maps SET name = ?, description = ?, createdBy = ?, "
-                + "lastEditedBy = ? WHERE (mapId = ? ) ";
+        (new TypeOfResourceDao()).save(conn,
+                new TypeOfResource(
+                        valueObject.getResourceId(),
+                        valueObject.getName(),
+                        valueObject.getDescription()
+                )
+        );
+
+        String sql = "UPDATE Drawing SET image = ? WHERE (resourceId = ? ) ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, valueObject.getName());
-            stmt.setString(2, valueObject.getDescription());
-            stmt.setString(3, valueObject.getCreatedBy());
-            stmt.setString(4, valueObject.getLastEditedBy());
+            stmt.setString(1, valueObject.getImage());
 
-            stmt.setInt(5, valueObject.getMapId());
+            stmt.setInt(2, valueObject.getResourceId());
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount == 0) {
@@ -175,16 +197,16 @@ public class MapsDao {
      * NotFoundException will be thrown.
      *
      * @param conn        This method requires working database connection.
-     * @param valueObject This parameter is the primary key of the resource to be deleted.
+     * @param valueObject This parameter contains the class instance to be deleted.
      *                    Primary-key field must be set for this to work properly.
      */
-    public void delete(Connection conn, Maps valueObject)
+    public void delete(Connection conn, Drawing valueObject)
             throws NotFoundException, SQLException {
 
-        String sql = "DELETE FROM Maps WHERE (mapId = ? ) ";
+        String sql = "DELETE FROM Drawing WHERE (resourceId = ? ) ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, valueObject.getMapId());
+            stmt.setInt(1, valueObject.getResourceId());
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount == 0) {
@@ -196,6 +218,13 @@ public class MapsDao {
                 throw new SQLException("PrimaryKey Error when updating DB! (Many objects were deleted!)");
             }
         }
+
+        (new TypeOfResourceDao()).delete(conn,
+                new TypeOfResource(
+                        valueObject.getResourceId()
+                )
+        );
+
     }
 
 
@@ -210,9 +239,9 @@ public class MapsDao {
      *
      * @param conn This method requires working database connection.
      */
-    public void deleteAll(Connection conn) throws SQLException {
+    protected void deleteAll(Connection conn) throws SQLException {
 
-        String sql = "DELETE FROM Maps";
+        String sql = "DELETE FROM Drawing";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             int rowcount = databaseUpdate(conn, stmt);
@@ -230,7 +259,7 @@ public class MapsDao {
      */
     public int countAll(Connection conn) throws SQLException {
 
-        String sql = "SELECT count(*) FROM Maps";
+        String sql = "SELECT count(*) FROM Drawing";
         PreparedStatement stmt = null;
         ResultSet result = null;
         int allRows = 0;
@@ -264,50 +293,27 @@ public class MapsDao {
      * @param valueObject This parameter contains the class instance where search will be based.
      *                    Primary-key field should not be set.
      */
-    public List<Maps> searchMatching(Connection conn, Maps valueObject) throws SQLException {
+    public List<Drawing> searchMatching(Connection conn, Drawing valueObject) throws SQLException {
 
-        List<Maps> searchResults;
+        List<Drawing> searchResults;
 
         boolean first = true;
-        StringBuilder sql = new StringBuilder("SELECT * FROM Maps WHERE 1=1 ");
+        StringBuilder sql = new StringBuilder("SELECT * FROM Drawing WHERE 1=1 ");
 
-        if (valueObject.getMapId() != 0) {
+        if (valueObject.getResourceId() != 0) {
+            first = false;
+            sql.append("AND resourceId = ").append(valueObject.getResourceId()).append(" ");
+        }
+
+        if (valueObject.getImage() != null) {
             if (first) {
                 first = false;
             }
-            sql.append("AND mapId = ").append(valueObject.getMapId()).append(" ");
-        }
-
-        if (valueObject.getName() != null) {
-            if (first) {
-                first = false;
-            }
-            sql.append("AND name LIKE '").append(valueObject.getName()).append("%' ");
-        }
-
-        if (valueObject.getDescription() != null) {
-            if (first) {
-                first = false;
-            }
-            sql.append("AND description LIKE '").append(valueObject.getDescription()).append("%' ");
-        }
-
-        if (valueObject.getCreatedBy() != null) {
-            if (first) {
-                first = false;
-            }
-            sql.append("AND createdBy LIKE '").append(valueObject.getCreatedBy()).append("%' ");
-        }
-
-        if (valueObject.getLastEditedBy() != null) {
-            if (first) {
-                first = false;
-            }
-            sql.append("AND lastEditedBy LIKE '").append(valueObject.getLastEditedBy()).append("%' ");
+            sql.append("AND image LIKE '").append(valueObject.getImage()).append("%' ");
         }
 
 
-        sql.append("ORDER BY mapId ASC ");
+        sql.append("ORDER BY resourceId ASC ");
 
         // Prevent accidential full table results.
         // Use loadAll if all rows must be returned.
@@ -318,16 +324,6 @@ public class MapsDao {
 
         return searchResults;
     }
-
-
-    /**
-     * getDaogenVersion will return information about
-     * generator which created these sources.
-     */
-    public String getDaogenVersion() {
-        return "DaoGen version 2.4.1";
-    }
-
 
     /**
      * databaseUpdate-method. This method is a helper method for internal use. It will execute
@@ -352,22 +348,19 @@ public class MapsDao {
      * @param stmt        This parameter contains the SQL statement to be excuted.
      * @param valueObject Class-instance where resulting data will be stored.
      */
-    protected void singleQuery(Connection conn, PreparedStatement stmt, Maps valueObject)
+    protected void singleQuery(Connection conn, PreparedStatement stmt, Drawing valueObject)
             throws NotFoundException, SQLException {
 
         try (ResultSet result = stmt.executeQuery()) {
 
             if (result.next()) {
 
-                valueObject.setMapId(result.getInt("mapId"));
-                valueObject.setName(result.getString("name"));
-                valueObject.setDescription(result.getString("description"));
-                valueObject.setCreatedBy(result.getString("createdBy"));
-                valueObject.setLastEditedBy(result.getString("lastEditedBy"));
+                valueObject.setResourceId(result.getInt("resourceId"));
+                valueObject.setImage(result.getString("image"));
 
             } else {
-                //System.out.println("Maps Object Not Found!");
-                throw new NotFoundException("Maps Object Not Found!");
+                //System.out.println("Drawing Object Not Found!");
+                throw new NotFoundException("Drawing Object Not Found!");
             }
         } finally {
             if (stmt != null)
@@ -384,20 +377,17 @@ public class MapsDao {
      * @param conn This method requires working database connection.
      * @param stmt This parameter contains the SQL statement to be excuted.
      */
-    protected List<Maps> listQuery(Connection conn, PreparedStatement stmt) throws SQLException {
+    protected List<Drawing> listQuery(Connection conn, PreparedStatement stmt) throws SQLException {
 
-        ArrayList<Maps> searchResults = new ArrayList<>();
+        ArrayList<Drawing> searchResults = new ArrayList<>();
 
         try (ResultSet result = stmt.executeQuery()) {
 
             while (result.next()) {
-                Maps temp = createValueObject();
+                Drawing temp = createValueObject();
 
-                temp.setMapId(result.getInt("mapId"));
-                temp.setName(result.getString("name"));
-                temp.setDescription(result.getString("description"));
-                temp.setCreatedBy(result.getString("createdBy"));
-                temp.setLastEditedBy(result.getString("lastEditedBy"));
+                temp.setResourceId(result.getInt("resourceId"));
+                temp.setImage(result.getString("image"));
 
                 searchResults.add(temp);
             }

@@ -1,7 +1,7 @@
 package nl.utwente.di.team26.dao;
 
 import nl.utwente.di.team26.Exceptions.NotFoundException;
-import nl.utwente.di.team26.model.Maps;
+import nl.utwente.di.team26.model.Events;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,8 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapsDao {
-
+public class EventsDao {
 
     /**
      * createValueObject-method. This method is used when the Dao class needs
@@ -21,8 +20,8 @@ public class MapsDao {
      * NOTE: If you extend the valueObject class, make sure to override the
      * clone() method in it!
      */
-    public Maps createValueObject() {
-        return new Maps();
+    public Events createValueObject() {
+        return new Events();
     }
 
 
@@ -32,10 +31,10 @@ public class MapsDao {
      * for the real load-method which accepts the valueObject as a parameter. Returned
      * valueObject will be created using the createValueObject() method.
      */
-    public Maps getObject(Connection conn, int mapId) throws NotFoundException, SQLException {
+    public Events getObject(Connection conn, int eventId) throws NotFoundException, SQLException {
 
-        Maps valueObject = createValueObject();
-        valueObject.setMapId(mapId);
+        Events valueObject = createValueObject();
+        valueObject.setEventId(eventId);
         load(conn, valueObject);
         return valueObject;
     }
@@ -53,12 +52,12 @@ public class MapsDao {
      * @param valueObject This parameter contains the class instance to be loaded.
      *                    Primary-key field must be set for this to work properly.
      */
-    public void load(Connection conn, Maps valueObject) throws NotFoundException, SQLException {
+    public void load(Connection conn, Events valueObject) throws NotFoundException, SQLException {
 
-        String sql = "SELECT * FROM Maps WHERE (mapId = ? ) ";
+        String sql = "SELECT * FROM Events WHERE (eventId = ? ) ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, valueObject.getMapId());
+            stmt.setInt(1, valueObject.getEventId());
 
             singleQuery(conn, stmt, valueObject);
 
@@ -75,9 +74,9 @@ public class MapsDao {
      *
      * @param conn This method requires working database connection.
      */
-    public List<Maps> loadAll(Connection conn) throws SQLException {
+    public List<Events> loadAll(Connection conn) throws SQLException {
 
-        String sql = "SELECT * FROM Maps ORDER BY mapId ASC ";
+        String sql = "SELECT * FROM Events ORDER BY eventId ASC ";
 
         return listQuery(conn, conn.prepareStatement(sql));
     }
@@ -96,22 +95,23 @@ public class MapsDao {
      *                    If automatic surrogate-keys are not used the Primary-key
      *                    field must be set for this to work properly.
      */
-    public synchronized void create(Connection conn, Maps valueObject) throws SQLException {
+    public synchronized void create(Connection conn, Events valueObject) throws SQLException {
 
         String sql = "";
         PreparedStatement stmt = null;
         ResultSet result = null;
 
         try {
-            sql = "INSERT INTO Maps ( mapId, name, description, "
-                    + "createdBy, lastEditedBy) VALUES (?, ?, ?, ?, ?) ";
+            sql = "INSERT INTO Events ( eventId, name, description, "
+                    + "location, createdBy, lastEditedBy) VALUES (?, ?, ?, ?, ?, ?) ";
             stmt = conn.prepareStatement(sql);
 
-            stmt.setInt(1, valueObject.getMapId());
+            stmt.setInt(1, valueObject.getEventId());
             stmt.setString(2, valueObject.getName());
             stmt.setString(3, valueObject.getDescription());
-            stmt.setString(4, valueObject.getCreatedBy());
-            stmt.setString(5, valueObject.getLastEditedBy());
+            stmt.setString(4, valueObject.getLocation());
+            stmt.setString(5, valueObject.getCreatedBy());
+            stmt.setString(6, valueObject.getLastEditedBy());
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount != 1) {
@@ -139,19 +139,22 @@ public class MapsDao {
      * @param valueObject This parameter contains the class instance to be saved.
      *                    Primary-key field must be set for this to work properly.
      */
-    public void save(Connection conn, Maps valueObject)
+    public void save(Connection conn, Events valueObject)
             throws NotFoundException, SQLException {
 
-        String sql = "UPDATE Maps SET name = ?, description = ?, createdBy = ?, "
-                + "lastEditedBy = ? WHERE (mapId = ? ) ";
+        String sql = "UPDATE Events SET name = ?, description = ?, location = ?, "
+                + "createdBy = ?, lastEditedBy = ? WHERE (eventId = ? ) ";
+        PreparedStatement stmt = null;
 
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try {
+            stmt = conn.prepareStatement(sql);
             stmt.setString(1, valueObject.getName());
             stmt.setString(2, valueObject.getDescription());
-            stmt.setString(3, valueObject.getCreatedBy());
-            stmt.setString(4, valueObject.getLastEditedBy());
+            stmt.setString(3, valueObject.getLocation());
+            stmt.setString(4, valueObject.getCreatedBy());
+            stmt.setString(5, valueObject.getLastEditedBy());
 
-            stmt.setInt(5, valueObject.getMapId());
+            stmt.setInt(6, valueObject.getEventId());
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount == 0) {
@@ -162,6 +165,9 @@ public class MapsDao {
                 //System.out.println("PrimaryKey Error when updating DB! (Many objects were affected!)");
                 throw new SQLException("PrimaryKey Error when updating DB! (Many objects were affected!)");
             }
+        } finally {
+            if (stmt != null)
+                stmt.close();
         }
     }
 
@@ -178,13 +184,15 @@ public class MapsDao {
      * @param valueObject This parameter is the primary key of the resource to be deleted.
      *                    Primary-key field must be set for this to work properly.
      */
-    public void delete(Connection conn, Maps valueObject)
+    public void delete(Connection conn, Events valueObject)
             throws NotFoundException, SQLException {
 
-        String sql = "DELETE FROM Maps WHERE (mapId = ? ) ";
+        String sql = "DELETE FROM Events WHERE (eventId = ? ) ";
+        PreparedStatement stmt = null;
 
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, valueObject.getMapId());
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, valueObject.getEventId());
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount == 0) {
@@ -195,6 +203,9 @@ public class MapsDao {
                 //System.out.println("PrimaryKey Error when updating DB! (Many objects were deleted!)");
                 throw new SQLException("PrimaryKey Error when updating DB! (Many objects were deleted!)");
             }
+        } finally {
+            if (stmt != null)
+                stmt.close();
         }
     }
 
@@ -212,10 +223,15 @@ public class MapsDao {
      */
     public void deleteAll(Connection conn) throws SQLException {
 
-        String sql = "DELETE FROM Maps";
+        String sql = "DELETE FROM Events";
+        PreparedStatement stmt = null;
 
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try {
+            stmt = conn.prepareStatement(sql);
             int rowcount = databaseUpdate(conn, stmt);
+        } finally {
+            if (stmt != null)
+                stmt.close();
         }
     }
 
@@ -230,7 +246,7 @@ public class MapsDao {
      */
     public int countAll(Connection conn) throws SQLException {
 
-        String sql = "SELECT count(*) FROM Maps";
+        String sql = "SELECT count(*) FROM Events";
         PreparedStatement stmt = null;
         ResultSet result = null;
         int allRows = 0;
@@ -264,18 +280,18 @@ public class MapsDao {
      * @param valueObject This parameter contains the class instance where search will be based.
      *                    Primary-key field should not be set.
      */
-    public List<Maps> searchMatching(Connection conn, Maps valueObject) throws SQLException {
+    public List<Events> searchMatching(Connection conn, Events valueObject) throws SQLException {
 
-        List<Maps> searchResults;
+        List<Events> searchResults;
 
         boolean first = true;
-        StringBuilder sql = new StringBuilder("SELECT * FROM Maps WHERE 1=1 ");
+        StringBuffer sql = new StringBuffer("SELECT * FROM Events WHERE 1=1 ");
 
-        if (valueObject.getMapId() != 0) {
+        if (valueObject.getEventId() != 0) {
             if (first) {
                 first = false;
             }
-            sql.append("AND mapId = ").append(valueObject.getMapId()).append(" ");
+            sql.append("AND eventId = ").append(valueObject.getEventId()).append(" ");
         }
 
         if (valueObject.getName() != null) {
@@ -290,6 +306,13 @@ public class MapsDao {
                 first = false;
             }
             sql.append("AND description LIKE '").append(valueObject.getDescription()).append("%' ");
+        }
+
+        if (valueObject.getLocation() != null) {
+            if (first) {
+                first = false;
+            }
+            sql.append("AND location LIKE '").append(valueObject.getLocation()).append("%' ");
         }
 
         if (valueObject.getCreatedBy() != null) {
@@ -307,7 +330,7 @@ public class MapsDao {
         }
 
 
-        sql.append("ORDER BY mapId ASC ");
+        sql.append("ORDER BY eventId ASC ");
 
         // Prevent accidential full table results.
         // Use loadAll if all rows must be returned.
@@ -319,16 +342,6 @@ public class MapsDao {
         return searchResults;
     }
 
-
-    /**
-     * getDaogenVersion will return information about
-     * generator which created these sources.
-     */
-    public String getDaogenVersion() {
-        return "DaoGen version 2.4.1";
-    }
-
-
     /**
      * databaseUpdate-method. This method is a helper method for internal use. It will execute
      * all database handling that will change the information in tables. SELECT queries will
@@ -339,6 +352,7 @@ public class MapsDao {
      * @param stmt This parameter contains the SQL statement to be excuted.
      */
     protected int databaseUpdate(Connection conn, PreparedStatement stmt) throws SQLException {
+
         return stmt.executeUpdate();
     }
 
@@ -352,22 +366,18 @@ public class MapsDao {
      * @param stmt        This parameter contains the SQL statement to be excuted.
      * @param valueObject Class-instance where resulting data will be stored.
      */
-    protected void singleQuery(Connection conn, PreparedStatement stmt, Maps valueObject)
+    protected void singleQuery(Connection conn, PreparedStatement stmt, Events valueObject)
             throws NotFoundException, SQLException {
 
         try (ResultSet result = stmt.executeQuery()) {
 
             if (result.next()) {
 
-                valueObject.setMapId(result.getInt("mapId"));
-                valueObject.setName(result.getString("name"));
-                valueObject.setDescription(result.getString("description"));
-                valueObject.setCreatedBy(result.getString("createdBy"));
-                valueObject.setLastEditedBy(result.getString("lastEditedBy"));
+                setPropertiesOfObject(result, valueObject);
 
             } else {
-                //System.out.println("Maps Object Not Found!");
-                throw new NotFoundException("Maps Object Not Found!");
+                //System.out.println("Events Object Not Found!");
+                throw new NotFoundException("Events Object Not Found!");
             }
         } finally {
             if (stmt != null)
@@ -384,21 +394,15 @@ public class MapsDao {
      * @param conn This method requires working database connection.
      * @param stmt This parameter contains the SQL statement to be excuted.
      */
-    protected List<Maps> listQuery(Connection conn, PreparedStatement stmt) throws SQLException {
+    protected List<Events> listQuery(Connection conn, PreparedStatement stmt) throws SQLException {
 
-        ArrayList<Maps> searchResults = new ArrayList<>();
+        ArrayList<Events> searchResults = new ArrayList<>();
 
         try (ResultSet result = stmt.executeQuery()) {
 
             while (result.next()) {
-                Maps temp = createValueObject();
-
-                temp.setMapId(result.getInt("mapId"));
-                temp.setName(result.getString("name"));
-                temp.setDescription(result.getString("description"));
-                temp.setCreatedBy(result.getString("createdBy"));
-                temp.setLastEditedBy(result.getString("lastEditedBy"));
-
+                Events temp = createValueObject();
+                setPropertiesOfObject(result, temp);
                 searchResults.add(temp);
             }
 
@@ -408,6 +412,15 @@ public class MapsDao {
         }
 
         return searchResults;
+    }
+
+    private void setPropertiesOfObject(ResultSet result, Events temp) throws SQLException {
+        temp.setEventId(result.getInt("eventId"));
+        temp.setName(result.getString("name"));
+        temp.setDescription(result.getString("description"));
+        temp.setLocation(result.getString("location"));
+        temp.setCreatedBy(result.getString("createdBy"));
+        temp.setLastEditedBy(result.getString("lastEditedBy"));
     }
 
 
