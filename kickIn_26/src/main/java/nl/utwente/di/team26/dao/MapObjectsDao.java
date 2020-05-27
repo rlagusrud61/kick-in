@@ -1,7 +1,8 @@
 package nl.utwente.di.team26.dao;
 
 import nl.utwente.di.team26.Exceptions.NotFoundException;
-import nl.utwente.di.team26.model.TypeOfResource;
+import nl.utwente.di.team26.model.MapObjects;
+import nl.utwente.di.team26.model.Maps;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,12 +13,11 @@ import java.util.List;
 
 
 /**
- * TypeOfResource Data Access Object (DAO).
+ * MapObjects Data Access Object (DAO).
  * This class contains all database handling that is needed to
- * permanently store and retrieve TypeOfResource object instances.
+ * permanently store and retrieve MapObjects object instances.
  */
-
-public class TypeOfResourceDao {
+public class MapObjectsDao {
 
 
 
@@ -29,8 +29,8 @@ public class TypeOfResourceDao {
      * NOTE: If you extend the valueObject class, make sure to override the
      * clone() method in it!
      */
-    public TypeOfResource createValueObject() {
-        return new TypeOfResource();
+    public MapObjects createValueObject() {
+        return new MapObjects();
     }
 
 
@@ -40,10 +40,10 @@ public class TypeOfResourceDao {
      * for the real load-method which accepts the valueObject as a parameter. Returned
      * valueObject will be created using the createValueObject() method.
      */
-    public TypeOfResource getObject(Connection conn, int resourceId) throws NotFoundException, SQLException {
+    public MapObjects getObject(Connection conn, int objectId) throws NotFoundException, SQLException {
 
-        TypeOfResource valueObject = createValueObject();
-        valueObject.setResourceId(resourceId);
+        MapObjects valueObject = createValueObject();
+        valueObject.setObjectId(objectId);
         load(conn, valueObject);
         return valueObject;
     }
@@ -61,12 +61,12 @@ public class TypeOfResourceDao {
      * @param valueObject  This parameter contains the class instance to be loaded.
      *                     Primary-key field must be set for this to work properly.
      */
-    public void load(Connection conn, TypeOfResource valueObject) throws NotFoundException, SQLException {
+    public void load(Connection conn, MapObjects valueObject) throws NotFoundException, SQLException {
 
-        String sql = "SELECT * FROM TypeOfResource WHERE (resourceId = ? ) ";
+        String sql = "SELECT * FROM MapObjects WHERE (objectId = ? ) ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, valueObject.getResourceId());
+            stmt.setInt(1, valueObject.getObjectId());
 
             singleQuery(conn, stmt, valueObject);
 
@@ -83,9 +83,9 @@ public class TypeOfResourceDao {
      *
      * @param conn         This method requires working database connection.
      */
-    public List<TypeOfResource> loadAll(Connection conn) throws SQLException {
+    public List<MapObjects> loadAll(Connection conn) throws SQLException {
 
-        String sql = "SELECT * FROM TypeOfResource ORDER BY resourceId ASC ";
+        String sql = "SELECT * FROM MapObjects ORDER BY objectId ASC ";
 
         return listQuery(conn, conn.prepareStatement(sql));
     }
@@ -105,19 +105,21 @@ public class TypeOfResourceDao {
      *                     If automatic surrogate-keys are not used the Primary-key
      *                     field must be set for this to work properly.
      */
-    public synchronized void create(Connection conn, TypeOfResource valueObject) throws SQLException {
+    public synchronized void create(Connection conn, MapObjects valueObject) throws SQLException {
 
         String sql = "";
         PreparedStatement stmt = null;
         ResultSet result = null;
 
         try {
-            sql = "INSERT INTO TypeOfResource (resourceId, name, description) VALUES (?, ?, ?) ";
+            sql = "INSERT INTO MapObjects ( objectId, mapId, resourceId, "
+                    + "latLangs) VALUES (?, ?, ?, ?) ";
             stmt = conn.prepareStatement(sql);
 
-            stmt.setInt(1, valueObject.getResourceId());
-            stmt.setString(2, valueObject.getName());
-            stmt.setString(3, valueObject.getDescription());
+            stmt.setInt(1, valueObject.getObjectId());
+            stmt.setInt(2, valueObject.getMapId());
+            stmt.setInt(3, valueObject.getResourceId());
+            stmt.setString(4, valueObject.getLatLangs());
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount != 1) {
@@ -145,16 +147,17 @@ public class TypeOfResourceDao {
      * @param valueObject  This parameter contains the class instance to be saved.
      *                     Primary-key field must be set for this to work properly.
      */
-    public void save(Connection conn, TypeOfResource valueObject)
+    public void save(Connection conn, MapObjects valueObject)
             throws NotFoundException, SQLException {
 
-        String sql = "UPDATE TypeOfResource SET name = ?, description = ? WHERE (resourceId = ? ) ";
+        String sql = "UPDATE MapObjects SET mapId = ?, resourceId = ?, latLangs = ? WHERE (objectId = ? ) ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, valueObject.getName());
-            stmt.setString(2, valueObject.getDescription());
+            stmt.setInt(1, valueObject.getMapId());
+            stmt.setInt(2, valueObject.getResourceId());
+            stmt.setString(3, valueObject.getLatLangs());
 
-            stmt.setInt(3, valueObject.getResourceId());
+            stmt.setInt(4, valueObject.getObjectId());
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount == 0) {
@@ -181,13 +184,13 @@ public class TypeOfResourceDao {
      * @param valueObject  This parameter contains the class instance to be deleted.
      *                     Primary-key field must be set for this to work properly.
      */
-    public void delete(Connection conn, TypeOfResource valueObject)
+    public void delete(Connection conn, MapObjects valueObject)
             throws NotFoundException, SQLException {
 
-        String sql = "DELETE FROM TypeOfResource WHERE (resourceId = ? ) ";
+        String sql = "DELETE FROM MapObjects WHERE (objectId = ? ) ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, valueObject.getResourceId());
+            stmt.setInt(1, valueObject.getObjectId());
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount == 0) {
@@ -201,6 +204,25 @@ public class TypeOfResourceDao {
         }
     }
 
+    public void deleteAllForMap(Connection conn, MapObjects valueObject)
+            throws NotFoundException, SQLException {
+
+        String sql = "DELETE FROM MapObjects WHERE (mapId = ? )";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, valueObject.getObjectId());
+
+            int rowcount = databaseUpdate(conn, stmt);
+            if (rowcount == 0) {
+                //System.out.println("Object could not be deleted (PrimaryKey not found)");
+                throw new NotFoundException("Object could not be deleted! (PrimaryKey not found)");
+            }
+            if (rowcount > 1) {
+                //System.out.println("PrimaryKey Error when updating DB! (Many objects were deleted!)");
+                throw new SQLException("PrimaryKey Error when updating DB! (Many objects were deleted!)");
+            }
+        }
+    }
 
     /**
      * deleteAll-method. This method will remove all information from the table that matches
@@ -214,10 +236,8 @@ public class TypeOfResourceDao {
      * @param conn         This method requires working database connection.
      */
     public void deleteAll(Connection conn) throws SQLException {
-        (new MaterialsDao()).deleteAll(conn);
-        (new DrawingDao()).deleteAll(conn);
 
-        String sql = "DELETE FROM TypeOfResource";
+        String sql = "DELETE FROM MapObjects";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             int rowcount = databaseUpdate(conn, stmt);
@@ -235,7 +255,7 @@ public class TypeOfResourceDao {
      */
     public int countAll(Connection conn) throws SQLException {
 
-        String sql = "SELECT count(*) FROM TypeOfResource";
+        String sql = "SELECT count(*) FROM MapObjects";
         PreparedStatement stmt = null;
         ResultSet result = null;
         int allRows = 0;
@@ -269,48 +289,44 @@ public class TypeOfResourceDao {
      * @param valueObject  This parameter contains the class instance where search will be based.
      *                     Primary-key field should not be set.
      */
-    public List<TypeOfResource> searchMatching(Connection conn, TypeOfResource valueObject) throws SQLException {
+    public List<MapObjects> searchMatching(Connection conn, MapObjects valueObject) throws SQLException {
 
-        List<TypeOfResource> searchResults;
+        List<MapObjects> searchResults;
 
         boolean first = true;
-        StringBuilder sql = new StringBuilder("SELECT * FROM TypeOfResource WHERE 1=1 ");
+        StringBuilder sql = new StringBuilder("SELECT * FROM MapObjects WHERE 1=1 ");
+
+        if (valueObject.getObjectId() != 0) {
+            if (first) { first = false; }
+            sql.append("AND objectId = ").append(valueObject.getObjectId()).append(" ");
+        }
+
+        if (valueObject.getMapId() != 0) {
+            if (first) { first = false; }
+            sql.append("AND mapId = ").append(valueObject.getMapId()).append(" ");
+        }
 
         if (valueObject.getResourceId() != 0) {
-            first = false;
+            if (first) { first = false; }
             sql.append("AND resourceId = ").append(valueObject.getResourceId()).append(" ");
         }
 
-        if (valueObject.getName() != null) {
+        if (valueObject.getLatLangs() != null) {
             if (first) { first = false; }
-            sql.append("AND name LIKE '").append(valueObject.getName()).append("%' ");
-        }
-
-        if (valueObject.getDescription() != null) {
-            if (first) { first = false; }
-            sql.append("AND description LIKE '").append(valueObject.getDescription()).append("%' ");
+            sql.append("AND latLangs LIKE '").append(valueObject.getLatLangs()).append("%' ");
         }
 
 
-        sql.append("ORDER BY resourceId ASC ");
+        sql.append("ORDER BY objectId ASC ");
 
         // Prevent accidential full table results.
         // Use loadAll if all rows must be returned.
         if (first)
-            searchResults = new ArrayList<TypeOfResource>();
+            searchResults = new ArrayList<>();
         else
             searchResults = listQuery(conn, conn.prepareStatement(sql.toString()));
 
         return searchResults;
-    }
-
-
-    /**
-     * getDaogenVersion will return information about
-     * generator which created these sources.
-     */
-    public String getDaogenVersion() {
-        return "DaoGen version 2.4.1";
     }
 
 
@@ -338,20 +354,21 @@ public class TypeOfResourceDao {
      * @param stmt         This parameter contains the SQL statement to be excuted.
      * @param valueObject  Class-instance where resulting data will be stored.
      */
-    protected void singleQuery(Connection conn, PreparedStatement stmt, TypeOfResource valueObject)
+    protected void singleQuery(Connection conn, PreparedStatement stmt, MapObjects valueObject)
             throws NotFoundException, SQLException {
 
         try (ResultSet result = stmt.executeQuery()) {
 
             if (result.next()) {
 
+                valueObject.setObjectId(result.getInt("objectId"));
+                valueObject.setMapId(result.getInt("mapId"));
                 valueObject.setResourceId(result.getInt("resourceId"));
-                valueObject.setName(result.getString("name"));
-                valueObject.setDescription(result.getString("description"));
+                valueObject.setLatLangs(result.getString("latLangs"));
 
             } else {
-                //System.out.println("TypeOfResource Object Not Found!");
-                throw new NotFoundException("TypeOfResource Object Not Found!");
+                //System.out.println("MapObjects Object Not Found!");
+                throw new NotFoundException("MapObjects Object Not Found!");
             }
         } finally {
             if (stmt != null)
@@ -364,22 +381,23 @@ public class TypeOfResourceDao {
      * databaseQuery-method. This method is a helper method for internal use. It will execute
      * all database queries that will return multiple rows. The resultset will be converted
      * to the List of valueObjects. If no rows were found, an empty List will be returned.
-     *
-     * @param conn         This method requires working database connection.
+     *  @param conn         This method requires working database connection.
      * @param stmt         This parameter contains the SQL statement to be excuted.
+     * @return
      */
-    protected List<TypeOfResource> listQuery(Connection conn, PreparedStatement stmt) throws SQLException {
+    protected List<MapObjects> listQuery(Connection conn, PreparedStatement stmt) throws SQLException {
 
-        ArrayList<TypeOfResource> searchResults = new ArrayList<TypeOfResource>();
+        ArrayList<MapObjects> searchResults = new ArrayList<>();
 
         try (ResultSet result = stmt.executeQuery()) {
 
             while (result.next()) {
-                TypeOfResource temp = createValueObject();
+                MapObjects temp = createValueObject();
 
+                temp.setObjectId(result.getInt("objectId"));
+                temp.setMapId(result.getInt("mapId"));
                 temp.setResourceId(result.getInt("resourceId"));
-                temp.setName(result.getString("name"));
-                temp.setDescription(result.getString("description"));
+                temp.setLatLangs(result.getString("latLangs"));
 
                 searchResults.add(temp);
             }
