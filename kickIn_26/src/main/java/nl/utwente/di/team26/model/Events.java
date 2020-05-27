@@ -23,7 +23,6 @@ public class Events implements Serializable {
     private String lastEditedBy;
 
 
-
     /**
      * Constructors. DaoGen generates two constructors by default.
      * The first one takes no arguments and provides the most simple
@@ -31,11 +30,11 @@ public class Events implements Serializable {
      * argument, which is the primary key of the corresponding table.
      */
 
-    public Events () {
+    public Events() {
 
     }
 
-    public Events (int eventIdIn) {
+    public Events(int eventIdIn) {
 
         this.eventId = eventIdIn;
 
@@ -59,6 +58,7 @@ public class Events implements Serializable {
     public int getEventId() {
         return this.eventId;
     }
+
     public void setEventId(int eventIdIn) {
         this.eventId = eventIdIn;
     }
@@ -66,6 +66,7 @@ public class Events implements Serializable {
     public String getName() {
         return this.name;
     }
+
     public void setName(String nameIn) {
         this.name = nameIn;
     }
@@ -73,6 +74,7 @@ public class Events implements Serializable {
     public String getDescription() {
         return this.description;
     }
+
     public void setDescription(String descriptionIn) {
         this.description = descriptionIn;
     }
@@ -80,6 +82,7 @@ public class Events implements Serializable {
     public String getLocation() {
         return this.location;
     }
+
     public void setLocation(String locationIn) {
         this.location = locationIn;
     }
@@ -87,6 +90,7 @@ public class Events implements Serializable {
     public String getCreatedBy() {
         return this.createdBy;
     }
+
     public void setCreatedBy(String createdByIn) {
         this.createdBy = createdByIn;
     }
@@ -94,10 +98,10 @@ public class Events implements Serializable {
     public String getLastEditedBy() {
         return this.lastEditedBy;
     }
+
     public void setLastEditedBy(String lastEditedByIn) {
         this.lastEditedBy = lastEditedByIn;
     }
-
 
 
     /**
@@ -133,37 +137,36 @@ public class Events implements Serializable {
     public boolean hasEqualMapping(Events valueObject) {
 
         if (valueObject.getEventId() != this.eventId) {
-            return(false);
+            return (false);
         }
         if (this.name == null) {
             if (valueObject.getName() != null)
-                return(false);
+                return (false);
         } else if (!this.name.equals(valueObject.getName())) {
-            return(false);
+            return (false);
         }
         if (this.description == null) {
             if (valueObject.getDescription() != null)
-                return(false);
+                return (false);
         } else if (!this.description.equals(valueObject.getDescription())) {
-            return(false);
+            return (false);
         }
         if (this.location == null) {
             if (valueObject.getLocation() != null)
-                return(false);
+                return (false);
         } else if (!this.location.equals(valueObject.getLocation())) {
-            return(false);
+            return (false);
         }
         if (this.createdBy == null) {
             if (valueObject.getCreatedBy() != null)
-                return(false);
+                return (false);
         } else if (!this.createdBy.equals(valueObject.getCreatedBy())) {
-            return(false);
+            return (false);
         }
         if (this.lastEditedBy == null) {
             return valueObject.getLastEditedBy() == null;
         } else return this.lastEditedBy.equals(valueObject.getLastEditedBy());
     }
-
 
 
     /**

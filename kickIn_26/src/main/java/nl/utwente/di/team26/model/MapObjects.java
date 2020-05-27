@@ -27,11 +27,11 @@ public class MapObjects implements Serializable {
      * argument, which is the primary key of the corresponding table.
      */
 
-    public MapObjects () {
+    public MapObjects() {
 
     }
 
-    public MapObjects (int objectIdIn) {
+    public MapObjects(int objectIdIn) {
         this.objectId = objectIdIn;
     }
 
@@ -51,6 +51,7 @@ public class MapObjects implements Serializable {
     public int getObjectId() {
         return this.objectId;
     }
+
     public void setObjectId(int objectIdIn) {
         this.objectId = objectIdIn;
     }
@@ -58,6 +59,7 @@ public class MapObjects implements Serializable {
     public int getMapId() {
         return this.mapId;
     }
+
     public void setMapId(int mapIdIn) {
         this.mapId = mapIdIn;
     }
@@ -65,6 +67,7 @@ public class MapObjects implements Serializable {
     public int getResourceId() {
         return this.resourceId;
     }
+
     public void setResourceId(int resourceIdIn) {
         this.resourceId = resourceIdIn;
     }
@@ -72,10 +75,10 @@ public class MapObjects implements Serializable {
     public String getLatLangs() {
         return this.latLangs;
     }
+
     public void setLatLangs(String latLangsIn) {
         this.latLangs = latLangsIn;
     }
-
 
 
     /**
@@ -107,19 +110,18 @@ public class MapObjects implements Serializable {
     public boolean hasEqualMapping(MapObjects valueObject) {
 
         if (valueObject.getObjectId() != this.objectId) {
-            return(false);
+            return (false);
         }
         if (valueObject.getMapId() != this.mapId) {
-            return(false);
+            return (false);
         }
         if (valueObject.getResourceId() != this.resourceId) {
-            return(false);
+            return (false);
         }
         if (this.latLangs == null) {
             return valueObject.getLatLangs() == null;
         } else return this.latLangs.equals(valueObject.getLatLangs());
     }
-
 
 
     /**

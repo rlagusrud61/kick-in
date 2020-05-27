@@ -13,7 +13,6 @@ import java.util.List;
 public class MapsDao {
 
 
-
     /**
      * createValueObject-method. This method is used when the Dao class needs
      * to create new value object instance. The reason why this method exists
@@ -50,9 +49,9 @@ public class MapsDao {
      * overwrite all other fields except primary-key and possible runtime variables.
      * If load can not find matching row, NotFoundException will be thrown.
      *
-     * @param conn         This method requires working database connection.
-     * @param valueObject  This parameter contains the class instance to be loaded.
-     *                     Primary-key field must be set for this to work properly.
+     * @param conn        This method requires working database connection.
+     * @param valueObject This parameter contains the class instance to be loaded.
+     *                    Primary-key field must be set for this to work properly.
      */
     public void load(Connection conn, Maps valueObject) throws NotFoundException, SQLException {
 
@@ -74,7 +73,7 @@ public class MapsDao {
      * This should only be used when target tables have only small amounts
      * of data.
      *
-     * @param conn         This method requires working database connection.
+     * @param conn This method requires working database connection.
      */
     public List<Maps> loadAll(Connection conn) throws SQLException {
 
@@ -82,7 +81,6 @@ public class MapsDao {
 
         return listQuery(conn, conn.prepareStatement(sql));
     }
-
 
 
     /**
@@ -93,10 +91,10 @@ public class MapsDao {
      * read the generated primary-key back to valueObject if automatic surrogate-keys
      * were used.
      *
-     * @param conn         This method requires working database connection.
-     * @param valueObject  This parameter contains the class instance to be created.
-     *                     If automatic surrogate-keys are not used the Primary-key
-     *                     field must be set for this to work properly.
+     * @param conn        This method requires working database connection.
+     * @param valueObject This parameter contains the class instance to be created.
+     *                    If automatic surrogate-keys are not used the Primary-key
+     *                    field must be set for this to work properly.
      */
     public synchronized void create(Connection conn, Maps valueObject) throws SQLException {
 
@@ -137,9 +135,9 @@ public class MapsDao {
      * which instance is going to be updated in database. If save can not find matching
      * row, NotFoundException will be thrown.
      *
-     * @param conn         This method requires working database connection.
-     * @param valueObject  This parameter contains the class instance to be saved.
-     *                     Primary-key field must be set for this to work properly.
+     * @param conn        This method requires working database connection.
+     * @param valueObject This parameter contains the class instance to be saved.
+     *                    Primary-key field must be set for this to work properly.
      */
     public void save(Connection conn, Maps valueObject)
             throws NotFoundException, SQLException {
@@ -176,9 +174,9 @@ public class MapsDao {
      * primary-key than what it was in the deleted object. If delete can not find matching row,
      * NotFoundException will be thrown.
      *
-     * @param conn         This method requires working database connection.
-     * @param valueObject  This parameter is the primary key of the resource to be deleted.
-     *                     Primary-key field must be set for this to work properly.
+     * @param conn        This method requires working database connection.
+     * @param valueObject This parameter is the primary key of the resource to be deleted.
+     *                    Primary-key field must be set for this to work properly.
      */
     public void delete(Connection conn, Maps valueObject)
             throws NotFoundException, SQLException {
@@ -210,7 +208,7 @@ public class MapsDao {
      * than what it was in the deleted object. (Note, the implementation of this method should
      * be different with different DB backends.)
      *
-     * @param conn         This method requires working database connection.
+     * @param conn This method requires working database connection.
      */
     public void deleteAll(Connection conn) throws SQLException {
 
@@ -228,7 +226,7 @@ public class MapsDao {
      * If table is empty, the return value is 0. This method should be used before calling
      * loadAll, to make sure table has not too many rows.
      *
-     * @param conn         This method requires working database connection.
+     * @param conn This method requires working database connection.
      */
     public int countAll(Connection conn) throws SQLException {
 
@@ -262,9 +260,9 @@ public class MapsDao {
      * all matching those criteria you specified. Those instance-variables that
      * have NULL values are excluded in search-criteria.
      *
-     * @param conn         This method requires working database connection.
-     * @param valueObject  This parameter contains the class instance where search will be based.
-     *                     Primary-key field should not be set.
+     * @param conn        This method requires working database connection.
+     * @param valueObject This parameter contains the class instance where search will be based.
+     *                    Primary-key field should not be set.
      */
     public List<Maps> searchMatching(Connection conn, Maps valueObject) throws SQLException {
 
@@ -274,27 +272,37 @@ public class MapsDao {
         StringBuilder sql = new StringBuilder("SELECT * FROM Maps WHERE 1=1 ");
 
         if (valueObject.getMapId() != 0) {
-            if (first) { first = false; }
+            if (first) {
+                first = false;
+            }
             sql.append("AND mapId = ").append(valueObject.getMapId()).append(" ");
         }
 
         if (valueObject.getName() != null) {
-            if (first) { first = false; }
+            if (first) {
+                first = false;
+            }
             sql.append("AND name LIKE '").append(valueObject.getName()).append("%' ");
         }
 
         if (valueObject.getDescription() != null) {
-            if (first) { first = false; }
+            if (first) {
+                first = false;
+            }
             sql.append("AND description LIKE '").append(valueObject.getDescription()).append("%' ");
         }
 
         if (valueObject.getCreatedBy() != null) {
-            if (first) { first = false; }
+            if (first) {
+                first = false;
+            }
             sql.append("AND createdBy LIKE '").append(valueObject.getCreatedBy()).append("%' ");
         }
 
         if (valueObject.getLastEditedBy() != null) {
-            if (first) { first = false; }
+            if (first) {
+                first = false;
+            }
             sql.append("AND lastEditedBy LIKE '").append(valueObject.getLastEditedBy()).append("%' ");
         }
 
@@ -327,13 +335,12 @@ public class MapsDao {
      * not be executed here however. The return value indicates how many rows were affected.
      * This method will also make sure that if cache is used, it will reset when data changes.
      *
-     * @param conn         This method requires working database connection.
-     * @param stmt         This parameter contains the SQL statement to be excuted.
+     * @param conn This method requires working database connection.
+     * @param stmt This parameter contains the SQL statement to be excuted.
      */
     protected int databaseUpdate(Connection conn, PreparedStatement stmt) throws SQLException {
         return stmt.executeUpdate();
     }
-
 
 
     /**
@@ -341,9 +348,9 @@ public class MapsDao {
      * all database queries that will return only one row. The resultset will be converted
      * to valueObject. If no rows were found, NotFoundException will be thrown.
      *
-     * @param conn         This method requires working database connection.
-     * @param stmt         This parameter contains the SQL statement to be excuted.
-     * @param valueObject  Class-instance where resulting data will be stored.
+     * @param conn        This method requires working database connection.
+     * @param stmt        This parameter contains the SQL statement to be excuted.
+     * @param valueObject Class-instance where resulting data will be stored.
      */
     protected void singleQuery(Connection conn, PreparedStatement stmt, Maps valueObject)
             throws NotFoundException, SQLException {
@@ -374,8 +381,8 @@ public class MapsDao {
      * all database queries that will return multiple rows. The resultset will be converted
      * to the List of valueObjects. If no rows were found, an empty List will be returned.
      *
-     * @param conn         This method requires working database connection.
-     * @param stmt         This parameter contains the SQL statement to be excuted.
+     * @param conn This method requires working database connection.
+     * @param stmt This parameter contains the SQL statement to be excuted.
      */
     protected List<Maps> listQuery(Connection conn, PreparedStatement stmt) throws SQLException {
 

@@ -1,15 +1,14 @@
 package nl.utwente.di.team26.resources.TypeOfResource;
 
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.dao.DrawingDao;
+import nl.utwente.di.team26.Exceptions.DataSourceNotFoundException;
 import nl.utwente.di.team26.dao.MaterialsDao;
-import nl.utwente.di.team26.model.Drawing;
 import nl.utwente.di.team26.model.Materials;
 
+import javax.naming.NamingException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -21,12 +20,9 @@ public class MaterialsResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Materials> getAllDrawings() {
-        try (Connection conn = DriverManager.getConnection(
-                CONSTANTS.URL,
-                CONSTANTS.USER,
-                CONSTANTS.PASSWORD)) {
+        try (Connection conn = CONSTANTS.getConnection()) {
             return materialsDao.loadAll(conn);
-        } catch (NotFoundException | SQLException throwables) {
+        } catch (NotFoundException | SQLException | DataSourceNotFoundException | NamingException throwables) {
             throwables.printStackTrace();
             return null;
         }
@@ -36,13 +32,10 @@ public class MaterialsResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String addNewDrawing(Materials materialToAdd) {
-        try (Connection conn = DriverManager.getConnection(
-                CONSTANTS.URL,
-                CONSTANTS.USER,
-                CONSTANTS.PASSWORD)) {
+        try (Connection conn = CONSTANTS.getConnection()) {
             materialsDao.create(conn, materialToAdd);
             return CONSTANTS.SUCCESS;
-        } catch (SQLException throwables) {
+        } catch (SQLException | DataSourceNotFoundException | NamingException throwables) {
             throwables.printStackTrace();
             return CONSTANTS.FAILURE;
         }

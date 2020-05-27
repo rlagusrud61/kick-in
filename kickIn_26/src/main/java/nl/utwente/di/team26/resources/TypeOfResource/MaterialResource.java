@@ -1,20 +1,15 @@
 package nl.utwente.di.team26.resources.TypeOfResource;
 
 import nl.utwente.di.team26.CONSTANTS;
+import nl.utwente.di.team26.Exceptions.DataSourceNotFoundException;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.dao.MaterialsDao;
 import nl.utwente.di.team26.model.Materials;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.naming.NamingException;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 @Path("/materials/{materialId}")
@@ -25,12 +20,9 @@ public class MaterialResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Materials getDrawingObject(@PathParam("materialId") int materialId) {
-        try (Connection conn = DriverManager.getConnection(
-                CONSTANTS.URL,
-                CONSTANTS.USER,
-                CONSTANTS.PASSWORD)) {
+        try (Connection conn = CONSTANTS.getConnection()) {
             return materialsDao.getObject(conn, materialId);
-        } catch (SQLException | nl.utwente.di.team26.Exceptions.NotFoundException throwables) {
+        } catch (SQLException | NotFoundException | DataSourceNotFoundException | NamingException throwables) {
             throwables.printStackTrace();
             return null;
         }
@@ -40,13 +32,10 @@ public class MaterialResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String updateObject(Materials materialToUpdate) {
-        try (Connection conn = DriverManager.getConnection(
-                CONSTANTS.URL,
-                CONSTANTS.USER,
-                CONSTANTS.PASSWORD)) {
+        try (Connection conn = CONSTANTS.getConnection()) {
             materialsDao.save(conn, materialToUpdate);
             return CONSTANTS.SUCCESS;
-        } catch (nl.utwente.di.team26.Exceptions.NotFoundException | SQLException e) {
+        } catch (NotFoundException | SQLException | DataSourceNotFoundException | NamingException e) {
             return CONSTANTS.FAILURE;
         }
     }
@@ -54,13 +43,10 @@ public class MaterialResource {
     @DELETE
     @Produces(MediaType.TEXT_PLAIN)
     public String deleteObject(@PathParam("materialId") int materialId) {
-        try (Connection conn = DriverManager.getConnection(
-                CONSTANTS.URL,
-                CONSTANTS.USER,
-                CONSTANTS.PASSWORD)) {
+        try (Connection conn = CONSTANTS.getConnection()) {
             materialsDao.delete(conn, new Materials(materialId));
             return CONSTANTS.SUCCESS;
-        } catch (NotFoundException | SQLException e) {
+        } catch (NotFoundException | SQLException | DataSourceNotFoundException | NamingException e) {
             return CONSTANTS.FAILURE;
         }
     }

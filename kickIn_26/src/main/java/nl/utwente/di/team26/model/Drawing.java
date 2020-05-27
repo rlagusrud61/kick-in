@@ -24,7 +24,7 @@ public class Drawing extends TypeOfResource implements Serializable {
      * argument, which is the primary key of the corresponding table.
      */
 
-    public Drawing () {
+    public Drawing() {
 
     }
 
@@ -45,6 +45,7 @@ public class Drawing extends TypeOfResource implements Serializable {
     public String getImage() {
         return this.image;
     }
+
     public void setImage(String imageIn) {
         this.image = imageIn;
     }
@@ -59,13 +60,12 @@ public class Drawing extends TypeOfResource implements Serializable {
     public boolean hasEqualMapping(Drawing valueObject) {
 
         if (super.hasEqualMapping(valueObject)) {
-            return(false);
+            return (false);
         }
         if (this.image == null) {
             return valueObject.getImage() == null;
         } else return this.image.equals(valueObject.getImage());
     }
-
 
 
     /**

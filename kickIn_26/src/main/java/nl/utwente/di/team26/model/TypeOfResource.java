@@ -25,11 +25,11 @@ public class TypeOfResource implements Serializable {
      * argument, which is the primary key of the corresponding table.
      */
 
-    public TypeOfResource () {
+    public TypeOfResource() {
 
     }
 
-    public TypeOfResource (int resourceIdIn) {
+    public TypeOfResource(int resourceIdIn) {
         this.resourceId = resourceIdIn;
     }
 
@@ -48,6 +48,7 @@ public class TypeOfResource implements Serializable {
     public int getResourceId() {
         return this.resourceId;
     }
+
     public void setResourceId(int resourceIdIn) {
         this.resourceId = resourceIdIn;
     }
@@ -55,6 +56,7 @@ public class TypeOfResource implements Serializable {
     public String getName() {
         return this.name;
     }
+
     public void setName(String nameIn) {
         this.name = nameIn;
     }
@@ -62,6 +64,7 @@ public class TypeOfResource implements Serializable {
     public String getDescription() {
         return this.description;
     }
+
     public void setDescription(String descriptionIn) {
         this.description = descriptionIn;
     }
@@ -77,19 +80,18 @@ public class TypeOfResource implements Serializable {
     public boolean hasEqualMapping(TypeOfResource valueObject) {
 
         if (valueObject.getResourceId() != this.resourceId) {
-            return(false);
+            return (false);
         }
         if (this.name == null) {
             if (valueObject.getName() != null)
-                return(false);
+                return (false);
         } else if (!this.name.equals(valueObject.getName())) {
-            return(false);
+            return (false);
         }
         if (this.description == null) {
             return valueObject.getDescription() == null;
         } else return this.description.equals(valueObject.getDescription());
     }
-
 
 
     /**

@@ -36,7 +36,7 @@ CREATE TABLE Materials
     resourceId bigint NOT NULL,
     image      varchar(255),
     PRIMARY KEY (resourceId),
-    FOREIGN KEY (resourceId) REFERENCES TypeOfResource(resourceId)
+    FOREIGN KEY (resourceId) REFERENCES TypeOfResource (resourceId)
 );
 
 CREATE TABLE Drawing
@@ -63,6 +63,6 @@ CREATE TABLE MapObjects
     resourceId bigint,
     latLangs   varchar(255),
     PRIMARY KEY (objectId),
-    FOREIGN KEY (mapId) REFERENCES Maps(mapId),
-    FOREIGN KEY (resourceId) REFERENCES TypeOfResource(resourceId)
+    FOREIGN KEY (mapId) REFERENCES Maps (mapId),
+    FOREIGN KEY (resourceId) REFERENCES TypeOfResource (resourceId)
 );

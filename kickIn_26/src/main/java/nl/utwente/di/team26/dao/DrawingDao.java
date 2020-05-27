@@ -19,9 +19,7 @@ import java.util.List;
  */
 
 
-
 public class DrawingDao {
-
 
 
     /**
@@ -60,9 +58,9 @@ public class DrawingDao {
      * overwrite all other fields except primary-key and possible runtime variables.
      * If load can not find matching row, NotFoundException will be thrown.
      *
-     * @param conn         This method requires working database connection.
-     * @param valueObject  This parameter contains the class instance to be loaded.
-     *                     Primary-key field must be set for this to work properly.
+     * @param conn        This method requires working database connection.
+     * @param valueObject This parameter contains the class instance to be loaded.
+     *                    Primary-key field must be set for this to work properly.
      */
     public void load(Connection conn, Drawing valueObject) throws NotFoundException, SQLException {
 
@@ -86,7 +84,7 @@ public class DrawingDao {
      * This should only be used when target tables have only small amounts
      * of data.
      *
-     * @param conn         This method requires working database connection.
+     * @param conn This method requires working database connection.
      */
     public List<Drawing> loadAll(Connection conn) throws SQLException {
 
@@ -98,7 +96,6 @@ public class DrawingDao {
     }
 
 
-
     /**
      * create-method. This will create new row in database according to supplied
      * valueObject contents. Make sure that values for all NOT NULL columns are
@@ -107,10 +104,10 @@ public class DrawingDao {
      * read the generated primary-key back to valueObject if automatic surrogate-keys
      * were used.
      *
-     * @param conn         This method requires working database connection.
-     * @param valueObject  This parameter contains the class instance to be created.
-     *                     If automatic surrogate-keys are not used the Primary-key
-     *                     field must be set for this to work properly.
+     * @param conn        This method requires working database connection.
+     * @param valueObject This parameter contains the class instance to be created.
+     *                    If automatic surrogate-keys are not used the Primary-key
+     *                    field must be set for this to work properly.
      */
     public synchronized void create(Connection conn, Drawing valueObject) throws SQLException {
 
@@ -156,9 +153,9 @@ public class DrawingDao {
      * which instance is going to be updated in database. If save can not find matching
      * row, NotFoundException will be thrown.
      *
-     * @param conn         This method requires working database connection.
-     * @param valueObject  This parameter contains the class instance to be saved.
-     *                     Primary-key field must be set for this to work properly.
+     * @param conn        This method requires working database connection.
+     * @param valueObject This parameter contains the class instance to be saved.
+     *                    Primary-key field must be set for this to work properly.
      */
     public void save(Connection conn, Drawing valueObject)
             throws NotFoundException, SQLException {
@@ -199,9 +196,9 @@ public class DrawingDao {
      * primary-key than what it was in the deleted object. If delete can not find matching row,
      * NotFoundException will be thrown.
      *
-     * @param conn         This method requires working database connection.
-     * @param valueObject  This parameter contains the class instance to be deleted.
-     *                     Primary-key field must be set for this to work properly.
+     * @param conn        This method requires working database connection.
+     * @param valueObject This parameter contains the class instance to be deleted.
+     *                    Primary-key field must be set for this to work properly.
      */
     public void delete(Connection conn, Drawing valueObject)
             throws NotFoundException, SQLException {
@@ -240,7 +237,7 @@ public class DrawingDao {
      * than what it was in the deleted object. (Note, the implementation of this method should
      * be different with different DB backends.)
      *
-     * @param conn         This method requires working database connection.
+     * @param conn This method requires working database connection.
      */
     protected void deleteAll(Connection conn) throws SQLException {
 
@@ -258,7 +255,7 @@ public class DrawingDao {
      * If table is empty, the return value is 0. This method should be used before calling
      * loadAll, to make sure table has not too many rows.
      *
-     * @param conn         This method requires working database connection.
+     * @param conn This method requires working database connection.
      */
     public int countAll(Connection conn) throws SQLException {
 
@@ -292,9 +289,9 @@ public class DrawingDao {
      * all matching those criteria you specified. Those instance-variables that
      * have NULL values are excluded in search-criteria.
      *
-     * @param conn         This method requires working database connection.
-     * @param valueObject  This parameter contains the class instance where search will be based.
-     *                     Primary-key field should not be set.
+     * @param conn        This method requires working database connection.
+     * @param valueObject This parameter contains the class instance where search will be based.
+     *                    Primary-key field should not be set.
      */
     public List<Drawing> searchMatching(Connection conn, Drawing valueObject) throws SQLException {
 
@@ -309,7 +306,9 @@ public class DrawingDao {
         }
 
         if (valueObject.getImage() != null) {
-            if (first) { first = false; }
+            if (first) {
+                first = false;
+            }
             sql.append("AND image LIKE '").append(valueObject.getImage()).append("%' ");
         }
 
@@ -332,13 +331,12 @@ public class DrawingDao {
      * not be executed here however. The return value indicates how many rows were affected.
      * This method will also make sure that if cache is used, it will reset when data changes.
      *
-     * @param conn         This method requires working database connection.
-     * @param stmt         This parameter contains the SQL statement to be excuted.
+     * @param conn This method requires working database connection.
+     * @param stmt This parameter contains the SQL statement to be excuted.
      */
     protected int databaseUpdate(Connection conn, PreparedStatement stmt) throws SQLException {
         return stmt.executeUpdate();
     }
-
 
 
     /**
@@ -346,9 +344,9 @@ public class DrawingDao {
      * all database queries that will return only one row. The resultset will be converted
      * to valueObject. If no rows were found, NotFoundException will be thrown.
      *
-     * @param conn         This method requires working database connection.
-     * @param stmt         This parameter contains the SQL statement to be excuted.
-     * @param valueObject  Class-instance where resulting data will be stored.
+     * @param conn        This method requires working database connection.
+     * @param stmt        This parameter contains the SQL statement to be excuted.
+     * @param valueObject Class-instance where resulting data will be stored.
      */
     protected void singleQuery(Connection conn, PreparedStatement stmt, Drawing valueObject)
             throws NotFoundException, SQLException {
@@ -376,8 +374,8 @@ public class DrawingDao {
      * all database queries that will return multiple rows. The resultset will be converted
      * to the List of valueObjects. If no rows were found, an empty List will be returned.
      *
-     * @param conn         This method requires working database connection.
-     * @param stmt         This parameter contains the SQL statement to be excuted.
+     * @param conn This method requires working database connection.
+     * @param stmt This parameter contains the SQL statement to be excuted.
      */
     protected List<Drawing> listQuery(Connection conn, PreparedStatement stmt) throws SQLException {
 

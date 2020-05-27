@@ -22,7 +22,6 @@ public class Maps implements Serializable {
     private String lastEditedBy;
 
 
-
     /**
      * Constructors. DaoGen generates two constructors by default.
      * The first one takes no arguments and provides the most simple
@@ -30,11 +29,11 @@ public class Maps implements Serializable {
      * argument, which is the primary key of the corresponding table.
      */
 
-    public Maps () {
+    public Maps() {
 
     }
 
-    public Maps (int mapIdIn) {
+    public Maps(int mapIdIn) {
 
         this.mapId = mapIdIn;
 
@@ -57,6 +56,7 @@ public class Maps implements Serializable {
     public int getMapId() {
         return this.mapId;
     }
+
     public void setMapId(int mapIdIn) {
         this.mapId = mapIdIn;
     }
@@ -64,6 +64,7 @@ public class Maps implements Serializable {
     public String getName() {
         return this.name;
     }
+
     public void setName(String nameIn) {
         this.name = nameIn;
     }
@@ -71,6 +72,7 @@ public class Maps implements Serializable {
     public String getDescription() {
         return this.description;
     }
+
     public void setDescription(String descriptionIn) {
         this.description = descriptionIn;
     }
@@ -78,6 +80,7 @@ public class Maps implements Serializable {
     public String getCreatedBy() {
         return this.createdBy;
     }
+
     public void setCreatedBy(String createdByIn) {
         this.createdBy = createdByIn;
     }
@@ -85,10 +88,10 @@ public class Maps implements Serializable {
     public String getLastEditedBy() {
         return this.lastEditedBy;
     }
+
     public void setLastEditedBy(String lastEditedByIn) {
         this.lastEditedBy = lastEditedByIn;
     }
-
 
 
     /**
@@ -122,31 +125,30 @@ public class Maps implements Serializable {
     public boolean hasEqualMapping(Maps valueObject) {
 
         if (valueObject.getMapId() != this.mapId) {
-            return(false);
+            return (false);
         }
         if (this.name == null) {
             if (valueObject.getName() != null)
-                return(false);
+                return (false);
         } else if (!this.name.equals(valueObject.getName())) {
-            return(false);
+            return (false);
         }
         if (this.description == null) {
             if (valueObject.getDescription() != null)
-                return(false);
+                return (false);
         } else if (!this.description.equals(valueObject.getDescription())) {
-            return(false);
+            return (false);
         }
         if (this.createdBy == null) {
             if (valueObject.getCreatedBy() != null)
-                return(false);
+                return (false);
         } else if (!this.createdBy.equals(valueObject.getCreatedBy())) {
-            return(false);
+            return (false);
         }
         if (this.lastEditedBy == null) {
             return valueObject.getLastEditedBy() == null;
         } else return this.lastEditedBy.equals(valueObject.getLastEditedBy());
     }
-
 
 
     /**
