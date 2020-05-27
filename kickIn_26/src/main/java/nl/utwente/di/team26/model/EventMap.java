@@ -1,5 +1,6 @@
 package nl.utwente.di.team26.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.*;
 import java.sql.*;
 import java.util.*;
@@ -30,8 +31,8 @@ import java.math.*;
  */
 
 
-
-public class EventMap implements Cloneable, Serializable {
+@XmlRootElement
+public class EventMap implements Serializable {
 
     /**
      * Persistent Instance variables. This data is directly
