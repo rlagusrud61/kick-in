@@ -2,6 +2,7 @@ package nl.utwente.di.team26.dao;
 
 import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.model.MapObjects;
+import nl.utwente.di.team26.model.Maps;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -203,6 +204,25 @@ public class MapObjectsDao {
         }
     }
 
+    public void deleteAllForMap(Connection conn, MapObjects valueObject)
+            throws NotFoundException, SQLException {
+
+        String sql = "DELETE FROM MapObjects WHERE (mapId = ? )";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, valueObject.getObjectId());
+
+            int rowcount = databaseUpdate(conn, stmt);
+            if (rowcount == 0) {
+                //System.out.println("Object could not be deleted (PrimaryKey not found)");
+                throw new NotFoundException("Object could not be deleted! (PrimaryKey not found)");
+            }
+            if (rowcount > 1) {
+                //System.out.println("PrimaryKey Error when updating DB! (Many objects were deleted!)");
+                throw new SQLException("PrimaryKey Error when updating DB! (Many objects were deleted!)");
+            }
+        }
+    }
 
     /**
      * deleteAll-method. This method will remove all information from the table that matches
@@ -389,6 +409,4 @@ public class MapObjectsDao {
 
         return searchResults;
     }
-
-
 }

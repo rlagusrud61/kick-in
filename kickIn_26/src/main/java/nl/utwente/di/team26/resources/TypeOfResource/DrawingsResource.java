@@ -1,8 +1,8 @@
-package nl.utwente.di.team26.resources.Events;
+package nl.utwente.di.team26.resources.TypeOfResource;
 
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.dao.EventsDao;
-import nl.utwente.di.team26.model.Events;
+import nl.utwente.di.team26.dao.DrawingDao;
+import nl.utwente.di.team26.model.Drawing;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -16,19 +16,19 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
-@Path("/events")
-public class EventsResource {
+@Path("/drawings")
+public class DrawingsResource {
 
-    public EventsDao eventsDao = new EventsDao();
+    DrawingDao drawingDao = new DrawingDao();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Events> getAllEvents() {
+    public List<Drawing> getAllDrawings() {
         try (Connection conn = DriverManager.getConnection(
                 CONSTANTS.URL,
                 CONSTANTS.USER,
                 CONSTANTS.PASSWORD)) {
-            return eventsDao.loadAll(conn);
+            return drawingDao.loadAll(conn);
         } catch (NotFoundException | SQLException throwables) {
             throwables.printStackTrace();
             return null;
@@ -38,12 +38,12 @@ public class EventsResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public String addNewEvent(Events eventToAdd) {
+    public String addNewDrawing(Drawing drawingToAdd) {
         try (Connection conn = DriverManager.getConnection(
                 CONSTANTS.URL,
                 CONSTANTS.USER,
                 CONSTANTS.PASSWORD)) {
-            eventsDao.create(conn, eventToAdd);
+            drawingDao.create(conn, drawingToAdd);
             return CONSTANTS.SUCCESS;
         } catch (SQLException throwables) {
             throwables.printStackTrace();

@@ -33,6 +33,10 @@ public class Drawing extends TypeOfResource implements Serializable {
         this.image = image;
     }
 
+    public Drawing(int resourceId) {
+        super(resourceId);
+    }
+
     /**
      * Get- and Set-methods for persistent variables. The default
      * behaviour does not make any checks against malformed data,

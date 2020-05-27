@@ -1,9 +1,9 @@
-package nl.utwente.di.team26.resources.Objects;
+package nl.utwente.di.team26.resources.TypeOfResource;
 
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
-import nl.utwente.di.team26.dao.MapObjectsDao;
-import nl.utwente.di.team26.model.MapObjects;
+import nl.utwente.di.team26.dao.MaterialsDao;
+import nl.utwente.di.team26.model.Materials;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -16,22 +16,21 @@ import javax.ws.rs.core.MediaType;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.List;
 
-@Path("/objects/{mapId}")
-public class ObjectsResource {
+@Path("/materials/{materialId}")
+public class MaterialResource {
 
-    MapObjectsDao mapObjectsDao = new MapObjectsDao();
+    MaterialsDao materialsDao = new MaterialsDao();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<MapObjects> getAllObjectsForMapById(@PathParam("mapId") int mapId) {
+    public Materials getDrawingObject(@PathParam("materialId") int materialId) {
         try (Connection conn = DriverManager.getConnection(
                 CONSTANTS.URL,
                 CONSTANTS.USER,
                 CONSTANTS.PASSWORD)) {
-            return mapObjectsDao.searchMatching(conn, new MapObjects(0, mapId, 0, null));
-        } catch (SQLException throwables) {
+            return materialsDao.getObject(conn, materialId);
+        } catch (SQLException | nl.utwente.di.team26.Exceptions.NotFoundException throwables) {
             throwables.printStackTrace();
             return null;
         }
@@ -40,30 +39,28 @@ public class ObjectsResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public String addObjectToMap(MapObjects newObjectToAdd) {
+    public String updateObject(Materials materialToUpdate) {
         try (Connection conn = DriverManager.getConnection(
                 CONSTANTS.URL,
                 CONSTANTS.USER,
                 CONSTANTS.PASSWORD)) {
-            mapObjectsDao.create(conn, newObjectToAdd);
+            materialsDao.save(conn, materialToUpdate);
             return CONSTANTS.SUCCESS;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (nl.utwente.di.team26.Exceptions.NotFoundException | SQLException e) {
             return CONSTANTS.FAILURE;
         }
     }
 
     @DELETE
     @Produces(MediaType.TEXT_PLAIN)
-    public String clearMap(@PathParam("mapId") int mapId) {
+    public String deleteObject(@PathParam("materialId") int materialId) {
         try (Connection conn = DriverManager.getConnection(
                 CONSTANTS.URL,
                 CONSTANTS.USER,
                 CONSTANTS.PASSWORD)) {
-            mapObjectsDao.deleteAllForMap(conn, new MapObjects(0, mapId, 0, null));
+            materialsDao.delete(conn, new Materials(materialId));
             return CONSTANTS.SUCCESS;
-        } catch (SQLException | NotFoundException throwables) {
-            throwables.printStackTrace();
+        } catch (NotFoundException | SQLException e) {
             return CONSTANTS.FAILURE;
         }
     }

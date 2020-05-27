@@ -214,7 +214,6 @@ public class TypeOfResourceDao {
      * @param conn         This method requires working database connection.
      */
     public void deleteAll(Connection conn) throws SQLException {
-
         (new MaterialsDao()).deleteAll(conn);
         (new DrawingDao()).deleteAll(conn);
 

@@ -34,6 +34,10 @@ public class Materials extends TypeOfResource implements Serializable {
         this.image = image;
     }
 
+    public Materials(int materialId) {
+        super(materialId);
+    }
+
     /**
      * Get- and Set-methods for persistent variables. The default
      * behaviour does not make any checks against malformed data,
