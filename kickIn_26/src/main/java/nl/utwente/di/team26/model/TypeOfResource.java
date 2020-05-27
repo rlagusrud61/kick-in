@@ -1,6 +1,5 @@
 package nl.utwente.di.team26.model;
 
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 /**
@@ -8,7 +7,6 @@ import java.io.Serializable;
  * This class is value object representing database table TypeOfResource
  * This class is intented to be used together with associated Dao object.
  */
-@XmlRootElement
 public class TypeOfResource implements Serializable {
 
     /**
@@ -35,6 +33,11 @@ public class TypeOfResource implements Serializable {
         this.resourceId = resourceIdIn;
     }
 
+    public TypeOfResource(int resourceId, String name, String description) {
+        this.resourceId = resourceId;
+        this.name = name;
+        this.description = description;
+    }
 
     /**
      * Get- and Set-methods for persistent variables. The default
@@ -60,24 +63,6 @@ public class TypeOfResource implements Serializable {
         return this.description;
     }
     public void setDescription(String descriptionIn) {
-        this.description = descriptionIn;
-    }
-
-
-
-    /**
-     * setAll allows to set all persistent variables in one method call.
-     * This is useful, when all data is available and it is needed to
-     * set the initial state of this object. Note that this method will
-     * directly modify instance variales, without going trough the
-     * individual set-methods.
-     */
-
-    public void setAll(int resourceIdIn,
-                       String nameIn,
-                       String descriptionIn) {
-        this.resourceId = resourceIdIn;
-        this.name = nameIn;
         this.description = descriptionIn;
     }
 
@@ -113,11 +98,10 @@ public class TypeOfResource implements Serializable {
      * possibly when application is writing object states in textlog.
      */
     public String toString() {
-        String out = "\nclass TypeOfResource, mapping to table TypeOfResource\n" +
+        return "\nclass TypeOfResource, mapping to table TypeOfResource\n" +
                 "Persistent attributes: \n" +
                 "resourceId = " + this.resourceId + "\n" +
                 "name = " + this.name + "\n" +
                 "description = " + this.description + "\n";
-        return out;
     }
 }

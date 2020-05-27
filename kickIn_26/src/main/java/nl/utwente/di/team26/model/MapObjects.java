@@ -35,6 +35,12 @@ public class MapObjects implements Serializable {
         this.objectId = objectIdIn;
     }
 
+    public MapObjects(int objectId, int mapId, int resourceId, String latLangs) {
+        this.objectId = objectId;
+        this.mapId = mapId;
+        this.resourceId = resourceId;
+        this.latLangs = latLangs;
+    }
 
     /**
      * Get- and Set-methods for persistent variables. The default

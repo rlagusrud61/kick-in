@@ -3,8 +3,12 @@ package nl.utwente.di.team26.dao;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.model.MapObjects;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -78,7 +82,7 @@ public class MapObjectsDao {
      *
      * @param conn         This method requires working database connection.
      */
-    public List<Object> loadAll(Connection conn) throws SQLException {
+    public List<MapObjects> loadAll(Connection conn) throws SQLException {
 
         String sql = "SELECT * FROM MapObjects ORDER BY objectId ASC ";
 
@@ -265,9 +269,9 @@ public class MapObjectsDao {
      * @param valueObject  This parameter contains the class instance where search will be based.
      *                     Primary-key field should not be set.
      */
-    public List<Object> searchMatching(Connection conn, MapObjects valueObject) throws SQLException {
+    public List<MapObjects> searchMatching(Connection conn, MapObjects valueObject) throws SQLException {
 
-        List<Object> searchResults;
+        List<MapObjects> searchResults;
 
         boolean first = true;
         StringBuilder sql = new StringBuilder("SELECT * FROM MapObjects WHERE 1=1 ");
@@ -307,15 +311,6 @@ public class MapObjectsDao {
 
 
     /**
-     * getDaogenVersion will return information about
-     * generator which created these sources.
-     */
-    public String getDaogenVersion() {
-        return "DaoGen version 2.4.1";
-    }
-
-
-    /**
      * databaseUpdate-method. This method is a helper method for internal use. It will execute
      * all database handling that will change the information in tables. SELECT queries will
      * not be executed here however. The return value indicates how many rows were affected.
@@ -325,7 +320,6 @@ public class MapObjectsDao {
      * @param stmt         This parameter contains the SQL statement to be excuted.
      */
     protected int databaseUpdate(Connection conn, PreparedStatement stmt) throws SQLException {
-
         return stmt.executeUpdate();
     }
 
@@ -367,13 +361,13 @@ public class MapObjectsDao {
      * databaseQuery-method. This method is a helper method for internal use. It will execute
      * all database queries that will return multiple rows. The resultset will be converted
      * to the List of valueObjects. If no rows were found, an empty List will be returned.
-     *
-     * @param conn         This method requires working database connection.
+     *  @param conn         This method requires working database connection.
      * @param stmt         This parameter contains the SQL statement to be excuted.
+     * @return
      */
-    protected List<Object> listQuery(Connection conn, PreparedStatement stmt) throws SQLException {
+    protected List<MapObjects> listQuery(Connection conn, PreparedStatement stmt) throws SQLException {
 
-        ArrayList<Object> searchResults = new ArrayList<>();
+        ArrayList<MapObjects> searchResults = new ArrayList<>();
 
         try (ResultSet result = stmt.executeQuery()) {
 

@@ -41,6 +41,14 @@ public class Events implements Serializable {
 
     }
 
+    public Events(int eventId, String name, String description, String location, String createdBy, String lastEditedBy) {
+        this.eventId = eventId;
+        this.name = name;
+        this.description = description;
+        this.location = location;
+        this.createdBy = createdBy;
+        this.lastEditedBy = lastEditedBy;
+    }
 
     /**
      * Get- and Set-methods for persistent variables. The default

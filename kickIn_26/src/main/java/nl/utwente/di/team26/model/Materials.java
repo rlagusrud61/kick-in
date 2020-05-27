@@ -9,15 +9,13 @@ import java.io.Serializable;
  * This class is intented to be used together with associated Dao object.
  */
 @XmlRootElement
-public class Materials implements Serializable {
+public class Materials extends TypeOfResource implements Serializable {
 
     /**
      * Persistent Instance variables. This data is directly
      * mapped to the columns of database table.
      */
-    private int resourceId;
     private String image;
-
 
 
     /**
@@ -31,12 +29,10 @@ public class Materials implements Serializable {
 
     }
 
-    public Materials (int resourceIdIn) {
-
-        this.resourceId = resourceIdIn;
-
+    public Materials(int resourceId, String name, String description, String image) {
+        super(resourceId, name, description);
+        this.image = image;
     }
-
 
     /**
      * Get- and Set-methods for persistent variables. The default
@@ -44,36 +40,12 @@ public class Materials implements Serializable {
      * so these might require some manual additions.
      */
 
-    public int getResourceId() {
-        return this.resourceId;
-    }
-    public void setResourceId(int resourceIdIn) {
-        this.resourceId = resourceIdIn;
-    }
-
     public String getImage() {
         return this.image;
     }
     public void setImage(String imageIn) {
         this.image = imageIn;
     }
-
-
-
-    /**
-     * setAll allows to set all persistent variables in one method call.
-     * This is useful, when all data is available and it is needed to
-     * set the initial state of this object. Note that this method will
-     * directly modify instance variales, without going trough the
-     * individual set-methods.
-     */
-
-    public void setAll(int resourceIdIn,
-                       String imageIn) {
-        this.resourceId = resourceIdIn;
-        this.image = imageIn;
-    }
-
 
     /**
      * hasEqualMapping-method will compare two Materials instances
@@ -84,7 +56,7 @@ public class Materials implements Serializable {
      */
     public boolean hasEqualMapping(Materials valueObject) {
 
-        if (valueObject.getResourceId() != this.resourceId) {
+        if (super.hasEqualMapping(valueObject)) {
             return(false);
         }
         if (this.image == null) {
@@ -102,7 +74,9 @@ public class Materials implements Serializable {
     public String toString() {
         return "\nclass Materials, mapping to table Materials\n" +
                 "Persistent attributes: \n" +
-                "resourceId = " + this.resourceId + "\n" +
+                "resourceId = " + this.getResourceId() + "\n" +
+                "name = " + this.getName() + "\n" +
+                "description = " + this.getDescription() + "\n" +
                 "image = " + this.image + "\n";
     }
 

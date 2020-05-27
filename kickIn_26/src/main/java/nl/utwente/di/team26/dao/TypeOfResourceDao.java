@@ -215,6 +215,9 @@ public class TypeOfResourceDao {
      */
     public void deleteAll(Connection conn) throws SQLException {
 
+        (new MaterialsDao()).deleteAll(conn);
+        (new DrawingDao()).deleteAll(conn);
+
         String sql = "DELETE FROM TypeOfResource";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -275,7 +278,7 @@ public class TypeOfResourceDao {
         StringBuilder sql = new StringBuilder("SELECT * FROM TypeOfResource WHERE 1=1 ");
 
         if (valueObject.getResourceId() != 0) {
-            if (first) { first = false; }
+            first = false;
             sql.append("AND resourceId = ").append(valueObject.getResourceId()).append(" ");
         }
 
@@ -322,7 +325,6 @@ public class TypeOfResourceDao {
      * @param stmt         This parameter contains the SQL statement to be excuted.
      */
     protected int databaseUpdate(Connection conn, PreparedStatement stmt) throws SQLException {
-
         return stmt.executeUpdate();
     }
 

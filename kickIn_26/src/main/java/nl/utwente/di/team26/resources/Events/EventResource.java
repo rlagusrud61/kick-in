@@ -55,7 +55,7 @@ public class EventResource {
                 CONSTANTS.URL,
                 CONSTANTS.USER,
                 CONSTANTS.PASSWORD)) {
-            (new EventsDao()).delete(conn, eventToDelete);
+            (new EventsDao()).delete(conn, new Events(eventToDelete));
             return CONSTANTS.SUCCESS;
         } catch (NotFoundException | SQLException e) {
             return CONSTANTS.FAILURE;

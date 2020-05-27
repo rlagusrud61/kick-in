@@ -2,6 +2,7 @@ package nl.utwente.di.team26.dao;
 
 import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.model.Drawing;
+import nl.utwente.di.team26.model.TypeOfResource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -65,7 +66,9 @@ public class DrawingDao {
      */
     public void load(Connection conn, Drawing valueObject) throws NotFoundException, SQLException {
 
-        String sql = "SELECT * FROM Drawing WHERE (resourceId = ? ) ";
+        String sql = "SELECT * " +
+                "FROM Drawing d INNER JOIN TypeOfResource tor ON d.resourceId = tor.resourceId " +
+                "WHERE (tor.resourceId = ? ) ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, valueObject.getResourceId());
@@ -85,9 +88,11 @@ public class DrawingDao {
      *
      * @param conn         This method requires working database connection.
      */
-    public List<Object> loadAll(Connection conn) throws SQLException {
+    public List<Drawing> loadAll(Connection conn) throws SQLException {
 
-        String sql = "SELECT * FROM Drawing ORDER BY resourceId ASC ";
+        String sql = "SELECT * " +
+                "FROM Drawing d INNER JOIN TypeOfResource tor ON d.resourceId = tor.resourceId " +
+                "ORDER BY tor.resourceId ASC";
 
         return listQuery(conn, conn.prepareStatement(sql));
     }
@@ -114,6 +119,15 @@ public class DrawingDao {
         ResultSet result = null;
 
         try {
+
+            (new TypeOfResourceDao()).create(conn,
+                    new TypeOfResource(
+                            valueObject.getResourceId(),
+                            valueObject.getName(),
+                            valueObject.getDescription()
+                    )
+            );
+
             sql = "INSERT INTO Drawing ( resourceId, image) VALUES (?, ?) ";
             stmt = conn.prepareStatement(sql);
 
@@ -148,6 +162,14 @@ public class DrawingDao {
      */
     public void save(Connection conn, Drawing valueObject)
             throws NotFoundException, SQLException {
+
+        (new TypeOfResourceDao()).save(conn,
+                new TypeOfResource(
+                        valueObject.getResourceId(),
+                        valueObject.getName(),
+                        valueObject.getDescription()
+                )
+        );
 
         String sql = "UPDATE Drawing SET image = ? WHERE (resourceId = ? ) ";
 
@@ -199,6 +221,13 @@ public class DrawingDao {
                 throw new SQLException("PrimaryKey Error when updating DB! (Many objects were deleted!)");
             }
         }
+
+        (new TypeOfResourceDao()).delete(conn,
+                new TypeOfResource(
+                        valueObject.getResourceId()
+                )
+        );
+
     }
 
 
@@ -213,7 +242,7 @@ public class DrawingDao {
      *
      * @param conn         This method requires working database connection.
      */
-    public void deleteAll(Connection conn) throws SQLException {
+    protected void deleteAll(Connection conn) throws SQLException {
 
         String sql = "DELETE FROM Drawing";
 
@@ -267,9 +296,9 @@ public class DrawingDao {
      * @param valueObject  This parameter contains the class instance where search will be based.
      *                     Primary-key field should not be set.
      */
-    public List<Object> searchMatching(Connection conn, Drawing valueObject) throws SQLException {
+    public List<Drawing> searchMatching(Connection conn, Drawing valueObject) throws SQLException {
 
-        List<Object> searchResults;
+        List<Drawing> searchResults;
 
         boolean first = true;
         StringBuilder sql = new StringBuilder("SELECT * FROM Drawing WHERE 1=1 ");
@@ -297,16 +326,6 @@ public class DrawingDao {
         return searchResults;
     }
 
-
-    /**
-     * getDaogenVersion will return information about
-     * generator which created these sources.
-     */
-    public String getDaogenVersion() {
-        return "DaoGen version 2.4.1";
-    }
-
-
     /**
      * databaseUpdate-method. This method is a helper method for internal use. It will execute
      * all database handling that will change the information in tables. SELECT queries will
@@ -317,7 +336,6 @@ public class DrawingDao {
      * @param stmt         This parameter contains the SQL statement to be excuted.
      */
     protected int databaseUpdate(Connection conn, PreparedStatement stmt) throws SQLException {
-
         return stmt.executeUpdate();
     }
 
@@ -361,9 +379,9 @@ public class DrawingDao {
      * @param conn         This method requires working database connection.
      * @param stmt         This parameter contains the SQL statement to be excuted.
      */
-    protected List<Object> listQuery(Connection conn, PreparedStatement stmt) throws SQLException {
+    protected List<Drawing> listQuery(Connection conn, PreparedStatement stmt) throws SQLException {
 
-        ArrayList<Object> searchResults = new ArrayList<>();
+        ArrayList<Drawing> searchResults = new ArrayList<>();
 
         try (ResultSet result = stmt.executeQuery()) {
 

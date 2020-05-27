@@ -182,10 +182,10 @@ public class EventsDao {
      * NotFoundException will be thrown.
      *
      * @param conn         This method requires working database connection.
-     * @param eventId      This parameter is the primary key of the resource to be deleted.
+     * @param valueObject  This parameter is the primary key of the resource to be deleted.
      *                     Primary-key field must be set for this to work properly.
      */
-    public void delete(Connection conn, int eventId)
+    public void delete(Connection conn, Events valueObject)
             throws NotFoundException, SQLException {
 
         String sql = "DELETE FROM Events WHERE (eventId = ? ) ";
@@ -193,7 +193,7 @@ public class EventsDao {
 
         try {
             stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, eventId);
+            stmt.setInt(1, valueObject.getEventId());
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount == 0) {

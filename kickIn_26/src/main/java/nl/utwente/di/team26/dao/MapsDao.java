@@ -177,7 +177,7 @@ public class MapsDao {
      * NotFoundException will be thrown.
      *
      * @param conn         This method requires working database connection.
-     * @param valueObject  This parameter contains the class instance to be deleted.
+     * @param valueObject  This parameter is the primary key of the resource to be deleted.
      *                     Primary-key field must be set for this to work properly.
      */
     public void delete(Connection conn, Maps valueObject)
@@ -331,7 +331,6 @@ public class MapsDao {
      * @param stmt         This parameter contains the SQL statement to be excuted.
      */
     protected int databaseUpdate(Connection conn, PreparedStatement stmt) throws SQLException {
-
         return stmt.executeUpdate();
     }
 

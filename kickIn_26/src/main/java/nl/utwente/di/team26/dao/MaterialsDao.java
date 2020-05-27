@@ -2,6 +2,7 @@ package nl.utwente.di.team26.dao;
 
 import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.model.Materials;
+import nl.utwente.di.team26.model.TypeOfResource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -62,7 +63,9 @@ public class MaterialsDao {
      */
     public void load(Connection conn, Materials valueObject) throws NotFoundException, SQLException {
 
-        String sql = "SELECT * FROM Materials WHERE (resourceId = ? ) ";
+        String sql = "SELECT * " +
+                "FROM Materials m INNER JOIN TypeOfResource tor ON m.resourceId = tor.resourceId " +
+                "WHERE (m.resourceId = ? ) ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, valueObject.getResourceId());
@@ -82,9 +85,11 @@ public class MaterialsDao {
      *
      * @param conn         This method requires working database connection.
      */
-    public List<Object> loadAll(Connection conn) throws SQLException {
+    public List<Materials> loadAll(Connection conn) throws SQLException {
 
-        String sql = "SELECT * FROM Materials ORDER BY resourceId ASC ";
+        String sql = "SELECT * " +
+                "FROM Materials m INNER JOIN TypeOfResource tor ON m.resourceId = tor.resourceId " +
+                "ORDER BY tor.resourceId ASC ";
 
         return listQuery(conn, conn.prepareStatement(sql));
     }
@@ -111,7 +116,14 @@ public class MaterialsDao {
         ResultSet result = null;
 
         try {
-            sql = "INSERT INTO Materials ( resourceId, image) VALUES (?, ?) ";
+            (new TypeOfResourceDao()).create(conn,
+                    new TypeOfResource(
+                            valueObject.getResourceId(),
+                            valueObject.getName(),
+                            valueObject.getDescription()
+                    )
+            );
+            sql = "INSERT INTO Materials (resourceId, image) VALUES (?, ?) ";
             stmt = conn.prepareStatement(sql);
 
             stmt.setInt(1, valueObject.getResourceId());
@@ -122,7 +134,6 @@ public class MaterialsDao {
                 //System.out.println("PrimaryKey Error when updating DB!");
                 throw new SQLException("PrimaryKey Error when updating DB!");
             }
-
         } finally {
             if (stmt != null)
                 stmt.close();
@@ -145,6 +156,14 @@ public class MaterialsDao {
      */
     public void save(Connection conn, Materials valueObject)
             throws NotFoundException, SQLException {
+
+        (new TypeOfResourceDao()).save(conn,
+                new TypeOfResource(
+                        valueObject.getResourceId(),
+                        valueObject.getName(),
+                        valueObject.getDescription()
+                )
+        );
 
         String sql = "UPDATE Materials SET image = ? WHERE (resourceId = ? ) ";
 
@@ -196,6 +215,13 @@ public class MaterialsDao {
                 throw new SQLException("PrimaryKey Error when updating DB! (Many objects were deleted!)");
             }
         }
+
+        (new TypeOfResourceDao()).delete(conn,
+                new TypeOfResource(
+                        valueObject.getResourceId()
+                )
+        );
+
     }
 
 
@@ -210,8 +236,7 @@ public class MaterialsDao {
      *
      * @param conn         This method requires working database connection.
      */
-    public void deleteAll(Connection conn) throws SQLException {
-
+    protected void deleteAll(Connection conn) throws SQLException {
         String sql = "DELETE FROM Materials";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -264,9 +289,9 @@ public class MaterialsDao {
      * @param valueObject  This parameter contains the class instance where search will be based.
      *                     Primary-key field should not be set.
      */
-    public List<Object> searchMatching(Connection conn, Materials valueObject) throws SQLException {
+    public List<Materials> searchMatching(Connection conn, Materials valueObject) throws SQLException {
 
-        List<Object> searchResults;
+        List<Materials> searchResults;
 
         boolean first = true;
         StringBuilder sql = new StringBuilder("SELECT * FROM Materials WHERE 1=1 ");
@@ -358,9 +383,9 @@ public class MaterialsDao {
      * @param conn         This method requires working database connection.
      * @param stmt         This parameter contains the SQL statement to be excuted.
      */
-    protected List<Object> listQuery(Connection conn, PreparedStatement stmt) throws SQLException {
+    protected List<Materials> listQuery(Connection conn, PreparedStatement stmt) throws SQLException {
 
-        ArrayList<Object> searchResults = new ArrayList<>();
+        ArrayList<Materials> searchResults = new ArrayList<>();
 
         try (ResultSet result = stmt.executeQuery()) {
 

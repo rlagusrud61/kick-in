@@ -40,6 +40,13 @@ public class Maps implements Serializable {
 
     }
 
+    public Maps(int mapId, String name, String description, String createdBy, String lastEditedBy) {
+        this.mapId = mapId;
+        this.name = name;
+        this.description = description;
+        this.createdBy = createdBy;
+        this.lastEditedBy = lastEditedBy;
+    }
 
     /**
      * Get- and Set-methods for persistent variables. The default
