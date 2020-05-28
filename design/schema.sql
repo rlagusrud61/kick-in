@@ -1,40 +1,68 @@
-CREATE SCHEMA IF NOT EXISTS idb_kick_in_team_26
+drop schema if exists idb_kick_in_team_26;
+create schema if not exists idb_kick_in_team_26;
+SET search_path = "idb_kick_in_team_26";
 
-    CREATE TABLE Map (map_id bigserial PRIMARY KEY,
-                        event_id int NOT NULL,
-                        name varchar(255) NOT NULL ,
-                        description text,
-                        last_edited_by varchar(255));
+CREATE TABLE Events
+(
+    eventId      bigserial NOT NULL,
+    name         text,
+    description  text,
+    location     text,
+    createdBy    text,
+    lastEditedBy text,
+    PRIMARY KEY (eventId)
+);
 
-    CREATE TABLE Event (event_id bigserial PRIMARY KEY,
-                        name varchar(255) NOT NULL ,
-                        location varchar(255) NOT NULL ,
-                        description text,
-                        created_by varchar(255) NOT NULL ,
-                        last_edited_by varchar(255) NOT NULL);
+CREATE TABLE Maps
+(
+    mapId        bigserial NOT NULL,
+    name         text,
+    description  text,
+    createdBy    text,
+    lastEditedBy text,
+    PRIMARY KEY (mapId)
+);
 
-    CREATE TABLE EventMap (map_id int NOT NULL,
-                           event_id int NOT NULL,
-                           PRIMARY KEY (map_id, event_id),
-                           FOREIGN KEY (map_id) REFERENCES Map (map_id),
-                           FOREIGN KEY (event_id) REFERENCES Event (event_id));
+CREATE TABLE TypeOfResource
+(
+    resourceId  bigserial NOT NULL,
+    name        text,
+    description text,
+    PRIMARY KEY (resourceId)
+);
 
-    CREATE TABLE TypeOfResource (resource_id bigserial PRIMARY KEY,
-                                 name varchar(255),
-                                 description text);
+CREATE TABLE Materials
+(
+    resourceId bigint NOT NULL,
+    image      text,
+    PRIMARY KEY (resourceId),
+    FOREIGN KEY (resourceId) REFERENCES TypeOfResource (resourceId) ON DELETE CASCADE
+);
 
-    CREATE TABLE Resources (object_id bigserial PRIMARY KEY,
-                            resource_id int NOT NULL,
-                            map_id int NOT NULL,
-                            lat_langs text NOT NULL,
-                            FOREIGN KEY (map_id) REFERENCES Map (map_id),
-                            FOREIGN KEY (resource_id) REFERENCES TypeOfResource (resource_id));
+CREATE TABLE Drawing
+(
+    resourceId bigint NOT NULL,
+    image      text,
+    PRIMARY KEY (resourceId),
+    FOREIGN KEY (resourceId) REFERENCES TypeOfResource (resourceId) ON DELETE CASCADE
+);
 
-    CREATE TABLE StaticResource (resource_id int PRIMARY KEY,
-                                 picture text,
-                                 FOREIGN KEY (resource_id) REFERENCES TypeOfResource (resource_id));
+CREATE TABLE EventMap
+(
+    eventId bigint NOT NULL,
+    mapId   bigint NOT NULL,
+    PRIMARY KEY (eventId, mapId),
+    FOREIGN KEY (eventId) REFERENCES Events (eventId) ON DELETE CASCADE,
+    FOREIGN KEY (mapId) REFERENCES Maps (mapID) ON DELETE CASCADE
+);
 
-    CREATE TABLE FreeDraw (free_draw_id bigserial PRIMARY KEY,
-                            resource_id int NOT NULL,
-                            drawn_picture text,
-                            FOREIGN KEY (resource_id) REFERENCES TypeOfResource (resource_id));
+CREATE TABLE MapObjects
+(
+    objectId   bigserial NOT NULL,
+    mapId      bigint,
+    resourceId bigint,
+    latLangs   text,
+    PRIMARY KEY (objectId),
+    FOREIGN KEY (mapId) REFERENCES Maps (mapId) ON DELETE CASCADE,
+    FOREIGN KEY (resourceId) REFERENCES TypeOfResource (resourceId) ON DELETE CASCADE
+);
