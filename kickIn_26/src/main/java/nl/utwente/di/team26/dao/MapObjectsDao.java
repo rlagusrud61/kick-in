@@ -109,14 +109,13 @@ public class MapObjectsDao {
         ResultSet result = null;
 
         try {
-            sql = "INSERT INTO MapObjects ( objectId, mapId, resourceId, "
-                    + "latLangs) VALUES (?, ?, ?, ?) ";
+            sql = "INSERT INTO MapObjects (mapId, resourceId, "
+                    + "latLangs) VALUES (?, ?, ?) ";
             stmt = conn.prepareStatement(sql);
 
-            stmt.setInt(1, valueObject.getObjectId());
-            stmt.setInt(2, valueObject.getMapId());
-            stmt.setInt(3, valueObject.getResourceId());
-            stmt.setString(4, valueObject.getLatLangs());
+            stmt.setInt(1, valueObject.getMapId());
+            stmt.setInt(2, valueObject.getResourceId());
+            stmt.setString(3, valueObject.getLatLangs());
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount != 1) {

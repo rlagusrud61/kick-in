@@ -33,12 +33,24 @@ public class EventsResource {
     @Produces(MediaType.TEXT_PLAIN)
     public String addNewEvent(Events eventToAdd) {
         try (Connection conn = CONSTANTS.getConnection()) {
-            conn.setSchema(CONSTANTS.SCHEMA);
             eventsDao.create(conn, eventToAdd);
             return CONSTANTS.SUCCESS;
         } catch (SQLException | NamingException | DataSourceNotFoundException throwables) {
             throwables.printStackTrace();
-            return CONSTANTS.FAILURE;
+            return CONSTANTS.FAILURE + ": " + throwables.getMessage();
         }
     }
+
+    @DELETE
+    @Produces(MediaType.TEXT_PLAIN)
+    public String deleteAllEvents() {
+        try (Connection conn = CONSTANTS.getConnection()) {
+            eventsDao.deleteAll(conn);
+            return CONSTANTS.SUCCESS;
+        } catch (DataSourceNotFoundException | SQLException | NamingException e) {
+            e.printStackTrace();
+            return CONSTANTS.FAILURE + ": " + e.getMessage();
+        }
+    }
+
 }

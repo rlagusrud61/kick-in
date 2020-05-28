@@ -95,57 +95,6 @@ public class DrawingDao {
         return listQuery(conn, conn.prepareStatement(sql));
     }
 
-
-    /**
-     * create-method. This will create new row in database according to supplied
-     * valueObject contents. Make sure that values for all NOT NULL columns are
-     * correctly specified. Also, if this table does not use automatic surrogate-keys
-     * the primary-key must be specified. After INSERT command this method will
-     * read the generated primary-key back to valueObject if automatic surrogate-keys
-     * were used.
-     *
-     * @param conn        This method requires working database connection.
-     * @param valueObject This parameter contains the class instance to be created.
-     *                    If automatic surrogate-keys are not used the Primary-key
-     *                    field must be set for this to work properly.
-     */
-    public synchronized void create(Connection conn, Drawing valueObject) throws SQLException {
-
-        String sql = "";
-        PreparedStatement stmt = null;
-        ResultSet result = null;
-
-        try {
-
-            (new TypeOfResourceDao()).create(conn,
-                    new TypeOfResource(
-                            valueObject.getResourceId(),
-                            valueObject.getName(),
-                            valueObject.getDescription()
-                    )
-            );
-
-            sql = "INSERT INTO Drawing ( resourceId, image) VALUES (?, ?) ";
-            stmt = conn.prepareStatement(sql);
-
-            stmt.setInt(1, valueObject.getResourceId());
-            stmt.setString(2, valueObject.getImage());
-
-            int rowcount = databaseUpdate(conn, stmt);
-            if (rowcount != 1) {
-                //System.out.println("PrimaryKey Error when updating DB!");
-                throw new SQLException("PrimaryKey Error when updating DB!");
-            }
-
-        } finally {
-            if (stmt != null)
-                stmt.close();
-        }
-
-
-    }
-
-
     /**
      * save-method. This method will save the current state of valueObject to database.
      * Save can not be used to create new instances in database, so upper layer must
@@ -184,67 +133,6 @@ public class DrawingDao {
                 //System.out.println("PrimaryKey Error when updating DB! (Many objects were affected!)");
                 throw new SQLException("PrimaryKey Error when updating DB! (Many objects were affected!)");
             }
-        }
-    }
-
-
-    /**
-     * delete-method. This method will remove the information from database as identified by
-     * by primary-key in supplied valueObject. Once valueObject has been deleted it can not
-     * be restored by calling save. Restoring can only be done using create method but if
-     * database is using automatic surrogate-keys, the resulting object will have different
-     * primary-key than what it was in the deleted object. If delete can not find matching row,
-     * NotFoundException will be thrown.
-     *
-     * @param conn        This method requires working database connection.
-     * @param valueObject This parameter contains the class instance to be deleted.
-     *                    Primary-key field must be set for this to work properly.
-     */
-    public void delete(Connection conn, Drawing valueObject)
-            throws NotFoundException, SQLException {
-
-        String sql = "DELETE FROM Drawing WHERE (resourceId = ? ) ";
-
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, valueObject.getResourceId());
-
-            int rowcount = databaseUpdate(conn, stmt);
-            if (rowcount == 0) {
-                //System.out.println("Object could not be deleted (PrimaryKey not found)");
-                throw new NotFoundException("Object could not be deleted! (PrimaryKey not found)");
-            }
-            if (rowcount > 1) {
-                //System.out.println("PrimaryKey Error when updating DB! (Many objects were deleted!)");
-                throw new SQLException("PrimaryKey Error when updating DB! (Many objects were deleted!)");
-            }
-        }
-
-        (new TypeOfResourceDao()).delete(conn,
-                new TypeOfResource(
-                        valueObject.getResourceId()
-                )
-        );
-
-    }
-
-
-    /**
-     * deleteAll-method. This method will remove all information from the table that matches
-     * this Dao and ValueObject couple. This should be the most efficient way to clear table.
-     * Once deleteAll has been called, no valueObject that has been created before can be
-     * restored by calling save. Restoring can only be done using create method but if database
-     * is using automatic surrogate-keys, the resulting object will have different primary-key
-     * than what it was in the deleted object. (Note, the implementation of this method should
-     * be different with different DB backends.)
-     *
-     * @param conn This method requires working database connection.
-     */
-    protected void deleteAll(Connection conn) throws SQLException {
-
-        String sql = "DELETE FROM Drawing";
-
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            int rowcount = databaseUpdate(conn, stmt);
         }
     }
 

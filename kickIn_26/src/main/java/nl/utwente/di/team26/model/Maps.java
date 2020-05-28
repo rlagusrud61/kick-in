@@ -34,9 +34,14 @@ public class Maps implements Serializable {
     }
 
     public Maps(int mapIdIn) {
-
         this.mapId = mapIdIn;
+    }
 
+    public Maps(String name, String description, String createdBy, String lastEditedBy) {
+        this.name = name;
+        this.description = description;
+        this.createdBy = createdBy;
+        this.lastEditedBy = lastEditedBy;
     }
 
     public Maps(int mapId, String name, String description, String createdBy, String lastEditedBy) {

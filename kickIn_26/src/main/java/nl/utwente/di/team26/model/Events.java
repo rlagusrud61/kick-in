@@ -35,9 +35,15 @@ public class Events implements Serializable {
     }
 
     public Events(int eventIdIn) {
-
         this.eventId = eventIdIn;
+    }
 
+    public Events(String name, String description, String location, String createdBy, String lastEditedBy) {
+        this.name = name;
+        this.description = description;
+        this.location = location;
+        this.createdBy = createdBy;
+        this.lastEditedBy = lastEditedBy;
     }
 
     public Events(int eventId, String name, String description, String location, String createdBy, String lastEditedBy) {

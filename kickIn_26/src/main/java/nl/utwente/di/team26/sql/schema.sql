@@ -4,47 +4,47 @@ SET search_path = "idb_kick_in_team_26";
 
 CREATE TABLE Events
 (
-    eventId      bigint NOT NULL,
-    name         varchar(255),
-    description  varchar(255),
-    location     varchar(255),
-    createdBy    varchar(255),
-    lastEditedBy varchar(255),
+    eventId      bigserial NOT NULL,
+    name         text,
+    description  text,
+    location     text,
+    createdBy    text,
+    lastEditedBy text,
     PRIMARY KEY (eventId)
 );
 
 CREATE TABLE Maps
 (
-    mapId        bigint NOT NULL,
-    name         varchar(255),
-    description  varchar(255),
-    createdBy    varchar(255),
-    lastEditedBy varchar(255),
+    mapId        bigserial NOT NULL,
+    name         text,
+    description  text,
+    createdBy    text,
+    lastEditedBy text,
     PRIMARY KEY (mapId)
 );
 
 CREATE TABLE TypeOfResource
 (
-    resourceId  bigint NOT NULL,
-    name        varchar(255),
-    description varchar(255),
+    resourceId  bigserial NOT NULL,
+    name        text,
+    description text,
     PRIMARY KEY (resourceId)
 );
 
 CREATE TABLE Materials
 (
     resourceId bigint NOT NULL,
-    image      varchar(255),
+    image      text,
     PRIMARY KEY (resourceId),
-    FOREIGN KEY (resourceId) REFERENCES TypeOfResource (resourceId)
+    FOREIGN KEY (resourceId) REFERENCES TypeOfResource (resourceId) ON DELETE CASCADE
 );
 
 CREATE TABLE Drawing
 (
     resourceId bigint NOT NULL,
-    image      varchar(255),
+    image      text,
     PRIMARY KEY (resourceId),
-    FOREIGN KEY (resourceId) REFERENCES TypeOfResource (resourceId)
+    FOREIGN KEY (resourceId) REFERENCES TypeOfResource (resourceId) ON DELETE CASCADE
 );
 
 CREATE TABLE EventMap
@@ -52,17 +52,17 @@ CREATE TABLE EventMap
     eventId bigint NOT NULL,
     mapId   bigint NOT NULL,
     PRIMARY KEY (eventId, mapId),
-    FOREIGN KEY (eventId) REFERENCES Events (eventId),
-    FOREIGN KEY (mapId) REFERENCES Maps (mapID)
+    FOREIGN KEY (eventId) REFERENCES Events (eventId) ON DELETE CASCADE,
+    FOREIGN KEY (mapId) REFERENCES Maps (mapID) ON DELETE CASCADE
 );
 
 CREATE TABLE MapObjects
 (
-    objectId   bigint NOT NULL,
+    objectId   bigserial NOT NULL,
     mapId      bigint,
     resourceId bigint,
-    latLangs   varchar(255),
+    latLangs   text,
     PRIMARY KEY (objectId),
-    FOREIGN KEY (mapId) REFERENCES Maps (mapId),
-    FOREIGN KEY (resourceId) REFERENCES TypeOfResource (resourceId)
+    FOREIGN KEY (mapId) REFERENCES Maps (mapId) ON DELETE CASCADE,
+    FOREIGN KEY (resourceId) REFERENCES TypeOfResource (resourceId) ON DELETE CASCADE
 );

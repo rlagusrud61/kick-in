@@ -3,6 +3,7 @@ package nl.utwente.di.team26.resources.TypeOfResource;
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exceptions.DataSourceNotFoundException;
 import nl.utwente.di.team26.dao.DrawingDao;
+import nl.utwente.di.team26.dao.TypeOfResourceDao;
 import nl.utwente.di.team26.model.Drawing;
 
 import javax.naming.NamingException;
@@ -33,7 +34,7 @@ public class DrawingsResource {
     @Produces(MediaType.TEXT_PLAIN)
     public String addNewDrawing(Drawing drawingToAdd) {
         try (Connection conn = CONSTANTS.getConnection()) {
-            drawingDao.create(conn, drawingToAdd);
+            (new TypeOfResourceDao()).create(conn, drawingToAdd);
             return CONSTANTS.SUCCESS;
         } catch (SQLException | DataSourceNotFoundException | NamingException throwables) {
             throwables.printStackTrace();

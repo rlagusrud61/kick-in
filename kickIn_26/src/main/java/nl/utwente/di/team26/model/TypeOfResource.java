@@ -33,6 +33,11 @@ public class TypeOfResource implements Serializable {
         this.resourceId = resourceIdIn;
     }
 
+    public TypeOfResource(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public TypeOfResource(int resourceId, String name, String description) {
         this.resourceId = resourceId;
         this.name = name;

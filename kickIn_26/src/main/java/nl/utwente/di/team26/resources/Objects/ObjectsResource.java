@@ -13,12 +13,13 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-@Path("/objects/{mapId}")
+@Path("/objects")
 public class ObjectsResource {
 
     MapObjectsDao mapObjectsDao = new MapObjectsDao();
 
     @GET
+    @Path("{mapId}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<MapObjects> getAllObjectsForMapById(@PathParam("mapId") int mapId) {
         try (Connection conn = CONSTANTS.getConnection()) {
@@ -43,6 +44,7 @@ public class ObjectsResource {
     }
 
     @DELETE
+    @Path("{mapId}")
     @Produces(MediaType.TEXT_PLAIN)
     public String clearMap(@PathParam("mapId") int mapId) {
         try (Connection conn = CONSTANTS.getConnection()) {
@@ -51,6 +53,18 @@ public class ObjectsResource {
         } catch (SQLException | NotFoundException | DataSourceNotFoundException | NamingException throwables) {
             throwables.printStackTrace();
             return CONSTANTS.FAILURE;
+        }
+    }
+
+    @DELETE
+    @Produces(MediaType.TEXT_PLAIN)
+    public String clearAllMaps() {
+        try (Connection conn = CONSTANTS.getConnection()) {
+            mapObjectsDao.deleteAll(conn);
+            return CONSTANTS.SUCCESS;
+        } catch (DataSourceNotFoundException | SQLException | NamingException e) {
+            e.printStackTrace();
+            return CONSTANTS.FAILURE + ": " + e.getMessage();
         }
     }
 
