@@ -17,6 +17,8 @@
     <script src="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/leaflet.distortableimage.js"></script>
     <script src='https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/leaflet.distortableimage.js.map'></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-easyprint@2.1.9/dist/bundle.min.js"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <script src="https://unpkg.com/konva@4.0.0/konva.min.js"></script>
@@ -49,9 +51,18 @@
         zoom: 16,
         keyboard: false
     });
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    let tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    });
+    tiles.addTo(map);
+
+    var printer = L.easyPrint({
+        tileLayer: tiles,
+        sizeModes: ['Current', 'A4Landscape', 'A4Portrait'],
+        filename: 'myMap',
+        exportOnly: true,
+        hideControlContainer: true
     }).addTo(map);
 
     let editToggle = L.easyButton({
