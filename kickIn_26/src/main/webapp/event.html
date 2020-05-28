@@ -1,64 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-    	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-  		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    	<!-- Latest compiled and minified CSS -->
-  		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
- 	 	<!-- jQuery library -->
-  		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  		<!-- Latest compiled JavaScript -->
-	  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-		<title>View Event</title>
-	</head>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Quicksand">
 
-	<body>
-		<div class="topnav">
-			<a id="home" href = "#"><i class="glyphicon glyphicon-home"></i></a>
-			<a id="logout" href="login.html">Logout</a>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<title>View Event</title>
+<style>
+.topnav {
+	background-color: #C1FF94;
+	overflow: hidden;
+}
+
+.jumbotron-fluid {
+	background-color: white;
+}
+
+#home {
+	float: left;
+	color: #58BD0F;
+	padding-left: 75px;
+	font-size: 30px;
+}
+
+#logout {
+	float: right;
+	color: #58BD0F;
+	padding-right: 75px;
+	text-decoration: none;
+	font-size: 30px;
+}
+
+#title1 {
+	color: rgb(189, 194, 161);
+	padding-top: 30px;
+}
+
+.icon {
+	font-size: 25px;
+	color: green;
+}
+
+#delete {
+	font-size: 25px;
+}
+
+#edit {
+	font-size: 25px;
+}
+
+#info {
+	padding-top: 30px;
+}
+
+#map_name {
+	float: left;
+}
+
+.container {
+	background-color: white;
+}
+
+.separator {
+	background-color: #DCDCDC;
+}
+</style>
+</head>
+
+<body style="font-family: 'Quicksand'">
+	<div class="topnav">
+		<a id="home" href="list.html"><i class="glyphicon glyphicon-home"></i></a>
+		<a id="logout" href="login.html">Logout</a>
+	</div>
+	<div class="card">
+		<div class="row">
+			<h1 id="title1">&emsp;&emsp;Event</h1>
+
+			<div class="col-10"
+				style="display: flex; justify-content: flex-end; padding-bottom: 10px">
+				<a href="mapEdit.html"></a>
+				<button type="button"
+					class="myButton btn btn-success btn-circle btn-xl align-self-end"
+					id="myBtn">Add Map</button>
+				</a>
+			</div>
 		</div>
-       		<div class="container">
-         		 <h1 id="title1">Event</h1>
-        </div>
-        <div class="jumbotron jumbotron-fluid">
-        	<div class="container">
-        		<div >
-        			<h1>My_Epic_Event &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<a id="edit" href="edit.html"><i class="glyphicon glyphicon-pencil"></i></a>&ensp;
-        			    <a id="delete" href="#"><i class="glyphicon glyphicon-trash"></i></a></h1>
-        		</div>
-        		<div id="intro">
-	        		<p>Paragraphs are the building blocks of papers. Many students define paragraphs in terms of length: a paragraph is a group of at least five sentences, a paragraph is half a page long, etc. In reality, though, the unity and coherence of ideas among sentences is what constitutes a paragraph. A paragraph is defined as “a group of sentences or a single sentence that forms a unit” (Lunsford and Connors 116). </p>      
-	        		<a class = "icon" id="calendar" href="#"><i class="glyphicon glyphicon-calendar"></i></a><label>&ensp;01/01/2020</label>&emsp;&emsp;
-	        		<a class = "icon" id="time" href="#"><i class="glyphicon glyphicon-time"></i></a><label>&ensp;4:20 AM</label>&emsp;&emsp;
-	        		<a class = "icon" id="location" href="#"><i class="glyphicon glyphicon-map-marker"></i></a><label>&ensp;University of Twente</label>
+	</div>
+	<div class="card"></div>
+	<div class="container">
+		<div class="shadow-lg p-3 mb-5 bg-white rounded">
+			<div class="row">
+				<div>
+					<h1>
+						&ensp;My_Epic_Event &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; <a
+							class="icon" id="edit" href="edit.html"><i
+							class="glyphicon glyphicon-pencil"></i></a>&ensp; <a class="icon"
+							id="delete" href="#"><i class="glyphicon glyphicon-trash"></i></a>
+					</h1>
+				</div>
+			</div>
+			<div id="intro">
+				<p>Paragraphs are the building blocks of papers. Many students
+					define paragraphs in terms of length: a paragraph is a group of at
+					least five sentences, a paragraph is half a page long, etc. In
+					reality, though, the unity and coherence of ideas among sentences
+					is what constitutes a paragraph. A paragraph is defined as “a group
+					of sentences or a single sentence that forms a unit” (Lunsford and
+					Connors 116).</p>
+				<a class="icon" id="calendar" href="#"><i
+					class="glyphicon glyphicon-calendar"></i></a><label>&ensp;01/01/2020</label>&emsp;&emsp;
+				<a class="icon" id="time" href="#"><i
+					class="glyphicon glyphicon-time"></i></a><label>&ensp;4:20 AM</label>&emsp;&emsp;
+				<a class="icon" id="location" href="#"><i
+					class="glyphicon glyphicon-map-marker"></i></a><label>&ensp;University
+					of Twente</label>
+			</div>
+		</div>
+	</div>
 
-        		</div>
-        		
-        		<div id="info">
-        			
-					<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d78211.4516027429!2d6.798508172117513!3d52.22325812228936!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47b8139482fe5187%3A0xd24e1fb7ad7265e2!2sEnschede%2C%20Netherlands!5e0!3m2!1sen!2sro!4v1590396419471!5m2!1sen!2sro" width="400" height="300" frameborder="0" style="border:0; float: left; margin-right: 20px" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-					<h2 id="map_name">Name_of_Map&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</h2>
-					<a class = "icon" id="eye" href="#" ><i class="glyphicon glyphicon-eye-open"></i></a>&emsp; 
-					<a class = "icon" id="edit" href="#"><i class="glyphicon glyphicon-pencil"></i></a>&emsp;
-					<a class = "icon" id="delete" href="#"><i class="glyphicon glyphicon-trash"></i></a>&emsp;
-					<h4 >&emsp;</h4>
-					<h4 style="float: left">Created by :&emsp;</h4>
-					<a class = "icon" id="person" href="#"><i class="glyphicon glyphicon-user"></i></a><label>&emsp;The Creator </label>
-					<p style="font-size: 15px;">Paragraphs are the building blocks of papers. Many students define paragraphs in terms of length: a paragraph is a group of at least five sentences, a paragraph is half a page long, etc. In reality, though, the unity and coherence of ideas among sentences is what constitutes a paragraph. A paragraph is defined as “a group of sentences or a single sentence that forms a unit” (Lunsford and Connors 116). Length and appearance do not determine whether a section in a paper is a paragraph. For instance, in some styles of writing, particularly journalistic styles, a paragraph can be just one sentence long. Ultimately, a paragraph is a sentence or group of sentences that support one main idea. In this handout, we will refer to this as the “controlling idea,” because it controls what happens in the rest of the paragraph.</p>
+	<div id="info" class="container">
+		<div class="shadow-lg p-3 mb-5 bg-white rounded">
 
-        		</div>
+			<iframe
+				src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d78211.4516027429!2d6.798508172117513!3d52.22325812228936!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47b8139482fe5187%3A0xd24e1fb7ad7265e2!2sEnschede%2C%20Netherlands!5e0!3m2!1sen!2sro!4v1590396419471!5m2!1sen!2sro"
+				width="400" height="300" frameborder="0"
+				style="border: 0; float: left; margin-right: 20px"
+				allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+			<h2 id="map_name">Name_of_Map&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</h2>
+			<a class="icon" id="eye" href="mapview.html"><i
+				class="glyphicon glyphicon-eye-open"></i></a>&emsp; <a class="icon"
+				id="edit" href="mapEdit.html"><i
+				class="glyphicon glyphicon-pencil"></i></a>&emsp; <a class="icon"
+				id="delete" href="#"><i class="glyphicon glyphicon-trash"></i></a>&emsp;
+			<h4>&emsp;</h4>
+			<h4 style="float: left">Created by :&emsp;</h4>
+			<a class="icon" id="person" href="#"><i
+				class="glyphicon glyphicon-user"></i></a><label>&emsp;The
+				Creator </label>
+			<p style="font-size: 15px;">Paragraphs are the building blocks of
+				papers. Many students define paragraphs in terms of length: a
+				paragraph is a group of at least five sentences, a paragraph is half
+				a page long, etc. In reality, though, the unity and coherence of
+				ideas among sentences is what constitutes a paragraph. A paragraph
+				is defined as “a group of sentences or a single sentence that forms
+				a unit” (Lunsford and Connors 116). Length and appearance do not
+				determine whether a section in a paper is a paragraph. For instance,
+				in some styles of writing, particularly journalistic styles, a
+				paragraph can be just one sentence long. Ultimately, a paragraph is
+				a sentence or group of sentences that support one main idea. In this
+				handout, we will refer to this as the “controlling idea,” because it
+				controls what happens in the rest of the paragraph.</p>
 
-        		</div>
+		</div>
 
-        	</div>
-        	
-        </div>
-        	
-        </div>
-      </div>
-
-	</body>
+	</div>
+</body>
 </html>
+
