@@ -54,3 +54,7 @@ h1{
     font-size: 12px; 
     text-align: center; 
   } 
+
+.interval{
+    padding-bottom: 3px;
+}
