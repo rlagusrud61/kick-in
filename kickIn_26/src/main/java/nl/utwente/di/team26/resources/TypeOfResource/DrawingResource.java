@@ -29,7 +29,7 @@ public class DrawingResource {
         }
     }
 
-    @POST
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String updateObject(Drawing drawingToUpdate) {

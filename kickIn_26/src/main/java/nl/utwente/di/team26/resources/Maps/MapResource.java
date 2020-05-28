@@ -25,7 +25,7 @@ public class MapResource {
         }
     }
 
-    @POST
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String updateMap(Maps mapToUpdate) {

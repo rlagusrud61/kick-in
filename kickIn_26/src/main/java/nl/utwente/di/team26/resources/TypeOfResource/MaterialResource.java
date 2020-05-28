@@ -29,7 +29,7 @@ public class MaterialResource {
         }
     }
 
-    @POST
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String updateObject(Materials materialToUpdate) {
