@@ -1,32 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700&display=swap">
-  <link rel="stylesheet" href="css/style.css">
+ <meta charset="utf-8">
+ <link rel="stylesheet" type= "text/css" href="css/style.css">
 
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+ <!-- Latest compiled and minified CSS -->
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+ <!-- jQuery library -->
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 
-  <!-- jQuery library -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <!-- Latest compiled JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
+ <!-- Material Design Bootstrap -->
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.18.0/css/mdb.min.css" rel="stylesheet">
+ <!-- Latest compiled JavaScript -->
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+ <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
 </head>
 <style>
+
+
  .topnav-right {
   float: right;
 }
-h1{
-  margin: 0;
-  display: inline-block;
-}
-h2{
-  text-align : center;
-  font-size: 50px;
-  padding-bottom: 5%;
-}
+
 .form-group{
   padding-left:10%;
 }
@@ -38,19 +36,84 @@ body{
   color:#6B6B6B;
 }
 
+table  tbody tr td{
+  font-size:15px;
+}
+table  thead tr th{
+  font-size:15px;
+}
+
+
+
 </style>
 <body>
  <div class = "topnav">
   <a id="home" href = "list.html"><i class="glyphicon glyphicon-home"></i></a>
+  <a id="arrow" href="list.html"><i class="glyphicon glyphicon-arrow-left"></i></a>
   <a id="logout" href="login.html">Logout</a>
 </div>
+<div class="jumbotron jumbotron-fluid">
+  <div id = "main" class="container">
+    <div class="row">
+      <h1 class="col-4">Map</h1> 
+    </div>
+  </div>
 </div>
-<center><div class="card" style="background-color:#ffffff;width:1200px">
+
+<center><div class="container" style="background-color:#ffffff">
  <div class="card-body">
-   <h1 class="card-title text-left">Map_Name<a href="#" class="text-success"><i class="glyphicon glyphicon-share" style="font-size:30px;padding-left:25px;"></i></a><a href="#" class="text-success"><i class="glyphicon glyphicon-pencil" style="font-size:30px;padding-left:25px;"></i></a><a href="#" class="text-success"><i class="glyphicon glyphicon-trash" style="font-size:30px;padding-left:25px;"></i></a></h1>
-   <p class="card-text text-left">Paragraphs are the building blocks of papers. Many students define paragraphs in terms of length: a paragraph is a group of at least five sentences, a paragraph is half a page long, etc. In reality, though, the unity and coherence of ideas among sentences is what constitutes a paragraph. A paragraph is defined as “a group of sentences or a single sentence that forms a unit” (Lunsford and Connors 116). Length and appearance do not determine whether a section in a paper is a paragraph. For instance, in some styles of writing, particularly journalistic styles, a paragraph can be just one sentence long. Ultimately, a paragraph is a sentence or group of sentences that support one main idea. In this handout, we will refer to this as the “controlling idea,” because it controls what happens in the rest of the paragraph.</p>
+   <h1 class="text-left">Map_Name
+     <a href="list.html" class="glyphicon glyphicon-share text-success" style="font-size:20px;"></a>
+     <a href="mapEdit.html" class="text-success"><i class="glyphicon glyphicon-pencil" style="font-size:20px;"></i></a>
+     <a href="#" class="text-success"><i class="glyphicon glyphicon-trash" style="font-size:20px;"></i></a>
+   </h1>
+
+   <p class="text-left">Paragraphs are the building blocks of papers. Many students define paragraphs in terms of length: a paragraph is a group of at least five sentences, a paragraph is half a page long, etc. In reality, though, the unity and coherence of ideas among sentences is what constitutes a paragraph. A paragraph is defined as “a group of sentences or a single sentence that forms a unit” (Lunsford and Connors 116). Length and appearance do not determine whether a section in a paper is a paragraph. For instance, in some styles of writing, particularly journalistic styles, a paragraph can be just one sentence long. Ultimately, a paragraph is a sentence or group of sentences that support one main idea. In this handout, we will refer to this as the “controlling idea,” because it controls what happens in the rest of the paragraph.</p>
  </div>
-</div></center>
+
+
+ <div class="card-body">
+
+  <div class="row">
+
+    <div class="col-md-6">
+     <iframe
+     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d78211.4516027429!2d6.798508172117513!3d52.22325812228936!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47b8139482fe5187%3A0xd24e1fb7ad7265e2!2sEnschede%2C%20Netherlands!5e0!3m2!1sen!2sro!4v1590396419471!5m2!1sen!2sro"
+     width="400" height="300" frameborder="0"
+     style="border: 0; float: left; margin-right: 20px"
+     allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+   </div>
+
+   <div class="col-md-5">
+    <h3> List of Items</h3>
+    <table class="table table-larger">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Quantity</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Bench</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td>Something</td>
+          <td>50</td>
+        </tr>
+        <tr>
+          <td>Fences</td>
+          <td>100</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+</center>
+
+<
 </body>
 </html>
 
