@@ -13,13 +13,6 @@ body{
   text-align: center; 
 } 
 
-.myButton:hover {
-  background:linear-gradient(to bottom, #5cbf2a 5%, #44c767 100%);
-  background-color:#5cbf2a;
-}
-.myButton:active {
-  top: 1px;
-}
 
 
 /* The Modal (background) */
@@ -61,10 +54,6 @@ body{
   text-decoration: none;
   cursor: pointer;
 }
-
-.body {
-  font-family: "Quicksand";
-}
 .topnav {
   background-image:linear-gradient(to right, #D4FC79, #A3EB98);
   overflow: hidden;
@@ -100,3 +89,42 @@ body{
  display: flex;
  justify-content: flex-end;
 }
+
+
+.project .row {
+  margin: 0;
+  padding: 15px 0;
+  margin-bottom: 15px
+}
+
+
+.project .text h3 {
+  margin-bottom: 0;
+  color: #555
+}
+
+.project .text small {
+  color: #aaa;
+  font-size: 0.75em
+}
+
+.project .project-date span {
+  font-size: 0.9em;
+  color: #999
+}
+
+
+.project .card {
+  margin-bottom: 0
+}
+
+.has-shadow {
+  -webkit-box-shadow: 2px 2px 2px rgba(0,0,0,0.1), -1px 0 2px rgba(0,0,0,0.05);
+  box-shadow: 2px 2px 2px rgba(0,0,0,0.1), -1px 0 2px rgba(0,0,0,0.05);
+}
+.bg-white {
+  background: #fff !important;
+}
+
+
+
