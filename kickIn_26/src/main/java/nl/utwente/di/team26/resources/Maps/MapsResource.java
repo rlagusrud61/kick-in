@@ -2,8 +2,8 @@ package nl.utwente.di.team26.resources.Maps;
 
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
-import nl.utwente.di.team26.dao.MapsDao;
-import nl.utwente.di.team26.model.Maps;
+import nl.utwente.di.team26.dao.Maps.MapsDao;
+import nl.utwente.di.team26.model.Map.Map;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -18,7 +18,7 @@ public class MapsResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Maps> getAllMaps() {
+    public List<Map> getAllMaps() {
         try (Connection conn = CONSTANTS.getConnection()) {
             return mapsDao.loadAll(conn);
         } catch (NotFoundException | SQLException | DriverNotInstalledException throwables) {
@@ -30,7 +30,7 @@ public class MapsResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public String addNewMap(Maps mapToAdd) {
+    public String addNewMap(Map mapToAdd) {
         try (Connection conn = CONSTANTS.getConnection()) {
             mapsDao.create(conn, mapToAdd);
             return CONSTANTS.SUCCESS;

@@ -1,4 +1,4 @@
-package nl.utwente.di.team26.model;
+package nl.utwente.di.team26.model.TypeOfResource;
 
 import java.io.Serializable;
 

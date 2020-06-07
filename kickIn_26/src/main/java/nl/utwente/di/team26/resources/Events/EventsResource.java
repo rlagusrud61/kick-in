@@ -2,8 +2,8 @@ package nl.utwente.di.team26.resources.Events;
 
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
-import nl.utwente.di.team26.dao.EventsDao;
-import nl.utwente.di.team26.model.Events;
+import nl.utwente.di.team26.dao.Events.EventsDao;
+import nl.utwente.di.team26.model.Event.Event;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -18,7 +18,7 @@ public class EventsResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Events> getAllEvents() {
+    public List<Event> getAllEvents() {
         try (Connection conn = CONSTANTS.getConnection()) {
             return eventsDao.loadAll(conn);
         } catch (NotFoundException | SQLException | DriverNotInstalledException throwables) {
@@ -30,7 +30,7 @@ public class EventsResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public String addNewEvent(Events eventToAdd) {
+    public String addNewEvent(Event eventToAdd) {
         try (Connection conn = CONSTANTS.getConnection()) {
             eventsDao.create(conn, eventToAdd);
             return CONSTANTS.SUCCESS;

@@ -3,8 +3,8 @@ package nl.utwente.di.team26.resources.Maps;
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
-import nl.utwente.di.team26.dao.EventMapDao;
-import nl.utwente.di.team26.model.EventMap;
+import nl.utwente.di.team26.dao.Events.EventMapDao;
+import nl.utwente.di.team26.model.Event.EventMap;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

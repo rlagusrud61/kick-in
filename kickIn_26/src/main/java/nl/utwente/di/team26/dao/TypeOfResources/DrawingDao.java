@@ -1,7 +1,8 @@
-package nl.utwente.di.team26.dao;
+package nl.utwente.di.team26.dao.TypeOfResources;
 
 import nl.utwente.di.team26.Exceptions.NotFoundException;
-import nl.utwente.di.team26.model.Events;
+import nl.utwente.di.team26.model.TypeOfResource.Drawing;
+import nl.utwente.di.team26.model.TypeOfResource.TypeOfResource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,7 +11,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventsDao {
+
+/**
+ * Drawing Data Access Object (DAO).
+ * This class contains all database handling that is needed to
+ * permanently store and retrieve Drawing object instances.
+ */
+
+
+public class DrawingDao {
+
 
     /**
      * createValueObject-method. This method is used when the Dao class needs
@@ -20,8 +30,8 @@ public class EventsDao {
      * NOTE: If you extend the valueObject class, make sure to override the
      * clone() method in it!
      */
-    public Events createValueObject() {
-        return new Events();
+    public Drawing createValueObject() {
+        return new Drawing();
     }
 
 
@@ -31,10 +41,10 @@ public class EventsDao {
      * for the real load-method which accepts the valueObject as a parameter. Returned
      * valueObject will be created using the createValueObject() method.
      */
-    public Events getObject(Connection conn, int eventId) throws NotFoundException, SQLException {
+    public Drawing getObject(Connection conn, int resourceId) throws NotFoundException, SQLException {
 
-        Events valueObject = createValueObject();
-        valueObject.setEventId(eventId);
+        Drawing valueObject = createValueObject();
+        valueObject.setResourceId(resourceId);
         load(conn, valueObject);
         return valueObject;
     }
@@ -52,12 +62,14 @@ public class EventsDao {
      * @param valueObject This parameter contains the class instance to be loaded.
      *                    Primary-key field must be set for this to work properly.
      */
-    public void load(Connection conn, Events valueObject) throws NotFoundException, SQLException {
+    public void load(Connection conn, Drawing valueObject) throws NotFoundException, SQLException {
 
-        String sql = "SELECT * FROM Events WHERE (eventId = ? ) ";
+        String sql = "SELECT * " +
+                "FROM Drawing d INNER JOIN TypeOfResource tor ON d.resourceId = tor.resourceId " +
+                "WHERE (tor.resourceId = ? ) ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, valueObject.getEventId());
+            stmt.setInt(1, valueObject.getResourceId());
 
             singleQuery(conn, stmt, valueObject);
 
@@ -74,58 +86,14 @@ public class EventsDao {
      *
      * @param conn This method requires working database connection.
      */
-    public List<Events> loadAll(Connection conn) throws SQLException {
+    public List<Drawing> loadAll(Connection conn) throws SQLException {
 
-        String sql = "SELECT * FROM Events ORDER BY eventId ASC ";
+        String sql = "SELECT * " +
+                "FROM Drawing d INNER JOIN TypeOfResource tor ON d.resourceId = tor.resourceId " +
+                "ORDER BY tor.resourceId ASC";
 
         return listQuery(conn, conn.prepareStatement(sql));
     }
-
-
-    /**
-     * create-method. This will create new row in database according to supplied
-     * valueObject contents. Make sure that values for all NOT NULL columns are
-     * correctly specified. Also, if this table does not use automatic surrogate-keys
-     * the primary-key must be specified. After INSERT command this method will
-     * read the generated primary-key back to valueObject if automatic surrogate-keys
-     * were used.
-     *
-     * @param conn        This method requires working database connection.
-     * @param valueObject This parameter contains the class instance to be created.
-     *                    If automatic surrogate-keys are not used the Primary-key
-     *                    field must be set for this to work properly.
-     */
-    public synchronized void create(Connection conn, Events valueObject) throws SQLException {
-
-        String sql = "";
-        PreparedStatement stmt = null;
-        ResultSet result = null;
-
-        try {
-            sql = "INSERT INTO Events (name, description, "
-                    + "location, createdBy, lastEditedBy) VALUES (?, ?, ?, ?, ?) ";
-            stmt = conn.prepareStatement(sql);
-
-            stmt.setString(1, valueObject.getName());
-            stmt.setString(2, valueObject.getDescription());
-            stmt.setString(3, valueObject.getLocation());
-            stmt.setString(4, valueObject.getCreatedBy());
-            stmt.setString(5, valueObject.getLastEditedBy());
-
-            int rowcount = databaseUpdate(conn, stmt);
-            if (rowcount != 1) {
-                //System.out.println("PrimaryKey Error when updating DB!");
-                throw new SQLException("PrimaryKey Error when updating DB!");
-            }
-
-        } finally {
-            if (stmt != null)
-                stmt.close();
-        }
-
-
-    }
-
 
     /**
      * save-method. This method will save the current state of valueObject to database.
@@ -138,20 +106,23 @@ public class EventsDao {
      * @param valueObject This parameter contains the class instance to be saved.
      *                    Primary-key field must be set for this to work properly.
      */
-    public void save(Connection conn, Events valueObject)
+    public void save(Connection conn, Drawing valueObject)
             throws NotFoundException, SQLException {
 
-        String sql = "UPDATE Events SET name = ?, description = ?, location = ?, "
-                + "createdBy = ?, lastEditedBy = ? WHERE (eventId = ? ) ";
+        (new TypeOfResourceDao()).save(conn,
+                new TypeOfResource(
+                        valueObject.getResourceId(),
+                        valueObject.getName(),
+                        valueObject.getDescription()
+                )
+        );
+
+        String sql = "UPDATE Drawing SET image = ? WHERE (resourceId = ? ) ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, valueObject.getName());
-            stmt.setString(2, valueObject.getDescription());
-            stmt.setString(3, valueObject.getLocation());
-            stmt.setString(4, valueObject.getCreatedBy());
-            stmt.setString(5, valueObject.getLastEditedBy());
+            stmt.setString(1, valueObject.getImage());
 
-            stmt.setInt(6, valueObject.getEventId());
+            stmt.setInt(2, valueObject.getResourceId());
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount == 0) {
@@ -167,60 +138,6 @@ public class EventsDao {
 
 
     /**
-     * delete-method. This method will remove the information from database as identified by
-     * by primary-key in supplied valueObject. Once valueObject has been deleted it can not
-     * be restored by calling save. Restoring can only be done using create method but if
-     * database is using automatic surrogate-keys, the resulting object will have different
-     * primary-key than what it was in the deleted object. If delete can not find matching row,
-     * NotFoundException will be thrown.
-     *
-     * @param conn        This method requires working database connection.
-     * @param valueObject This parameter is the primary key of the resource to be deleted.
-     *                    Primary-key field must be set for this to work properly.
-     */
-    public void delete(Connection conn, Events valueObject)
-            throws NotFoundException, SQLException {
-
-        String sql = "DELETE FROM Events WHERE (eventId = ? ) ";
-
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, valueObject.getEventId());
-
-            int rowcount = databaseUpdate(conn, stmt);
-            if (rowcount == 0) {
-                //System.out.println("Object could not be deleted (PrimaryKey not found)");
-                throw new NotFoundException("Object could not be deleted! (PrimaryKey not found)");
-            }
-            if (rowcount > 1) {
-                //System.out.println("PrimaryKey Error when updating DB! (Many objects were deleted!)");
-                throw new SQLException("PrimaryKey Error when updating DB! (Many objects were deleted!)");
-            }
-        }
-    }
-
-
-    /**
-     * deleteAll-method. This method will remove all information from the table that matches
-     * this Dao and ValueObject couple. This should be the most efficient way to clear table.
-     * Once deleteAll has been called, no valueObject that has been created before can be
-     * restored by calling save. Restoring can only be done using create method but if database
-     * is using automatic surrogate-keys, the resulting object will have different primary-key
-     * than what it was in the deleted object. (Note, the implementation of this method should
-     * be different with different DB backends.)
-     *
-     * @param conn This method requires working database connection.
-     */
-    public void deleteAll(Connection conn) throws SQLException {
-
-        String sql = "DELETE FROM Events";
-
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            int rowcount = databaseUpdate(conn, stmt);
-        }
-    }
-
-
-    /**
      * coutAll-method. This method will return the number of all rows from table that matches
      * this Dao. The implementation will simply execute "select count(primarykey) from table".
      * If table is empty, the return value is 0. This method should be used before calling
@@ -230,7 +147,7 @@ public class EventsDao {
      */
     public int countAll(Connection conn) throws SQLException {
 
-        String sql = "SELECT count(*) FROM Events";
+        String sql = "SELECT count(*) FROM Drawing";
         PreparedStatement stmt = null;
         ResultSet result = null;
         int allRows = 0;
@@ -264,55 +181,27 @@ public class EventsDao {
      * @param valueObject This parameter contains the class instance where search will be based.
      *                    Primary-key field should not be set.
      */
-    public List<Events> searchMatching(Connection conn, Events valueObject) throws SQLException {
+    public List<Drawing> searchMatching(Connection conn, Drawing valueObject) throws SQLException {
 
-        List<Events> searchResults;
+        List<Drawing> searchResults;
 
         boolean first = true;
-        StringBuilder sql = new StringBuilder("SELECT * FROM Events WHERE 1=1 ");
+        StringBuilder sql = new StringBuilder("SELECT * FROM Drawing WHERE 1=1 ");
 
-        if (valueObject.getEventId() != 0) {
+        if (valueObject.getResourceId() != 0) {
             first = false;
-            sql.append("AND eventId = ").append(valueObject.getEventId()).append(" ");
+            sql.append("AND resourceId = ").append(valueObject.getResourceId()).append(" ");
         }
 
-        if (valueObject.getName() != null) {
+        if (valueObject.getImage() != null) {
             if (first) {
                 first = false;
             }
-            sql.append("AND name LIKE '").append(valueObject.getName()).append("%' ");
-        }
-
-        if (valueObject.getDescription() != null) {
-            if (first) {
-                first = false;
-            }
-            sql.append("AND description LIKE '").append(valueObject.getDescription()).append("%' ");
-        }
-
-        if (valueObject.getLocation() != null) {
-            if (first) {
-                first = false;
-            }
-            sql.append("AND location LIKE '").append(valueObject.getLocation()).append("%' ");
-        }
-
-        if (valueObject.getCreatedBy() != null) {
-            if (first) {
-                first = false;
-            }
-            sql.append("AND createdBy LIKE '").append(valueObject.getCreatedBy()).append("%' ");
-        }
-
-        if (valueObject.getLastEditedBy() != null) {
-            if (first) {
-                first = false;
-            }
-            sql.append("AND lastEditedBy LIKE '").append(valueObject.getLastEditedBy()).append("%' ");
+            sql.append("AND image LIKE '").append(valueObject.getImage()).append("%' ");
         }
 
 
-        sql.append("ORDER BY eventId ASC ");
+        sql.append("ORDER BY resourceId ASC ");
 
         // Prevent accidential full table results.
         // Use loadAll if all rows must be returned.
@@ -334,7 +223,6 @@ public class EventsDao {
      * @param stmt This parameter contains the SQL statement to be excuted.
      */
     protected int databaseUpdate(Connection conn, PreparedStatement stmt) throws SQLException {
-
         return stmt.executeUpdate();
     }
 
@@ -348,18 +236,19 @@ public class EventsDao {
      * @param stmt        This parameter contains the SQL statement to be excuted.
      * @param valueObject Class-instance where resulting data will be stored.
      */
-    protected void singleQuery(Connection conn, PreparedStatement stmt, Events valueObject)
+    protected void singleQuery(Connection conn, PreparedStatement stmt, Drawing valueObject)
             throws NotFoundException, SQLException {
 
         try (ResultSet result = stmt.executeQuery()) {
 
             if (result.next()) {
 
-                setPropertiesOfObject(result, valueObject);
+                valueObject.setResourceId(result.getInt("resourceId"));
+                valueObject.setImage(result.getString("image"));
 
             } else {
-                //System.out.println("Events Object Not Found!");
-                throw new NotFoundException("Events Object Not Found!");
+                //System.out.println("Drawing Object Not Found!");
+                throw new NotFoundException("Drawing Object Not Found!");
             }
         } finally {
             if (stmt != null)
@@ -376,15 +265,18 @@ public class EventsDao {
      * @param conn This method requires working database connection.
      * @param stmt This parameter contains the SQL statement to be excuted.
      */
-    protected List<Events> listQuery(Connection conn, PreparedStatement stmt) throws SQLException {
+    protected List<Drawing> listQuery(Connection conn, PreparedStatement stmt) throws SQLException {
 
-        ArrayList<Events> searchResults = new ArrayList<>();
+        ArrayList<Drawing> searchResults = new ArrayList<>();
 
         try (ResultSet result = stmt.executeQuery()) {
 
             while (result.next()) {
-                Events temp = createValueObject();
-                setPropertiesOfObject(result, temp);
+                Drawing temp = createValueObject();
+
+                temp.setResourceId(result.getInt("resourceId"));
+                temp.setImage(result.getString("image"));
+
                 searchResults.add(temp);
             }
 
@@ -394,15 +286,6 @@ public class EventsDao {
         }
 
         return searchResults;
-    }
-
-    private void setPropertiesOfObject(ResultSet result, Events temp) throws SQLException {
-        temp.setEventId(result.getInt("eventId"));
-        temp.setName(result.getString("name"));
-        temp.setDescription(result.getString("description"));
-        temp.setLocation(result.getString("location"));
-        temp.setCreatedBy(result.getString("createdBy"));
-        temp.setLastEditedBy(result.getString("lastEditedBy"));
     }
 
 

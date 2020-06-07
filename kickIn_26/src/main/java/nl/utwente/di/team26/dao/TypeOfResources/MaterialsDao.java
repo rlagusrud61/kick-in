@@ -1,9 +1,8 @@
-package nl.utwente.di.team26.dao;
+package nl.utwente.di.team26.dao.TypeOfResources;
 
 import nl.utwente.di.team26.Exceptions.NotFoundException;
-import nl.utwente.di.team26.model.Drawing;
-import nl.utwente.di.team26.model.Materials;
-import nl.utwente.di.team26.model.TypeOfResource;
+import nl.utwente.di.team26.model.TypeOfResource.Material;
+import nl.utwente.di.team26.model.TypeOfResource.TypeOfResource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,12 +13,11 @@ import java.util.List;
 
 
 /**
- * TypeOfResource Data Access Object (DAO).
+ * Material Data Access Object (DAO).
  * This class contains all database handling that is needed to
- * permanently store and retrieve TypeOfResource object instances.
+ * permanently store and retrieve Material object instances.
  */
-
-public class TypeOfResourceDao {
+public class MaterialsDao {
 
 
     /**
@@ -30,8 +28,8 @@ public class TypeOfResourceDao {
      * NOTE: If you extend the valueObject class, make sure to override the
      * clone() method in it!
      */
-    public TypeOfResource createValueObject() {
-        return new TypeOfResource();
+    public Material createValueObject() {
+        return new Material();
     }
 
 
@@ -41,9 +39,9 @@ public class TypeOfResourceDao {
      * for the real load-method which accepts the valueObject as a parameter. Returned
      * valueObject will be created using the createValueObject() method.
      */
-    public TypeOfResource getObject(Connection conn, int resourceId) throws NotFoundException, SQLException {
+    public Material getObject(Connection conn, int resourceId) throws NotFoundException, SQLException {
 
-        TypeOfResource valueObject = createValueObject();
+        Material valueObject = createValueObject();
         valueObject.setResourceId(resourceId);
         load(conn, valueObject);
         return valueObject;
@@ -62,9 +60,11 @@ public class TypeOfResourceDao {
      * @param valueObject This parameter contains the class instance to be loaded.
      *                    Primary-key field must be set for this to work properly.
      */
-    public void load(Connection conn, TypeOfResource valueObject) throws NotFoundException, SQLException {
+    public void load(Connection conn, Material valueObject) throws NotFoundException, SQLException {
 
-        String sql = "SELECT * FROM TypeOfResource WHERE (resourceId = ? ) ";
+        String sql = "SELECT * " +
+                "FROM Materials m INNER JOIN TypeOfResource tor ON m.resourceId = tor.resourceId " +
+                "WHERE (m.resourceId = ? ) ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, valueObject.getResourceId());
@@ -84,72 +84,14 @@ public class TypeOfResourceDao {
      *
      * @param conn This method requires working database connection.
      */
-    public List<TypeOfResource> loadAll(Connection conn) throws SQLException {
+    public List<Material> loadAll(Connection conn) throws SQLException {
 
-        String sql = "SELECT * FROM TypeOfResource ORDER BY resourceId ASC ";
+        String sql = "SELECT * " +
+                "FROM Materials m INNER JOIN TypeOfResource tor ON m.resourceId = tor.resourceId " +
+                "ORDER BY tor.resourceId ASC ";
 
         return listQuery(conn, conn.prepareStatement(sql));
     }
-
-
-    /**
-     * create-method. This will create new row in database according to supplied
-     * valueObject contents. Make sure that values for all NOT NULL columns are
-     * correctly specified. Also, if this table does not use automatic surrogate-keys
-     * the primary-key must be specified. After INSERT command this method will
-     * read the generated primary-key back to valueObject if automatic surrogate-keys
-     * were used.
-     *
-     * @param conn        This method requires working database connection.
-     * @param valueObject This parameter contains the class instance to be created.
-     *                    If automatic surrogate-keys are not used the Primary-key
-     *                    field must be set for this to work properly.
-     */
-    public synchronized void create(Connection conn, TypeOfResource valueObject) throws SQLException {
-
-        String sql = "";
-        PreparedStatement stmt = null;
-        ResultSet result = null;
-        String subClass = "";
-        String image = "";
-
-        if (valueObject instanceof Drawing) {
-            subClass = "Drawing";
-            image = ((Drawing) valueObject).getImage();
-        } else if (valueObject instanceof Materials) {
-            subClass = "Materials";
-            image = ((Materials) valueObject).getImage();
-        }
-        try {
-            sql = "WITH super AS (" +
-                    "INSERT INTO TypeOfResource (name, description) " +
-                    "VALUES (?, ?) " +
-                    "RETURNING resourceId" +
-                    ") " +
-                    "INSERT INTO ? (resourceId, image) " +
-                    "SELECT super.resourceId, ? " +
-                    "FROM super ";
-            stmt = conn.prepareStatement(sql);
-
-            stmt.setString(1, valueObject.getName());
-            stmt.setString(2, valueObject.getDescription());
-            stmt.setString(3, subClass);
-            stmt.setString(4, image);
-
-            int rowcount = databaseUpdate(conn, stmt);
-            if (rowcount != 1) {
-                //System.out.println("PrimaryKey Error when updating DB!");
-                throw new SQLException("PrimaryKey Error when updating DB!");
-            }
-
-        } finally {
-            if (stmt != null)
-                stmt.close();
-        }
-
-
-    }
-
 
     /**
      * save-method. This method will save the current state of valueObject to database.
@@ -162,16 +104,23 @@ public class TypeOfResourceDao {
      * @param valueObject This parameter contains the class instance to be saved.
      *                    Primary-key field must be set for this to work properly.
      */
-    public void save(Connection conn, TypeOfResource valueObject)
+    public void save(Connection conn, Material valueObject)
             throws NotFoundException, SQLException {
 
-        String sql = "UPDATE TypeOfResource SET name = ?, description = ? WHERE (resourceId = ? ) ";
+        (new TypeOfResourceDao()).save(conn,
+                new TypeOfResource(
+                        valueObject.getResourceId(),
+                        valueObject.getName(),
+                        valueObject.getDescription()
+                )
+        );
+
+        String sql = "UPDATE Materials SET image = ? WHERE (resourceId = ? ) ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, valueObject.getName());
-            stmt.setString(2, valueObject.getDescription());
+            stmt.setString(1, valueObject.getImage());
 
-            stmt.setInt(3, valueObject.getResourceId());
+            stmt.setInt(2, valueObject.getResourceId());
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount == 0) {
@@ -185,61 +134,6 @@ public class TypeOfResourceDao {
         }
     }
 
-
-    /**
-     * delete-method. This method will remove the information from database as identified by
-     * by primary-key in supplied valueObject. Once valueObject has been deleted it can not
-     * be restored by calling save. Restoring can only be done using create method but if
-     * database is using automatic surrogate-keys, the resulting object will have different
-     * primary-key than what it was in the deleted object. If delete can not find matching row,
-     * NotFoundException will be thrown.
-     *
-     * @param conn        This method requires working database connection.
-     * @param valueObject This parameter contains the class instance to be deleted.
-     *                    Primary-key field must be set for this to work properly.
-     */
-    public void delete(Connection conn, TypeOfResource valueObject)
-            throws NotFoundException, SQLException {
-
-        String sql = "DELETE FROM TypeOfResource WHERE (resourceId = ? ) ";
-
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, valueObject.getResourceId());
-
-            int rowcount = databaseUpdate(conn, stmt);
-            if (rowcount == 0) {
-                //System.out.println("Object could not be deleted (PrimaryKey not found)");
-                throw new NotFoundException("Object could not be deleted! (PrimaryKey not found)");
-            }
-            if (rowcount > 1) {
-                //System.out.println("PrimaryKey Error when updating DB! (Many objects were deleted!)");
-                throw new SQLException("PrimaryKey Error when updating DB! (Many objects were deleted!)");
-            }
-        }
-    }
-
-
-    /**
-     * deleteAll-method. This method will remove all information from the table that matches
-     * this Dao and ValueObject couple. This should be the most efficient way to clear table.
-     * Once deleteAll has been called, no valueObject that has been created before can be
-     * restored by calling save. Restoring can only be done using create method but if database
-     * is using automatic surrogate-keys, the resulting object will have different primary-key
-     * than what it was in the deleted object. (Note, the implementation of this method should
-     * be different with different DB backends.)
-     *
-     * @param conn This method requires working database connection.
-     */
-    public void deleteAll(Connection conn) throws SQLException {
-
-        String sql = "DELETE FROM TypeOfResource";
-
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            int rowcount = databaseUpdate(conn, stmt);
-        }
-    }
-
-
     /**
      * coutAll-method. This method will return the number of all rows from table that matches
      * this Dao. The implementation will simply execute "select count(primarykey) from table".
@@ -250,7 +144,7 @@ public class TypeOfResourceDao {
      */
     public int countAll(Connection conn) throws SQLException {
 
-        String sql = "SELECT count(*) FROM TypeOfResource";
+        String sql = "SELECT count(*) FROM Materials";
         PreparedStatement stmt = null;
         ResultSet result = null;
         int allRows = 0;
@@ -284,30 +178,25 @@ public class TypeOfResourceDao {
      * @param valueObject This parameter contains the class instance where search will be based.
      *                    Primary-key field should not be set.
      */
-    public List<TypeOfResource> searchMatching(Connection conn, TypeOfResource valueObject) throws SQLException {
+    public List<Material> searchMatching(Connection conn, Material valueObject) throws SQLException {
 
-        List<TypeOfResource> searchResults;
+        List<Material> searchResults;
 
         boolean first = true;
-        StringBuilder sql = new StringBuilder("SELECT * FROM TypeOfResource WHERE 1=1 ");
+        StringBuilder sql = new StringBuilder("SELECT * FROM Material WHERE 1=1 ");
 
         if (valueObject.getResourceId() != 0) {
-            first = false;
+            if (first) {
+                first = false;
+            }
             sql.append("AND resourceId = ").append(valueObject.getResourceId()).append(" ");
         }
 
-        if (valueObject.getName() != null) {
+        if (valueObject.getImage() != null) {
             if (first) {
                 first = false;
             }
-            sql.append("AND name LIKE '").append(valueObject.getName()).append("%' ");
-        }
-
-        if (valueObject.getDescription() != null) {
-            if (first) {
-                first = false;
-            }
-            sql.append("AND description LIKE '").append(valueObject.getDescription()).append("%' ");
+            sql.append("AND image LIKE '").append(valueObject.getImage()).append("%' ");
         }
 
 
@@ -316,7 +205,7 @@ public class TypeOfResourceDao {
         // Prevent accidential full table results.
         // Use loadAll if all rows must be returned.
         if (first)
-            searchResults = new ArrayList<TypeOfResource>();
+            searchResults = new ArrayList<>();
         else
             searchResults = listQuery(conn, conn.prepareStatement(sql.toString()));
 
@@ -343,6 +232,7 @@ public class TypeOfResourceDao {
      * @param stmt This parameter contains the SQL statement to be excuted.
      */
     protected int databaseUpdate(Connection conn, PreparedStatement stmt) throws SQLException {
+
         return stmt.executeUpdate();
     }
 
@@ -356,7 +246,7 @@ public class TypeOfResourceDao {
      * @param stmt        This parameter contains the SQL statement to be excuted.
      * @param valueObject Class-instance where resulting data will be stored.
      */
-    protected void singleQuery(Connection conn, PreparedStatement stmt, TypeOfResource valueObject)
+    protected void singleQuery(Connection conn, PreparedStatement stmt, Material valueObject)
             throws NotFoundException, SQLException {
 
         try (ResultSet result = stmt.executeQuery()) {
@@ -364,12 +254,11 @@ public class TypeOfResourceDao {
             if (result.next()) {
 
                 valueObject.setResourceId(result.getInt("resourceId"));
-                valueObject.setName(result.getString("name"));
-                valueObject.setDescription(result.getString("description"));
+                valueObject.setImage(result.getString("image"));
 
             } else {
-                //System.out.println("TypeOfResource Object Not Found!");
-                throw new NotFoundException("TypeOfResource Object Not Found!");
+                //System.out.println("Material Object Not Found!");
+                throw new NotFoundException("Material Object Not Found!");
             }
         } finally {
             if (stmt != null)
@@ -386,18 +275,17 @@ public class TypeOfResourceDao {
      * @param conn This method requires working database connection.
      * @param stmt This parameter contains the SQL statement to be excuted.
      */
-    protected List<TypeOfResource> listQuery(Connection conn, PreparedStatement stmt) throws SQLException {
+    protected List<Material> listQuery(Connection conn, PreparedStatement stmt) throws SQLException {
 
-        ArrayList<TypeOfResource> searchResults = new ArrayList<TypeOfResource>();
+        ArrayList<Material> searchResults = new ArrayList<>();
 
         try (ResultSet result = stmt.executeQuery()) {
 
             while (result.next()) {
-                TypeOfResource temp = createValueObject();
+                Material temp = createValueObject();
 
                 temp.setResourceId(result.getInt("resourceId"));
-                temp.setName(result.getString("name"));
-                temp.setDescription(result.getString("description"));
+                temp.setImage(result.getString("image"));
 
                 searchResults.add(temp);
             }
@@ -409,4 +297,6 @@ public class TypeOfResourceDao {
 
         return searchResults;
     }
+
+
 }

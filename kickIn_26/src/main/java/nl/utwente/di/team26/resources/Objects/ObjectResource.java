@@ -3,8 +3,8 @@ package nl.utwente.di.team26.resources.Objects;
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
-import nl.utwente.di.team26.dao.MapObjectsDao;
-import nl.utwente.di.team26.model.MapObjects;
+import nl.utwente.di.team26.dao.Maps.MapObjectsDao;
+import nl.utwente.di.team26.model.Map.MapObject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -18,7 +18,7 @@ public class ObjectResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public MapObjects getObjectForMap(@PathParam("objectId") int objectId) {
+    public MapObject getObjectForMap(@PathParam("objectId") int objectId) {
         try (Connection conn = CONSTANTS.getConnection()) {
             return mapObjectsDao.getObject(conn, objectId);
         } catch (SQLException | NotFoundException | DriverNotInstalledException throwables) {
@@ -30,7 +30,7 @@ public class ObjectResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public String updateObject(MapObjects objectToUpdate) {
+    public String updateObject(MapObject objectToUpdate) {
         try (Connection conn = CONSTANTS.getConnection()) {
             mapObjectsDao.save(conn, objectToUpdate);
             return CONSTANTS.SUCCESS;
@@ -43,7 +43,7 @@ public class ObjectResource {
     @Produces(MediaType.TEXT_PLAIN)
     public String deleteObject(@PathParam("objectId") int objectToDelete) {
         try (Connection conn = CONSTANTS.getConnection()) {
-            mapObjectsDao.delete(conn, new MapObjects(objectToDelete));
+            mapObjectsDao.delete(conn, new MapObject(objectToDelete));
             return CONSTANTS.SUCCESS;
         } catch (NotFoundException | SQLException | DriverNotInstalledException e) {
             return CONSTANTS.FAILURE + " " + e.getMessage();

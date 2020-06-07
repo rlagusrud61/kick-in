@@ -2,9 +2,9 @@ package nl.utwente.di.team26.resources.TypeOfResource;
 
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
-import nl.utwente.di.team26.dao.DrawingDao;
-import nl.utwente.di.team26.dao.TypeOfResourceDao;
-import nl.utwente.di.team26.model.Drawing;
+import nl.utwente.di.team26.dao.TypeOfResources.DrawingDao;
+import nl.utwente.di.team26.dao.TypeOfResources.TypeOfResourceDao;
+import nl.utwente.di.team26.model.TypeOfResource.Drawing;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

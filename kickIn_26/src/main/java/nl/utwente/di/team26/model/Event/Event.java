@@ -1,15 +1,15 @@
-package nl.utwente.di.team26.model;
+package nl.utwente.di.team26.model.Event;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 /**
- * Events Value Object.
- * This class is value object representing database table Events
+ * Event Value Object.
+ * This class is value object representing database table Event
  * This class is intended to be used together with associated Dao object.
  */
 @XmlRootElement
-public class Events implements Serializable {
+public class Event implements Serializable {
 
     /**
      * Persistent Instance variables. This data is directly
@@ -30,15 +30,15 @@ public class Events implements Serializable {
      * argument, which is the primary key of the corresponding table.
      */
 
-    public Events() {
+    public Event() {
 
     }
 
-    public Events(int eventIdIn) {
+    public Event(int eventIdIn) {
         this.eventId = eventIdIn;
     }
 
-    public Events(String name, String description, String location, String createdBy, String lastEditedBy) {
+    public Event(String name, String description, String location, String createdBy, String lastEditedBy) {
         this.name = name;
         this.description = description;
         this.location = location;
@@ -46,7 +46,7 @@ public class Events implements Serializable {
         this.lastEditedBy = lastEditedBy;
     }
 
-    public Events(int eventId, String name, String description, String location, String createdBy, String lastEditedBy) {
+    public Event(int eventId, String name, String description, String location, String createdBy, String lastEditedBy) {
         this.eventId = eventId;
         this.name = name;
         this.description = description;
@@ -134,13 +134,13 @@ public class Events implements Serializable {
 
 
     /**
-     * hasEqualMapping-method will compare two Events instances
+     * hasEqualMapping-method will compare two Event instances
      * and return true if they contain same values in all persistent instance
      * variables. If hasEqualMapping returns true, it does not mean the objects
      * are the same instance. However it does mean that in that moment, they
      * are mapped to the same row in database.
      */
-    public boolean hasEqualMapping(Events valueObject) {
+    public boolean hasEqualMapping(Event valueObject) {
 
         if (valueObject.getEventId() != this.eventId) {
             return (false);
@@ -181,7 +181,7 @@ public class Events implements Serializable {
      * possibly when application is writing object states in textlog.
      */
     public String toString() {
-        return "\nclass Events, mapping to table Events\n" +
+        return "\nclass Event, mapping to table Event\n" +
                 "Persistent attributes: \n" +
                 "eventId = " + this.eventId + "\n" +
                 "name = " + this.name + "\n" +

@@ -1,15 +1,15 @@
-package nl.utwente.di.team26.model;
+package nl.utwente.di.team26.model.TypeOfResource;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 /**
- * Materials Value Object.
- * This class is value object representing database table Materials
+ * Material Value Object.
+ * This class is value object representing database table Material
  * This class is intented to be used together with associated Dao object.
  */
 @XmlRootElement
-public class Materials extends TypeOfResource implements Serializable {
+public class Material extends TypeOfResource implements Serializable {
 
     /**
      * Persistent Instance variables. This data is directly
@@ -25,16 +25,16 @@ public class Materials extends TypeOfResource implements Serializable {
      * argument, which is the primary key of the corresponding table.
      */
 
-    public Materials() {
+    public Material() {
 
     }
 
-    public Materials(int resourceId, String name, String description, String image) {
+    public Material(int resourceId, String name, String description, String image) {
         super(resourceId, name, description);
         this.image = image;
     }
 
-    public Materials(int materialId) {
+    public Material(int materialId) {
         super(materialId);
     }
 
@@ -53,13 +53,13 @@ public class Materials extends TypeOfResource implements Serializable {
     }
 
     /**
-     * hasEqualMapping-method will compare two Materials instances
+     * hasEqualMapping-method will compare two Material instances
      * and return true if they contain same values in all persistent instance
      * variables. If hasEqualMapping returns true, it does not mean the objects
      * are the same instance. However it does mean that in that moment, they
      * are mapped to the same row in database.
      */
-    public boolean hasEqualMapping(Materials valueObject) {
+    public boolean hasEqualMapping(Material valueObject) {
 
         if (super.hasEqualMapping(valueObject)) {
             return (false);
@@ -76,7 +76,7 @@ public class Materials extends TypeOfResource implements Serializable {
      * possibly when application is writing object states in textlog.
      */
     public String toString() {
-        return "\nclass Materials, mapping to table Materials\n" +
+        return "\nclass Material, mapping to table Material\n" +
                 "Persistent attributes: \n" +
                 "resourceId = " + this.getResourceId() + "\n" +
                 "name = " + this.getName() + "\n" +

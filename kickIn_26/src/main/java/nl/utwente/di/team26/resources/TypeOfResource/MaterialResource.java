@@ -3,9 +3,9 @@ package nl.utwente.di.team26.resources.TypeOfResource;
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
-import nl.utwente.di.team26.dao.MaterialsDao;
-import nl.utwente.di.team26.dao.TypeOfResourceDao;
-import nl.utwente.di.team26.model.Materials;
+import nl.utwente.di.team26.dao.TypeOfResources.MaterialsDao;
+import nl.utwente.di.team26.dao.TypeOfResources.TypeOfResourceDao;
+import nl.utwente.di.team26.model.TypeOfResource.Material;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -19,7 +19,7 @@ public class MaterialResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Materials getDrawingObject(@PathParam("materialId") int materialId) {
+    public Material getDrawingObject(@PathParam("materialId") int materialId) {
         try (Connection conn = CONSTANTS.getConnection()) {
             return materialsDao.getObject(conn, materialId);
         } catch (SQLException | NotFoundException | DriverNotInstalledException throwables) {
@@ -31,7 +31,7 @@ public class MaterialResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public String updateObject(Materials materialToUpdate) {
+    public String updateObject(Material materialToUpdate) {
         try (Connection conn = CONSTANTS.getConnection()) {
             materialsDao.save(conn, materialToUpdate);
             return CONSTANTS.SUCCESS;
@@ -44,7 +44,7 @@ public class MaterialResource {
     @Produces(MediaType.TEXT_PLAIN)
     public String deleteObject(@PathParam("materialId") int materialId) {
         try (Connection conn = CONSTANTS.getConnection()) {
-            (new TypeOfResourceDao()).delete(conn, new Materials(materialId));
+            (new TypeOfResourceDao()).delete(conn, new Material(materialId));
             return CONSTANTS.SUCCESS;
         } catch (NotFoundException | SQLException | DriverNotInstalledException e) {
             return CONSTANTS.FAILURE + " " + e.getMessage();

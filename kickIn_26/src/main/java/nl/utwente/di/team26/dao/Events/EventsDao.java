@@ -1,7 +1,7 @@
-package nl.utwente.di.team26.dao;
+package nl.utwente.di.team26.dao.Events;
 
 import nl.utwente.di.team26.Exceptions.NotFoundException;
-import nl.utwente.di.team26.model.EventMap;
+import nl.utwente.di.team26.model.Event.Event;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,16 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
-/**
- * EventMap Data Access Object (DAO).
- * This class contains all database handling that is needed to
- * permanently store and retrieve EventMap object instances.
- */
-
-public class EventMapDao {
-
-
+public class EventsDao {
 
     /**
      * createValueObject-method. This method is used when the Dao class needs
@@ -29,8 +20,8 @@ public class EventMapDao {
      * NOTE: If you extend the valueObject class, make sure to override the
      * clone() method in it!
      */
-    public EventMap createValueObject() {
-        return new EventMap();
+    public Event createValueObject() {
+        return new Event();
     }
 
 
@@ -40,10 +31,10 @@ public class EventMapDao {
      * for the real load-method which accepts the valueObject as a parameter. Returned
      * valueObject will be created using the createValueObject() method.
      */
-    public EventMap getObject(Connection conn, int eventId, int mapId) throws NotFoundException, SQLException {
-        EventMap valueObject = createValueObject();
+    public Event getObject(Connection conn, int eventId) throws NotFoundException, SQLException {
+
+        Event valueObject = createValueObject();
         valueObject.setEventId(eventId);
-        valueObject.setMapId(mapId);
         load(conn, valueObject);
         return valueObject;
     }
@@ -57,17 +48,16 @@ public class EventMapDao {
      * overwrite all other fields except primary-key and possible runtime variables.
      * If load can not find matching row, NotFoundException will be thrown.
      *
-     * @param conn         This method requires working database connection.
-     * @param valueObject  This parameter contains the class instance to be loaded.
-     *                     Primary-key field must be set for this to work properly.
+     * @param conn        This method requires working database connection.
+     * @param valueObject This parameter contains the class instance to be loaded.
+     *                    Primary-key field must be set for this to work properly.
      */
-    public void load(Connection conn, EventMap valueObject) throws NotFoundException, SQLException {
+    public void load(Connection conn, Event valueObject) throws NotFoundException, SQLException {
 
-        String sql = "SELECT * FROM EventMap WHERE (eventId = ? AND mapId = ? ) ";
+        String sql = "SELECT * FROM Events WHERE (eventId = ? ) ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, valueObject.getEventId());
-            stmt.setInt(2, valueObject.getMapId());
 
             singleQuery(conn, stmt, valueObject);
 
@@ -82,15 +72,14 @@ public class EventMapDao {
      * This should only be used when target tables have only small amounts
      * of data.
      *
-     * @param conn         This method requires working database connection.
+     * @param conn This method requires working database connection.
      */
-    public List<EventMap> loadAll(Connection conn) throws SQLException {
+    public List<Event> loadAll(Connection conn) throws SQLException {
 
-        String sql = "SELECT * FROM EventMap ORDER BY eventId ASC ";
+        String sql = "SELECT * FROM Events ORDER BY eventId ASC ";
 
         return listQuery(conn, conn.prepareStatement(sql));
     }
-
 
 
     /**
@@ -101,42 +90,81 @@ public class EventMapDao {
      * read the generated primary-key back to valueObject if automatic surrogate-keys
      * were used.
      *
-     * @param conn         This method requires working database connection.
-     * @param valueObject  This parameter contains the class instance to be created.
-     *                     If automatic surrogate-keys are not used the Primary-key
-     *                     field must be set for this to work properly.
+     * @param conn        This method requires working database connection.
+     * @param valueObject This parameter contains the class instance to be created.
+     *                    If automatic surrogate-keys are not used the Primary-key
+     *                    field must be set for this to work properly.
      */
-    public synchronized void create(Connection conn, EventMap valueObject) throws SQLException {
+    public synchronized void create(Connection conn, Event valueObject) throws SQLException {
+
+        String sql = "";
+        PreparedStatement stmt = null;
+        ResultSet result = null;
 
         try {
-            (new EventsDao()).getObject(conn, valueObject.getEventId());
-            (new MapsDao()).getObject(conn, valueObject.getMapId());
+            sql = "INSERT INTO Events (name, description, "
+                    + "location, createdBy, lastEditedBy) VALUES (?, ?, ?, ?, ?) ";
+            stmt = conn.prepareStatement(sql);
 
-            String sql = "";
-            PreparedStatement stmt = null;
-            ResultSet result = null;
+            stmt.setString(1, valueObject.getName());
+            stmt.setString(2, valueObject.getDescription());
+            stmt.setString(3, valueObject.getLocation());
+            stmt.setString(4, valueObject.getCreatedBy());
+            stmt.setString(5, valueObject.getLastEditedBy());
 
-            try {
-                sql = "INSERT INTO EventMap (eventId, mapId) VALUES (?, ?) ";
-                stmt = conn.prepareStatement(sql);
-
-                stmt.setInt(1, valueObject.getEventId());
-                stmt.setInt(2, valueObject.getMapId());
-
-                int rowcount = databaseUpdate(conn, stmt);
-                if (rowcount != 1) {
-                    //System.out.println("PrimaryKey Error when updating DB!");
-                    throw new SQLException("PrimaryKey Error when updating DB!");
-                }
-            } finally {
-                if (stmt != null)
-                    stmt.close();
+            int rowcount = databaseUpdate(conn, stmt);
+            if (rowcount != 1) {
+                //System.out.println("PrimaryKey Error when updating DB!");
+                throw new SQLException("PrimaryKey Error when updating DB!");
             }
 
-        } catch (NotFoundException e) {
-            throw new SQLException("Either the event or the map do not exist.");
+        } finally {
+            if (stmt != null)
+                stmt.close();
+        }
+
+
+    }
+
+
+    /**
+     * save-method. This method will save the current state of valueObject to database.
+     * Save can not be used to create new instances in database, so upper layer must
+     * make sure that the primary-key is correctly specified. Primary-key will indicate
+     * which instance is going to be updated in database. If save can not find matching
+     * row, NotFoundException will be thrown.
+     *
+     * @param conn        This method requires working database connection.
+     * @param valueObject This parameter contains the class instance to be saved.
+     *                    Primary-key field must be set for this to work properly.
+     */
+    public void save(Connection conn, Event valueObject)
+            throws NotFoundException, SQLException {
+
+        String sql = "UPDATE Events SET name = ?, description = ?, location = ?, "
+                + "createdBy = ?, lastEditedBy = ? WHERE (eventId = ? ) ";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, valueObject.getName());
+            stmt.setString(2, valueObject.getDescription());
+            stmt.setString(3, valueObject.getLocation());
+            stmt.setString(4, valueObject.getCreatedBy());
+            stmt.setString(5, valueObject.getLastEditedBy());
+
+            stmt.setInt(6, valueObject.getEventId());
+
+            int rowcount = databaseUpdate(conn, stmt);
+            if (rowcount == 0) {
+                //System.out.println("Object could not be saved! (PrimaryKey not found)");
+                throw new NotFoundException("Object could not be saved! (PrimaryKey not found)");
+            }
+            if (rowcount > 1) {
+                //System.out.println("PrimaryKey Error when updating DB! (Many objects were affected!)");
+                throw new SQLException("PrimaryKey Error when updating DB! (Many objects were affected!)");
+            }
         }
     }
+
 
     /**
      * delete-method. This method will remove the information from database as identified by
@@ -146,18 +174,17 @@ public class EventMapDao {
      * primary-key than what it was in the deleted object. If delete can not find matching row,
      * NotFoundException will be thrown.
      *
-     * @param conn         This method requires working database connection.
-     * @param valueObject  This parameter contains the class instance to be deleted.
-     *                     Primary-key field must be set for this to work properly.
+     * @param conn        This method requires working database connection.
+     * @param valueObject This parameter is the primary key of the resource to be deleted.
+     *                    Primary-key field must be set for this to work properly.
      */
-    public void delete(Connection conn, EventMap valueObject)
+    public void delete(Connection conn, Event valueObject)
             throws NotFoundException, SQLException {
 
-        String sql = "DELETE FROM EventMap WHERE (eventId = ? AND mapId = ? ) ";
+        String sql = "DELETE FROM Events WHERE (eventId = ? ) ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, valueObject.getEventId());
-            stmt.setInt(2, valueObject.getMapId());
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount == 0) {
@@ -171,19 +198,6 @@ public class EventMapDao {
         }
     }
 
-    public void deleteAllForEvent(Connection conn, EventMap eventToClear) throws SQLException, NotFoundException {
-        String sql = "DELETE FROM EventMap WHERE (eventId = ?) ";
-
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, eventToClear.getEventId());
-
-            int rowcount = databaseUpdate(conn, stmt);
-            if (rowcount == 0) {
-                //System.out.println("Object could not be deleted (PrimaryKey not found)");
-                throw new NotFoundException("Object could not be deleted! (PrimaryKey not found)");
-            }
-        }
-    }
 
     /**
      * deleteAll-method. This method will remove all information from the table that matches
@@ -194,11 +208,11 @@ public class EventMapDao {
      * than what it was in the deleted object. (Note, the implementation of this method should
      * be different with different DB backends.)
      *
-     * @param conn         This method requires working database connection.
+     * @param conn This method requires working database connection.
      */
     public void deleteAll(Connection conn) throws SQLException {
 
-        String sql = "DELETE FROM EventMap";
+        String sql = "DELETE FROM Events";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             int rowcount = databaseUpdate(conn, stmt);
@@ -212,11 +226,11 @@ public class EventMapDao {
      * If table is empty, the return value is 0. This method should be used before calling
      * loadAll, to make sure table has not too many rows.
      *
-     * @param conn         This method requires working database connection.
+     * @param conn This method requires working database connection.
      */
     public int countAll(Connection conn) throws SQLException {
 
-        String sql = "SELECT count(*) FROM EventMap";
+        String sql = "SELECT count(*) FROM Events";
         PreparedStatement stmt = null;
         ResultSet result = null;
         int allRows = 0;
@@ -246,25 +260,55 @@ public class EventMapDao {
      * all matching those criteria you specified. Those instance-variables that
      * have NULL values are excluded in search-criteria.
      *
-     * @param conn         This method requires working database connection.
-     * @param valueObject  This parameter contains the class instance where search will be based.
-     *                     Primary-key field should not be set.
+     * @param conn        This method requires working database connection.
+     * @param valueObject This parameter contains the class instance where search will be based.
+     *                    Primary-key field should not be set.
      */
-    public List<EventMap> searchMatching(Connection conn, EventMap valueObject) throws SQLException {
+    public List<Event> searchMatching(Connection conn, Event valueObject) throws SQLException {
 
-        List<EventMap> searchResults;
+        List<Event> searchResults;
 
         boolean first = true;
-        StringBuilder sql = new StringBuilder("SELECT * FROM EventMap WHERE 1=1 ");
+        StringBuilder sql = new StringBuilder("SELECT * FROM Event WHERE 1=1 ");
 
         if (valueObject.getEventId() != 0) {
             first = false;
             sql.append("AND eventId = ").append(valueObject.getEventId()).append(" ");
         }
 
-        if (valueObject.getMapId() != 0) {
-            if (first) { first = false; }
-            sql.append("AND mapId = ").append(valueObject.getMapId()).append(" ");
+        if (valueObject.getName() != null) {
+            if (first) {
+                first = false;
+            }
+            sql.append("AND name LIKE '").append(valueObject.getName()).append("%' ");
+        }
+
+        if (valueObject.getDescription() != null) {
+            if (first) {
+                first = false;
+            }
+            sql.append("AND description LIKE '").append(valueObject.getDescription()).append("%' ");
+        }
+
+        if (valueObject.getLocation() != null) {
+            if (first) {
+                first = false;
+            }
+            sql.append("AND location LIKE '").append(valueObject.getLocation()).append("%' ");
+        }
+
+        if (valueObject.getCreatedBy() != null) {
+            if (first) {
+                first = false;
+            }
+            sql.append("AND createdBy LIKE '").append(valueObject.getCreatedBy()).append("%' ");
+        }
+
+        if (valueObject.getLastEditedBy() != null) {
+            if (first) {
+                first = false;
+            }
+            sql.append("AND lastEditedBy LIKE '").append(valueObject.getLastEditedBy()).append("%' ");
         }
 
 
@@ -280,20 +324,19 @@ public class EventMapDao {
         return searchResults;
     }
 
-
     /**
      * databaseUpdate-method. This method is a helper method for internal use. It will execute
      * all database handling that will change the information in tables. SELECT queries will
      * not be executed here however. The return value indicates how many rows were affected.
      * This method will also make sure that if cache is used, it will reset when data changes.
      *
-     * @param conn         This method requires working database connection.
-     * @param stmt         This parameter contains the SQL statement to be excuted.
+     * @param conn This method requires working database connection.
+     * @param stmt This parameter contains the SQL statement to be excuted.
      */
     protected int databaseUpdate(Connection conn, PreparedStatement stmt) throws SQLException {
+
         return stmt.executeUpdate();
     }
-
 
 
     /**
@@ -301,23 +344,22 @@ public class EventMapDao {
      * all database queries that will return only one row. The resultset will be converted
      * to valueObject. If no rows were found, NotFoundException will be thrown.
      *
-     * @param conn         This method requires working database connection.
-     * @param stmt         This parameter contains the SQL statement to be excuted.
-     * @param valueObject  Class-instance where resulting data will be stored.
+     * @param conn        This method requires working database connection.
+     * @param stmt        This parameter contains the SQL statement to be excuted.
+     * @param valueObject Class-instance where resulting data will be stored.
      */
-    protected void singleQuery(Connection conn, PreparedStatement stmt, EventMap valueObject)
+    protected void singleQuery(Connection conn, PreparedStatement stmt, Event valueObject)
             throws NotFoundException, SQLException {
 
         try (ResultSet result = stmt.executeQuery()) {
 
             if (result.next()) {
 
-                valueObject.setEventId(result.getInt("eventId"));
-                valueObject.setMapId(result.getInt("mapId"));
+                setPropertiesOfObject(result, valueObject);
 
             } else {
-                //System.out.println("EventMap Object Not Found!");
-                throw new NotFoundException("EventMap Object Not Found!");
+                //System.out.println("Event Object Not Found!");
+                throw new NotFoundException("Event Object Not Found!");
             }
         } finally {
             if (stmt != null)
@@ -331,21 +373,18 @@ public class EventMapDao {
      * all database queries that will return multiple rows. The resultset will be converted
      * to the List of valueObjects. If no rows were found, an empty List will be returned.
      *
-     * @param conn         This method requires working database connection.
-     * @param stmt         This parameter contains the SQL statement to be excuted.
+     * @param conn This method requires working database connection.
+     * @param stmt This parameter contains the SQL statement to be excuted.
      */
-    protected List<EventMap> listQuery(Connection conn, PreparedStatement stmt) throws SQLException {
+    protected List<Event> listQuery(Connection conn, PreparedStatement stmt) throws SQLException {
 
-        ArrayList<EventMap> searchResults = new ArrayList<>();
+        ArrayList<Event> searchResults = new ArrayList<>();
 
         try (ResultSet result = stmt.executeQuery()) {
 
             while (result.next()) {
-                EventMap temp = createValueObject();
-
-                temp.setEventId(result.getInt("eventId"));
-                temp.setMapId(result.getInt("mapId"));
-
+                Event temp = createValueObject();
+                setPropertiesOfObject(result, temp);
                 searchResults.add(temp);
             }
 
@@ -356,4 +395,15 @@ public class EventMapDao {
 
         return searchResults;
     }
+
+    private void setPropertiesOfObject(ResultSet result, Event temp) throws SQLException {
+        temp.setEventId(result.getInt("eventId"));
+        temp.setName(result.getString("name"));
+        temp.setDescription(result.getString("description"));
+        temp.setLocation(result.getString("location"));
+        temp.setCreatedBy(result.getString("createdBy"));
+        temp.setLastEditedBy(result.getString("lastEditedBy"));
+    }
+
+
 }

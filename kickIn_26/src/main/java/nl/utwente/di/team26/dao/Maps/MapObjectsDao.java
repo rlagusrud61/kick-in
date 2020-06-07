@@ -1,8 +1,7 @@
-package nl.utwente.di.team26.dao;
+package nl.utwente.di.team26.dao.Maps;
 
 import nl.utwente.di.team26.Exceptions.NotFoundException;
-import nl.utwente.di.team26.model.Materials;
-import nl.utwente.di.team26.model.TypeOfResource;
+import nl.utwente.di.team26.model.Map.MapObject;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,11 +12,11 @@ import java.util.List;
 
 
 /**
- * Materials Data Access Object (DAO).
+ * MapObject Data Access Object (DAO).
  * This class contains all database handling that is needed to
- * permanently store and retrieve Materials object instances.
+ * permanently store and retrieve MapObject object instances.
  */
-public class MaterialsDao {
+public class MapObjectsDao {
 
 
     /**
@@ -28,8 +27,8 @@ public class MaterialsDao {
      * NOTE: If you extend the valueObject class, make sure to override the
      * clone() method in it!
      */
-    public Materials createValueObject() {
-        return new Materials();
+    public MapObject createValueObject() {
+        return new MapObject();
     }
 
 
@@ -39,10 +38,10 @@ public class MaterialsDao {
      * for the real load-method which accepts the valueObject as a parameter. Returned
      * valueObject will be created using the createValueObject() method.
      */
-    public Materials getObject(Connection conn, int resourceId) throws NotFoundException, SQLException {
+    public MapObject getObject(Connection conn, int objectId) throws NotFoundException, SQLException {
 
-        Materials valueObject = createValueObject();
-        valueObject.setResourceId(resourceId);
+        MapObject valueObject = createValueObject();
+        valueObject.setObjectId(objectId);
         load(conn, valueObject);
         return valueObject;
     }
@@ -60,14 +59,12 @@ public class MaterialsDao {
      * @param valueObject This parameter contains the class instance to be loaded.
      *                    Primary-key field must be set for this to work properly.
      */
-    public void load(Connection conn, Materials valueObject) throws NotFoundException, SQLException {
+    public void load(Connection conn, MapObject valueObject) throws NotFoundException, SQLException {
 
-        String sql = "SELECT * " +
-                "FROM Materials m INNER JOIN TypeOfResource tor ON m.resourceId = tor.resourceId " +
-                "WHERE (m.resourceId = ? ) ";
+        String sql = "SELECT * FROM MapObjects WHERE (objectId = ? ) ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, valueObject.getResourceId());
+            stmt.setInt(1, valueObject.getObjectId());
 
             singleQuery(conn, stmt, valueObject);
 
@@ -84,14 +81,56 @@ public class MaterialsDao {
      *
      * @param conn This method requires working database connection.
      */
-    public List<Materials> loadAll(Connection conn) throws SQLException {
+    public List<MapObject> loadAll(Connection conn) throws SQLException {
 
-        String sql = "SELECT * " +
-                "FROM Materials m INNER JOIN TypeOfResource tor ON m.resourceId = tor.resourceId " +
-                "ORDER BY tor.resourceId ASC ";
+        String sql = "SELECT * FROM MapObjects ORDER BY objectId ASC ";
 
         return listQuery(conn, conn.prepareStatement(sql));
     }
+
+
+    /**
+     * create-method. This will create new row in database according to supplied
+     * valueObject contents. Make sure that values for all NOT NULL columns are
+     * correctly specified. Also, if this table does not use automatic surrogate-keys
+     * the primary-key must be specified. After INSERT command this method will
+     * read the generated primary-key back to valueObject if automatic surrogate-keys
+     * were used.
+     *
+     * @param conn        This method requires working database connection.
+     * @param valueObject This parameter contains the class instance to be created.
+     *                    If automatic surrogate-keys are not used the Primary-key
+     *                    field must be set for this to work properly.
+     */
+    public synchronized void create(Connection conn, MapObject valueObject) throws SQLException {
+
+        String sql = "";
+        PreparedStatement stmt = null;
+        ResultSet result = null;
+
+        try {
+            sql = "INSERT INTO MapObjects (mapId, resourceId, "
+                    + "latLangs) VALUES (?, ?, ?) ";
+            stmt = conn.prepareStatement(sql);
+
+            stmt.setInt(1, valueObject.getMapId());
+            stmt.setInt(2, valueObject.getResourceId());
+            stmt.setString(3, valueObject.getLatLangs());
+
+            int rowcount = databaseUpdate(conn, stmt);
+            if (rowcount != 1) {
+                //System.out.println("PrimaryKey Error when updating DB!");
+                throw new SQLException("PrimaryKey Error when updating DB!");
+            }
+
+        } finally {
+            if (stmt != null)
+                stmt.close();
+        }
+
+
+    }
+
 
     /**
      * save-method. This method will save the current state of valueObject to database.
@@ -104,23 +143,17 @@ public class MaterialsDao {
      * @param valueObject This parameter contains the class instance to be saved.
      *                    Primary-key field must be set for this to work properly.
      */
-    public void save(Connection conn, Materials valueObject)
+    public void save(Connection conn, MapObject valueObject)
             throws NotFoundException, SQLException {
 
-        (new TypeOfResourceDao()).save(conn,
-                new TypeOfResource(
-                        valueObject.getResourceId(),
-                        valueObject.getName(),
-                        valueObject.getDescription()
-                )
-        );
-
-        String sql = "UPDATE Materials SET image = ? WHERE (resourceId = ? ) ";
+        String sql = "UPDATE MapObjects SET mapId = ?, resourceId = ?, latLangs = ? WHERE (objectId = ? ) ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, valueObject.getImage());
-
+            stmt.setInt(1, valueObject.getMapId());
             stmt.setInt(2, valueObject.getResourceId());
+            stmt.setString(3, valueObject.getLatLangs());
+
+            stmt.setInt(4, valueObject.getObjectId());
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount == 0) {
@@ -134,6 +167,80 @@ public class MaterialsDao {
         }
     }
 
+
+    /**
+     * delete-method. This method will remove the information from database as identified by
+     * by primary-key in supplied valueObject. Once valueObject has been deleted it can not
+     * be restored by calling save. Restoring can only be done using create method but if
+     * database is using automatic surrogate-keys, the resulting object will have different
+     * primary-key than what it was in the deleted object. If delete can not find matching row,
+     * NotFoundException will be thrown.
+     *
+     * @param conn        This method requires working database connection.
+     * @param valueObject This parameter contains the class instance to be deleted.
+     *                    Primary-key field must be set for this to work properly.
+     */
+    public void delete(Connection conn, MapObject valueObject)
+            throws NotFoundException, SQLException {
+
+        String sql = "DELETE FROM MapObjects WHERE (objectId = ? ) ";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, valueObject.getObjectId());
+
+            int rowcount = databaseUpdate(conn, stmt);
+            if (rowcount == 0) {
+                //System.out.println("Object could not be deleted (PrimaryKey not found)");
+                throw new NotFoundException("Object could not be deleted! (PrimaryKey not found)");
+            }
+            if (rowcount > 1) {
+                //System.out.println("PrimaryKey Error when updating DB! (Many objects were deleted!)");
+                throw new SQLException("PrimaryKey Error when updating DB! (Many objects were deleted!)");
+            }
+        }
+    }
+
+    public void deleteAllForMap(Connection conn, MapObject valueObject)
+            throws NotFoundException, SQLException {
+
+        String sql = "DELETE FROM MapObjects WHERE (mapId = ? )";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, valueObject.getObjectId());
+
+            int rowcount = databaseUpdate(conn, stmt);
+            if (rowcount == 0) {
+                //System.out.println("Object could not be deleted (PrimaryKey not found)");
+                throw new NotFoundException("Object could not be deleted! (PrimaryKey not found)");
+            }
+            if (rowcount > 1) {
+                //System.out.println("PrimaryKey Error when updating DB! (Many objects were deleted!)");
+                throw new SQLException("PrimaryKey Error when updating DB! (Many objects were deleted!)");
+            }
+        }
+    }
+
+    /**
+     * deleteAll-method. This method will remove all information from the table that matches
+     * this Dao and ValueObject couple. This should be the most efficient way to clear table.
+     * Once deleteAll has been called, no valueObject that has been created before can be
+     * restored by calling save. Restoring can only be done using create method but if database
+     * is using automatic surrogate-keys, the resulting object will have different primary-key
+     * than what it was in the deleted object. (Note, the implementation of this method should
+     * be different with different DB backends.)
+     *
+     * @param conn This method requires working database connection.
+     */
+    public void deleteAll(Connection conn) throws SQLException {
+
+        String sql = "DELETE FROM MapObjects";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            int rowcount = databaseUpdate(conn, stmt);
+        }
+    }
+
+
     /**
      * coutAll-method. This method will return the number of all rows from table that matches
      * this Dao. The implementation will simply execute "select count(primarykey) from table".
@@ -144,7 +251,7 @@ public class MaterialsDao {
      */
     public int countAll(Connection conn) throws SQLException {
 
-        String sql = "SELECT count(*) FROM Materials";
+        String sql = "SELECT count(*) FROM MapObjects";
         PreparedStatement stmt = null;
         ResultSet result = null;
         int allRows = 0;
@@ -178,12 +285,26 @@ public class MaterialsDao {
      * @param valueObject This parameter contains the class instance where search will be based.
      *                    Primary-key field should not be set.
      */
-    public List<Materials> searchMatching(Connection conn, Materials valueObject) throws SQLException {
+    public List<MapObject> searchMatching(Connection conn, MapObject valueObject) throws SQLException {
 
-        List<Materials> searchResults;
+        List<MapObject> searchResults;
 
         boolean first = true;
-        StringBuilder sql = new StringBuilder("SELECT * FROM Materials WHERE 1=1 ");
+        StringBuilder sql = new StringBuilder("SELECT * FROM MapObject WHERE 1=1 ");
+
+        if (valueObject.getObjectId() != 0) {
+            if (first) {
+                first = false;
+            }
+            sql.append("AND objectId = ").append(valueObject.getObjectId()).append(" ");
+        }
+
+        if (valueObject.getMapId() != 0) {
+            if (first) {
+                first = false;
+            }
+            sql.append("AND mapId = ").append(valueObject.getMapId()).append(" ");
+        }
 
         if (valueObject.getResourceId() != 0) {
             if (first) {
@@ -192,15 +313,15 @@ public class MaterialsDao {
             sql.append("AND resourceId = ").append(valueObject.getResourceId()).append(" ");
         }
 
-        if (valueObject.getImage() != null) {
+        if (valueObject.getLatLangs() != null) {
             if (first) {
                 first = false;
             }
-            sql.append("AND image LIKE '").append(valueObject.getImage()).append("%' ");
+            sql.append("AND latLangs LIKE '").append(valueObject.getLatLangs()).append("%' ");
         }
 
 
-        sql.append("ORDER BY resourceId ASC ");
+        sql.append("ORDER BY objectId ASC ");
 
         // Prevent accidential full table results.
         // Use loadAll if all rows must be returned.
@@ -214,15 +335,6 @@ public class MaterialsDao {
 
 
     /**
-     * getDaogenVersion will return information about
-     * generator which created these sources.
-     */
-    public String getDaogenVersion() {
-        return "DaoGen version 2.4.1";
-    }
-
-
-    /**
      * databaseUpdate-method. This method is a helper method for internal use. It will execute
      * all database handling that will change the information in tables. SELECT queries will
      * not be executed here however. The return value indicates how many rows were affected.
@@ -232,7 +344,6 @@ public class MaterialsDao {
      * @param stmt This parameter contains the SQL statement to be excuted.
      */
     protected int databaseUpdate(Connection conn, PreparedStatement stmt) throws SQLException {
-
         return stmt.executeUpdate();
     }
 
@@ -246,19 +357,21 @@ public class MaterialsDao {
      * @param stmt        This parameter contains the SQL statement to be excuted.
      * @param valueObject Class-instance where resulting data will be stored.
      */
-    protected void singleQuery(Connection conn, PreparedStatement stmt, Materials valueObject)
+    protected void singleQuery(Connection conn, PreparedStatement stmt, MapObject valueObject)
             throws NotFoundException, SQLException {
 
         try (ResultSet result = stmt.executeQuery()) {
 
             if (result.next()) {
 
+                valueObject.setObjectId(result.getInt("objectId"));
+                valueObject.setMapId(result.getInt("mapId"));
                 valueObject.setResourceId(result.getInt("resourceId"));
-                valueObject.setImage(result.getString("image"));
+                valueObject.setLatLangs(result.getString("latLangs"));
 
             } else {
-                //System.out.println("Materials Object Not Found!");
-                throw new NotFoundException("Materials Object Not Found!");
+                //System.out.println("MapObject Object Not Found!");
+                throw new NotFoundException("MapObject Object Not Found!");
             }
         } finally {
             if (stmt != null)
@@ -274,18 +387,21 @@ public class MaterialsDao {
      *
      * @param conn This method requires working database connection.
      * @param stmt This parameter contains the SQL statement to be excuted.
+     * @return
      */
-    protected List<Materials> listQuery(Connection conn, PreparedStatement stmt) throws SQLException {
+    protected List<MapObject> listQuery(Connection conn, PreparedStatement stmt) throws SQLException {
 
-        ArrayList<Materials> searchResults = new ArrayList<>();
+        ArrayList<MapObject> searchResults = new ArrayList<>();
 
         try (ResultSet result = stmt.executeQuery()) {
 
             while (result.next()) {
-                Materials temp = createValueObject();
+                MapObject temp = createValueObject();
 
+                temp.setObjectId(result.getInt("objectId"));
+                temp.setMapId(result.getInt("mapId"));
                 temp.setResourceId(result.getInt("resourceId"));
-                temp.setImage(result.getString("image"));
+                temp.setLatLangs(result.getString("latLangs"));
 
                 searchResults.add(temp);
             }
@@ -297,6 +413,4 @@ public class MaterialsDao {
 
         return searchResults;
     }
-
-
 }

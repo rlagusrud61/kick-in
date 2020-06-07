@@ -3,8 +3,8 @@ package nl.utwente.di.team26.resources.TypeOfResource;
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
-import nl.utwente.di.team26.dao.TypeOfResourceDao;
-import nl.utwente.di.team26.model.TypeOfResource;
+import nl.utwente.di.team26.dao.TypeOfResources.TypeOfResourceDao;
+import nl.utwente.di.team26.model.TypeOfResource.TypeOfResource;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.Path;

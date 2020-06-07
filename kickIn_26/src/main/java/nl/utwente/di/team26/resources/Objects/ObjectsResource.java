@@ -3,8 +3,8 @@ package nl.utwente.di.team26.resources.Objects;
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
-import nl.utwente.di.team26.dao.MapObjectsDao;
-import nl.utwente.di.team26.model.MapObjects;
+import nl.utwente.di.team26.dao.Maps.MapObjectsDao;
+import nl.utwente.di.team26.model.Map.MapObject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -20,9 +20,9 @@ public class ObjectsResource {
     @GET
     @Path("{mapId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<MapObjects> getAllObjectsForMapById(@PathParam("mapId") int mapId) {
+    public List<MapObject> getAllObjectsForMapById(@PathParam("mapId") int mapId) {
         try (Connection conn = CONSTANTS.getConnection()) {
-            return mapObjectsDao.searchMatching(conn, new MapObjects(0, mapId, 0, null));
+            return mapObjectsDao.searchMatching(conn, new MapObject(0, mapId, 0, null));
         } catch (SQLException | DriverNotInstalledException throwables) {
             throwables.printStackTrace();
             return null;
@@ -32,7 +32,7 @@ public class ObjectsResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public String addObjectToMap(MapObjects newObjectToAdd) {
+    public String addObjectToMap(MapObject newObjectToAdd) {
         try (Connection conn = CONSTANTS.getConnection()) {
             mapObjectsDao.create(conn, newObjectToAdd);
             return CONSTANTS.SUCCESS;
@@ -47,7 +47,7 @@ public class ObjectsResource {
     @Produces(MediaType.TEXT_PLAIN)
     public String clearMap(@PathParam("mapId") int mapId) {
         try (Connection conn = CONSTANTS.getConnection()) {
-            mapObjectsDao.deleteAllForMap(conn, new MapObjects(0, mapId, 0, null));
+            mapObjectsDao.deleteAllForMap(conn, new MapObject(0, mapId, 0, null));
             return CONSTANTS.SUCCESS;
         } catch (SQLException | NotFoundException | DriverNotInstalledException throwables) {
             throwables.printStackTrace();

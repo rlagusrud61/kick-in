@@ -1,10 +1,7 @@
-package nl.utwente.di.team26.model;
+package nl.utwente.di.team26.model.Event;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.*;
-import java.sql.*;
-import java.util.*;
-import java.math.*;
 
 /**
  * EventMap Value Object.

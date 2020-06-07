@@ -1,15 +1,15 @@
-package nl.utwente.di.team26.model;
+package nl.utwente.di.team26.model.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 /**
- * MapObjects Value Object.
- * This class is value object representing database table MapObjects
+ * MapObject Value Object.
+ * This class is value object representing database table MapObject
  * This class is intended to be used together with associated Dao object.
  */
 @XmlRootElement
-public class MapObjects implements Serializable {
+public class MapObject implements Serializable {
 
     /**
      * Persistent Instance variables. This data is directly
@@ -27,21 +27,21 @@ public class MapObjects implements Serializable {
      * argument, which is the primary key of the corresponding table.
      */
 
-    public MapObjects() {
+    public MapObject() {
 
     }
 
-    public MapObjects(int objectIdIn) {
+    public MapObject(int objectIdIn) {
         this.objectId = objectIdIn;
     }
 
-    public MapObjects(int mapId, int resourceId, String latLangs) {
+    public MapObject(int mapId, int resourceId, String latLangs) {
         this.mapId = mapId;
         this.resourceId = resourceId;
         this.latLangs = latLangs;
     }
 
-    public MapObjects(int objectId, int mapId, int resourceId, String latLangs) {
+    public MapObject(int objectId, int mapId, int resourceId, String latLangs) {
         this.objectId = objectId;
         this.mapId = mapId;
         this.resourceId = resourceId;
@@ -107,13 +107,13 @@ public class MapObjects implements Serializable {
 
 
     /**
-     * hasEqualMapping-method will compare two MapObjects instances
+     * hasEqualMapping-method will compare two MapObject instances
      * and return true if they contain same values in all persistent instance
      * variables. If hasEqualMapping returns true, it does not mean the objects
      * are the same instance. However it does mean that in that moment, they
      * are mapped to the same row in database.
      */
-    public boolean hasEqualMapping(MapObjects valueObject) {
+    public boolean hasEqualMapping(MapObject valueObject) {
 
         if (valueObject.getObjectId() != this.objectId) {
             return (false);
@@ -136,7 +136,7 @@ public class MapObjects implements Serializable {
      * possibly when application is writing object states in textlog.
      */
     public String toString() {
-        return "\nclass MapObjects, mapping to table MapObjects\n" +
+        return "\nclass MapObject, mapping to table MapObject\n" +
                 "Persistent attributes: \n" +
                 "objectId = " + this.objectId + "\n" +
                 "mapId = " + this.mapId + "\n" +
