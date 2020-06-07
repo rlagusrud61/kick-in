@@ -1,13 +1,12 @@
 package nl.utwente.di.team26.resources.TypeOfResource;
 
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exceptions.DataSourceNotFoundException;
+import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.dao.DrawingDao;
 import nl.utwente.di.team26.dao.TypeOfResourceDao;
 import nl.utwente.di.team26.model.Drawing;
 
-import javax.naming.NamingException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.Connection;
@@ -23,7 +22,7 @@ public class DrawingResource {
     public Drawing getDrawingObject(@PathParam("drawingId") int drawingId) {
         try (Connection conn = CONSTANTS.getConnection()) {
             return drawingDao.getObject(conn, drawingId);
-        } catch (SQLException | NotFoundException | DataSourceNotFoundException | NamingException throwables) {
+        } catch (SQLException | NotFoundException | DriverNotInstalledException throwables) {
             throwables.printStackTrace();
             return null;
         }
@@ -36,8 +35,8 @@ public class DrawingResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             drawingDao.save(conn, drawingToUpdate);
             return CONSTANTS.SUCCESS;
-        } catch (NotFoundException | SQLException | DataSourceNotFoundException | NamingException e) {
-            return CONSTANTS.FAILURE;
+        } catch (NotFoundException | SQLException | DriverNotInstalledException e) {
+            return CONSTANTS.FAILURE + " " + e.getMessage();
         }
     }
 
@@ -47,8 +46,8 @@ public class DrawingResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             (new TypeOfResourceDao()).delete(conn, new Drawing(drawingId));
             return CONSTANTS.SUCCESS;
-        } catch (NotFoundException | SQLException | DataSourceNotFoundException | NamingException e) {
-            return CONSTANTS.FAILURE;
+        } catch (NotFoundException | SQLException | DriverNotInstalledException e) {
+            return CONSTANTS.FAILURE + " " + e.getMessage();
         }
     }
 }

@@ -1,12 +1,11 @@
 package nl.utwente.di.team26.resources.Events;
 
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exceptions.DataSourceNotFoundException;
+import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.dao.EventsDao;
 import nl.utwente.di.team26.model.Events;
 
-import javax.naming.NamingException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.Connection;
@@ -20,7 +19,7 @@ public class EventResource {
     public Events getEventById(@PathParam("eventId") int eventId) {
         try (Connection conn = CONSTANTS.getConnection()) {
             return (new EventsDao()).getObject(conn, eventId);
-        } catch (NotFoundException | SQLException | DataSourceNotFoundException | NamingException e) {
+        } catch (NotFoundException | SQLException | DriverNotInstalledException e) {
             return null;
         }
     }
@@ -32,8 +31,8 @@ public class EventResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             (new EventsDao()).save(conn, eventToUpdate);
             return CONSTANTS.SUCCESS;
-        } catch (NotFoundException | SQLException | DataSourceNotFoundException | NamingException e) {
-            return CONSTANTS.FAILURE;
+        } catch (NotFoundException | SQLException | DriverNotInstalledException e) {
+            return CONSTANTS.FAILURE + " " + e.getMessage();
         }
     }
 
@@ -43,8 +42,8 @@ public class EventResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             (new EventsDao()).delete(conn, new Events(eventToDelete));
             return CONSTANTS.SUCCESS;
-        } catch (NotFoundException | SQLException | DataSourceNotFoundException | NamingException e) {
-            return CONSTANTS.FAILURE;
+        } catch (NotFoundException | SQLException | DriverNotInstalledException e) {
+            return CONSTANTS.FAILURE + " " + e.getMessage();
         }
     }
 }

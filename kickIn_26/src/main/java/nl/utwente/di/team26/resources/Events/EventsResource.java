@@ -1,11 +1,10 @@
 package nl.utwente.di.team26.resources.Events;
 
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exceptions.DataSourceNotFoundException;
+import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
 import nl.utwente.di.team26.dao.EventsDao;
 import nl.utwente.di.team26.model.Events;
 
-import javax.naming.NamingException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.Connection;
@@ -22,7 +21,7 @@ public class EventsResource {
     public List<Events> getAllEvents() {
         try (Connection conn = CONSTANTS.getConnection()) {
             return eventsDao.loadAll(conn);
-        } catch (NotFoundException | SQLException | NamingException | DataSourceNotFoundException throwables) {
+        } catch (NotFoundException | SQLException | DriverNotInstalledException throwables) {
             throwables.printStackTrace();
             return null;
         }
@@ -35,7 +34,7 @@ public class EventsResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             eventsDao.create(conn, eventToAdd);
             return CONSTANTS.SUCCESS;
-        } catch (SQLException | NamingException | DataSourceNotFoundException throwables) {
+        } catch (SQLException | DriverNotInstalledException throwables) {
             throwables.printStackTrace();
             return CONSTANTS.FAILURE + ": " + throwables.getMessage();
         }
@@ -47,7 +46,7 @@ public class EventsResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             eventsDao.deleteAll(conn);
             return CONSTANTS.SUCCESS;
-        } catch (DataSourceNotFoundException | SQLException | NamingException e) {
+        } catch (SQLException | DriverNotInstalledException e) {
             e.printStackTrace();
             return CONSTANTS.FAILURE + ": " + e.getMessage();
         }

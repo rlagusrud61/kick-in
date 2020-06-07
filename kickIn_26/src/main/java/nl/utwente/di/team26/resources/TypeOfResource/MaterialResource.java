@@ -1,13 +1,12 @@
 package nl.utwente.di.team26.resources.TypeOfResource;
 
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exceptions.DataSourceNotFoundException;
+import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.dao.MaterialsDao;
 import nl.utwente.di.team26.dao.TypeOfResourceDao;
 import nl.utwente.di.team26.model.Materials;
 
-import javax.naming.NamingException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.Connection;
@@ -23,7 +22,7 @@ public class MaterialResource {
     public Materials getDrawingObject(@PathParam("materialId") int materialId) {
         try (Connection conn = CONSTANTS.getConnection()) {
             return materialsDao.getObject(conn, materialId);
-        } catch (SQLException | NotFoundException | DataSourceNotFoundException | NamingException throwables) {
+        } catch (SQLException | NotFoundException | DriverNotInstalledException throwables) {
             throwables.printStackTrace();
             return null;
         }
@@ -36,8 +35,8 @@ public class MaterialResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             materialsDao.save(conn, materialToUpdate);
             return CONSTANTS.SUCCESS;
-        } catch (NotFoundException | SQLException | DataSourceNotFoundException | NamingException e) {
-            return CONSTANTS.FAILURE;
+        } catch (NotFoundException | SQLException | DriverNotInstalledException e) {
+            return CONSTANTS.FAILURE + " " + e.getMessage();
         }
     }
 
@@ -47,8 +46,8 @@ public class MaterialResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             (new TypeOfResourceDao()).delete(conn, new Materials(materialId));
             return CONSTANTS.SUCCESS;
-        } catch (NotFoundException | SQLException | DataSourceNotFoundException | NamingException e) {
-            return CONSTANTS.FAILURE;
+        } catch (NotFoundException | SQLException | DriverNotInstalledException e) {
+            return CONSTANTS.FAILURE + " " + e.getMessage();
         }
     }
 

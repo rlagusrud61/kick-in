@@ -1,12 +1,11 @@
 package nl.utwente.di.team26.resources.Objects;
 
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exceptions.DataSourceNotFoundException;
+import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.dao.MapObjectsDao;
 import nl.utwente.di.team26.model.MapObjects;
 
-import javax.naming.NamingException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.Connection;
@@ -24,7 +23,7 @@ public class ObjectsResource {
     public List<MapObjects> getAllObjectsForMapById(@PathParam("mapId") int mapId) {
         try (Connection conn = CONSTANTS.getConnection()) {
             return mapObjectsDao.searchMatching(conn, new MapObjects(0, mapId, 0, null));
-        } catch (SQLException | DataSourceNotFoundException | NamingException throwables) {
+        } catch (SQLException | DriverNotInstalledException throwables) {
             throwables.printStackTrace();
             return null;
         }
@@ -37,9 +36,9 @@ public class ObjectsResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             mapObjectsDao.create(conn, newObjectToAdd);
             return CONSTANTS.SUCCESS;
-        } catch (SQLException | DataSourceNotFoundException | NamingException throwables) {
+        } catch (SQLException | DriverNotInstalledException throwables) {
             throwables.printStackTrace();
-            return CONSTANTS.FAILURE;
+            return CONSTANTS.FAILURE + " " + throwables.getMessage();
         }
     }
 
@@ -50,9 +49,9 @@ public class ObjectsResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             mapObjectsDao.deleteAllForMap(conn, new MapObjects(0, mapId, 0, null));
             return CONSTANTS.SUCCESS;
-        } catch (SQLException | NotFoundException | DataSourceNotFoundException | NamingException throwables) {
+        } catch (SQLException | NotFoundException | DriverNotInstalledException throwables) {
             throwables.printStackTrace();
-            return CONSTANTS.FAILURE;
+            return CONSTANTS.FAILURE + " " + throwables.getMessage();
         }
     }
 
@@ -62,7 +61,7 @@ public class ObjectsResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             mapObjectsDao.deleteAll(conn);
             return CONSTANTS.SUCCESS;
-        } catch (DataSourceNotFoundException | SQLException | NamingException e) {
+        } catch (SQLException | DriverNotInstalledException e) {
             e.printStackTrace();
             return CONSTANTS.FAILURE + ": " + e.getMessage();
         }
