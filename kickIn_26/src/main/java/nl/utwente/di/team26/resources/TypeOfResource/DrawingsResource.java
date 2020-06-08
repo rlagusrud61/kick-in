@@ -1,12 +1,11 @@
 package nl.utwente.di.team26.resources.TypeOfResource;
 
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exceptions.DataSourceNotFoundException;
+import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
 import nl.utwente.di.team26.dao.DrawingDao;
 import nl.utwente.di.team26.dao.TypeOfResourceDao;
 import nl.utwente.di.team26.model.Drawing;
 
-import javax.naming.NamingException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.Connection;
@@ -23,7 +22,7 @@ public class DrawingsResource {
     public List<Drawing> getAllDrawings() {
         try (Connection conn = CONSTANTS.getConnection()) {
             return drawingDao.loadAll(conn);
-        } catch (NotFoundException | SQLException | DataSourceNotFoundException | NamingException throwables) {
+        } catch (NotFoundException | SQLException | DriverNotInstalledException throwables) {
             throwables.printStackTrace();
             return null;
         }
@@ -36,9 +35,9 @@ public class DrawingsResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             (new TypeOfResourceDao()).create(conn, drawingToAdd);
             return CONSTANTS.SUCCESS;
-        } catch (SQLException | DataSourceNotFoundException | NamingException throwables) {
+        } catch (SQLException | DriverNotInstalledException throwables) {
             throwables.printStackTrace();
-            return CONSTANTS.FAILURE;
+            return CONSTANTS.FAILURE + " " + throwables.getMessage();
         }
     }
 }

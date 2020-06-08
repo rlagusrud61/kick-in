@@ -1,12 +1,11 @@
 package nl.utwente.di.team26.resources.Objects;
 
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exceptions.DataSourceNotFoundException;
+import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.dao.MapObjectsDao;
 import nl.utwente.di.team26.model.MapObjects;
 
-import javax.naming.NamingException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.Connection;
@@ -22,7 +21,7 @@ public class ObjectResource {
     public MapObjects getObjectForMap(@PathParam("objectId") int objectId) {
         try (Connection conn = CONSTANTS.getConnection()) {
             return mapObjectsDao.getObject(conn, objectId);
-        } catch (SQLException | NotFoundException | DataSourceNotFoundException | NamingException throwables) {
+        } catch (SQLException | NotFoundException | DriverNotInstalledException throwables) {
             throwables.printStackTrace();
             return null;
         }
@@ -35,8 +34,8 @@ public class ObjectResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             mapObjectsDao.save(conn, objectToUpdate);
             return CONSTANTS.SUCCESS;
-        } catch (NotFoundException | SQLException | DataSourceNotFoundException | NamingException e) {
-            return CONSTANTS.FAILURE;
+        } catch (NotFoundException | SQLException | DriverNotInstalledException e) {
+            return CONSTANTS.FAILURE + " " + e.getMessage();
         }
     }
 
@@ -46,8 +45,8 @@ public class ObjectResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             mapObjectsDao.delete(conn, new MapObjects(objectToDelete));
             return CONSTANTS.SUCCESS;
-        } catch (NotFoundException | SQLException | DataSourceNotFoundException | NamingException e) {
-            return CONSTANTS.FAILURE;
+        } catch (NotFoundException | SQLException | DriverNotInstalledException e) {
+            return CONSTANTS.FAILURE + " " + e.getMessage();
         }
     }
 }

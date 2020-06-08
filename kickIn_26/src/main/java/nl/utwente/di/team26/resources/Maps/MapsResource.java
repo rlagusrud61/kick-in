@@ -1,11 +1,10 @@
 package nl.utwente.di.team26.resources.Maps;
 
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exceptions.DataSourceNotFoundException;
+import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
 import nl.utwente.di.team26.dao.MapsDao;
 import nl.utwente.di.team26.model.Maps;
 
-import javax.naming.NamingException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.Connection;
@@ -22,7 +21,7 @@ public class MapsResource {
     public List<Maps> getAllMaps() {
         try (Connection conn = CONSTANTS.getConnection()) {
             return mapsDao.loadAll(conn);
-        } catch (NotFoundException | SQLException | DataSourceNotFoundException | NamingException throwables) {
+        } catch (NotFoundException | SQLException | DriverNotInstalledException throwables) {
             throwables.printStackTrace();
             return null;
         }
@@ -35,7 +34,7 @@ public class MapsResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             mapsDao.create(conn, mapToAdd);
             return CONSTANTS.SUCCESS;
-        } catch (SQLException | DataSourceNotFoundException | NamingException throwables) {
+        } catch (SQLException | DriverNotInstalledException throwables) {
             throwables.printStackTrace();
             return CONSTANTS.FAILURE + ": " + throwables.getMessage();
         }
@@ -47,7 +46,7 @@ public class MapsResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             mapsDao.deleteAll(conn);
             return CONSTANTS.SUCCESS;
-        } catch (DataSourceNotFoundException | SQLException | NamingException e) {
+        } catch (SQLException | DriverNotInstalledException e) {
             e.printStackTrace();
             return CONSTANTS.FAILURE + ": " + e.getMessage();
         }

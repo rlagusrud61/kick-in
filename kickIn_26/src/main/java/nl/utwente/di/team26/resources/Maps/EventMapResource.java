@@ -1,12 +1,11 @@
 package nl.utwente.di.team26.resources.Maps;
 
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exceptions.DataSourceNotFoundException;
+import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.dao.EventMapDao;
 import nl.utwente.di.team26.model.EventMap;
 
-import javax.naming.NamingException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.Connection;
@@ -24,7 +23,7 @@ public class EventMapResource {
     public List<EventMap> getAllMapsForEvent(@PathParam("eventId") int eventId) {
         try (Connection conn = CONSTANTS.getConnection()) {
             return eventMapDao.searchMatching(conn, new EventMap(eventId, 0));
-        } catch (SQLException | DataSourceNotFoundException | NamingException throwables) {
+        } catch (SQLException | DriverNotInstalledException throwables) {
             throwables.printStackTrace();
             return null;
         }
@@ -36,7 +35,7 @@ public class EventMapResource {
     public List<EventMap> getAllEventsForMap(@PathParam("mapId") int mapId) {
         try (Connection conn = CONSTANTS.getConnection()) {
             return eventMapDao.searchMatching(conn, new EventMap(0, mapId));
-        } catch (SQLException | DataSourceNotFoundException | NamingException throwables) {
+        } catch (SQLException | DriverNotInstalledException throwables) {
             throwables.printStackTrace();
             return null;
         }
@@ -49,10 +48,7 @@ public class EventMapResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             eventMapDao.create(conn, eventMapToCreate);
             return CONSTANTS.SUCCESS;
-        } catch (DataSourceNotFoundException | NamingException throwables) {
-            throwables.printStackTrace();
-            return CONSTANTS.FAILURE;
-        } catch (SQLException throwables) {
+        } catch (SQLException | DriverNotInstalledException throwables) {
             return CONSTANTS.FAILURE + ": " + throwables.getMessage();
         }
     }
@@ -64,9 +60,9 @@ public class EventMapResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             eventMapDao.deleteAllForEvent(conn, new EventMap(eventId, 0));
             return CONSTANTS.SUCCESS;
-        } catch (SQLException | NotFoundException | DataSourceNotFoundException | NamingException throwables) {
+        } catch (SQLException | NotFoundException | DriverNotInstalledException throwables) {
             throwables.printStackTrace();
-            return CONSTANTS.FAILURE;
+            return CONSTANTS.FAILURE + " " + throwables.getMessage();
         }
     }
 
@@ -77,9 +73,9 @@ public class EventMapResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             eventMapDao.delete(conn, new EventMap(eventId, mapId));
             return CONSTANTS.SUCCESS;
-        } catch (SQLException | NotFoundException | DataSourceNotFoundException | NamingException throwables) {
+        } catch (SQLException | NotFoundException | DriverNotInstalledException throwables) {
             throwables.printStackTrace();
-            return CONSTANTS.FAILURE;
+            return CONSTANTS.FAILURE + " " + throwables.getMessage();
         }
     }
 
@@ -89,9 +85,9 @@ public class EventMapResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             eventMapDao.deleteAll(conn);
             return CONSTANTS.SUCCESS;
-        } catch (SQLException | DataSourceNotFoundException | NamingException throwables) {
+        } catch (SQLException | DriverNotInstalledException throwables) {
             throwables.printStackTrace();
-            return CONSTANTS.FAILURE;
+            return CONSTANTS.FAILURE + " " + throwables.getMessage();
         }
     }
 
