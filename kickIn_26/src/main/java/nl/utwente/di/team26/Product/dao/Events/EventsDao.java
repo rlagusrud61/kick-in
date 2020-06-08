@@ -2,6 +2,7 @@ package nl.utwente.di.team26.Product.dao.Events;
 
 import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.model.Event.Event;
+import nl.utwente.di.team26.Product.model.Map.Map;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -406,4 +407,15 @@ public class EventsDao {
     }
 
 
+    public List<Event> allEventsFor(Connection conn, int mapId) throws SQLException {
+        List<Map> searchResults = null;
+        String sql =
+                "SELECT e.* " +
+                "FROM events e inner join eventmap em on e.eventid = em.eventid " +
+                "WHERE em.mapid = ?";
+
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        preparedStatement.setInt(1, mapId);
+        return listQuery(conn, conn.prepareStatement(sql));
+    }
 }

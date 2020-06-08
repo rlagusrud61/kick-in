@@ -38,6 +38,7 @@ public class EventsResource {
     }
 
     @POST
+    @Secured({Role.EDITOR})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String addNewEvent(Event eventToAdd) {
@@ -51,6 +52,7 @@ public class EventsResource {
     }
 
     @DELETE
+    @Secured({Role.ADMIN})
     @Produces(MediaType.TEXT_PLAIN)
     public String deleteAllEvents() {
         try (Connection conn = CONSTANTS.getConnection()) {

@@ -318,15 +318,18 @@ public class MapsDao {
         return searchResults;
     }
 
+    public List<Map> getAllMapsFor(Connection conn, int eventId) throws SQLException {
 
-    /**
-     * getDaogenVersion will return information about
-     * generator which created these sources.
-     */
-    public String getDaogenVersion() {
-        return "DaoGen version 2.4.1";
+        List<Map> searchResults = null;
+        String sql =
+                "SELECT m.* " +
+                "FROM maps m inner join eventmap em on m.mapid = em.mapid " +
+                "WHERE em.eventid = ?";
+
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        preparedStatement.setInt(1, eventId);
+        return listQuery(conn, conn.prepareStatement(sql));
     }
-
 
     /**
      * databaseUpdate-method. This method is a helper method for internal use. It will execute
@@ -408,6 +411,4 @@ public class MapsDao {
 
         return searchResults;
     }
-
-
 }
