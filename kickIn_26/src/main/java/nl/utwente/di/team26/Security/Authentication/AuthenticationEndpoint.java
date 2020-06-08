@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
+import java.security.SecureRandom;
 
 @Path("/authentication")
 public class AuthenticationEndpoint {
@@ -20,35 +21,56 @@ public class AuthenticationEndpoint {
     HttpServletResponse response;
 
     @POST
-    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public void authenticateUser(Credentials credentials) throws IOException {
         try {
-            authenticate(credentials.getEmail());
-            Cookie cookie = createCookie(credentials);
+            authenticate(credentials);
+
+            Cookie cookie = createCookie();
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
+
+            response.sendRedirect("./list.html");
         } catch (AuthenticationDeniedException e) {
             response.sendRedirect("./login.html");
         }
     }
 
-    private void authenticate(String emailAddress) throws AuthenticationDeniedException {
+    private void authenticate(Credentials credentials) throws AuthenticationDeniedException {
         // Authenticate against a database, LDAP, file or whatever
         // Throw an Exception if the credentials are invalid
-        if (!whiteListed(emailAddress)) {
-            throw new AuthenticationDeniedException("You are not Allowed");
+        if (!whiteListed(credentials.getPassword())) {
+            throw new AuthenticationDeniedException("You shall not pass");
+        }
+
+        // If matches password
+        if (!matchingPassword(credentials)) {
+            throw new AuthenticationDeniedException("You shall not pass");
         }
     }
 
     private boolean whiteListed(String emailAddress) {
+        // TODO: look up the database.
         return true;
     }
 
-    private Cookie createCookie(Credentials credentials) {
-        //Store the token in the database with emailAddress.
-        //Overwriting existing one if necessary.
-        return new Cookie(CONSTANTS.COOKIENAME, credentials.googleToken);
+    private boolean matchingPassword(Credentials credentials) {
+        // TODO: read the database response.
+        return true;
+    }
+
+    private Cookie createCookie() {
+        SecureRandom secureRandom = new SecureRandom();
+        byte[] randomBytes = new byte[256];
+        secureRandom.nextBytes(randomBytes);
+        String token = new String(randomBytes);
+
+        /*
+        TODO: Store the token in the database with emailAddress.
+         Overwriting existing one if necessary.
+        */
+
+        return new Cookie(CONSTANTS.COOKIENAME, token);
     }
 
 

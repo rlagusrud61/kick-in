@@ -6,15 +6,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Credentials {
 
     String email;
-    String googleToken;
+    String password;
 
     public Credentials() {
 
     }
 
-    public Credentials(String email, String googleToken) {
+    public Credentials(String email, String password) {
         this.email = email;
-        this.googleToken = googleToken;
+        this.password = password;
     }
 
     public String getEmail() {
@@ -25,11 +25,11 @@ public class Credentials {
         this.email = email;
     }
 
-    public String getGoogleToken() {
-        return googleToken;
+    public String getPassword() {
+        return password;
     }
 
-    public void setGoogleToken(String googleToken) {
-        this.googleToken = googleToken;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
