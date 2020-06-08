@@ -148,6 +148,7 @@
     </div>
 
     <!-- List of Events -->
+    <div class = "eventlist" id = "eventlist"></div>
     <div class= "col-md-12 col-sm-10">
       <!-- Event 1 -->
       <div class="project">
@@ -166,8 +167,25 @@
         </div>
       </div>
     </div>
-  </div>
+	<div class= "col-md-12 col-sm-10">
+      <!-- Event 1 -->
+      <div class="project">
+        <div class="row bg-white has-shadow">
+          <div class="col-lg-12 col-md-12 d-flex align-items-center justify-content-between">
+            <h3 class="h4"><a href="event.html">Event Title</a></h3>
+            <h3 class="h4">20/4/2020</h3>
+            <h3 class="h4">Carl The Creator</h3>
+            <h3 class="h4">Eddie the Editor</h3>
+            <div class="col-md-1 col-sm-1 col-lg-1 d-flex justify-content-between">
+              <a href="edit.html" class="text-success"><i class="glyphicon glyphicon-pencil" style="font-size:20px;"></i></a>
+              <a href="edit.html" class="text-success"><i class="glyphicon glyphicon-trash" style="font-size:20px;"></i></a>
+            </div>
+          </div>
 
+        </div>
+      </div>
+    </div>
+    </div>
   <script>
 
 // Get the modal
@@ -198,7 +216,7 @@ window.onclick = function(event) {
 
 function createEvent(form) {
 	const xhr = new XMLHttpRequest();
-	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/EventsResource", true);
+	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/events", true);
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState == 4) {
 			window.location.href = 'http://localhost:8080/kickInTeam26/event.html/' + xhr.responseText
@@ -209,12 +227,30 @@ function createEvent(form) {
 	xhr.send(JSON.stringify(form));
 }
 
-function getEventList() {
+window.onload = function() {
 	const xhr = new XMLHttpRequest();
-	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/EventsResource", true);
+	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/events", true);
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState == 4) {
-			console.log(xhr.responseText);
+			var omfg = document.getElementById("eventlist");
+			var events = JSON.parse(xhr.responseText);
+			var htmltext = htmltext = "<div class= 'col-md-12 col-sm-10'><div class='project'><div class='row bg-white has-shadow'>" +
+			"<div class='col-lg-12 col-md-12 d-flex align-items-center justify-content-between'><h3 class='h4'><a href='event.html'>" + events[0].name + "</a>" +
+			"</h3><h3 class='h4'>20/4/2020</h3><h3 class='h4'>" + events[0].createdBy + "</h3><h3 class='h4'> " + events[0].lastEditedBy + "</h3>" + 
+			"<div class='col-md-1 col-sm-1 col-lg-1 d-flex justify-content-between'><a href='edit.html' class='text-success'>" + 
+			"<i class='glyphicon glyphicon-pencil' style='font-size:20px;'></i></a><a href='edit.html' class='text-success'>" + 
+			"<i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a></div></div></div></div></div>"
+			
+			for (i = 1; i < events.length; i++) {
+				htmltext += "<div class= 'col-md-12 col-sm-10'><div class='project'><div class='row bg-white has-shadow'>" + 
+				"<div class='col-lg-12 col-md-12 d-flex align-items-center justify-content-between'><h3 class='h4'><a href='event.html'>" + events[i].name + "</a>" + 
+				"</h3><h3 class='h4'>20/4/2020</h3><h3 class='h4'>" + events[i].createdBy + "</h3><h3 class='h4'> " + events[i].lastEditedBy + "</h3>" + 
+				"<div class='col-md-1 col-sm-1 col-lg-1 d-flex justify-content-between'><a href='edit.html' class='text-success'>" + 
+				"<i class='glyphicon glyphicon-pencil' style='font-size:20px;'></i></a><a href='edit.html' class='text-success'> " + 
+				"<i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a></div></div></div></div></div>"
+			}
+			omfg.innerHTML = htmltext;
+			console.log(events[0]);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -223,7 +259,7 @@ function getEventList() {
 
 function deleteEvent(event) {
 	const xhr = new XMLHttpRequest();
-	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/EventResource", true);
+	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/event", true);
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState == 4) {
 			console.log(xhr.responseText);

@@ -116,7 +116,7 @@ function updateEvent(form) {
 	url = url.split("/");
 	url = url[10];
 	const xhr = new XMLHttpRequest();
-	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/EventResource/" + url, true);
+	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/event/" + url, true);
 	xhr.onreadystatechange = function () {
   		if (xhr.readyState == 4) {
    			window.location.href = 'http://localhost:8080/kickInTeam26/list.html/';

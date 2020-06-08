@@ -177,7 +177,7 @@ function getEvent() {
 	url = url.split("/");
 	url = url[10];
 	const xhr = new XMLHttpRequest();
-	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/EventResource/" + url, true);
+	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/eventmap/" + url, true);
 	xhr.onreadystatechange = function () {
   		if (xhr.readyState == 4) {
    			console.log(xhr.responseText);
@@ -192,7 +192,7 @@ function getMaps() {
 	url = url.split("/");
 	url = url[10];
 	const xhr = new XMLHttpRequest();
-	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/EventMapResource/event" + url, true);
+	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/eventmap/event" + url, true);
 	xhr.onreadystatechange = function () {
   		if (xhr.readyState == 4) {
    			console.log(xhr.responseText);
