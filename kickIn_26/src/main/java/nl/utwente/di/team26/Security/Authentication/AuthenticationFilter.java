@@ -2,12 +2,14 @@ package nl.utwente.di.team26.Security.Authentication;
 
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exceptions.AuthenticationDeniedException;
+import nl.utwente.di.team26.Security.Authentication.User.AuthenticatedUser;
 
 import javax.annotation.Priority;
+import javax.enterprise.event.Event;
+import javax.inject.Inject;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.container.PreMatching;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.Response;
@@ -23,13 +25,16 @@ import java.util.Map;
 @Priority(Priorities.AUTHENTICATION)
 public class AuthenticationFilter implements ContainerRequestFilter {
 
+    @Inject
+    @AuthenticatedUser
+    Event<Integer> userAuthenticatedEvent;
+
     @Context
     UriInfo uriInfo;
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
 
-        System.out.println(requestContext.getUriInfo().getBaseUri().getPath());
         Map<String, Cookie> cookieJar = requestContext.getCookies();
 
         // Validate the Authorization header
@@ -45,7 +50,8 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
             try {
                 // Validate the token
-                validateToken(token);
+                Integer userId = validateToken(token);
+                userAuthenticatedEvent.fire(userId);
             } catch (AuthenticationDeniedException e) {
                 abortWithUnauthorized(requestContext);
             }
@@ -73,8 +79,9 @@ public class AuthenticationFilter implements ContainerRequestFilter {
                 Response.status(Response.Status.UNAUTHORIZED).build());
     }
 
-    private void validateToken(String token) throws AuthenticationDeniedException {
+    private Integer validateToken(String token) throws AuthenticationDeniedException {
         // Check if the token was issued by the server and if it's not expired
         // Throw an Exception if the token is invalid
+        return 0;
     }
 }

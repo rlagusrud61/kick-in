@@ -67,5 +67,9 @@
     <orderEntry type="library" name="Maven: junit:junit:4.10" level="project" />
     <orderEntry type="library" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.postgresql:postgresql:42.2.12" level="project" />
+    <orderEntry type="library" name="Maven: javax.enterprise:cdi-api:2.0.SP1" level="project" />
+    <orderEntry type="library" name="Maven: javax.el:javax.el-api:3.0.0" level="project" />
+    <orderEntry type="library" name="Maven: javax.interceptor:javax.interceptor-api:1.2" level="project" />
+    <orderEntry type="library" name="Maven: javax.inject:javax.inject:1" level="project" />
   </component>
 </module>

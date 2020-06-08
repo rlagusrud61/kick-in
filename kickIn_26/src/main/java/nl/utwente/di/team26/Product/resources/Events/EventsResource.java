@@ -5,7 +5,11 @@ import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
 import nl.utwente.di.team26.Product.dao.Events.EventsDao;
 import nl.utwente.di.team26.Product.model.Event.Event;
 import nl.utwente.di.team26.Security.Authentication.Secured;
+import nl.utwente.di.team26.Security.Authentication.User.AuthenticatedUser;
+import nl.utwente.di.team26.Security.Authentication.User.User;
+import nl.utwente.di.team26.Security.Authorization.Role;
 
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.Connection;
@@ -15,10 +19,14 @@ import java.util.List;
 @Path("/events")
 public class EventsResource {
 
+    @Inject
+    @AuthenticatedUser
+    User authenticatedUser;
+
     public EventsDao eventsDao = new EventsDao();
 
     @GET
-    @Secured
+    @Secured({Role.VISITOR})
     @Produces(MediaType.APPLICATION_JSON)
     public List<Event> getAllEvents() {
         try (Connection conn = CONSTANTS.getConnection()) {
