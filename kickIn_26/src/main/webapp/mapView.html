@@ -113,7 +113,37 @@ table  thead tr th{
 </div>
 </center>
 
-<
+<script>
+function getMap() {
+	var url = window.location.href;
+	url = url.split("/");
+	url = url[10];
+	const xhr = new XMLHttpRequest();
+	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/MapResource/" + url, true);
+	xhr.onreadystatechange = function () {
+  		if (xhr.readyState == 4) {
+   			console.log(xhr.responseText);
+   			}
+    }
+   	xhr.setRequestHeader("Content-Type", "application/json");
+   	xhr.send();
+}
+
+function deleteMap() {
+	var url = window.location.href;
+	url = url.split("/");
+	url = url[10];
+	const xhr = new XMLHttpRequest();
+	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/MapResource/" + url, true);
+	xhr.onreadystatechange = function () {
+  		if (xhr.readyState == 4) {
+   			console.log(xhr.responseText);
+   			}
+    }
+   	xhr.setRequestHeader("Content-Type", "application/json");
+   	xhr.send();
+}
+</script>
 </body>
 </html>
 
