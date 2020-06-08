@@ -1,10 +1,13 @@
 package nl.utwente.di.team26.Security.Authentication;
 
+import io.jsonwebtoken.*;
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exceptions.AuthenticationDeniedException;
+import nl.utwente.di.team26.Exceptions.TokenObsoleteException;
 import nl.utwente.di.team26.Security.Authentication.User.AuthenticatedUser;
 
 import javax.annotation.Priority;
+import javax.crypto.spec.SecretKeySpec;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.ws.rs.Priorities;
@@ -15,9 +18,11 @@ import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.Provider;
+import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.Key;
 import java.util.Map;
 
 @Secured
@@ -27,35 +32,41 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
     @Inject
     @AuthenticatedUser
-    Event<Integer> userAuthenticatedEvent;
+    Event<String> userAuthenticatedEvent;
 
     @Context
     UriInfo uriInfo;
+
+    String userId;
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
 
         Map<String, Cookie> cookieJar = requestContext.getCookies();
 
-        // Validate the Authorization header
-        if (!hasCookie(cookieJar)) {
+        // Validate the Cookie Token
             try {
+                if (!hasCookie(cookieJar)) {
                 sendToLogin(requestContext);
+                } else {
+                    // Extract the token from the Cookie
+                    String token = cookieJar.get(CONSTANTS.COOKIENAME).getValue();
+
+                    try {
+                        // Validate the token
+                        validateToken(token);
+                        userAuthenticatedEvent.fire(userId);
+                    } catch (TokenObsoleteException e) {
+                        e.printStackTrace();
+                        sendToLogin(requestContext);
+                    } catch (AuthenticationDeniedException e) {
+                        e.printStackTrace();
+                        abortWithUnauthorized(requestContext);
+                    }
+                }
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
-        } else {
-            // Extract the token from the Cookie
-            String token = cookieJar.get(CONSTANTS.COOKIENAME).getValue();
-
-            try {
-                // Validate the token
-                Integer userId = validateToken(token);
-                userAuthenticatedEvent.fire(userId);
-            } catch (AuthenticationDeniedException e) {
-                abortWithUnauthorized(requestContext);
-            }
-        }
 
     }
 
@@ -79,9 +90,29 @@ public class AuthenticationFilter implements ContainerRequestFilter {
                 Response.status(Response.Status.UNAUTHORIZED).build());
     }
 
-    private Integer validateToken(String token) throws AuthenticationDeniedException {
+    private void validateToken(String token) throws AuthenticationDeniedException, TokenObsoleteException {
         // Check if the token was issued by the server and if it's not expired
         // Throw an Exception if the token is invalid
-        return 0;
+        try {
+            Claims claims = decodeJWT(token);
+            userId = claims.getSubject();
+            //TODO: Check with database but this is good enough by itself honestly.
+        } catch (ExpiredJwtException e) {
+            throw new TokenObsoleteException("Time for a new Token!");
+        } catch (JwtException e) {
+            throw new AuthenticationDeniedException("Denied");
+        }
+    }
+
+    public static Claims decodeJWT(String jwt) {
+        //This line will throw an exception if it is not a signed JWS (as expected)
+        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+        Key signingKey = new SecretKeySpec(CONSTANTS.SECRET.getBytes(), signatureAlgorithm.getJcaName());
+
+        return Jwts.parserBuilder()
+                .setSigningKey(signingKey)
+                .build()
+                .parseClaimsJws(jwt)
+                .getBody();
     }
 }

@@ -1,18 +1,24 @@
 package nl.utwente.di.team26.Security.Authentication;
 
+import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exceptions.AuthenticationDeniedException;
+import nl.utwente.di.team26.Security.Authentication.User.UserDao;
 
+import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
+import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
+import java.security.Key;
 import java.security.SecureRandom;
+import java.util.Date;
 
 @Path("/authentication")
 public class AuthenticationEndpoint {
@@ -24,9 +30,9 @@ public class AuthenticationEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     public void authenticateUser(Credentials credentials) throws IOException {
         try {
-            authenticate(credentials);
+            int userId = authenticate(credentials);
 
-            Cookie cookie = createCookie();
+            Cookie cookie = createCookie(userId);
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
 
@@ -36,10 +42,10 @@ public class AuthenticationEndpoint {
         }
     }
 
-    private void authenticate(Credentials credentials) throws AuthenticationDeniedException {
+    private int authenticate(Credentials credentials) throws AuthenticationDeniedException {
         // Authenticate against a database, LDAP, file or whatever
         // Throw an Exception if the credentials are invalid
-        if (!whiteListed(credentials.getPassword())) {
+        if (!whiteListed(credentials.getEmail())) {
             throw new AuthenticationDeniedException("You shall not pass");
         }
 
@@ -47,6 +53,8 @@ public class AuthenticationEndpoint {
         if (!matchingPassword(credentials)) {
             throw new AuthenticationDeniedException("You shall not pass");
         }
+
+        return 0;
     }
 
     private boolean whiteListed(String emailAddress) {
@@ -59,19 +67,45 @@ public class AuthenticationEndpoint {
         return true;
     }
 
-    private Cookie createCookie() {
-        SecureRandom secureRandom = new SecureRandom();
-        byte[] randomBytes = new byte[256];
-        secureRandom.nextBytes(randomBytes);
-        String token = new String(randomBytes);
+    private Cookie createCookie(int userId) {
+
+
+        String count = getCount();
+        String token = createJWT(String.valueOf(userId), count);
 
         /*
-        TODO: Store the token in the database with emailAddress.
+        TODO: Store the token in the database with userId.
          Overwriting existing one if necessary.
         */
-
         return new Cookie(CONSTANTS.COOKIENAME, token);
     }
 
+    private String getCount() {
+        return String.valueOf(new UserDao().getCount());
+    }
+
+    public static String createJWT(String subject, String count) {
+
+        //The JWT signature algorithm we will be using to sign the token
+        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+        Key signingKey = new SecretKeySpec(CONSTANTS.SECRET.getBytes(), signatureAlgorithm.getJcaName());
+
+        long nowMillis = System.currentTimeMillis();
+        long expMillis = nowMillis + CONSTANTS.TTK;
+        Date now = new Date(nowMillis);
+        Date exp = new Date(expMillis);
+
+        //Let's set the JWT Claims
+        JwtBuilder builder = Jwts.builder()
+                .setId(count)
+                .setIssuer(CONSTANTS.ISSUER)
+                .setSubject(subject)
+                .setIssuedAt(now)
+                .setExpiration(exp)
+                .signWith(signingKey, signatureAlgorithm);
+
+        //Builds the JWT and serializes it to a compact, URL-safe string
+        return builder.compact();
+    }
 
 }
