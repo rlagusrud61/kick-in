@@ -1,6 +1,7 @@
 package nl.utwente.di.team26.Security.Authentication.User;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
 
 @XmlRootElement
 public class User {
@@ -57,5 +58,18 @@ public class User {
 
     public void setClarificationLevel(int clarificationLevel) {
         this.clarificationLevel = clarificationLevel;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return userId == user.userId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId);
     }
 }

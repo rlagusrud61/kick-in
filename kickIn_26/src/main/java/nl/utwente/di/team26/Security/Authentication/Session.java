@@ -13,6 +13,10 @@ public class Session {
 
     }
 
+    public Session(int userId) {
+        this.userId = userId;
+    }
+
     public Session(String token, int userId) {
         this.token = token;
         this.userId = userId;

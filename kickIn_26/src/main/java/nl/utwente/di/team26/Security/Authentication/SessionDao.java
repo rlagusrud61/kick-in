@@ -105,29 +105,25 @@ public class SessionDao {
      */
     public synchronized void create(Connection conn, Session valueObject) throws SQLException {
 
-        String sql = "";
-        PreparedStatement stmt = null;
-        ResultSet result = null;
+        String sql = "INSERT INTO session (token, userId) VALUES (?, ?)";
 
-        try {
-            sql = "INSERT INTO session (token, userId) VALUES (?, ?) ";
-            stmt = conn.prepareStatement(sql);
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            clearTokensForUser(conn, valueObject.userId);
 
             stmt.setString(1, valueObject.getToken());
             stmt.setInt(2, valueObject.getUserId());
-
-            int rowcount = databaseUpdate(conn, stmt);
-            if (rowcount != 1) {
-                //System.out.println("PrimaryKey Error when updating DB!");
-                throw new SQLException("PrimaryKey Error when updating DB!");
-            }
-
-        } finally {
-            if (stmt != null)
-                stmt.close();
+            databaseUpdate(conn, stmt);
         }
+    }
 
+    private void clearTokensForUser(Connection conn, int userId) throws SQLException {
+        String sql = "DELETE FROM session WHERE (userId = ? ) ";
 
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            int rowcount = databaseUpdate(conn, stmt);
+        }
     }
 
     /**
@@ -224,7 +220,6 @@ public class SessionDao {
      * @param stmt         This parameter contains the SQL statement to be excuted.
      */
     protected int databaseUpdate(Connection conn, PreparedStatement stmt) throws SQLException {
-
         return stmt.executeUpdate();
     }
 
@@ -271,7 +266,7 @@ public class SessionDao {
      */
     protected List<Session> listQuery(Connection conn, PreparedStatement stmt) throws SQLException {
 
-        ArrayList<Session> searchResults = new ArrayList<Session>();
+        ArrayList<Session> searchResults = new ArrayList<>();
 
         try (ResultSet result = stmt.executeQuery()) {
 

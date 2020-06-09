@@ -1,7 +1,6 @@
 package nl.utwente.di.team26.Product.resources.TypeOfResource;
 
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
 import nl.utwente.di.team26.Product.dao.TypeOfResources.DrawingDao;
 import nl.utwente.di.team26.Product.dao.TypeOfResources.TypeOfResourceDao;
 import nl.utwente.di.team26.Product.model.TypeOfResource.Drawing;
@@ -32,7 +31,7 @@ public class DrawingsResource {
     public List<Drawing> getAllDrawings() {
         try (Connection conn = CONSTANTS.getConnection()) {
             return drawingDao.loadAll(conn);
-        } catch (NotFoundException | SQLException | DriverNotInstalledException throwables) {
+        } catch (NotFoundException | SQLException throwables) {
             throwables.printStackTrace();
             return null;
         }
@@ -46,7 +45,7 @@ public class DrawingsResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             (new TypeOfResourceDao()).create(conn, drawingToAdd);
             return CONSTANTS.SUCCESS;
-        } catch (SQLException | DriverNotInstalledException throwables) {
+        } catch (SQLException throwables) {
             throwables.printStackTrace();
             return CONSTANTS.FAILURE + " " + throwables.getMessage();
         }

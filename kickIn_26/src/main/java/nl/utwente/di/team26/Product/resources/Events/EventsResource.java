@@ -1,7 +1,6 @@
 package nl.utwente.di.team26.Product.resources.Events;
 
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
 import nl.utwente.di.team26.Product.dao.Events.EventsDao;
 import nl.utwente.di.team26.Product.model.Event.Event;
 import nl.utwente.di.team26.Security.Authentication.Secured;
@@ -31,7 +30,7 @@ public class EventsResource {
     public List<Event> getAllEvents() {
         try (Connection conn = CONSTANTS.getConnection()) {
             return eventsDao.loadAll(conn);
-        } catch (NotFoundException | SQLException | DriverNotInstalledException throwables) {
+        } catch (NotFoundException | SQLException throwables) {
             throwables.printStackTrace();
             return null;
         }
@@ -45,7 +44,7 @@ public class EventsResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             eventsDao.create(conn, eventToAdd);
             return CONSTANTS.SUCCESS;
-        } catch (SQLException | DriverNotInstalledException throwables) {
+        } catch (SQLException throwables) {
             throwables.printStackTrace();
             return CONSTANTS.FAILURE + ": " + throwables.getMessage();
         }
@@ -58,7 +57,7 @@ public class EventsResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             eventsDao.deleteAll(conn);
             return CONSTANTS.SUCCESS;
-        } catch (SQLException | DriverNotInstalledException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return CONSTANTS.FAILURE + ": " + e.getMessage();
         }

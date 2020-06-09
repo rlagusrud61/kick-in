@@ -1,7 +1,6 @@
 package nl.utwente.di.team26.Product.resources.TypeOfResource;
 
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.TypeOfResources.MaterialsDao;
 import nl.utwente.di.team26.Product.dao.TypeOfResources.TypeOfResourceDao;
@@ -32,7 +31,7 @@ public class MaterialResource {
     public Material getDrawingObject(@PathParam("materialId") int materialId) {
         try (Connection conn = CONSTANTS.getConnection()) {
             return materialsDao.getObject(conn, materialId);
-        } catch (SQLException | NotFoundException | DriverNotInstalledException throwables) {
+        } catch (SQLException | NotFoundException throwables) {
             throwables.printStackTrace();
             return null;
         }
@@ -46,7 +45,7 @@ public class MaterialResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             materialsDao.save(conn, materialToUpdate);
             return CONSTANTS.SUCCESS;
-        } catch (NotFoundException | SQLException | DriverNotInstalledException e) {
+        } catch (NotFoundException | SQLException e) {
             return CONSTANTS.FAILURE + " " + e.getMessage();
         }
     }
@@ -58,7 +57,7 @@ public class MaterialResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             (new TypeOfResourceDao()).delete(conn, new Material(materialId));
             return CONSTANTS.SUCCESS;
-        } catch (NotFoundException | SQLException | DriverNotInstalledException e) {
+        } catch (NotFoundException | SQLException e) {
             return CONSTANTS.FAILURE + " " + e.getMessage();
         }
     }

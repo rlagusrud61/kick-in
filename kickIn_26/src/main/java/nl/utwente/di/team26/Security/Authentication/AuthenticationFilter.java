@@ -5,8 +5,6 @@ import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exceptions.AuthenticationDeniedException;
 import nl.utwente.di.team26.Exceptions.TokenObsoleteException;
 import nl.utwente.di.team26.Security.Authentication.User.AuthenticatedUser;
-import nl.utwente.di.team26.Security.Authentication.User.User;
-import nl.utwente.di.team26.Security.Authentication.User.UserDao;
 
 import javax.annotation.Priority;
 import javax.crypto.spec.SecretKeySpec;
@@ -20,7 +18,6 @@ import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.Provider;
-import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -40,8 +37,6 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     UriInfo uriInfo;
 
     String userId;
-    UserDao userDao = new UserDao();
-    SessionDao sessionDao = new SessionDao();
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {

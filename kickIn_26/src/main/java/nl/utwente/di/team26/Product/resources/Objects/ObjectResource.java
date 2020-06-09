@@ -1,7 +1,6 @@
 package nl.utwente.di.team26.Product.resources.Objects;
 
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Maps.MapObjectsDao;
 import nl.utwente.di.team26.Product.model.Map.MapObject;
@@ -31,7 +30,7 @@ public class ObjectResource {
     public MapObject getObjectForMap(@PathParam("objectId") int objectId) {
         try (Connection conn = CONSTANTS.getConnection()) {
             return mapObjectsDao.getObject(conn, objectId);
-        } catch (SQLException | NotFoundException | DriverNotInstalledException throwables) {
+        } catch (SQLException | NotFoundException throwables) {
             throwables.printStackTrace();
             return null;
         }
@@ -45,7 +44,7 @@ public class ObjectResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             mapObjectsDao.save(conn, objectToUpdate);
             return CONSTANTS.SUCCESS;
-        } catch (NotFoundException | SQLException | DriverNotInstalledException e) {
+        } catch (NotFoundException | SQLException e) {
             return CONSTANTS.FAILURE + " " + e.getMessage();
         }
     }
@@ -57,7 +56,7 @@ public class ObjectResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             mapObjectsDao.delete(conn, new MapObject(objectToDelete));
             return CONSTANTS.SUCCESS;
-        } catch (NotFoundException | SQLException | DriverNotInstalledException e) {
+        } catch (NotFoundException | SQLException e) {
             return CONSTANTS.FAILURE + " " + e.getMessage();
         }
     }

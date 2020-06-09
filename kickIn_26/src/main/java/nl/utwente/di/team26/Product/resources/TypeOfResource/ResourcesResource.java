@@ -1,7 +1,6 @@
 package nl.utwente.di.team26.Product.resources.TypeOfResource;
 
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.TypeOfResources.TypeOfResourceDao;
 import nl.utwente.di.team26.Product.model.TypeOfResource.TypeOfResource;
@@ -35,7 +34,7 @@ public class ResourcesResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             typeOfResourceDao.deleteAll(conn);
             return CONSTANTS.SUCCESS;
-        } catch (SQLException | DriverNotInstalledException e) {
+        } catch (SQLException e) {
             return CONSTANTS.FAILURE + " " + e.getMessage();
         }
     }
@@ -48,7 +47,7 @@ public class ResourcesResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             typeOfResourceDao.delete(conn, new TypeOfResource(resourceId));
             return CONSTANTS.SUCCESS;
-        } catch (SQLException | NotFoundException | DriverNotInstalledException e) {
+        } catch (SQLException | NotFoundException e) {
             e.printStackTrace();
             return CONSTANTS.FAILURE + ": " + e.getMessage();
         }

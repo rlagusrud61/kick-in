@@ -1,6 +1,8 @@
 package nl.utwente.di.team26.Security.Authentication.User;
 
+import nl.utwente.di.team26.Exceptions.AuthenticationDeniedException;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
+import nl.utwente.di.team26.Security.Authentication.Credentials;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -45,6 +47,25 @@ import java.util.List;
             valueObject.setUserId(userId);
             load(conn, valueObject);
             return valueObject;
+        }
+
+        public User authenticateUser(Connection conn, Credentials credentials) throws AuthenticationDeniedException {
+            String sql =
+                    "SELECT u.userid " +
+                    "FROM User u " +
+                    "WHERE email = ? " +
+                      "AND password = ?";
+            User valueObject = new User();
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+                stmt.setString(1, credentials.getEmail());
+                stmt.setString(2, credentials.getPassword());
+                singleQuery(conn, stmt, valueObject);
+                return valueObject;
+            } catch (SQLException | NotFoundException e) {
+                throw new AuthenticationDeniedException("No!");
+            }
+
         }
 
 
@@ -334,7 +355,4 @@ import java.util.List;
 
             return searchResults;
         }
-
-
     }
-}

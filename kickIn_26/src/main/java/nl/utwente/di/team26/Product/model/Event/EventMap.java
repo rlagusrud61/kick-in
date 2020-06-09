@@ -1,7 +1,7 @@
 package nl.utwente.di.team26.Product.model.Event;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.*;
+import java.io.Serializable;
 
 /**
  * EventMap Value Object.

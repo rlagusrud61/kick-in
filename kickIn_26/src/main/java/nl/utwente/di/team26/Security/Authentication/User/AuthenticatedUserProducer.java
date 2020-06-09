@@ -1,8 +1,8 @@
 package nl.utwente.di.team26.Security.Authentication.User;
 
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
+
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Observes;
@@ -19,6 +19,7 @@ public class AuthenticatedUserProducer {
 
     UserDao userDao = new UserDao();
 
+    @RequestScoped
     public void handleAuthenticationEvent(@Observes @AuthenticatedUser String userId) {
         int user = Integer.parseInt(userId);
         this.authenticatedUser = findUser(user);
@@ -30,7 +31,7 @@ public class AuthenticatedUserProducer {
         User user = null;
         try {
             user = userDao.getObject(CONSTANTS.getConnection(), userId);
-        } catch (NotFoundException | SQLException | DriverNotInstalledException e) {
+        } catch (NotFoundException | SQLException e) {
             e.printStackTrace();
         }
         return user;
