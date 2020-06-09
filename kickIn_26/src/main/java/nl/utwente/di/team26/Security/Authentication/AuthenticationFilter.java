@@ -5,6 +5,8 @@ import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exceptions.AuthenticationDeniedException;
 import nl.utwente.di.team26.Exceptions.TokenObsoleteException;
 import nl.utwente.di.team26.Security.Authentication.User.AuthenticatedUser;
+import nl.utwente.di.team26.Security.Authentication.User.User;
+import nl.utwente.di.team26.Security.Authentication.User.UserDao;
 
 import javax.annotation.Priority;
 import javax.crypto.spec.SecretKeySpec;
@@ -38,6 +40,8 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     UriInfo uriInfo;
 
     String userId;
+    UserDao userDao = new UserDao();
+    SessionDao sessionDao = new SessionDao();
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -96,7 +100,6 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         try {
             Claims claims = decodeJWT(token);
             userId = claims.getSubject();
-            //TODO: Check with database but this is good enough by itself honestly.
         } catch (ExpiredJwtException e) {
             throw new TokenObsoleteException("Time for a new Token!");
         } catch (JwtException e) {

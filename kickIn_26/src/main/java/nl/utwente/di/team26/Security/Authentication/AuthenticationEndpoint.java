@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exceptions.AuthenticationDeniedException;
+import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
 import nl.utwente.di.team26.Security.Authentication.User.UserDao;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -18,6 +19,7 @@ import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.security.Key;
 import java.security.SecureRandom;
+import java.sql.SQLException;
 import java.util.Date;
 
 @Path("/authentication")
@@ -25,6 +27,8 @@ public class AuthenticationEndpoint {
 
     @Context
     HttpServletResponse response;
+
+    UserDao userDao = new UserDao();
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -81,7 +85,13 @@ public class AuthenticationEndpoint {
     }
 
     private String getCount() {
-        return String.valueOf(new UserDao().getCount());
+        String countOf = null;
+        try {
+            countOf = String.valueOf(userDao.countAll(CONSTANTS.getConnection()));
+        } catch (SQLException | DriverNotInstalledException throwables) {
+            throwables.printStackTrace();
+        }
+        return countOf;
     }
 
     public static String createJWT(String subject, String count) {

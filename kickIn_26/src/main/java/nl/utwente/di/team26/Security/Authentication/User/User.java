@@ -7,20 +7,23 @@ public class User {
 
     int userId;
     String email;
+    String password;
     int clarificationLevel;
 
     public User() {
 
     }
 
-    public User(String email, int clarificationLevel) {
+    public User(String email, String password, int clarificationLevel) {
         this.email = email;
+        this.password = password;
         this.clarificationLevel = clarificationLevel;
     }
 
-    public User(int userId, String email, int clarificationLevel) {
+    public User(int userId, String email, String password, int clarificationLevel) {
         this.userId = userId;
         this.email = email;
+        this.password = password;
         this.clarificationLevel = clarificationLevel;
     }
 
@@ -38,6 +41,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public int getClarificationLevel() {
