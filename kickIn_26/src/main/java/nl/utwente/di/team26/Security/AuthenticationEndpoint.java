@@ -42,13 +42,14 @@ public class AuthenticationEndpoint {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public void authenticateUser(Credentials credentials) throws IOException {
+        System.out.println(credentials);
         try {
             User user = authenticate(credentials);
 
             Cookie cookie = createCookie(user.getUserId());
-            cookie.setHttpOnly(true);
             response.addCookie(cookie);
 
+            response.sendRedirect("http://localhost:8080/kickInTeam26/list.html");
         } catch (AuthenticationDeniedException e) {
             response.sendError(Response.Status.UNAUTHORIZED.getStatusCode(), e.getMessage());
         } catch (SQLException throwables) {
