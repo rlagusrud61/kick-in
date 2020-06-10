@@ -4,11 +4,9 @@ import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Events.EventsDao;
 import nl.utwente.di.team26.Product.model.Event.Event;
-import nl.utwente.di.team26.Security.Authentication.Secured;
-import nl.utwente.di.team26.Security.Authentication.User.User;
-import nl.utwente.di.team26.Security.Authorization.Role;
+import nl.utwente.di.team26.Security.Filters.Secured;
+import nl.utwente.di.team26.Security.User.Roles;
 
-import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.Connection;
@@ -18,7 +16,7 @@ import java.sql.SQLException;
 public class EventResource {
 
     @GET
-    @Secured({Role.VISITOR})
+    @Secured({Roles.VISITOR})
     @Produces(MediaType.APPLICATION_JSON)
     public Event getEventById(@PathParam("eventId") int eventId) {
         try (Connection conn = CONSTANTS.getConnection()) {
@@ -29,7 +27,7 @@ public class EventResource {
     }
 
     @PUT
-    @Secured({Role.EDITOR})
+    @Secured({Roles.EDITOR})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String updateEvent(Event eventToUpdate) {
@@ -42,7 +40,7 @@ public class EventResource {
     }
 
     @DELETE
-    @Secured({Role.EDITOR})
+    @Secured({Roles.EDITOR})
     @Produces(MediaType.TEXT_PLAIN)
     public String deleteEvent(@PathParam("eventId") int eventToDelete) {
         try (Connection conn = CONSTANTS.getConnection()) {

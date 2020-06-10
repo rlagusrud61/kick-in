@@ -1,12 +1,15 @@
-package nl.utwente.di.team26.Security.Authentication;
+package nl.utwente.di.team26.Security;
 
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exceptions.AuthenticationDeniedException;
-import nl.utwente.di.team26.Security.Authentication.User.User;
-import nl.utwente.di.team26.Security.Authentication.User.UserDao;
+import nl.utwente.di.team26.Security.User.Credentials;
+import nl.utwente.di.team26.Security.User.User;
+import nl.utwente.di.team26.Security.User.UserDao;
+import nl.utwente.di.team26.Security.Session.Session;
+import nl.utwente.di.team26.Security.Session.SessionDao;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.Cookie;

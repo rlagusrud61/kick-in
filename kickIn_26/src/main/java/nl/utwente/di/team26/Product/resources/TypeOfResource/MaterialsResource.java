@@ -4,11 +4,9 @@ import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Product.dao.TypeOfResources.MaterialsDao;
 import nl.utwente.di.team26.Product.dao.TypeOfResources.TypeOfResourceDao;
 import nl.utwente.di.team26.Product.model.TypeOfResource.Material;
-import nl.utwente.di.team26.Security.Authentication.Secured;
-import nl.utwente.di.team26.Security.Authentication.User.User;
-import nl.utwente.di.team26.Security.Authorization.Role;
+import nl.utwente.di.team26.Security.Filters.Secured;
+import nl.utwente.di.team26.Security.User.Roles;
 
-import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.Connection;
@@ -23,7 +21,7 @@ public class MaterialsResource {
     MaterialsDao materialsDao = new MaterialsDao();
 
     @GET
-    @Secured(Role.VISITOR)
+    @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
     public List<Material> getAllMaterials() {
         try (Connection conn = CONSTANTS.getConnection()) {
@@ -35,7 +33,7 @@ public class MaterialsResource {
     }
 
     @POST
-    @Secured(Role.ADMIN)
+    @Secured(Roles.ADMIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String addNewMaterial(Material materialToAdd) {

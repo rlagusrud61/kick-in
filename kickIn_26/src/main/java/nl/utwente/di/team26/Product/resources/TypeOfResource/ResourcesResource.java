@@ -4,11 +4,9 @@ import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.TypeOfResources.TypeOfResourceDao;
 import nl.utwente.di.team26.Product.model.TypeOfResource.TypeOfResource;
-import nl.utwente.di.team26.Security.Authentication.Secured;
-import nl.utwente.di.team26.Security.Authentication.User.User;
-import nl.utwente.di.team26.Security.Authorization.Role;
+import nl.utwente.di.team26.Security.Filters.Secured;
+import nl.utwente.di.team26.Security.User.Roles;
 
-import javax.inject.Inject;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -23,7 +21,7 @@ public class ResourcesResource {
     TypeOfResourceDao typeOfResourceDao = new TypeOfResourceDao();
 
     @DELETE
-    @Secured(Role.ADMIN)
+    @Secured(Roles.ADMIN)
     @Produces(MediaType.TEXT_PLAIN)
     public String deleteObject() {
         try (Connection conn = CONSTANTS.getConnection()) {
@@ -35,7 +33,7 @@ public class ResourcesResource {
     }
 
     @DELETE
-    @Secured(Role.ADMIN)
+    @Secured(Roles.ADMIN)
     @Path("{resourceId}")
     @Produces(MediaType.TEXT_PLAIN)
     public String deleteResource(@PathParam("resourceId") int resourceId) {
