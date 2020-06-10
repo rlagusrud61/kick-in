@@ -6,7 +6,6 @@ import nl.utwente.di.team26.Product.dao.TypeOfResources.MaterialsDao;
 import nl.utwente.di.team26.Product.dao.TypeOfResources.TypeOfResourceDao;
 import nl.utwente.di.team26.Product.model.TypeOfResource.Material;
 import nl.utwente.di.team26.Security.Authentication.Secured;
-import nl.utwente.di.team26.Security.Authentication.User.AuthenticatedUser;
 import nl.utwente.di.team26.Security.Authentication.User.User;
 import nl.utwente.di.team26.Security.Authorization.Role;
 
@@ -19,9 +18,7 @@ import java.sql.SQLException;
 @Path("/materials/{materialId}")
 public class MaterialResource {
 
-    @Inject
-    @AuthenticatedUser
-    User authenticatedUser;
+
 
     MaterialsDao materialsDao = new MaterialsDao();
 

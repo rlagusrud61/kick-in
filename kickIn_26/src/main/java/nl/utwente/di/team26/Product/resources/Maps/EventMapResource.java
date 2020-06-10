@@ -9,7 +9,6 @@ import nl.utwente.di.team26.Product.model.Event.Event;
 import nl.utwente.di.team26.Product.model.Event.EventMap;
 import nl.utwente.di.team26.Product.model.Map.Map;
 import nl.utwente.di.team26.Security.Authentication.Secured;
-import nl.utwente.di.team26.Security.Authentication.User.AuthenticatedUser;
 import nl.utwente.di.team26.Security.Authentication.User.User;
 import nl.utwente.di.team26.Security.Authorization.Role;
 
@@ -23,9 +22,7 @@ import java.util.List;
 @Path("/eventMap")
 public class EventMapResource {
 
-    @Inject
-    @AuthenticatedUser
-    User authenticatedUser;
+
 
     EventMapDao eventMapDao = new EventMapDao();
     MapsDao mapsDao = new MapsDao();

@@ -5,7 +5,6 @@ import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Maps.MapObjectsDao;
 import nl.utwente.di.team26.Product.model.Map.MapObject;
 import nl.utwente.di.team26.Security.Authentication.Secured;
-import nl.utwente.di.team26.Security.Authentication.User.AuthenticatedUser;
 import nl.utwente.di.team26.Security.Authentication.User.User;
 import nl.utwente.di.team26.Security.Authorization.Role;
 
@@ -19,9 +18,7 @@ import java.util.List;
 @Path("/objects")
 public class ObjectsResource {
 
-    @Inject
-    @AuthenticatedUser
-    User authenticatedUser;
+
 
     MapObjectsDao mapObjectsDao = new MapObjectsDao();
 

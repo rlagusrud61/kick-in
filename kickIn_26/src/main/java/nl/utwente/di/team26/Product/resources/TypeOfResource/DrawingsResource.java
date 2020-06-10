@@ -5,7 +5,6 @@ import nl.utwente.di.team26.Product.dao.TypeOfResources.DrawingDao;
 import nl.utwente.di.team26.Product.dao.TypeOfResources.TypeOfResourceDao;
 import nl.utwente.di.team26.Product.model.TypeOfResource.Drawing;
 import nl.utwente.di.team26.Security.Authentication.Secured;
-import nl.utwente.di.team26.Security.Authentication.User.AuthenticatedUser;
 import nl.utwente.di.team26.Security.Authentication.User.User;
 import nl.utwente.di.team26.Security.Authorization.Role;
 
@@ -19,9 +18,7 @@ import java.util.List;
 @Path("/drawings")
 public class DrawingsResource {
 
-    @Inject
-    @AuthenticatedUser
-    User authenticatedUser;
+
 
     DrawingDao drawingDao = new DrawingDao();
 
