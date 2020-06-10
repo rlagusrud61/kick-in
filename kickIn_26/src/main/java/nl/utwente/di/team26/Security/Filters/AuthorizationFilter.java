@@ -39,7 +39,6 @@ public class AuthorizationFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        System.out.println("Checking Token");
         String jwtToken = requestContext.getCookies().get(CONSTANTS.COOKIENAME).getValue();
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
         Key signingKey = new SecretKeySpec(CONSTANTS.SECRET.getBytes(), signatureAlgorithm.getJcaName());
@@ -99,9 +98,14 @@ public class AuthorizationFilter implements ContainerRequestFilter {
         // Check if the user contains one of the allowed roles
         // Throw an Exception if the user has not permission to execute the method
 
+        if (allowedRoles.size() == 0) {
+            return;
+        }
+
         if (authenticatedUser.getClarificationLevel() < allowedRoles.get(0).ordinal()) {
             throw new NotAuthorizedException("You shall not pass!");
         }
+
     }
 
     private User findUser(int userId) {
