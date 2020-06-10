@@ -171,6 +171,9 @@
         <table style = "width:100%" id = "eventtable">
         </table>
     </div>
+    <div>
+    <button onclick = addEvent()>Addboi</button>
+    </div>
 </div>
 <script>
 
@@ -222,7 +225,7 @@
                 var table = document.getElementById("eventtable");
                 var events = JSON.parse(xhr.responseText);
                 console.log(events);
-                var htmltext = "<tr><th>Name</th><th>Creator</th><th>Editor</th><th>Gimme dat info</th><th>Edit meeee</th><th>Gurbuge<tr>";
+                var htmltext = "<tr><th>Name</th><th>Creator</th><th>Editor</th><th>Gimme dat info</th><th>Edit meeee</th><th>Gurbuge</th><tr>";
                 table.innerHTML = htmltext;
                 for (i = 0; i < events.length; i++) {
                     var row = table.insertRow(i + 1);
@@ -248,25 +251,34 @@
 //				"<i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a></div></div></div></div></div>"
                 }
 //			table.innerHTML = htmltext;
-                console.log(events[0]);
             }
         }
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.send();
     }
-
-    function deleteEvent(event) {
-        console.log(event);
-//	const xhr = new XMLHttpRequest();
-//	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/event", true);
-//	xhr.onreadystatechange = function () {
-//		if ((xhr.readyState == 4) && (xhr.status == 200)) {
-//			console.log(xhr.responseText);
-//		}
-//	}
-//	xhr.setRequestHeader("Content-Type", "application/json");
-//	xhr.send(event.id);
-    }
+	function addEvent() {
+		eventjson = {"createdBy":"Joep", "description":"thirdEvent","lastEditedBy":"Me", "location":"Somewhere", "name":"MyEvent"};
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/events", true);
+		xhr.onreadystatechange = function() {
+			if ((xhr.readyState == 4) && (xhr.status = 200)) {
+				console.log(xhr.responseText);
+			}
+		}
+		xhr.setRequestHeader("Content-Type", "application/json");
+		xhr.send(JSON.stringify(eventjson));
+	}
+    function deleteEvent(id) {
+		var xhr = new XMLHttpRequest();
+		xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/event/" + id, true);
+		xhr.onreadystatechange = function () {
+			if ((xhr.readyState == 4) && (xhr.status == 200)) {
+				console.log(xhr.responseText);
+			}
+		}
+		xhr.setRequestHeader("Content-Type", "application/json");
+		xhr.send();
+ 	   }
 
     function logout(){
         const xhr = new XMLHttpRequest();
