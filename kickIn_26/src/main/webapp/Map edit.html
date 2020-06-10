@@ -1,37 +1,123 @@
-<div class="card">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Quicksand">
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<title>Map Edit</title>
+
+<style type="text/css">
+
+body{
+  background-color:#f2f2f2;
+
+}
+.topnav {
+		background-color: #C1FF94;
+		overflow: hidden;
+}
+#home {
+		float: left;
+		color: #58BD0F;
+		padding-left: 75px;
+		font-size: 30px;
+}	
+#logout {
+		float: right;
+		color: #58BD0F;
+		padding-right: 75px;
+		text-decoration: none;
+		font-size: 30px;
+}
+#back {
+		color: #58BD0F;
+		padding-left: 30px;
+		font-size: 30px;
+}
+#title1 {
+	color: rgb(189, 194, 161);
+	padding-top: 30px;
+}	
+.icon {
+	font-size: 25px;
+	color: green;
+}
+#input{
+	width: 60px;
+}
+.btn-circle.btn-xl { 
+  width: 70px; 
+  height: 70px; 
+  padding: 10px 16px; 
+  border-radius: 35px; 
+  font-size: 12px; 
+  text-align: center;
+} 
+
+nav ul{height:200px; width:90%;}
+nav ul{overflow:hidden; overflow-y:scroll;}
+</style>
+</head>
+<body style="font-family: 'Quicksand'">
+	<div class = "topnav">
+    <a id="home" href = "list.html"><i class="glyphicon glyphicon-home"></i></a>
+    <a id="logout" href="login.html">Logout</a>
+  </div>
+  <div class="card">
 		<div class="row">
 			<h1 id="title1">&emsp;&emsp;Map Name</h1>
-
 			<div class="col-9"
 				style="display: flex; justify-content: flex-end; padding-bottom: 10px">
-				<a href="mapEdit.html"></a>
+				<a href="list.html"></a>
 				<button type="button"
 					class="myButton btn btn-success btn-circle btn-xl align-self-end"
 					id="myBtn">Save</button>
 				</a>
 			</div>
 		</div>
-	</div>
+  	</div>
+	
 	<divclass= "container">
 		<div class="row">
     		<div style="padding-left: 75px;" class="col-sm-3">
     			<div class="shadow-lg p-3 mb-5 bg-white rounded">
     			<h3>Available Items</h3><br>
     			<input type="text" placeholder="Search.."><br><br><br>
+    			<nav>
     			<ul>
-  					<label><li>Item 1:</li></label>
-  					<input id="input" type="number" name="quantity">&emsp;<button style="background-color: #58BD0F; border-color: #C1FF94">+</button><br><br>
+  					<label><li>Item 1 :</li></label>
+  					<input id="input" type="number" name="quantity"><button style="background-color: #58BD0F; border-color: #C1FF94">+</button><br><br>
  					<label><li>Item 2:</li></label>
- 					<input id="input" type="number" name="quantity">&emsp;<button style="background-color: #58BD0F; border-color: #C1FF94">+</button><br><br>
+ 					<input id="input" type="number" name="quantity"><button style="background-color: #58BD0F; border-color: #C1FF94">+</button><br><br>
     				<label><li>Item 3:</li></label>
-    				<input id="input" type="number" name="quantity">&emsp;<button style="background-color: #58BD0F; border-color: #C1FF94">+</button><br><br>
+    				<input id="input" type="number" name="quantity"><button style="background-color: #58BD0F; border-color: #C1FF94">+</button><br><br>
     				<label><li>Item 4:</li></label>
-  					<input id="input" type="number" name="quantity">&emsp;<button style="background-color: #58BD0F; border-color: #C1FF94">+</button><br><br>
+  					<input id="input" type="number" name="quantity"><button style="background-color: #58BD0F; border-color: #C1FF94">+</button><br><br>
  					<label><li>Item 5:</li></label>
- 					<input id="input" type="number" name="quantity">&emsp;<button style="background-color: #58BD0F; border-color: #C1FF94">+</button><br><br>
+ 					<input id="input" type="number" name="quantity"><button style="background-color: #58BD0F; border-color: #C1FF94">+</button><br><br>
     				<label><li>Item 6:</li></label>
-    				<input id="input" type="number" name="quantity">&emsp;<button style="background-color: #58BD0F; border-color: #C1FF94">+</button><br><br>
+    				<input id="input" type="number" name="quantity"><button style="background-color: #58BD0F; border-color: #C1FF94">+</button><br><br>
     			</ul>
+    		</nav>
     		</div>
     		</div>
     		<div class="col-sm-6">	
@@ -40,19 +126,19 @@
     		<div style="padding-right: 75px;" class="col-sm-3">
     			<div class="shadow-lg p-3 mb-5 bg-white rounded">
     				<h3>Your added items</h3><br>
-    				<ul style="font-size: 18px;">
-    					<li>Fences : 500</li>
-    					<li>Benches : 45</li>
-    					<li>Tennis balls : 100</li>
-    					<li>Fences : 500</li>
-    					<li>Benches : 45</li>
-    					<li>Tennis balls : 100</li>
-    					<li>Fences : 500</li>
-    					<li>Benches : 45</li>
-    					<li>Tennis balls : 100</li>
-    				</ul>
-
-
+    				<nav>
+    					<ul style="font-size: 18px;">
+    						<li>Fences : 500</li>
+    						<li>Benches : 45</li>
+    						<li>Tennis balls : 100</li>
+    						<li>Fences : 500</li>
+    						<li>Benches : 45</li>
+    						<li>Tennis balls : 100</li>
+    						<li>Fences : 500</li>
+    						<li>Benches : 45</li>
+    						<li>Tennis balls : 100</li>
+    					</ul>
+    				</nav>
     		</div>
   		</div>
  	 </div>
