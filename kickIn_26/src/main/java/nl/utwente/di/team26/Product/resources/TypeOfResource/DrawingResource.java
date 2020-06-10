@@ -5,11 +5,9 @@ import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.TypeOfResources.DrawingDao;
 import nl.utwente.di.team26.Product.dao.TypeOfResources.TypeOfResourceDao;
 import nl.utwente.di.team26.Product.model.TypeOfResource.Drawing;
-import nl.utwente.di.team26.Security.Authentication.Secured;
-import nl.utwente.di.team26.Security.Authentication.User.User;
-import nl.utwente.di.team26.Security.Authorization.Role;
+import nl.utwente.di.team26.Security.Filters.Secured;
+import nl.utwente.di.team26.Security.User.Roles;
 
-import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.Connection;
@@ -23,7 +21,7 @@ public class DrawingResource {
     DrawingDao drawingDao = new DrawingDao();
 
     @GET
-    @Secured(Role.VISITOR)
+    @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
     public Drawing getDrawingObject(@PathParam("drawingId") int drawingId) {
         try (Connection conn = CONSTANTS.getConnection()) {
@@ -35,7 +33,7 @@ public class DrawingResource {
     }
 
     @PUT
-    @Secured(Role.EDITOR)
+    @Secured(Roles.EDITOR)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String updateObject(Drawing drawingToUpdate) {
@@ -48,7 +46,7 @@ public class DrawingResource {
     }
 
     @DELETE
-    @Secured(Role.EDITOR)
+    @Secured(Roles.EDITOR)
     @Produces(MediaType.TEXT_PLAIN)
     public String deleteObject(@PathParam("drawingId") int drawingId) {
         try (Connection conn = CONSTANTS.getConnection()) {

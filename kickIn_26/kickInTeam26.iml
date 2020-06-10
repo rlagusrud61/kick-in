@@ -27,13 +27,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: javax.enterprise:cdi-api:2.0.SP1" level="project" />
-    <orderEntry type="library" name="Maven: javax.el:javax.el-api:3.0.0" level="project" />
-    <orderEntry type="library" name="Maven: javax.interceptor:javax.interceptor-api:1.2" level="project" />
-    <orderEntry type="library" name="Maven: javax.inject:javax.inject:1" level="project" />
-    <orderEntry type="library" name="Maven: io.jsonwebtoken:jjwt-api:0.11.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: io.jsonwebtoken:jjwt-impl:0.11.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: io.jsonwebtoken:jjwt-jackson:0.11.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.glassfish.jersey.containers.glassfish:jersey-gf-cdi:2.14" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: javax.ws.rs:javax.ws.rs-api:2.0.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.glassfish.jersey.containers.glassfish:jersey-gf-cdi:2.14" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.ws.rs:javax.ws.rs-api:2.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.junit.jupiter:junit-jupiter-api:5.6.1" level="project" />

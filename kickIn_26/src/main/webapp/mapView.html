@@ -46,7 +46,7 @@ table  thead tr th{
 
 
 </style>
-<body>
+<body onload="getMapNameAndDescription()">
  <div class = "topnav">
   <a id="home" href = "list.html"><i class="glyphicon glyphicon-home"></i></a>
   <a id="arrow" href="list.html"><i class="glyphicon glyphicon-arrow-left"></i></a>
@@ -139,7 +139,7 @@ function listItems() {
     let xhr = new XMLHttpRequest();
     let mapId = 1;
     let returnedItems = '';
-    xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/objects/" + mapId + '/report', true);
+    xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/objects/1/report", true);
 
     xhr.onreadystatechange = function () {
 

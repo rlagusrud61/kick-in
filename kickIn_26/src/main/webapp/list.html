@@ -223,11 +223,21 @@ window.onload = function() {
 			var events = JSON.parse(xhr.responseText);
 			console.log(events);
 			var htmltext = "<tr><th>Name</th><th>Creator</th><th>Editor</th><th>Gimme dat info</th><th>Edit meeee</th><th>Gurbuge<tr>";	
+			table.innerHTML = htmltext;
 			for (i = 0; i < events.length; i++) {
-				htmltext += "<tr><td>" + events[i].name + "</td><td>" + events[i].createdBy + "</td><td>" + events[i].lastEditedBy + "</td> " + 
-				"<td><button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/event.html?id=" + events[i].eventId + "\";'>Gib</button> " + 
-				"</td><td><button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/edit.html?id=" + events[i].eventId + "\";'>Yeahbaby</button> " + 
-				"</td><td><button onclick = 'deleteEvent(" + events[i].eventId + ")'>Outta here</button></td></tr>"
+				var row = table.insertRow(i + 1);
+				var cell1 = row.insertCell(0);
+				var cell2 = row.insertCell(1);
+				var cell3 = row.insertCell(2);
+				var cell4 = row.insertCell(3);
+				var cell5 = row.insertCell(4);
+				var cell6 = row.insertCell(5);
+				cell1.innerHTML = events[i].name;
+				cell2.innerHTML = events[i].createdBy;
+				cell3.innerHTML = events[i].lastEditedBy;
+				cell4.innerHTML = "<button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/event.html?id=" + events[i].eventId + "\";'>Gib</button>"
+				cell5.innerHTML = "<button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/edit.html?id=" + events[i].eventId + "\";'>Yeahbaby</button>"
+				cell6.innerHTML = "<button onclick = 'deleteEvent(" + events[i].eventId + ")'>Outta here</button>"
 				
 				
 //				htmltext += "<div class= 'col-md-12 col-sm-10'><div class='project'><div class='row bg-white has-shadow'>" + 
@@ -237,7 +247,7 @@ window.onload = function() {
 //				"<i class='glyphicon glyphicon-pencil' style='font-size:20px;'></i></a><a href='edit.html' class='text-success'> " + 
 //				"<i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a></div></div></div></div></div>"
 			}
-			table.innerHTML = htmltext;
+//			table.innerHTML = htmltext;
 			console.log(events[0]);
 		}
 	}

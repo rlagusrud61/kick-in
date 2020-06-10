@@ -3,11 +3,9 @@ package nl.utwente.di.team26.Product.resources.Maps;
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Product.dao.Maps.MapsDao;
 import nl.utwente.di.team26.Product.model.Map.Map;
-import nl.utwente.di.team26.Security.Authentication.Secured;
-import nl.utwente.di.team26.Security.Authentication.User.User;
-import nl.utwente.di.team26.Security.Authorization.Role;
+import nl.utwente.di.team26.Security.Filters.Secured;
+import nl.utwente.di.team26.Security.User.Roles;
 
-import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.Connection;
@@ -22,7 +20,7 @@ public class MapsResource {
     MapsDao mapsDao = new MapsDao();
 
     @GET
-    @Secured(Role.VISITOR)
+    @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
     public List<Map> getAllMaps() {
         try (Connection conn = CONSTANTS.getConnection()) {
@@ -34,7 +32,7 @@ public class MapsResource {
     }
 
     @POST
-    @Secured(Role.EDITOR)
+    @Secured(Roles.EDITOR)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String addNewMap(Map mapToAdd) {
@@ -48,7 +46,7 @@ public class MapsResource {
     }
 
     @DELETE
-    @Secured(Role.ADMIN)
+    @Secured(Roles.ADMIN)
     @Produces(MediaType.TEXT_PLAIN)
     public String deleteAllMaps() {
         try (Connection conn = CONSTANTS.getConnection()) {
