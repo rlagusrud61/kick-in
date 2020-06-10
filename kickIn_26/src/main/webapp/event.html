@@ -172,12 +172,12 @@
 
 	</div>
 <script>
-function getEvent() {
-	var url = window.location.href;
-	url = url.split("/");
-	url = url[10];
+window.onload = function() {
+//	var url = window.location.href;
+//	url = url.split("/");
+//	url = url[10];
 	const xhr = new XMLHttpRequest();
-	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/eventmap/" + url, true);
+	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/event/1", true);
 	xhr.onreadystatechange = function () {
   		if (xhr.readyState == 4) {
    			console.log(xhr.responseText);
