@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type= "text/css" href="css/style.css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <!-- Latest compiled and minified CSS -->
@@ -22,41 +22,38 @@
 </head>
 <style>
 
-    h1 {
+    h1{
         margin: 0;
         display: inline-block;
     }
-
-    h2 {
-        text-align: center;
+    h2{
+        text-align : center;
         font-size: 50px;
         padding-bottom: 5%;
     }
-
-    .form-group {
-        padding-left: 10%;
+    .form-group{
+        padding-left:10%;
     }
 
-    body {
-        background-color: #f2f2f2;
+    body{
+        background-color:#f2f2f2;
         font-size: 15px;
         font-family: 'Quicksand';
-        color: #6B6B6B;
+        color:#6B6B6B;
     }
 
 </style>
 <body>
-<div class="topnav">
-    <a id="home" href="list.html"><i class="glyphicon glyphicon-home"></i></a>
+<div class = "topnav">
+    <a id="home" href = "list.html"><i class="glyphicon glyphicon-home"></i></a>
     <a id="logout" href="login.html">Logout</a>
 </div>
 <div class="jumbotron jumbotron-fluid">
-    <div id="main" class="container">
+    <div id = "main" class="container">
         <div class="row">
             <h1 class="col-8">List Of Events</h1>
             <div class="col-4" style="display: flex; justify-content: flex-end;">
-                <button type="button" class="myButton btn btn-success btn-circle btn-xl align-self-end" id="myBtn"> +
-                </button>
+                <button type="button" class="myButton btn btn-success btn-circle btn-xl align-self-end" id="myBtn"> + </button>
             </div>
         </div>
     </div>
@@ -70,7 +67,7 @@
             <span class="close">&times;</span>
             <h2>Add a New Event</h2>
 
-            <form action="event.html">
+            <form action = "event.html">
                 <div class="form-group row">
                     <label for="eventname" class="col-md-2 col-form-label">Name</label>
                     <div class="col-md-3">
@@ -86,14 +83,20 @@
                 </div>
 
 
+
                 <div class="form-group row">
                     <label for="eventdate" class="col-md-2 col-form-label">Date</label>
                     <div class="col-md-3">
                         <div class='input-group date' id='datetimepicker'>
-                            <input type='text' class="form-control"/>
+                            <input type='text' class="form-control" />
                             <span class="input-group-addon">
                   <span class="glyphicon glyphicon-calendar" style="font-size: 20px"></span>
                 </span>
+                            <script type="text/javascript">
+                                $(function () {
+                                    $('#datetimepicker').datetimepicker();
+                                });
+                            </script>
                         </div>
                     </div>
                 </div>
@@ -119,7 +122,7 @@
 </div>
 
 
-<div class="container">
+<div class = "container">
     <!-- Search Bar -->
     <div class="col-md-3">
         <form class="form-inline d-flex justify-content-center md-form form-sm mt-0">
@@ -131,10 +134,8 @@
 
 
     <!-- Order By Dropdown Button-->
-    <div class="col-md-9 dropdown">
-        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" style="float:right;">Order
-            By
-        </button>
+    <div class="col-md-9 dropdown" >
+        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" style="float:right;">Order By</button>
         <div class="dropdown-menu dropdown-menu-right">
             <a class="dropdown-item" href="#">A - Z</a>
             <a class="dropdown-item" href="#">Event Date (New - Old)</a>
@@ -147,7 +148,7 @@
     </div>
 
     <!-- List of Events -->
-    <div class="col-md-12 col-sm-10">
+    <div class= "col-md-12 col-sm-10">
         <!-- Event 1 -->
         <div class="project">
             <div class="row bg-white has-shadow">
@@ -157,73 +158,48 @@
                     <h3 class="h4">Carl The Creator</h3>
                     <h3 class="h4">Eddie the Editor</h3>
                     <div class="col-md-1 col-sm-1 col-lg-1 d-flex justify-content-between">
-                        <a href="edit.html" class="text-success"><i class="glyphicon glyphicon-pencil"
-                                                                    style="font-size:20px;"></i></a>
-                        <a href="edit.html" class="text-success"><i class="glyphicon glyphicon-trash"
-                                                                    style="font-size:20px;"></i></a>
+                        <a href="edit.html" class="text-success"><i class="glyphicon glyphicon-pencil" style="font-size:20px;"></i></a>
+                        <a href="edit.html" class="text-success"><i class="glyphicon glyphicon-trash" style="font-size:20px;"></i></a>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
-    <div class="eventlist">
+    <div class = "eventlist">
         <h2>OH BABY IT'S A LIST</h2>
-        <table style="width:100%" id="eventtable"></table>
+        <table style = "width:100%" id = "eventtable">
+        </table>
     </div>
 </div>
-
-
-<!-- The Event Deletion Popup -->
-<div id="popupEventDelete" class="modal">
-
-    <!-- Popup content -->
-    <div class="modal-content">
-        <span class="closeDelete">&times;</span>
-        <h2>Do you really want to delete this event?</h2>
-        <div class="bottomright" style="display: flex; justify-content: center;">
-            <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">YES</button>
-            <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">NO</button>
-        </div>
-    </div>
-</div>
-
-
 <script>
+
     // Get the modal
     var modal = document.getElementById("myModal");
-    var deletion = document.getElementById("popupEventDelete");
+
     // Get the button that opens the modal
     var btn = document.getElementById("myBtn");
-    var trash = document.getElementById("deleteEvent");
 
     // Get the <span> element that closes the modal
     var span = document.getElementsByClassName("close")[0];
-    var closeDelete = document.getElementsByClassName("closeDelete")[0];
 
     // When the user clicks the button, open the modal
     btn.onclick = function() {
         modal.style.display = "block";
-    }
-    trash.onclick = function() {
-        deletion.style.display = "block";
     }
 
     // When the user clicks on <span> (x), close the modal
     span.onclick = function() {
         modal.style.display = "none";
     }
-    closeDelete.onclick = function() {
-        deletion.style.display = "none";
-    }
 
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = function(event) {
-        if (event.target === modal) {
+        if (event.target == modal) {
             modal.style.display = "none";
-        } if (event.target === deletion){
-            deletion.style.display = "none";
         }
     }
+
 
     function createEvent(form) {
         const xhr = new XMLHttpRequest();
@@ -238,7 +214,7 @@
         xhr.send(JSON.stringify(form));
     }
 
-    window.onload = function () {
+    window.onload = function() {
         const xhr = new XMLHttpRequest();
         xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/events", true);
         xhr.onreadystatechange = function () {
@@ -247,21 +223,31 @@
                 var events = JSON.parse(xhr.responseText);
                 console.log(events);
                 var htmltext = "<tr><th>Name</th><th>Creator</th><th>Editor</th><th>Gimme dat info</th><th>Edit meeee</th><th>Gurbuge<tr>";
+                table.innerHTML = htmltext;
                 for (i = 0; i < events.length; i++) {
-                    htmltext += "<tr><td>" + events[i].name + "</td><td>" + events[i].createdBy + "</td><td>" + events[i].lastEditedBy + "</td> " +
-                        "<td><button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/event.html?id=" + events[i].eventId + "\";'>Gib</button> " +
-                        "</td><td><button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/edit.html?id=" + events[i].eventId + "\";'>Yeahbaby</button> " +
-                        "</td><td><button onclick = 'deleteEvent(" + events[i].eventId + ")'>Outta here</button></td></tr>"
+                    var row = table.insertRow(i + 1);
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    var cell3 = row.insertCell(2);
+                    var cell4 = row.insertCell(3);
+                    var cell5 = row.insertCell(4);
+                    var cell6 = row.insertCell(5);
+                    cell1.innerHTML = events[i].name;
+                    cell2.innerHTML = events[i].createdBy;
+                    cell3.innerHTML = events[i].lastEditedBy;
+                    cell4.innerHTML = "<button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/event.html?id=" + events[i].eventId + "\";'>Gib</button>"
+                    cell5.innerHTML = "<button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/edit.html?id=" + events[i].eventId + "\";'>Yeahbaby</button>"
+                    cell6.innerHTML = "<button onclick = 'deleteEvent(" + events[i].eventId + ")'>Outta here</button>"
 
 
-//				htmltext += "<div class= 'col-md-12 col-sm-10'><div class='project'><div class='row bg-white has-shadow'>" + 
-//				"<div class='col-lg-12 col-md-12 d-flex align-items-center justify-content-between'><h3 class='h4'><a href='event.html'>" + events[i].name + "</a>" + 
-//				"</h3><h3 class='h4'>20/4/2020</h3><h3 class='h4'>" + events[i].createdBy + "</h3><h3 class='h4'> " + events[i].lastEditedBy + "</h3>" + 
-//				"<div class='col-md-1 col-sm-1 col-lg-1 d-flex justify-content-between'><a href='edit.html' class='text-success'>" + 
-//				"<i class='glyphicon glyphicon-pencil' style='font-size:20px;'></i></a><a href='edit.html' class='text-success'> " + 
+//				htmltext += "<div class= 'col-md-12 col-sm-10'><div class='project'><div class='row bg-white has-shadow'>" +
+//				"<div class='col-lg-12 col-md-12 d-flex align-items-center justify-content-between'><h3 class='h4'><a href='event.html'>" + events[i].name + "</a>" +
+//				"</h3><h3 class='h4'>20/4/2020</h3><h3 class='h4'>" + events[i].createdBy + "</h3><h3 class='h4'> " + events[i].lastEditedBy + "</h3>" +
+//				"<div class='col-md-1 col-sm-1 col-lg-1 d-flex justify-content-between'><a href='edit.html' class='text-success'>" +
+//				"<i class='glyphicon glyphicon-pencil' style='font-size:20px;'></i></a><a href='edit.html' class='text-success'> " +
 //				"<i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a></div></div></div></div></div>"
                 }
-                table.innerHTML = htmltext;
+//			table.innerHTML = htmltext;
                 console.log(events[0]);
             }
         }
