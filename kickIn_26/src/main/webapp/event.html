@@ -188,14 +188,14 @@ function getMaps() {
 }
 
 window.onload = function() {
-	var id = window.location.search.split("=")[1]
+	var id = window.location.search.split("=")[1];
 //	console.log(id);
 	const xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/event/" + id, true);
 	xhr.onreadystatechange = function () {
  		if (xhr.readyState == 4) {
    			var event = JSON.parse(xhr.responseText);
-   			document.getElementById("intro").innerHTML = event.description;
+//   			document.getElementById("intro").innerHTML = event.description;
    			}
     }
    	xhr.setRequestHeader("Content-Type", "application/json");
