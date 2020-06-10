@@ -166,8 +166,12 @@
         </div>
       </div>
     </div>
+  <div class = "eventlist">
+  	<h2>OH BABY IT'S A LIST</h2>
+  	<table style = "width:100%" id = "eventtable">
+  	</table>
   </div>
-
+  </div>
   <script>
 
 // Get the modal
@@ -195,6 +199,65 @@ window.onclick = function(event) {
     modal.style.display = "none";
   }
 }
+
+
+function createEvent(form) {
+	const xhr = new XMLHttpRequest();
+	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/events", true);
+	xhr.onreadystatechange = function () {
+		if (xhr.readyState == 4) {
+			window.location.href = 'http://localhost:8080/kickInTeam26/event.html/' + xhr.responseText
+			console.log(xhr.responseText);
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send(JSON.stringify(form));
+}
+
+window.onload = function() {
+	const xhr = new XMLHttpRequest();
+	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/events", true);
+	xhr.onreadystatechange = function () {
+		if ((xhr.readyState == 4) && (xhr.status == 200)) {
+			var table = document.getElementById("eventtable");
+			var events = JSON.parse(xhr.responseText);
+			console.log(events);
+			var htmltext = "<tr><th>Name</th><th>Creator</th><th>Editor</th><th>Gimme dat info</th><th>Edit meeee</th><th>Gurbuge<tr>";	
+			for (i = 0; i < events.length; i++) {
+				htmltext += "<tr><td>" + events[i].name + "</td><td>" + events[i].createdBy + "</td><td>" + events[i].lastEditedBy + "</td> " + 
+				"<td><button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/event.html?id=" + events[i].eventId + "\";'>Gib</button> " + 
+				"</td><td><button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/edit.html?id=" + events[i].eventId + "\";'>Yeahbaby</button> " + 
+				"</td><td><button onclick = 'deleteEvent(" + events[i].eventId + ")'>Outta here</button></td></tr>"
+				
+				
+//				htmltext += "<div class= 'col-md-12 col-sm-10'><div class='project'><div class='row bg-white has-shadow'>" + 
+//				"<div class='col-lg-12 col-md-12 d-flex align-items-center justify-content-between'><h3 class='h4'><a href='event.html'>" + events[i].name + "</a>" + 
+//				"</h3><h3 class='h4'>20/4/2020</h3><h3 class='h4'>" + events[i].createdBy + "</h3><h3 class='h4'> " + events[i].lastEditedBy + "</h3>" + 
+//				"<div class='col-md-1 col-sm-1 col-lg-1 d-flex justify-content-between'><a href='edit.html' class='text-success'>" + 
+//				"<i class='glyphicon glyphicon-pencil' style='font-size:20px;'></i></a><a href='edit.html' class='text-success'> " + 
+//				"<i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a></div></div></div></div></div>"
+			}
+			table.innerHTML = htmltext;
+			console.log(events[0]);
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
+}
+
+function deleteEvent(event) {
+	console.log(event);
+//	const xhr = new XMLHttpRequest();
+//	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/event", true);
+//	xhr.onreadystatechange = function () {
+//		if ((xhr.readyState == 4) && (xhr.status == 200)) {
+//			console.log(xhr.responseText);
+//		}
+//	}
+//	xhr.setRequestHeader("Content-Type", "application/json");
+//	xhr.send(event.id);
+}
+
 
 </script>
 </body>
