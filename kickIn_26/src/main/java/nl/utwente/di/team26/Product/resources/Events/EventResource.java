@@ -27,7 +27,7 @@ public class EventResource {
     }
 
     @PUT
-//    @Secured({Roles.EDITOR})
+    @Secured({Roles.EDITOR})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String updateEvent(Event eventToUpdate) {
@@ -40,7 +40,7 @@ public class EventResource {
     }
 
     @DELETE
-//    @Secured({Roles.EDITOR})
+    @Secured({Roles.EDITOR})
     @Produces(MediaType.TEXT_PLAIN)
     public String deleteEvent(@PathParam("eventId") int eventToDelete) {
         try (Connection conn = CONSTANTS.getConnection()) {
