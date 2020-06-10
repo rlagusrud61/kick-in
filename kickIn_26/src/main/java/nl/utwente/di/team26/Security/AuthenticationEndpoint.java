@@ -47,6 +47,8 @@ public class AuthenticationEndpoint {
             User user = authenticate(credentials);
 
             Cookie cookie = createCookie(user.getUserId());
+            cookie.setPath("/");
+            cookie.setHttpOnly(true);
             response.addCookie(cookie);
 
             response.sendRedirect("http://localhost:8080/kickInTeam26/list.html");
