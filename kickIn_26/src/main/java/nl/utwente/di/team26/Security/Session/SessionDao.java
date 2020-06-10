@@ -117,7 +117,7 @@ public class SessionDao {
         }
     }
 
-    private void clearTokensForUser(Connection conn, int userId) throws SQLException {
+    public void clearTokensForUser(Connection conn, int userId) throws SQLException {
         String sql = "DELETE FROM session WHERE (userId = ? ) ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -158,7 +158,6 @@ public class SessionDao {
         }
     }
 
-
     /**
      * deleteAll-method. This method will remove all information from the table that matches
      * this Dao and ValueObject couple. This should be the most efficient way to clear table.
@@ -188,26 +187,26 @@ public class SessionDao {
      *
      * @param conn         This method requires working database connection.
      */
-    public int countAll(Connection conn) throws SQLException {
+    public int maxId(Connection conn) throws SQLException {
 
-        String sql = "SELECT count(*) FROM session";
+        String sql = "SELECT max(tokenid) FROM session";
         PreparedStatement stmt = null;
         ResultSet result = null;
-        int allRows = 0;
+        int max = 0;
 
         try {
             stmt = conn.prepareStatement(sql);
             result = stmt.executeQuery();
 
             if (result.next())
-                allRows = result.getInt(1);
+                max = result.getInt(1);
         } finally {
             if (result != null)
                 result.close();
             if (stmt != null)
                 stmt.close();
         }
-        return allRows;
+        return max;
     }
 
     /**
