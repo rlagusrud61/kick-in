@@ -1,4 +1,4 @@
-package nl.utwente.di.team26.Security.Authentication;
+package nl.utwente.di.team26.Security.User;
 
 import javax.xml.bind.annotation.XmlRootElement;
 

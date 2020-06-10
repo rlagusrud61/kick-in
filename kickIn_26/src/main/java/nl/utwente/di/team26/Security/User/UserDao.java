@@ -1,8 +1,7 @@
-package nl.utwente.di.team26.Security.Authentication.User;
+package nl.utwente.di.team26.Security.User;
 
 import nl.utwente.di.team26.Exceptions.AuthenticationDeniedException;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
-import nl.utwente.di.team26.Security.Authentication.Credentials;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

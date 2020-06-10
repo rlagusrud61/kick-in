@@ -4,11 +4,9 @@ import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Maps.MapsDao;
 import nl.utwente.di.team26.Product.model.Map.Map;
-import nl.utwente.di.team26.Security.Authentication.Secured;
-import nl.utwente.di.team26.Security.Authentication.User.User;
-import nl.utwente.di.team26.Security.Authorization.Role;
+import nl.utwente.di.team26.Security.Filters.Secured;
+import nl.utwente.di.team26.Security.User.Roles;
 
-import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.Connection;
@@ -20,7 +18,7 @@ public class MapResource {
 
 
     @GET
-    @Secured(Role.VISITOR)
+    @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
     public Map getMapById(@PathParam("mapId") int mapId) {
         try (Connection conn = CONSTANTS.getConnection()) {
@@ -31,7 +29,7 @@ public class MapResource {
     }
 
     @PUT
-    @Secured(Role.EDITOR)
+    @Secured(Roles.EDITOR)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String updateMap(Map mapToUpdate) {
@@ -44,7 +42,7 @@ public class MapResource {
     }
 
     @DELETE
-    @Secured(Role.EDITOR)
+    @Secured(Roles.EDITOR)
     @Produces(MediaType.TEXT_PLAIN)
     public String deleteMap(@PathParam("mapId") int mapToDelete) {
         try (Connection conn = CONSTANTS.getConnection()) {

@@ -1,4 +1,4 @@
-package nl.utwente.di.team26.Security.Authentication;
+package nl.utwente.di.team26.Security.Filters;
 
 import io.jsonwebtoken.*;
 import nl.utwente.di.team26.CONSTANTS;
@@ -7,8 +7,6 @@ import nl.utwente.di.team26.Exceptions.TokenObsoleteException;
 
 import javax.annotation.Priority;
 import javax.crypto.spec.SecretKeySpec;
-import javax.enterprise.event.Event;
-import javax.inject.Inject;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;

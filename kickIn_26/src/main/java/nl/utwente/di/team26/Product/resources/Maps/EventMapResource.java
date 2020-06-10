@@ -8,11 +8,9 @@ import nl.utwente.di.team26.Product.dao.Maps.MapsDao;
 import nl.utwente.di.team26.Product.model.Event.Event;
 import nl.utwente.di.team26.Product.model.Event.EventMap;
 import nl.utwente.di.team26.Product.model.Map.Map;
-import nl.utwente.di.team26.Security.Authentication.Secured;
-import nl.utwente.di.team26.Security.Authentication.User.User;
-import nl.utwente.di.team26.Security.Authorization.Role;
+import nl.utwente.di.team26.Security.Filters.Secured;
+import nl.utwente.di.team26.Security.User.Roles;
 
-import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.Connection;
@@ -29,7 +27,7 @@ public class EventMapResource {
     EventsDao eventsDao = new EventsDao();
 
     @GET
-    @Secured({Role.VISITOR})
+    @Secured({Roles.VISITOR})
     @Path("event/{eventId}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Map> getAllMapsForEvent(@PathParam("eventId") int eventId) {
@@ -42,7 +40,7 @@ public class EventMapResource {
     }
 
     @GET
-    @Secured({Role.VISITOR})
+    @Secured({Roles.VISITOR})
     @Path("map/{mapId}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Event> getAllEventsForMap(@PathParam("mapId") int mapId) {
@@ -55,7 +53,7 @@ public class EventMapResource {
     }
 
     @POST
-    @Secured(Role.EDITOR)
+    @Secured(Roles.EDITOR)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String addEventMap(EventMap eventMapToCreate) {
@@ -68,7 +66,7 @@ public class EventMapResource {
     }
 
     @DELETE
-    @Secured(Role.EDITOR)
+    @Secured(Roles.EDITOR)
     @Path("event/{eventId}")
     @Produces(MediaType.TEXT_PLAIN)
     public String clearEvent(@PathParam("eventId") int eventId) {
@@ -82,7 +80,7 @@ public class EventMapResource {
     }
 
     @DELETE
-    @Secured(Role.EDITOR)
+    @Secured(Roles.EDITOR)
     @Path("{eventId}/{mapId}")
     @Produces(MediaType.TEXT_PLAIN)
     public String deleteEventMap(@PathParam("eventId") int eventId, @PathParam("mapId") int mapId) {
@@ -96,7 +94,7 @@ public class EventMapResource {
     }
 
     @DELETE
-    @Secured(Role.ADMIN)
+    @Secured(Roles.ADMIN)
     @Produces(MediaType.TEXT_PLAIN)
     public String deleteAllRelations() {
         try (Connection conn = CONSTANTS.getConnection()) {
