@@ -109,7 +109,8 @@ public class EventsDao {
             stmt.setString(4, valueObject.getCreatedBy());
             stmt.setString(5, valueObject.getLastEditedBy());
 
-            ResultSet resultSet = stmt.executeQuery();
+            int rowcount = databaseUpdate(conn, stmt);
+            ResultSet resultSet = stmt.getResultSet();
 
             if (resultSet.next()) {
                 return resultSet.getInt(1);
@@ -328,6 +329,7 @@ public class EventsDao {
      * @param stmt This parameter contains the SQL statement to be excuted.
      */
     protected int databaseUpdate(Connection conn, PreparedStatement stmt) throws SQLException {
+
         return stmt.executeUpdate();
     }
 
