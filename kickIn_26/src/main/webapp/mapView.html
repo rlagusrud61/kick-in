@@ -46,7 +46,7 @@ table  thead tr th{
 
 
 </style>
-<body onload="getMapNameAndDescription()">
+<body onload="everything()">
  <div class = "topnav">
   <a id="home" href = "list.html"><i class="glyphicon glyphicon-home"></i></a>
   <a id="arrow" href="list.html"><i class="glyphicon glyphicon-arrow-left"></i></a>
@@ -86,29 +86,8 @@ table  thead tr th{
 
    <div id = "listItems" class="col-md-5">
     <h3> List of Items</h3>
-    <table class="table table-larger">
-      <thead>
-        <tr>
-          <th>Item</th>
-          <th>Quantity</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Bench</td>
-          <td>5</td>
-        </tr>
-        <tr>
-          <td>Something</td>
-          <td>50</td>
-        </tr>
-        <tr>
-          <td>Fences</td>
-          <td>100</td>
-        </tr>
-      </tbody>
-    </table>
   </div>
+      
 </div>
 </div>
 
@@ -186,14 +165,14 @@ function listItems() {
             let col = [];
             for (let i = 0; i < returnedItems.length; i++) {
                 for (let key in returnedItems[i]) {
-                    if (col.indexOf(key) === -1 && (key === 'name' || key === 'quantity')) {
+                    if (col.indexOf(key) === -1 && (key === 'name' || key === 'count')) {
                         col.push(key);
                     }
                 }
             }
 
-            let table = document.getElementById("itemList").createElement("table"); // creates the table
-            table.setAttribute("id", "objects")
+            let table = document.createElement("table"); // creates the table
+            table.setAttribute("id", "resources")
             let tr = table.insertRow(-1); // add a row to the table
 
             for (let i = 0; i < col.length; i++) {
@@ -211,6 +190,8 @@ function listItems() {
                 }
 
             }
+
+            document.getElementById("listItems").appendChild(table);
 
             return table;
 
