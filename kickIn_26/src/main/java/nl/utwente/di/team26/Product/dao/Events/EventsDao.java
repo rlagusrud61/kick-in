@@ -109,8 +109,7 @@ public class EventsDao {
             stmt.setString(4, valueObject.getCreatedBy());
             stmt.setString(5, valueObject.getLastEditedBy());
 
-            int rowcount = databaseUpdate(conn, stmt);
-            ResultSet resultSet = stmt.getResultSet();
+            ResultSet resultSet = stmt.executeQuery();
 
             if (resultSet.next()) {
                 return resultSet.getInt(1);
