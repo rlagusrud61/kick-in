@@ -1,134 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Quicksand">
+	<meta charset="utf-8">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Quicksand">
 
-    <script
-            src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script
-            src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <!-- jQuery library -->
-    <script
-            src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <!-- Latest compiled JavaScript -->
-    <script
-            src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet"
-          href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"/>
-    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+<title>Map Edit</title>
 
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
-    <script
-            src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+<style type="text/css">
 
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/vendor.css">
-    <script
-            src="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/vendor.js"></script>
+body{
+  background-color:#f2f2f2;
 
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/leaflet.distortableimage.css">
-    <script
-            src="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/leaflet.distortableimage.js"></script>
-    <script
-            src='https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/leaflet.distortableimage.js.map'></script>
+}
+.topnav {
+		background-color: #C1FF94;
+		overflow: hidden;
+}
+#home {
+		float: left;
+		color: #58BD0F;
+		padding-left: 75px;
+		font-size: 30px;
+}	
+#logout {
+		float: right;
+		color: #58BD0F;
+		padding-right: 75px;
+		text-decoration: none;
+		font-size: 30px;
+}
+#back {
+		color: #58BD0F;
+		padding-left: 30px;
+		font-size: 30px;
+}
+#title1 {
+	color: rgb(189, 194, 161);
+	padding-top: 30px;
+}	
+.icon {
+	font-size: 25px;
+	color: green;
+}
+#input{
+	width: 60px;
+}
+.btn-circle.btn-xl { 
+  width: 70px; 
+  height: 70px; 
+  padding: 10px 16px; 
+  border-radius: 35px; 
+  font-size: 12px; 
+  text-align: center;
+} 
 
-    <script
-            src="https://cdn.jsdelivr.net/npm/leaflet-easyprint@2.1.9/dist/bundle.min.js"></script>
-
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <script src="https://unpkg.com/konva@4.0.0/konva.min.js"></script>
-
-    <link rel="stylesheet" href="http://localhost:8080/kickInTeam26/css/mapEdit.css"> <!-- link to css file -->
-    <script src="js/util/crop.js"></script>
-    <title>Map Edit</title>
+nav ul{height:200px; width:90%;}
+nav ul{overflow:hidden; overflow-y:scroll;}
+</style>
 </head>
-<body>
-<div class="topnav">
-    <a id="home" href="list.html"><i class="glyphicon glyphicon-home"></i></a>
+<body style="font-family: 'Quicksand'">
+	<div class = "topnav">
+    <a id="home" href = "list.html"><i class="glyphicon glyphicon-home"></i></a>
     <a id="logout" href="login.html">Logout</a>
-</div>
-<div class="card">
-    <div class="row">
-        <h1 id="title1">&emsp;&emsp;Map Name</h1>
-        <div class="col-9"
-             style="display: flex; justify-content: flex-end; padding-bottom: 10px">
-            <a href="list.html"></a>
-            <button type="button"
-                    class="myButton btn btn-success btn-circle btn-xl align-self-end"
-                    id="myBtn">Save
-            </button>
-            </a>
-        </div>
-    </div>
-</div>
+  </div>
+  <div class="card">
+		<div class="row">
+			<h1 id="title1">&emsp;&emsp;Map Name</h1>
+			<div class="col-9"
+				style="display: flex; justify-content: flex-end; padding-bottom: 10px">
+				<a href="list.html"></a>
+				<button type="button"
+					class="myButton btn btn-success btn-circle btn-xl align-self-end"
+					id="myBtn">Save</button>
+				</a>
+			</div>
+		</div>
+  	</div>
+	
+	<divclass= "container">
+		<div class="row">
+    		<div style="padding-left: 75px;" class="col-sm-3">
+    			<div class="shadow-lg p-3 mb-5 bg-white rounded">
+    			<h3>Available Items</h3><br>
+    			<input type="text" placeholder="Search.."><br><br><br>
+    			<nav>
+    			<ul>
+  					<label><li>Item 1 :</li></label>
+  					<input id="input" type="number" name="quantity"><button style="background-color: #58BD0F; border-color: #C1FF94">+</button><br><br>
+ 					<label><li>Item 2:</li></label>
+ 					<input id="input" type="number" name="quantity"><button style="background-color: #58BD0F; border-color: #C1FF94">+</button><br><br>
+    				<label><li>Item 3:</li></label>
+    				<input id="input" type="number" name="quantity"><button style="background-color: #58BD0F; border-color: #C1FF94">+</button><br><br>
+    				<label><li>Item 4:</li></label>
+  					<input id="input" type="number" name="quantity"><button style="background-color: #58BD0F; border-color: #C1FF94">+</button><br><br>
+ 					<label><li>Item 5:</li></label>
+ 					<input id="input" type="number" name="quantity"><button style="background-color: #58BD0F; border-color: #C1FF94">+</button><br><br>
+    				<label><li>Item 6:</li></label>
+    				<input id="input" type="number" name="quantity"><button style="background-color: #58BD0F; border-color: #C1FF94">+</button><br><br>
+    			</ul>
+    		</nav>
+    		</div>
+    		</div>
+    		<div class="col-sm-6">	
+    			<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3024.544153666493!2d-74.01101428473281!3d40.70603607933259!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a165bedccab%3A0x2cb2ddf003b5ae01!2sWall%20St%2C%20New%20York%2C%20NY%2C%20Statele%20Unite%20ale%20Americii!5e0!3m2!1sro!2sro!4v1591681232767!5m2!1sro!2sro" width="750" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+    		</div>
+    		<div style="padding-right: 75px;" class="col-sm-3">
+    			<div class="shadow-lg p-3 mb-5 bg-white rounded">
+    				<h3>Your added items</h3><br>
+    				<nav>
+    					<ul style="font-size: 18px;">
+    						<li>Fences : 500</li>
+    						<li>Benches : 45</li>
+    						<li>Tennis balls : 100</li>
+    						<li>Fences : 500</li>
+    						<li>Benches : 45</li>
+    						<li>Tennis balls : 100</li>
+    						<li>Fences : 500</li>
+    						<li>Benches : 45</li>
+    						<li>Tennis balls : 100</li>
+    					</ul>
+    				</nav>
+    		</div>
+  		</div>
+ 	 </div>
 
-<div class="container">
-    <div class="row">
-        <div style="padding-left: 75px;" class="col-sm-3">
-            <div class="shadow-lg p-3 mb-5 bg-white rounded">
-                <h3>Available Items</h3>
-                <br> <input type="text" placeholder="Search.."><br>
-                <br>
-                <br>
-                <nav>
-                    <ul id="itemlist">
-                    </ul>
-                </nav>
-            </div>
-        </div>
-        <div class="col-sm-6">
 
-            <div id="mapContainer">
-                <div id="mapid"></div>
-            </div>
 
-            <!--			<button type="button" onclick="callEnterFreeHand()">Free-->
-            <!--				Hand Drawing Control</button>-->
-            <button type="button" onclick="getGeoJSON()">getGeoJSON</button>
-
-            <!--			<div>-->
-            <!--				<div id="search-container">-->
-            <!--					<input type="text" id="materialsSearch" onkeyup="filterOn()"-->
-            <!--						placeholder="Search for resource...">-->
-            <!--				</div>-->
-            <!--				<div id="materialsContainer"></div>-->
-            <!--			</div>-->
-        </div>
-        <div style="padding-right: 75px;" class="col-sm-3">
-            <div class="shadow-lg p-3 mb-5 bg-white rounded">
-                <h3>Your added items</h3>
-                <br>
-                <nav>
-                    <ul id="itemlist2" style="font-size: 18px;">
-                        <li>Fences : 500</li>
-                        <li>Benches : 45</li>
-                        <li>Tennis balls : 100</li>
-                        <li>Fences : 500</li>
-                        <li>Benches : 45</li>
-                        <li>Tennis balls : 100</li>
-                        <li>Fences : 500</li>
-                        <li>Benches : 45</li>
-                        <li>Tennis balls : 100</li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-    </div>
-</div>
 </body>
-<script src="http://localhost:8080/kickInTeam26/js/mapEdit.js"></script>
 </html>

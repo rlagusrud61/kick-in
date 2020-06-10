@@ -60,7 +60,7 @@ table  thead tr th{
   </div>
 </div>
 
-<center><div class="container" style="background-color:#ffffff">
+<div class="container" style="background-color:#ffffff">
  <div class="card-body">
    <h1 id = "mapName" class="text-left">Map_Name
      <a href="list.html" class="glyphicon glyphicon-share text-success" style="font-size:20px;"></a>
@@ -111,9 +111,43 @@ table  thead tr th{
   </div>
 </div>
 </div>
-</center>
+
+
+    <!-- The Map Deletion Popup -->
+    <div id="popupMapDelete" class="modal">
+
+        <!-- Popup content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Do you really want to delete this map?</h2>
+            <div class="bottomright" style="display: flex; justify-content: center;">
+                <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">YES</button>
+                <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">NO</button>
+            </div>
+        </div>
+    </div>
 
 <script>
+
+// Delete map Modal
+    var deletion = document.getElementById("popupEventDelete");
+// Button for deletion
+    var trash = document.getElementById("deleteEvent");
+// Closing popup
+    var closeDelete = document.getElementsByClassName("closeDelete")[0];
+
+    trash.onclick = function() {
+        deletion.style.display = "block";
+    }
+    closeDelete.onclick = function() {
+        deletion.style.display = "none";
+    }
+    window.onclick = function(event) {
+        if (event.target === deletion) {
+            deletion.style.display = "none";
+        }
+    }
+
 function getMap() {
 	var url = window.location.href;
 	url = url.split("/");
