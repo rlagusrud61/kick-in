@@ -11,9 +11,7 @@ import nl.utwente.di.team26.Security.Authentication.User.UserDao;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -31,6 +29,13 @@ public class AuthenticationEndpoint {
     UserDao userDao = new UserDao();
     SessionDao sessionDao = new SessionDao();
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String echo(String something) {
+        return something;
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public void authenticateUser(Credentials credentials) throws IOException {
@@ -41,11 +46,10 @@ public class AuthenticationEndpoint {
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
 
-            response.sendRedirect("./list.html");
         } catch (AuthenticationDeniedException e) {
-            response.sendRedirect("./login.html");
+            response.sendError(Response.Status.UNAUTHORIZED.getStatusCode(), e.getMessage());
         } catch (SQLException throwables) {
-            response.sendError(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode());
+            response.sendError(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), throwables.getMessage());
         }
     }
 
@@ -61,14 +65,15 @@ public class AuthenticationEndpoint {
     }
 
     private User matchingPassword(Credentials credentials) throws AuthenticationDeniedException {
+        System.out.println(credentials);
         return userDao.authenticateUser(CONSTANTS.getConnection(), credentials);
     }
 
     private Cookie createCookie(int userId) throws SQLException {
 
 
-        String count = getCount() + 1;
-        String token = createJWT(String.valueOf(userId), count);
+        String tokenId = getCount() + 1;
+        String token = createJWT(String.valueOf(userId), tokenId);
 
         sessionDao.create(CONSTANTS.getConnection(), new Session(token, userId));
         return new Cookie(CONSTANTS.COOKIENAME, token);

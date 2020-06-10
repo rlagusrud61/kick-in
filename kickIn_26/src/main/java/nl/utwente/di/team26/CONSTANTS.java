@@ -13,7 +13,7 @@ public class CONSTANTS {
     public static final String SCHEMA = "idb_kick_in_team_26";
 
     public static final String COOKIENAME = "securityTeam26";
-    public static final String SECRET = "securityTeam26";
+    public static final String SECRET = "securityTeam26IWILLBESECUREENOUGH!!@@";
 
     public static final String SUCCESS = "Successful";
     public static final String FAILURE = "Failure";
