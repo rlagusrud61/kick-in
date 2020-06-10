@@ -204,18 +204,18 @@
 
 	// When the user clicks on <span> (x), close the modal
 	span.onclick = function(event) {
-		if (event.target == modal) {
+		if (event.target === modal) {
 			modal.style.display = "none";
-		} else if (event.target == modal1) {
+		} else if (event.target === modal1) {
 			modal1.style.display = "none";
 		}
 	}
 
 	// When the user clicks anywhere outside of the modal, close it
 	window.onclick = function(event) {
-		if (event.target == modal) {
+		if (event.target === modal) {
 			modal.style.display = "none";
-		} else if (event.target == modal1) {
+		} else if (event.target === modal1) {
 			modal1.style.display = "none";
 		}
 	}
@@ -228,7 +228,7 @@
 		const xhr = new XMLHttpRequest();
 		xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/eventmap/event" + url, true);
 		xhr.onreadystatechange = function () {
-			if (xhr.readyState == 4) {
+			if (xhr.readyState === 4) {
 				console.log(xhr.responseText);
 			}
 		}
@@ -243,7 +243,7 @@
 		const xhr = new XMLHttpRequest();
 		xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/event/" + id, true);
 		xhr.onreadystatechange = function () {
-			if (xhr.readyState == 4) {
+			if (xhr.readyState === 4) {
 				var event = JSON.parse(xhr.responseText);
 //   			document.getElementById("intro").innerHTML = event.description;
 			}
