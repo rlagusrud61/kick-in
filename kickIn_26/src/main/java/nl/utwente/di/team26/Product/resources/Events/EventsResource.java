@@ -15,10 +15,11 @@ import java.util.List;
 @Path("/events")
 public class EventsResource {
 
+
+
     public EventsDao eventsDao = new EventsDao();
 
     @GET
-    @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
     public List<Event> getAllEvents() {
         try (Connection conn = CONSTANTS.getConnection()) {
@@ -30,7 +31,7 @@ public class EventsResource {
     }
 
     @POST
-    @Secured({Roles.EDITOR})
+//    @Secured({Roles.EDITOR})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String addNewEvent(Event eventToAdd) {
