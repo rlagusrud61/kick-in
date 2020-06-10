@@ -4,7 +4,6 @@ import io.jsonwebtoken.*;
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exceptions.AuthenticationDeniedException;
 import nl.utwente.di.team26.Exceptions.TokenObsoleteException;
-import nl.utwente.di.team26.Security.Authentication.User.AuthenticatedUser;
 
 import javax.annotation.Priority;
 import javax.crypto.spec.SecretKeySpec;
@@ -18,7 +17,6 @@ import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.Provider;
-import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -30,14 +28,8 @@ import java.util.Map;
 @Priority(Priorities.AUTHENTICATION)
 public class AuthenticationFilter implements ContainerRequestFilter {
 
-    @Inject
-    @AuthenticatedUser
-    Event<String> userAuthenticatedEvent;
-
     @Context
     UriInfo uriInfo;
-
-    String userId;
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -55,7 +47,6 @@ public class AuthenticationFilter implements ContainerRequestFilter {
                     try {
                         // Validate the token
                         validateToken(token);
-                        userAuthenticatedEvent.fire(userId);
                     } catch (TokenObsoleteException e) {
                         e.printStackTrace();
                         sendToLogin(requestContext);
@@ -95,8 +86,6 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         // Throw an Exception if the token is invalid
         try {
             Claims claims = decodeJWT(token);
-            userId = claims.getSubject();
-            //TODO: Check with database but this is good enough by itself honestly.
         } catch (ExpiredJwtException e) {
             throw new TokenObsoleteException("Time for a new Token!");
         } catch (JwtException e) {

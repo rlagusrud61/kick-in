@@ -1,12 +1,10 @@
 package nl.utwente.di.team26.Product.resources.Maps;
 
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Maps.MapsDao;
 import nl.utwente.di.team26.Product.model.Map.Map;
 import nl.utwente.di.team26.Security.Authentication.Secured;
-import nl.utwente.di.team26.Security.Authentication.User.AuthenticatedUser;
 import nl.utwente.di.team26.Security.Authentication.User.User;
 import nl.utwente.di.team26.Security.Authorization.Role;
 
@@ -19,9 +17,7 @@ import java.sql.SQLException;
 @Path("/map/{mapId}")
 public class MapResource {
 
-    @Inject
-    @AuthenticatedUser
-    User authenticatedUser;
+
 
     @GET
     @Secured(Role.VISITOR)
@@ -29,7 +25,7 @@ public class MapResource {
     public Map getMapById(@PathParam("mapId") int mapId) {
         try (Connection conn = CONSTANTS.getConnection()) {
             return (new MapsDao()).getObject(conn, mapId);
-        } catch (NotFoundException | SQLException | DriverNotInstalledException e) {
+        } catch (NotFoundException | SQLException e) {
             return null;
         }
     }
@@ -42,7 +38,7 @@ public class MapResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             (new MapsDao()).save(conn, mapToUpdate);
             return CONSTANTS.SUCCESS;
-        } catch (NotFoundException | SQLException | DriverNotInstalledException e) {
+        } catch (NotFoundException | SQLException e) {
             return CONSTANTS.FAILURE + " " + e.getMessage();
         }
     }
@@ -54,7 +50,7 @@ public class MapResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             (new MapsDao()).delete(conn, new Map(mapToDelete));
             return CONSTANTS.SUCCESS;
-        } catch (NotFoundException | SQLException | DriverNotInstalledException e) {
+        } catch (NotFoundException | SQLException e) {
             return CONSTANTS.FAILURE + " " + e.getMessage();
         }
     }

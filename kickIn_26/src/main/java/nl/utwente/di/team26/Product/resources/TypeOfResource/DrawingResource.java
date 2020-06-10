@@ -1,13 +1,11 @@
 package nl.utwente.di.team26.Product.resources.TypeOfResource;
 
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.TypeOfResources.DrawingDao;
 import nl.utwente.di.team26.Product.dao.TypeOfResources.TypeOfResourceDao;
 import nl.utwente.di.team26.Product.model.TypeOfResource.Drawing;
 import nl.utwente.di.team26.Security.Authentication.Secured;
-import nl.utwente.di.team26.Security.Authentication.User.AuthenticatedUser;
 import nl.utwente.di.team26.Security.Authentication.User.User;
 import nl.utwente.di.team26.Security.Authorization.Role;
 
@@ -20,9 +18,7 @@ import java.sql.SQLException;
 @Path("/drawing/{drawingId}")
 public class DrawingResource {
 
-    @Inject
-    @AuthenticatedUser
-    User authenticatedUser;
+
 
     DrawingDao drawingDao = new DrawingDao();
 
@@ -32,7 +28,7 @@ public class DrawingResource {
     public Drawing getDrawingObject(@PathParam("drawingId") int drawingId) {
         try (Connection conn = CONSTANTS.getConnection()) {
             return drawingDao.getObject(conn, drawingId);
-        } catch (SQLException | NotFoundException | DriverNotInstalledException throwables) {
+        } catch (SQLException | NotFoundException throwables) {
             throwables.printStackTrace();
             return null;
         }
@@ -46,7 +42,7 @@ public class DrawingResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             drawingDao.save(conn, drawingToUpdate);
             return CONSTANTS.SUCCESS;
-        } catch (NotFoundException | SQLException | DriverNotInstalledException e) {
+        } catch (NotFoundException | SQLException e) {
             return CONSTANTS.FAILURE + " " + e.getMessage();
         }
     }
@@ -58,7 +54,7 @@ public class DrawingResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             (new TypeOfResourceDao()).delete(conn, new Drawing(drawingId));
             return CONSTANTS.SUCCESS;
-        } catch (NotFoundException | SQLException | DriverNotInstalledException e) {
+        } catch (NotFoundException | SQLException e) {
             return CONSTANTS.FAILURE + " " + e.getMessage();
         }
     }

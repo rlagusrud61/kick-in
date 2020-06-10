@@ -1,11 +1,9 @@
 package nl.utwente.di.team26.Product.resources.Maps;
 
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
 import nl.utwente.di.team26.Product.dao.Maps.MapsDao;
 import nl.utwente.di.team26.Product.model.Map.Map;
 import nl.utwente.di.team26.Security.Authentication.Secured;
-import nl.utwente.di.team26.Security.Authentication.User.AuthenticatedUser;
 import nl.utwente.di.team26.Security.Authentication.User.User;
 import nl.utwente.di.team26.Security.Authorization.Role;
 
@@ -19,9 +17,7 @@ import java.util.List;
 @Path("/maps")
 public class MapsResource {
 
-    @Inject
-    @AuthenticatedUser
-    User authenticatedUser;
+
 
     MapsDao mapsDao = new MapsDao();
 
@@ -31,7 +27,7 @@ public class MapsResource {
     public List<Map> getAllMaps() {
         try (Connection conn = CONSTANTS.getConnection()) {
             return mapsDao.loadAll(conn);
-        } catch (NotFoundException | SQLException | DriverNotInstalledException throwables) {
+        } catch (NotFoundException | SQLException throwables) {
             throwables.printStackTrace();
             return null;
         }
@@ -45,7 +41,7 @@ public class MapsResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             mapsDao.create(conn, mapToAdd);
             return CONSTANTS.SUCCESS;
-        } catch (SQLException | DriverNotInstalledException throwables) {
+        } catch (SQLException throwables) {
             throwables.printStackTrace();
             return CONSTANTS.FAILURE + ": " + throwables.getMessage();
         }
@@ -58,7 +54,7 @@ public class MapsResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             mapsDao.deleteAll(conn);
             return CONSTANTS.SUCCESS;
-        } catch (SQLException | DriverNotInstalledException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return CONSTANTS.FAILURE + ": " + e.getMessage();
         }

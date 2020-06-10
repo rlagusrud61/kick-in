@@ -132,5 +132,13 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.glassfish.jersey.containers.glassfish/jersey-gf-cdi -->
+		<dependency>
+			<groupId>org.glassfish.jersey.containers.glassfish</groupId>
+			<artifactId>jersey-gf-cdi</artifactId>
+			<version>2.14</version>
+			<scope>provided</scope>
+		</dependency>
+
     </dependencies>
 </project>

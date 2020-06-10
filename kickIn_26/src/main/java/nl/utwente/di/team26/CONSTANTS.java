@@ -1,7 +1,6 @@
 package nl.utwente.di.team26;
 
-import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
-
+import javax.ws.rs.InternalServerErrorException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -14,22 +13,23 @@ public class CONSTANTS {
     public static final String SCHEMA = "idb_kick_in_team_26";
 
     public static final String COOKIENAME = "securityTeam26";
-    public static final String SECRET = "securityTeam26";
+    public static final String SECRET = "securityTeam26IWILLBESECUREENOUGH!!@@";
 
     public static final String SUCCESS = "Successful";
     public static final String FAILURE = "Failure";
     public static final String ISSUER = "http://localhost:8080/kickInTeam26/";
     public static final long TTK = 7200000;
 
-    public static Connection getConnection() throws SQLException, DriverNotInstalledException {
+    public static Connection getConnection() throws InternalServerErrorException {
 
         try {
             Class.forName("org.postgresql.Driver");
             Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
             dbcon.setSchema(SCHEMA);
             return dbcon;
-        } catch (ClassNotFoundException e) {
-            throw new DriverNotInstalledException("postgresql driver not installed properly.");
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+            throw new InternalServerErrorException("SQL failed");
         }
     }
 }
