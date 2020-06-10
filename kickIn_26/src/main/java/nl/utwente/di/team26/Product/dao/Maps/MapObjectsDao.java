@@ -416,7 +416,7 @@ public class MapObjectsDao {
 
     public String generateReport(Connection conn, MapObject mapObject) throws SQLException, NotFoundException {
         String sql =
-                "select jsonb_agg(itemReport)::text as resources " +
+                "select jsonb_agg(itemReport.resource)::text as resources " +
                 "from ( " +
                 "         select jsonb_build_object( " +
                 "                        'name', tor.name, " +
