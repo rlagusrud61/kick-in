@@ -16,8 +16,6 @@ import java.util.List;
 @Path("/objects")
 public class ObjectsResource {
 
-
-
     MapObjectsDao mapObjectsDao = new MapObjectsDao();
 
     @GET
@@ -30,6 +28,19 @@ public class ObjectsResource {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             return null;
+        }
+    }
+
+    @GET
+    @Secured(Roles.VISITOR)
+    @Path("{mapId}/report")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String generateReportForMap(@PathParam("mapId") int mapId) {
+        try (Connection conn = CONSTANTS.getConnection()) {
+            return mapObjectsDao.generateReport(conn, new MapObject(0, mapId, 0, null));
+        } catch (SQLException | NotFoundException throwables) {
+            throwables.printStackTrace();
+            return CONSTANTS.FAILURE + ": " + throwables.getMessage();
         }
     }
 
