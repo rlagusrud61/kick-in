@@ -1,12 +1,10 @@
 package nl.utwente.di.team26.Product.resources.Objects;
 
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Maps.MapObjectsDao;
 import nl.utwente.di.team26.Product.model.Map.MapObject;
 import nl.utwente.di.team26.Security.Authentication.Secured;
-import nl.utwente.di.team26.Security.Authentication.User.AuthenticatedUser;
 import nl.utwente.di.team26.Security.Authentication.User.User;
 import nl.utwente.di.team26.Security.Authorization.Role;
 
@@ -20,9 +18,7 @@ import java.util.List;
 @Path("/objects")
 public class ObjectsResource {
 
-    @Inject
-    @AuthenticatedUser
-    User authenticatedUser;
+
 
     MapObjectsDao mapObjectsDao = new MapObjectsDao();
 
@@ -33,7 +29,7 @@ public class ObjectsResource {
     public List<MapObject> getAllObjectsForMap(@PathParam("mapId") int mapId) {
         try (Connection conn = CONSTANTS.getConnection()) {
             return mapObjectsDao.searchMatching(conn, new MapObject(0, mapId, 0, null));
-        } catch (SQLException | DriverNotInstalledException throwables) {
+        } catch (SQLException throwables) {
             throwables.printStackTrace();
             return null;
         }
@@ -47,7 +43,7 @@ public class ObjectsResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             mapObjectsDao.create(conn, newObjectToAdd);
             return CONSTANTS.SUCCESS;
-        } catch (SQLException | DriverNotInstalledException throwables) {
+        } catch (SQLException throwables) {
             throwables.printStackTrace();
             return CONSTANTS.FAILURE + " " + throwables.getMessage();
         }
@@ -61,7 +57,7 @@ public class ObjectsResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             mapObjectsDao.deleteAllForMap(conn, new MapObject(0, mapId, 0, null));
             return CONSTANTS.SUCCESS;
-        } catch (SQLException | NotFoundException | DriverNotInstalledException throwables) {
+        } catch (SQLException | NotFoundException throwables) {
             throwables.printStackTrace();
             return CONSTANTS.FAILURE + " " + throwables.getMessage();
         }
@@ -74,7 +70,7 @@ public class ObjectsResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             mapObjectsDao.deleteAll(conn);
             return CONSTANTS.SUCCESS;
-        } catch (SQLException | DriverNotInstalledException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return CONSTANTS.FAILURE + ": " + e.getMessage();
         }

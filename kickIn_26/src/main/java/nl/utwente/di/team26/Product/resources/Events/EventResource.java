@@ -1,12 +1,10 @@
 package nl.utwente.di.team26.Product.resources.Events;
 
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exceptions.DriverNotInstalledException;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Events.EventsDao;
 import nl.utwente.di.team26.Product.model.Event.Event;
 import nl.utwente.di.team26.Security.Authentication.Secured;
-import nl.utwente.di.team26.Security.Authentication.User.AuthenticatedUser;
 import nl.utwente.di.team26.Security.Authentication.User.User;
 import nl.utwente.di.team26.Security.Authorization.Role;
 
@@ -19,17 +17,13 @@ import java.sql.SQLException;
 @Path("/event/{eventId}")
 public class EventResource {
 
-    @Inject
-    @AuthenticatedUser
-    User authenticatedUser;
-
     @GET
     @Secured({Role.VISITOR})
     @Produces(MediaType.APPLICATION_JSON)
     public Event getEventById(@PathParam("eventId") int eventId) {
         try (Connection conn = CONSTANTS.getConnection()) {
             return (new EventsDao()).getObject(conn, eventId);
-        } catch (NotFoundException | SQLException | DriverNotInstalledException e) {
+        } catch (NotFoundException | SQLException e) {
             return null;
         }
     }
@@ -42,7 +36,7 @@ public class EventResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             (new EventsDao()).save(conn, eventToUpdate);
             return CONSTANTS.SUCCESS;
-        } catch (NotFoundException | SQLException | DriverNotInstalledException e) {
+        } catch (NotFoundException | SQLException e) {
             return CONSTANTS.FAILURE + " " + e.getMessage();
         }
     }
@@ -54,7 +48,7 @@ public class EventResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             (new EventsDao()).delete(conn, new Event(eventToDelete));
             return CONSTANTS.SUCCESS;
-        } catch (NotFoundException | SQLException | DriverNotInstalledException e) {
+        } catch (NotFoundException | SQLException e) {
             return CONSTANTS.FAILURE + " " + e.getMessage();
         }
     }

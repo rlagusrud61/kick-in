@@ -5,19 +5,19 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exceptions.AuthenticationDeniedException;
+import nl.utwente.di.team26.Security.Authentication.User.User;
 import nl.utwente.di.team26.Security.Authentication.User.UserDao;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
-import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.security.Key;
-import java.security.SecureRandom;
+import java.sql.SQLException;
 import java.util.Date;
 
 @Path("/authentication")
@@ -26,62 +26,67 @@ public class AuthenticationEndpoint {
     @Context
     HttpServletResponse response;
 
+    UserDao userDao = new UserDao();
+    SessionDao sessionDao = new SessionDao();
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String echo(String something) {
+        return something;
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public void authenticateUser(Credentials credentials) throws IOException {
         try {
-            int userId = authenticate(credentials);
+            User user = authenticate(credentials);
 
-            Cookie cookie = createCookie(userId);
+            Cookie cookie = createCookie(user.getUserId());
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
 
-            response.sendRedirect("./list.html");
         } catch (AuthenticationDeniedException e) {
-            response.sendRedirect("./login.html");
+            response.sendError(Response.Status.UNAUTHORIZED.getStatusCode(), e.getMessage());
+        } catch (SQLException throwables) {
+            response.sendError(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), throwables.getMessage());
         }
     }
 
-    private int authenticate(Credentials credentials) throws AuthenticationDeniedException {
+    private User authenticate(Credentials credentials) throws AuthenticationDeniedException {
         // Authenticate against a database, LDAP, file or whatever
         // Throw an Exception if the credentials are invalid
-        if (!whiteListed(credentials.getEmail())) {
+
+        User user = matchingPassword(credentials);
+        if (user.equals(new User())) {
             throw new AuthenticationDeniedException("You shall not pass");
         }
-
-        // If matches password
-        if (!matchingPassword(credentials)) {
-            throw new AuthenticationDeniedException("You shall not pass");
-        }
-
-        return 0;
+        return user;
     }
 
-    private boolean whiteListed(String emailAddress) {
-        // TODO: look up the database.
-        return true;
+    private User matchingPassword(Credentials credentials) throws AuthenticationDeniedException {
+        System.out.println(credentials);
+        return userDao.authenticateUser(CONSTANTS.getConnection(), credentials);
     }
 
-    private boolean matchingPassword(Credentials credentials) {
-        // TODO: read the database response.
-        return true;
-    }
-
-    private Cookie createCookie(int userId) {
+    private Cookie createCookie(int userId) throws SQLException {
 
 
-        String count = getCount();
-        String token = createJWT(String.valueOf(userId), count);
+        String tokenId = getCount() + 1;
+        String token = createJWT(String.valueOf(userId), tokenId);
 
-        /*
-        TODO: Store the token in the database with userId.
-         Overwriting existing one if necessary.
-        */
+        sessionDao.create(CONSTANTS.getConnection(), new Session(token, userId));
         return new Cookie(CONSTANTS.COOKIENAME, token);
     }
 
     private String getCount() {
-        return String.valueOf(new UserDao().getCount());
+        String countOf = null;
+        try {
+            countOf = String.valueOf(sessionDao.countAll(CONSTANTS.getConnection()));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return countOf;
     }
 
     public static String createJWT(String subject, String count) {
