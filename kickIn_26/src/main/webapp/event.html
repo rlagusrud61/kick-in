@@ -1,208 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="https://fonts.googleapis.com/css?family=Quicksand">
 
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<!-- jQuery library -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<!-- Latest compiled JavaScript -->
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<title>View Event</title>
-<style>
-.topnav {
-	background-color: #C1FF94;
-	overflow: hidden;
-}
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 
-.jumbotron-fluid {
-	background-color: white;
-}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 
-#home {
-	float: left;
-	color: #58BD0F;
-	padding-left: 75px;
-	font-size: 30px;
-}
+	<!-- Material Design Bootstrap -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.18.0/css/mdb.min.css" rel="stylesheet">
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
+	<link rel="stylesheet" type= "text/css" href="css/style.css">
 
-#logout {
-	float: right;
-	color: #58BD0F;
-	padding-right: 75px;
-	text-decoration: none;
-	font-size: 30px;
-}
-
-#title1 {
-	color: rgb(189, 194, 161);
-	padding-top: 30px;
-}
-
-.icon {
-	font-size: 25px;
-	color: green;
-}
-
-#delete {
-	font-size: 25px;
-}
-
-#edit {
-	font-size: 25px;
-}
-
-#info {
-	padding-top: 30px;
-}
-
-#map_name {
-	float: left;
-}
-
-.container {
-	background-color: white;
-}
-
-.separator {
-	background-color: #DCDCDC;
-}
-</style>
 </head>
 
-<body style="font-family: 'Quicksand'">
-	<div class="topnav">
-		<a id="home" href="list.html"><i class="glyphicon glyphicon-home"></i></a>
+<style>
+
+
+	h2{
+		text-align : center;
+		font-size: 50px;
+		padding-bottom: 5%;
+	}
+	
+	.glyphicon {
+		font-size:20px;
+		color:#00CC33;
+	}
+
+	body{
+		background-color:#f2f2f2;
+		font-size: 15px;
+		font-family: 'Quicksand';
+		color:#6B6B6B;
+	}
+
+</style>
+
+<body>
+
+
+	<!-- Navigation Bar -->
+	<div class = "topnav">
+		<a id="home" class="glyphicon glyphicon-home" href = "list.html"></a>
 		<a id="logout" href="login.html">Logout</a>
 	</div>
-	<div class="card">
-		<div class="row">
-			<h1 id="title1">&emsp;&emsp;Event</h1>
 
-			<div class="col-10"
-				style="display: flex; justify-content: flex-end; padding-bottom: 10px">
-				<a href="mapEdit.html"></a>
-				<button type="button"
-					class="myButton btn btn-success btn-circle btn-xl align-self-end"
-					id="myBtn">Add Map</button>
-				</a>
-			</div>
-		</div>
-	</div>
-	<div class="card"></div>
-	<div class="container">
-		<div class="shadow-lg p-3 mb-5 bg-white rounded">
+	<!-- Edit Your Event -->
+	<div class="jumbotron jumbotron-fluid">
+		<div id = "main" class="container">
 			<div class="row">
-				<div>
-					<h1>
-						&ensp;My_Epic_Event &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; <a
-							class="icon" id="edit" href="edit.html"><i
-							class="glyphicon glyphicon-pencil"></i></a>&ensp; <a class="icon"
-							id="delete" href="#"><i class="glyphicon glyphicon-trash"></i></a>
-					</h1>
+				<h1 class="col-8">Edit Your Event</h1> 
+				<div class="col-4" style="display: flex; justify-content: flex-end;">
+					<button type="button" class="myButton btn btn-success btn-circle btn-xl align-self-end" id="myBtn"> + </button> 
 				</div>
 			</div>
-			<div id="intro">
-				<p>Paragraphs are the building blocks of papers. Many students
-					define paragraphs in terms of length: a paragraph is a group of at
-					least five sentences, a paragraph is half a page long, etc. In
-					reality, though, the unity and coherence of ideas among sentences
-					is what constitutes a paragraph. A paragraph is defined as “a group
-					of sentences or a single sentence that forms a unit” (Lunsford and
+		</div>
+	</div>
+
+	<!-- Container For Event Descriptions -->
+	<div class="container">
+		<div class="shadow-lg p-3 mb-5 bg-white rounded">
+				<div class="row">
+					<div class="col-md-6 col-sm-7 col-lg-5 d-flex justify-content-between">
+						<h1 class="text-left">Epic_Event_1
+							<a href="list.html" class="glyphicon glyphicon-share"></a>
+							<a href="mapEdit.html" class="glyphicon glyphicon-pencil"></a>
+							<a href="#" class="glyphicon glyphicon-trash"></a>
+						</h1>
+
+					</div>
+				</div>
+				<div id="intro">
+					<p style="text-align:justify;">Paragraphs are the building blocks of papers. Many students
+						define paragraphs in terms of length: a paragraph is a group of at
+						least five sentences, a paragraph is half a page long, etc. In
+						reality, though, the unity and coherence of ideas among sentences
+						is what constitutes a paragraph. A paragraph is defined as “a group
+						of sentences or a single sentence that forms a unit” (Lunsford and
 					Connors 116).</p>
-				<a class="icon" id="calendar" href="#"><i
-					class="glyphicon glyphicon-calendar"></i></a><label>&ensp;01/01/2020</label>&emsp;&emsp;
-				<a class="icon" id="time" href="#"><i
-					class="glyphicon glyphicon-time"></i></a><label>&ensp;4:20 AM</label>&emsp;&emsp;
-				<a class="icon" id="location" href="#"><i
-					class="glyphicon glyphicon-map-marker"></i></a><label>&ensp;University
-					of Twente</label>
+
+					<a href="list.html" class="glyphicon glyphicon-calendar"></a><label>01/01/2020</label>
+					<a href="list.html" class="glyphicon glyphicon-time"></a><label>4:20AM</label>
+					<a href="list.html" class="glyphicon glyphicon-map-marker"></a><label>University of Twente</label>
+
 			</div>
 		</div>
 	</div>
 
-	<div id="info" class="container">
+	<!-- Container for Map #1 (Stub) -->
+	<div class="container">
 		<div class="shadow-lg p-3 mb-5 bg-white rounded">
+			<div class="row" style="justify-content: center;">
 
-			<iframe
-				src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d78211.4516027429!2d6.798508172117513!3d52.22325812228936!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47b8139482fe5187%3A0xd24e1fb7ad7265e2!2sEnschede%2C%20Netherlands!5e0!3m2!1sen!2sro!4v1590396419471!5m2!1sen!2sro"
-				width="400" height="300" frameborder="0"
-				style="border: 0; float: left; margin-right: 20px"
-				allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-			<h2 id="map_name">Name_of_Map&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</h2>
-			<a class="icon" id="eye" href="mapview.html"><i
-				class="glyphicon glyphicon-eye-open"></i></a>&emsp; <a class="icon"
-				id="edit" href="mapEdit.html"><i
-				class="glyphicon glyphicon-pencil"></i></a>&emsp; <a class="icon"
-				id="delete" href="#"><i class="glyphicon glyphicon-trash"></i></a>&emsp;
-			<h4>&emsp;</h4>
-			<h4 style="float: left">Created by :&emsp;</h4>
-			<a class="icon" id="person" href="#"><i
-				class="glyphicon glyphicon-user"></i></a><label>&emsp;The
-				Creator </label>
-			<p style="font-size: 15px;">Paragraphs are the building blocks of
-				papers. Many students define paragraphs in terms of length: a
-				paragraph is a group of at least five sentences, a paragraph is half
-				a page long, etc. In reality, though, the unity and coherence of
-				ideas among sentences is what constitutes a paragraph. A paragraph
-				is defined as “a group of sentences or a single sentence that forms
-				a unit” (Lunsford and Connors 116). Length and appearance do not
-				determine whether a section in a paper is a paragraph. For instance,
-				in some styles of writing, particularly journalistic styles, a
-				paragraph can be just one sentence long. Ultimately, a paragraph is
-				a sentence or group of sentences that support one main idea. In this
-				handout, we will refer to this as the “controlling idea,” because it
-				controls what happens in the rest of the paragraph.</p>
+				<!-- Map API -->
+				<div class="col-md-6" style="display:flex;justify-content:center;align-items: center;">
+					<iframe
+					src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d78211.4516027429!2d6.798508172117513!3d52.22325812228936!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47b8139482fe5187%3A0xd24e1fb7ad7265e2!2sEnschede%2C%20Netherlands!5e0!3m2!1sen!2sro!4v1590396419471!5m2!1sen!2sro"
+					width="400" height="300" frameborder="0"
+					style="border: 0;"
+					allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+				</div>
 
-		</div>
+				<!-- Name of Map, Creator and description of the map -->
+				<div class="col-md-5">
 
-	</div>
-<script>
-function getEvent() {
-	var url = window.location.href;
-	url = url.split("/");
-	url = url[10];
-	const xhr = new XMLHttpRequest();
-	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/eventmap/" + url, true);
-	xhr.onreadystatechange = function () {
-  		if (xhr.readyState == 4) {
-   			console.log(xhr.responseText);
-   			}
-    }
-   	xhr.setRequestHeader("Content-Type", "application/json");
-   	xhr.send();
-}
+					<div class="row">
+						<h1 class="text-left">Name_Of_Map
+							<a href="list.html" class="glyphicon glyphicon-eye-open text-success" style="font-size:20px;"></a>
+							<a href="mapEdit.html" class="text-success"><i class="glyphicon glyphicon-pencil" style="font-size:20px;"></i></a>
+							<a href="#" class="text-success"><i class="glyphicon glyphicon-trash" style="font-size:20px;"></i></a>
+						</h1>
+					</div>
 
-function getMaps() {
-	var url = window.location.href;
-	url = url.split("/");
-	url = url[10];
-	const xhr = new XMLHttpRequest();
-	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/eventmap/event" + url, true);
-	xhr.onreadystatechange = function () {
-  		if (xhr.readyState == 4) {
-   			console.log(xhr.responseText);
-   			}
-    }
-   	xhr.setRequestHeader("Content-Type", "application/json");
-   	xhr.send();
-	
-}
-</script>
-</body>
-</html>
+					<div class="row">
+						<h4 style="float: left">Created by :
+							<a class="icon" href="#"><i
+								class="glyphicon glyphicon-user text-success" style="font-size:20px;"></i></a><label>The
+								Creator </label></h4>
+							</div>
+							<div class="row">
+								<p style="font-size: 15px;text-align:justify">Paragraphs are the building blocks of
+									papers. Many students define paragraphs in terms of length: a
+									paragraph is a group of at least five sentences, a paragraph is half
+									a page long, etc. In reality, though, the unity and coherence of
+									ideas among sentences is what constitutes a paragraph. A paragraph
+									is defined as “a group of sentences or a single sentence that forms
+									a unit” (Lunsford and Connors 116). Length and appearance do not
+									determine whether a section in a paper is a paragraph. For instance,
+									in some styles of writing, particularly journalistic styles, a
+									paragraph can be just one sentence long. Ultimately, a paragraph is
+									a sentence or group of sentences that support one main idea. In this
+									handout, we will refer to this as the “controlling idea,” because it
+								controls what happens in the rest of the paragraph.</p>
+
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+		</body>
+		</html>
 
