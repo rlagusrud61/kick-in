@@ -47,8 +47,10 @@ public class AuthenticationEndpoint {
             User user = authenticate(credentials);
 
             Cookie cookie = createCookie(user.getUserId());
-            response.addCookie(cookie);
+            cookie.setHttpOnly(true);
+            cookie.setPath("/");
 
+            response.addCookie(cookie);
             response.sendRedirect("http://localhost:8080/kickInTeam26/list.html");
         } catch (AuthenticationDeniedException e) {
             response.sendError(Response.Status.UNAUTHORIZED.getStatusCode(), e.getMessage());
