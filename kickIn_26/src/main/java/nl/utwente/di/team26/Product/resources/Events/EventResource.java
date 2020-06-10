@@ -16,11 +16,7 @@ import java.sql.SQLException;
 public class EventResource {
 
     @GET
-<<<<<<< HEAD
-//    @Secured({Role.VISITOR})
-=======
     @Secured({Roles.VISITOR})
->>>>>>> 9e964883954abffb89c5bf9f4fbfaa44a8ac7277
     @Produces(MediaType.APPLICATION_JSON)
     public Event getEventById(@PathParam("eventId") int eventId) {
         try (Connection conn = CONSTANTS.getConnection()) {
@@ -31,11 +27,7 @@ public class EventResource {
     }
 
     @PUT
-<<<<<<< HEAD
-//    @Secured({Role.EDITOR})
-=======
     @Secured({Roles.EDITOR})
->>>>>>> 9e964883954abffb89c5bf9f4fbfaa44a8ac7277
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String updateEvent(Event eventToUpdate) {
@@ -48,11 +40,7 @@ public class EventResource {
     }
 
     @DELETE
-<<<<<<< HEAD
-//    @Secured({Role.EDITOR})
-=======
     @Secured({Roles.EDITOR})
->>>>>>> 9e964883954abffb89c5bf9f4fbfaa44a8ac7277
     @Produces(MediaType.TEXT_PLAIN)
     public String deleteEvent(@PathParam("eventId") int eventToDelete) {
         try (Connection conn = CONSTANTS.getConnection()) {
