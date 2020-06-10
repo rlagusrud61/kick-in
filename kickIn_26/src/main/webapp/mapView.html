@@ -1,139 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+ <meta charset="utf-8">
+ <link rel="stylesheet" type= "text/css" href="css/style.css">
 
-    <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <!-- jQuery library -->
-    <script
-            src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+ <!-- Latest compiled and minified CSS -->
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+ <!-- jQuery library -->
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 
-    <!-- Material Design Bootstrap -->
-    <link
-            href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.18.0/css/mdb.min.css"
-            rel="stylesheet">
-    <!-- Latest compiled JavaScript -->
-    <script
-            src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Quicksand">
-    <meta charset="UTF-8">
-    <title>Edit-Map</title>
-
-    <link rel="stylesheet"
-          href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"/>
-    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
-
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
-    <script
-            src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
-
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/vendor.css">
-    <script
-            src="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/vendor.js"></script>
-
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/leaflet.distortableimage.css">
-    <script
-            src="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/leaflet.distortableimage.js"></script>
-    <script
-            src='https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/leaflet.distortableimage.js.map'></script>
-
-    <script
-            src="https://cdn.jsdelivr.net/npm/leaflet-easyprint@2.1.9/dist/bundle.min.js"></script>
-
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <script src="https://unpkg.com/konva@4.0.0/konva.min.js"></script>
-    <link rel="stylesheet" href="css/mapEdit.css">
-    <script src="js/util/crop.js"></script>
-    <link rel="stylesheet" href="http://localhost:8080/kickInTeam26/css/mapView.css"> <!-- link to css file-->
+ <!-- Material Design Bootstrap -->
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.18.0/css/mdb.min.css" rel="stylesheet">
+ <!-- Latest compiled JavaScript -->
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+ <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
 </head>
-<body onload="everything()">
-<div class="topnav">
-    <a id="home" href="list.html"><i class="glyphicon glyphicon-home"></i></a>
-    <a id="arrow" href="list.html"><i
-            class="glyphicon glyphicon-arrow-left"></i></a> <a id="logout"
-                                                               onclick="logout()">Logout</a>
+<style>
+
+
+ .topnav-right {
+  float: right;
+}
+
+.form-group{
+  padding-left:10%;
+}
+
+body{
+  background-color:#f2f2f2;
+  font-size: 15px;
+  font-family: 'Quicksand';
+  color:#6B6B6B;
+}
+
+table  tbody tr td{
+  font-size:15px;
+}
+table  thead tr th{
+  font-size:15px;
+}
+
+
+
+</style>
+<body onload="getMapNameAndDescription()">
+ <div class = "topnav">
+  <a id="home" href = "list.html"><i class="glyphicon glyphicon-home"></i></a>
+  <a id="arrow" href="list.html"><i class="glyphicon glyphicon-arrow-left"></i></a>
+  <a id="logout" href="login.html">Logout</a>
 </div>
 <div class="jumbotron jumbotron-fluid">
-    <div id="main" class="container">
-        <div class="row">
-            <h1 class="col-4">Map</h1>
-        </div>
+  <div id = "main" class="container">
+    <div class="row">
+      <h1 class="col-4">Map</h1> 
     </div>
-
+  </div>
 </div>
 
-<div class="container" style="background-color: #ffffff">
-    <div class="card-body">
-        <h1 id="mapName" class="text-left">Map_Name</h1>
-        <a href="list.html"
-           class="glyphicon glyphicon-share text-success"
-           style="font-size: 20px;"></a>
-        <a href="mapEdit.html" class="text-success"><i class="glyphicon glyphicon-pencil"
-                                                       style="font-size: 20px;"></i></a> <a href="#"
-                                                                                            class="text-success"><i
-            class="glyphicon glyphicon-trash" style="font-size: 20px;"></i></a>
-        <p id="description" class="text-left">Paragraphs are the building
-            blocks of papers. Many students define paragraphs in terms of
-            length: a paragraph is a group of at least five sentences, a
-            paragraph is half a page long, etc. In reality, though, the unity
-            and coherence of ideas among sentences is what constitutes a
-            paragraph. A paragraph is defined as “a group of sentences or a
-            single sentence that forms a unit” (Lunsford and Connors 116).
-            Length and appearance do not determine whether a section in a paper
-            is a paragraph. For instance, in some styles of writing,
-            particularly journalistic styles, a paragraph can be just one
-            sentence long. Ultimately, a paragraph is a sentence or group of
-            sentences that support one main idea. In this handout, we will refer
-            to this as the “controlling idea,” because it controls what happens
-            in the rest of the paragraph.</p>
-    </div>
+<center><div class="container" style="background-color:#ffffff">
+ <div class="card-body">
+   <h1 id = "mapName" class="text-left">Map_Name
+     <a href="list.html" class="glyphicon glyphicon-share text-success" style="font-size:20px;"></a>
+     <a href="mapEdit.html" class="text-success"><i class="glyphicon glyphicon-pencil" style="font-size:20px;"></i></a>
+     <a href="#" class="text-success"><i class="glyphicon glyphicon-trash" style="font-size:20px;"></i></a>
+   </h1>
+
+   <p id = "description" class="text-left">Paragraphs are the building blocks of papers. Many students define paragraphs in terms of length: a paragraph is a group of at least five sentences, a paragraph is half a page long, etc. In reality, though, the unity and coherence of ideas among sentences is what constitutes a paragraph. A paragraph is defined as “a group of sentences or a single sentence that forms a unit” (Lunsford and Connors 116). Length and appearance do not determine whether a section in a paper is a paragraph. For instance, in some styles of writing, particularly journalistic styles, a paragraph can be just one sentence long. Ultimately, a paragraph is a sentence or group of sentences that support one main idea. In this handout, we will refer to this as the “controlling idea,” because it controls what happens in the rest of the paragraph.</p>
+ </div>
 
 
-    <div class="card-body">
+ <div class="card-body">
 
-        <div class="row">
+  <div class="row">
 
-            <div class="col-md-6">
-                <div id="mapContainer">
-                    <div id="mapid"></div>
+    <div class="col-md-6">
+     <iframe
+     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d78211.4516027429!2d6.798508172117513!3d52.22325812228936!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47b8139482fe5187%3A0xd24e1fb7ad7265e2!2sEnschede%2C%20Netherlands!5e0!3m2!1sen!2sro!4v1590396419471!5m2!1sen!2sro"
+     width="400" height="300" frameborder="0"
+     style="border: 0; float: left; margin-right: 20px"
+     allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+   </div>
 
-                </div>
-            </div>
-            <div id="listItems" class="col-md-5">
-                <h2>List of Items</h2>
-            </div>
-        </div>
-    </div>
+   <div id = "listItems" class="col-md-5">
+    <h3> List of Items</h3>
+    <table class="table table-larger">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Quantity</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Bench</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td>Something</td>
+          <td>50</td>
+        </tr>
+        <tr>
+          <td>Fences</td>
+          <td>100</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 </div>
-<!-- The Map Deletion Popup -->
-<div id="popupMapDelete" class="modal">
+</center>
 
-    <!-- Popup content -->
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Do you really want to delete this map?</h2>
-        <div class="bottomright" style="display: flex; justify-content: center;">
-            <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">YES</button>
-            <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">NO</button>
-        </div>
-    </div>
-</div>
-</div>
-<script src="http://localhost:8080/kickInTeam26/js/mapView.js"></script>
+<script>
+function getMap() {
+	var url = window.location.href;
+	url = url.split("/");
+	url = url[10];
+	const xhr = new XMLHttpRequest();
+	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/map/" + url, true);
+	xhr.onreadystatechange = function () {
+  		if (xhr.readyState == 4) {
+   			console.log(xhr.responseText);
+   			}
+    }
+   	xhr.setRequestHeader("Content-Type", "application/json");
+   	xhr.send();
+}
+
+function everything() {
+    getMapNameAndDescription();
+    listItems();
+}
+
+function listItems() {
+
+    let xhr = new XMLHttpRequest();
+    let mapId = 1;
+    let returnedItems = '';
+    xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/objects/" + mapId + '/report', true);
+
+    xhr.onreadystatechange = function () {
+
+        if (xhr.readyState == 4 && xhr.status == 200) {
+
+            console.log(xhr.responseText);
+
+            returnedItems = JSON.parse(xhr.responseText);
+
+            let col = [];
+            for (let i = 0; i < returnedItems.length; i++) {
+                for (let key in returnedItems[i]) {
+                    if (col.indexOf(key) === -1 && (key === 'name' || key === 'quantity')) {
+                        col.push(key);
+                    }
+                }
+            }
+
+            let table = document.getElementById("itemList").createElement("table"); // creates the table
+            table.setAttribute("id", "objects")
+            let tr = table.insertRow(-1); // add a row to the table
+
+            for (let i = 0; i < col.length; i++) {
+                let th = document.createElement("th"); // add a header to the table
+                th.innerHTML = col[i];
+                tr.appendChild(th);
+            }
+
+            for (let i = 0; i < returnedItems.length; i++) {
+
+                tr = table.insertRow(-1); // adds a new row
+                for (let j = 0; j < col.length; j++) {
+                    let tabCell = tr.insertCell(-1);
+                    tabCell.innerHTML = returnedItems[i][col[j]]; // adds the required data to the table
+                }
+
+            }
+
+            return table;
+
+        }
+    }
+
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send();
+
+}
+
+function getMapNameAndDescription() {
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function () {
+
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            let jsonData = JSON.parse(xhr.responseText);
+            document.getElementById("mapName").innerHTML = jsonData.name;
+            document.getElementById("description").innerHTML = jsonData.description;
+            console.log(xhr.responseText);
+        }
+
+    }
+
+    xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/map/1", true)
+    xhr.send();
+
+}
+
+function deleteMap() {
+	var url = window.location.href;
+	url = url.split("/");
+	url = url[10];
+	const xhr = new XMLHttpRequest();
+	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/map/" + url, true);
+	xhr.onreadystatechange = function () {
+  		if (xhr.readyState == 4) {
+   			console.log(xhr.responseText);
+   			}
+    }
+   	xhr.setRequestHeader("Content-Type", "application/json");
+   	xhr.send();
+}
+</script>
 </body>
 </html>
+
+
