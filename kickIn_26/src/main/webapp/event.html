@@ -83,7 +83,6 @@
 }
 </style>
 </head>
-
 <body style="font-family: 'Quicksand'">
 	<div class="topnav">
 		<a id="home" href="list.html"><i class="glyphicon glyphicon-home"></i></a>
@@ -154,7 +153,7 @@
 			<a class="icon" id="person" href="#"><i
 				class="glyphicon glyphicon-user"></i></a><label>&emsp;The
 				Creator </label>
-			<p style="font-size: 15px;">Paragraphs are the building blocks of
+			<p id = "mapdescri" style="font-size: 15px;">Paragraphs are the building blocks of
 				papers. Many students define paragraphs in terms of length: a
 				paragraph is a group of at least five sentences, a paragraph is half
 				a page long, etc. In reality, though, the unity and coherence of
@@ -172,21 +171,6 @@
 
 	</div>
 <script>
-window.onload = function() {
-//	var url = window.location.href;
-//	url = url.split("/");
-//	url = url[10];
-	const xhr = new XMLHttpRequest();
-	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/event/1", true);
-	xhr.onreadystatechange = function () {
-  		if (xhr.readyState == 4) {
-   			console.log(xhr.responseText);
-   			}
-    }
-   	xhr.setRequestHeader("Content-Type", "application/json");
-   	xhr.send();
-}
-
 function getMaps() {
 	var url = window.location.href;
 	url = url.split("/");
@@ -202,6 +186,22 @@ function getMaps() {
    	xhr.send();
 	
 }
+
+window.onload = function() {
+	var id = window.location.search.split("=")[1]
+//	console.log(id);
+	const xhr = new XMLHttpRequest();
+	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/event/" + id, true);
+	xhr.onreadystatechange = function () {
+ 		if (xhr.readyState == 4) {
+   			var event = JSON.parse(xhr.responseText);
+   			document.getElementById("intro").innerHTML = event.description;
+   			}
+    }
+   	xhr.setRequestHeader("Content-Type", "application/json");
+   	xhr.send();
+}
+
 </script>
 </body>
 </html>
