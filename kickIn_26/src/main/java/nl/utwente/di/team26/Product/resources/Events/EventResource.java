@@ -40,7 +40,7 @@ public class EventResource {
     }
 
     @DELETE
-    @Secured({Roles.EDITOR})
+//    @Secured({Roles.EDITOR})
     @Produces(MediaType.TEXT_PLAIN)
     public String deleteEvent(@PathParam("eventId") int eventToDelete) {
         try (Connection conn = CONSTANTS.getConnection()) {
