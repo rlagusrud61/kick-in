@@ -80,9 +80,6 @@
 				if (xhr.status=== 200){
 					console.log(xhr.responseText);
 					window.location.href="http://localhost:8080/kickInTeam26/list.html";
-				} else if (xhr.status === 200) {
-					console.log(xhr.responseText);
-					console.log("Cookie: " + document.cookie);
 				} else if (xhr.status === 401) {
 					console.log("401 Unauthorized")
 				}
