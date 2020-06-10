@@ -171,34 +171,59 @@
         <table style="width:100%" id="eventtable"></table>
     </div>
 </div>
-<script>
 
+
+<!-- The Event Deletion Popup -->
+<div id="popupEventDelete" class="modal">
+
+    <!-- Popup content -->
+    <div class="modal-content">
+        <span class="closeDelete">&times;</span>
+        <h2>Do you really want to delete this event?</h2>
+        <div class="bottomright" style="display: flex; justify-content: center;">
+            <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">YES</button>
+            <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">NO</button>
+        </div>
+    </div>
+</div>
+
+
+<script>
     // Get the modal
     var modal = document.getElementById("myModal");
-
+    var deletion = document.getElementById("popupEventDelete");
     // Get the button that opens the modal
     var btn = document.getElementById("myBtn");
+    var trash = document.getElementById("deleteEvent");
 
     // Get the <span> element that closes the modal
     var span = document.getElementsByClassName("close")[0];
+    var closeDelete = document.getElementsByClassName("closeDelete")[0];
 
     // When the user clicks the button, open the modal
-    btn.onclick = function () {
+    btn.onclick = function() {
         modal.style.display = "block";
+    }
+    trash.onclick = function() {
+        deletion.style.display = "block";
     }
 
     // When the user clicks on <span> (x), close the modal
-    span.onclick = function () {
+    span.onclick = function() {
         modal.style.display = "none";
+    }
+    closeDelete.onclick = function() {
+        deletion.style.display = "none";
     }
 
     // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function (event) {
+    window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
+        } if (event.target == deletion){
+            deletion.style.display = "none";
         }
     }
-
 
     function createEvent(form) {
         const xhr = new XMLHttpRequest();
