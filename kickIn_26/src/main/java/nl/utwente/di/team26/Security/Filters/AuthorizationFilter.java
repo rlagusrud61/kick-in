@@ -1,12 +1,12 @@
-package nl.utwente.di.team26.Security.Authorization;
+package nl.utwente.di.team26.Security.Filters;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
-import nl.utwente.di.team26.Security.Authentication.Secured;
-import nl.utwente.di.team26.Security.Authentication.User.User;
-import nl.utwente.di.team26.Security.Authentication.User.UserDao;
+import nl.utwente.di.team26.Security.User.User;
+import nl.utwente.di.team26.Security.User.UserDao;
+import nl.utwente.di.team26.Security.User.Roles;
 
 import javax.annotation.Priority;
 import javax.crypto.spec.SecretKeySpec;
@@ -57,12 +57,12 @@ public class AuthorizationFilter implements ContainerRequestFilter {
         // Get the resource class which matches with the requested URL
         // Extract the roles declared by it
         Class<?> resourceClass = resourceInfo.getResourceClass();
-        List<Role> classRoles = extractRoles(resourceClass);
+        List<Roles> classRoles = extractRoles(resourceClass);
 
         // Get the resource method which matches with the requested URL
         // Extract the roles declared by it
         Method resourceMethod = resourceInfo.getResourceMethod();
-        List<Role> methodRoles = extractRoles(resourceMethod);
+        List<Roles> methodRoles = extractRoles(resourceMethod);
 
         try {
 
@@ -81,7 +81,7 @@ public class AuthorizationFilter implements ContainerRequestFilter {
     }
 
     // Extract the roles from the annotated element
-    private List<Role> extractRoles(AnnotatedElement annotatedElement) {
+    private List<Roles> extractRoles(AnnotatedElement annotatedElement) {
         if (annotatedElement == null) {
             return new ArrayList<>();
         } else {
@@ -89,13 +89,13 @@ public class AuthorizationFilter implements ContainerRequestFilter {
             if (secured == null) {
                 return new ArrayList<>();
             } else {
-                Role[] allowedRoles = secured.value();
+                Roles[] allowedRoles = secured.value();
                 return Arrays.asList(allowedRoles);
             }
         }
     }
 
-    private void checkPermissions(List<Role> allowedRoles, User authenticatedUser) throws NotAuthorizedException {
+    private void checkPermissions(List<Roles> allowedRoles, User authenticatedUser) throws NotAuthorizedException {
         // Check if the user contains one of the allowed roles
         // Throw an Exception if the user has not permission to execute the method
 

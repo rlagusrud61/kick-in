@@ -1,12 +1,15 @@
-package nl.utwente.di.team26.Security.Authentication;
+package nl.utwente.di.team26.Security;
 
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exceptions.AuthenticationDeniedException;
-import nl.utwente.di.team26.Security.Authentication.User.User;
-import nl.utwente.di.team26.Security.Authentication.User.UserDao;
+import nl.utwente.di.team26.Security.User.Credentials;
+import nl.utwente.di.team26.Security.User.User;
+import nl.utwente.di.team26.Security.User.UserDao;
+import nl.utwente.di.team26.Security.Session.Session;
+import nl.utwente.di.team26.Security.Session.SessionDao;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.Cookie;
@@ -39,13 +42,14 @@ public class AuthenticationEndpoint {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public void authenticateUser(Credentials credentials) throws IOException {
+        System.out.println(credentials);
         try {
             User user = authenticate(credentials);
 
             Cookie cookie = createCookie(user.getUserId());
-            cookie.setHttpOnly(true);
             response.addCookie(cookie);
 
+            response.sendRedirect("http://localhost:8080/kickInTeam26/list.html");
         } catch (AuthenticationDeniedException e) {
             response.sendError(Response.Status.UNAUTHORIZED.getStatusCode(), e.getMessage());
         } catch (SQLException throwables) {

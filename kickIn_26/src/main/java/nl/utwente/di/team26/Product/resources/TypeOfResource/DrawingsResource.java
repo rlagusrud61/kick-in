@@ -4,11 +4,9 @@ import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Product.dao.TypeOfResources.DrawingDao;
 import nl.utwente.di.team26.Product.dao.TypeOfResources.TypeOfResourceDao;
 import nl.utwente.di.team26.Product.model.TypeOfResource.Drawing;
-import nl.utwente.di.team26.Security.Authentication.Secured;
-import nl.utwente.di.team26.Security.Authentication.User.User;
-import nl.utwente.di.team26.Security.Authorization.Role;
+import nl.utwente.di.team26.Security.Filters.Secured;
+import nl.utwente.di.team26.Security.User.Roles;
 
-import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.Connection;
@@ -23,7 +21,7 @@ public class DrawingsResource {
     DrawingDao drawingDao = new DrawingDao();
 
     @GET
-    @Secured(Role.VISITOR)
+    @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
     public List<Drawing> getAllDrawings() {
         try (Connection conn = CONSTANTS.getConnection()) {
@@ -35,7 +33,7 @@ public class DrawingsResource {
     }
 
     @POST
-    @Secured(Role.EDITOR)
+    @Secured(Roles.EDITOR)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String addNewDrawing(Drawing drawingToAdd) {
