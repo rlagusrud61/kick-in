@@ -26,7 +26,7 @@ public class EventsResource {
     public EventsDao eventsDao = new EventsDao();
 
     @GET
-    @Secured({Role.VISITOR})
+//    @Secured({Role.VISITOR})
     @Produces(MediaType.APPLICATION_JSON)
     public List<Event> getAllEvents() {
         try (Connection conn = CONSTANTS.getConnection()) {
