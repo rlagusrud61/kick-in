@@ -37,8 +37,7 @@ public class EventsResource {
     @Produces(MediaType.TEXT_PLAIN)
     public String addNewEvent(Event eventToAdd) {
         try (Connection conn = CONSTANTS.getConnection()) {
-            eventsDao.create(conn, eventToAdd);
-            return CONSTANTS.SUCCESS;
+            return String.valueOf(eventsDao.create(conn, eventToAdd));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             return CONSTANTS.FAILURE + ": " + throwables.getMessage();
