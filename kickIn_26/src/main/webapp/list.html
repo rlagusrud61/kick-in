@@ -46,7 +46,7 @@
 <body>
 <div class = "topnav">
     <a id="home" href = "list.html"><i class="glyphicon glyphicon-home"></i></a>
-    <a id="logout" onclick="logout()">Logout</a>
+    <a id="logout" href="login.html">Logout</a>
 </div>
 <div class="jumbotron jumbotron-fluid">
     <div id = "main" class="container">
@@ -67,7 +67,7 @@
             <span class="close">&times;</span>
             <h2>Add a New Event</h2>
 
-            <div>
+            <form action = "event.html">
                 <div class="form-group row">
                     <label for="eventname" class="col-md-2 col-form-label">Name</label>
                     <div class="col-md-3">
@@ -88,7 +88,7 @@
                     <label for="eventdate" class="col-md-2 col-form-label">Date</label>
                     <div class="col-md-3">
                         <div class='input-group date' id='datetimepicker'>
-                            <input type='text' id = "eventdate" class="form-control" />
+                            <input type='text' class="form-control" />
                             <span class="input-group-addon">
                   <span class="glyphicon glyphicon-calendar" style="font-size: 20px"></span>
                 </span>
@@ -114,9 +114,9 @@
                 </div>
 
                 <div class="bottomright" style="display: flex; justify-content: flex-end;">
-                    <button onclick = "addEvent()" class="btn btn-success btn-circle btn-xl align-self-end">ADD</button>
+                    <button type="submit" class="btn btn-success btn-circle btn-xl align-self-end">ADD</button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>
@@ -257,19 +257,12 @@
         xhr.send();
     }
 	function addEvent() {
-		description = document.getElementById("eventdescription").value;
-		namestuff = document.getElementById("eventname").value;
-		locationstuff = document.getElementById("eventlocation");
-		eventloc = locationstuff.options[locationstuff.selectedIndex].value
-		eventdate = document.getElementById("eventdate").value;
-		eventjson = {"createdBy":"CreaJoep", "description":description,"lastEditedBy":"EditJoep", "location":eventloc, "name":namestuff};
-		console.log(JSON.stringify(eventjson));
+		eventjson = {"createdBy":"Joep", "description":"thirdEvent","lastEditedBy":"Me", "location":"Somewhere", "name":"MyEvent"};
 		var xhr = new XMLHttpRequest();
 		xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/events", true);
 		xhr.onreadystatechange = function() {
 			if ((xhr.readyState == 4) && (xhr.status = 200)) {
 				console.log(xhr.responseText);
-				window.location.href = "http://localhost:8080/kickInTeam26/event.html?id=" + xhr.responseText;
 			}
 		}
 		xhr.setRequestHeader("Content-Type", "application/json");
@@ -287,18 +280,6 @@
 		xhr.send();
  	   }
 
-    function logout(){
-        const xhr = new XMLHttpRequest();
-        xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/authentication", true);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4) {
-                console.log(xhr.responseText);
-                window.location.href="http://localhost:8080/kickInTeam26/login.html";
-            }
-        }
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.send();
-    }
 
 </script>
 </body>
