@@ -19,7 +19,7 @@ public class MaterialsResource {
     MaterialsDao materialsDao = new MaterialsDao();
 
     @GET
-    @Secured(Roles.VISITOR)
+//    @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
     public List<Material> getAllMaterials() {
         try (Connection conn = CONSTANTS.getConnection()) {
