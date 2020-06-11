@@ -37,8 +37,7 @@ public class MapsResource {
     @Produces(MediaType.TEXT_PLAIN)
     public String addNewMap(Map mapToAdd) {
         try (Connection conn = CONSTANTS.getConnection()) {
-            mapsDao.create(conn, mapToAdd);
-            return CONSTANTS.SUCCESS;
+            return String.valueOf(mapsDao.create(conn, mapToAdd));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             return CONSTANTS.FAILURE + ": " + throwables.getMessage();
