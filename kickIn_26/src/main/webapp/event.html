@@ -61,7 +61,7 @@
 		<div class="row">
 			<h1 class="col-8">Event</h1>
 			<div class="col-4" style="display: flex; justify-content: flex-end;">
-				<a id = "editlink" href="edit.html"><button type="button" class="myButton btn btn-success btn-circle btn-xl align-self-end"> + </button></a>
+				<a id = "editlink"><button type="button" class="myButton btn btn-success btn-circle btn-xl align-self-end"> + </button></a>
 			</div>
 		</div>
 	</div>
@@ -249,7 +249,7 @@
    				document.getElementById("introtext").innerHTML = event.description;
    				document.getElementById("eventlocation").innerHTML = event.location;
    				document.getElementById("eventname").innerHTML = event.name;
-   				document.getElementById("editlink").href = "http://localhost:8080/kickInTeam26/edit.html?id=" + id;
+   				document.getElementById("editlink").href = "http://localhost:8080/kickInTeam26/newMap.html";
 			}
 		}
 		xhr.setRequestHeader("Content-Type", "application/json");
