@@ -16,7 +16,7 @@ import java.sql.SQLException;
 public class EventResource {
 
     @GET
-//    @Secured({Roles.VISITOR})
+    @Secured({Roles.VISITOR})
     @Produces(MediaType.APPLICATION_JSON)
     public Event getEventById(@PathParam("eventId") int eventId) {
         try (Connection conn = CONSTANTS.getConnection()) {
