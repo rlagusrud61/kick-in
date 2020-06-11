@@ -150,7 +150,7 @@ nav ul {
 				<br>
 				<br>
 				<nav>
-					<ul>
+					<ul id = "itemlist">
 						<label><li>Item 1 :</li></label>
 						<input id="input" type="number" name="quantity">
 						<button style="background-color: #58BD0F; border-color: #C1FF94">+</button>
@@ -232,7 +232,8 @@ nav ul {
 		zoom : 16,
 		keyboard : false
 	});
-	let tiles = L.tileLayer(
+	let tiles = L
+			.tileLayer(
 					'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 					{
 						maxZoom : 19,
@@ -283,9 +284,27 @@ nav ul {
 
 	let objReq = new XMLHttpRequest();
 	objReq.onreadystatechange = function() {
+		console.log("something")
 		if (this.readyState === 4 && this.status === 200) {
 			materialsList = JSON.parse(objReq.responseText);
 			console.log(materialsList);
+			itemlist = document.getElementById("itemlist");
+			var htmltext = ""
+//				<label><li>Item 1 :</li></label>
+//				<input id="input" type="number" name="quantity">
+//				<button style="background-color: #58BD0F; border-color: #C1FF94">+</button>
+//				<br>
+//				<br>
+			for (i = 0; i < materialsList.length; i++) {
+				htmltext += "<label><li>Item " + materialsList[i].resourceId + ":</li></label> ";
+				htmltext += "<input id ='input'" + i + " type = 'number' name = 'quantity'> "
+				htmltext += "<button onclick ='addItem(" + i + ")' style='background-color: #58BD0F; border-color: #C1FF94'>+</button> "
+				htmltext += "<br><br>";
+				
+			}
+			itemlist.innerHTML = htmltext;
+		} else {
+			console.log("failure")
 		}
 	}
 	objReq.open("GET", ("http://localhost:8080/kickInTeam26/rest/materials"));
