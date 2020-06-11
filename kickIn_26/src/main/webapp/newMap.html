@@ -82,7 +82,7 @@
 
         let createMap = new XMLHttpRequest();
         let mapId;
-        let eventId = 2;
+        let eventId = 3;
 
         createMap.onreadystatechange = function() {
             if(this.readyState === 4 && this.status === 200) {
@@ -95,6 +95,7 @@
                     }
                 }
                 createMapRelation.open("POST", ("http://localhost:8080/kickInTeam26/rest/eventMap"));
+                createMapRelation.setRequestHeader("Content-Type", "application/json");
                 createMapRelation.send('{"eventId":"'+eventId+'","mapId":"'+mapId+'"}')
 
             } else {
@@ -102,7 +103,8 @@
             }
         }
         createMap.open("POST", ("http://localhost:8080/kickInTeam26/rest/maps"));
-        createMap.send('{"name:"'+mapName+'","description:"'+description+'"}');
+        createMap.setRequestHeader("Content-Type", "application/json");
+        createMap.send('{"name":"'+mapName+'","description":"'+description+'"}');
     }
 
 </script>
