@@ -208,7 +208,7 @@ nav ul {
 				<h3>Your added items</h3>
 				<br>
 				<nav>
-					<ul style="font-size: 18px;">
+					<ul id = "itemlist2" style="font-size: 18px;">
 						<li>Fences : 500</li>
 						<li>Benches : 45</li>
 						<li>Tennis balls : 100</li>
@@ -295,8 +295,8 @@ nav ul {
 //				<br>
 			for (i = 0; i < materialsList.length; i++) {
 				htmltext += "<label><li>Item " + materialsList[i].resourceId + ":</li></label> ";
-				htmltext += "<input id ='input'" + i + " type = 'number' name = 'quantity'> "
-				htmltext += "<button onclick ='addItem(" + i + ")' style='background-color: #58BD0F; border-color: #C1FF94'>+</button> "
+				htmltext += "<input id ='input" + materialsList[i].resourceId + "' type = 'number' name = 'quantity'> "
+				htmltext += "<button onclick ='addItem(" + materialsList[i].resourceId + ")' style='background-color: #58BD0F; border-color: #C1FF94'>+</button> "
 				htmltext += "<br><br>";
 				
 			}
@@ -307,7 +307,31 @@ nav ul {
 	}
 	objReq.open("GET", ("http://localhost:8080/kickInTeam26/rest/materials"));
 	objReq.send();
-
+	var jsonObj = {
+			items: {
+			}
+	}
+	function addItem(inum) {
+		itemnum =jsonObj.items["item" + inum];
+		inputvalue = document.getElementById("input" + inum).value
+		inputvalue = Number(inputvalue);
+		itemlist2 = document.getElementById("itemlist2");
+		if (itemnum == null) {
+			itemnum = inputvalue;
+		} else {
+			itemnum = itemnum + inputvalue;
+		}
+		
+		jsonObj.items["item" + inum] = itemnum;
+		htmltext = "";
+		for (x in jsonObj.items) {
+			htmltext += "<li>" + x + " : " + jsonObj.items[x] + "</li>";
+			console.log(x);
+			console.log(jsonObj.items[x]);
+		}
+		itemlist2.innerHTML = htmltext;
+		console.log(jsonObj.items);
+	}
 	// let img = L.distortableImageOverlay('..\\resources\\testImages\\example.jpg', {
 	//     actions: [L.RotateAction, L.DragAction, L.ScaleAction, L.DeleteAction]
 	// }).addTo(map);
