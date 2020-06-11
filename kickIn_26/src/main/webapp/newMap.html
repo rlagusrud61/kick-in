@@ -3,65 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <title>Add a new Map</title>
-
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-
-    <!-- Material Design Bootstrap -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.18.0/css/mdb.min.css" rel="stylesheet">
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
-    <link rel="stylesheet" href="http://localhost:8080/kickInTeam26/css/newMap.css">
 </head>
 <body>
-<!--Navigation Bar-->
-<div class="topnav">
-    <a id="home" href="list.html"><i class="glyphicon glyphicon-home"></i></a>
-    <a id="logout" onclick="logout()">Logout</a>
-</div>
-<!--Jumbotron (Page Description)-->
-<div class="jumbotron jumbotron-fluid">
-    <div id="main" class="container">
-        <div class="row">
-            <h1 class="col-8">Add a New Map</h1>
-            <div class="col-4" style="display: flex; justify-content: flex-end;">
-                <button type="button" class="myButton btn btn-success btn-circle btn-xl align-self-end"
-                        onclick="addNewMap();"> ADD
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!--Page Content-->
-<div class="container has-shadow" style="background-color: #ffffff;">
-    <form action="event.html" style="margin: 5% 5% 5% 5%">
-        <div class="form-group row">
-            <label for="mapName" class="col-md-2 col-form-label">Name</label>
-            <div class="col-md-3">
-                <input type="text" class="form-control" id="mapName" placeholder="Name">
-            </div>
-        </div>
+<label for="mapName">Map Name:</label>
+<input id="mapName">
 
-        <div class="form-group row">
-            <label for="description" class="col-md-2 col-form-label">Description</label>
-            <div class="col-md-8">
-                <textarea class="form-control" id="description" rows="5"></textarea>
-            </div>
-        </div>
-    </form>
-</div>
+<label for="description">Description: </label>
+<input id="description">
+<button onclick="addNewMap();">Submit</button>
+
 </body>
-<script src="http://localhost:8080/kickInTeam26/js/newMap.js"></script>
+<script>
+
+    function addNewMap() {
+        let mapName = document.getElementById("mapName").value;
+        let description = document.getElementById("description").value;
+
+        let createMap = new XMLHttpRequest();
+        let mapId;
+        let eventId = 2;
+
+        createMap.onreadystatechange = function() {
+            if(this.readyState === 4 && this.status === 200) {
+
+                mapId = parseInt(createMap.responseText);
+                let createMapRelation = new XMLHttpRequest();
+                createMapRelation.onreadystatechange = function() {
+                    if (createMapRelation.readyState === 4 && createMapRelation.status === 200) {
+                        console.log(createMapRelation.responseText);
+                    }
+                }
+                createMapRelation.open("POST", ("http://localhost:8080/kickInTeam26/rest/eventMap"));
+                createMapRelation.send('{"eventId":"'+eventId+'","mapId":"'+mapId+'"}')
+
+            } else {
+                throw new Error("something not correct");
+            }
+        }
+        createMap.open("POST", ("http://localhost:8080/kickInTeam26/rest/maps"));
+        createMap.send('{"name:"'+mapName+'","description:"'+description+'"}');
+    }
+
+</script>
 </html>
