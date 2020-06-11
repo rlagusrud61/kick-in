@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
 
   <meta charset="utf-8">
@@ -49,7 +50,7 @@
     <!-- Navigation Bar -->
     <div class = "topnav">
         <a id="home" href = "list.html"><i class="glyphicon glyphicon-home"></i></a>
-        <a id="logout" onclick="logout()">Logout</a>
+        <a id="logout" href="login.html">Logout</a>
     </div>
 
 
@@ -58,7 +59,7 @@
           <div class="row">
             <h1 class="col-8">Edit Your Event</h1> 
             <div class="col-4" style="display: flex; justify-content: flex-end;">
-              <button type="button" class="myButton btn btn-success btn-circle btn-xl align-self-end" id="myBtn"> SAVE </button>
+              <button type="button" class="myButton btn btn-success btn-circle btn-xl align-self-end" id="myBtn"> + </button> 
           </div>
       </div>
   </div>
@@ -122,23 +123,6 @@
 </div>
 </div>
 </div>
-<<<<<<< HEAD
-
-<script>
-    function logout(){
-        const xhr = new XMLHttpRequest();
-        xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/authentication", true);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4) {
-                console.log(xhr.responseText);
-                window.location.href="http://localhost:8080/kickInTeam26/login.html";
-            }
-        }
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.send();
-    }
-</script>
-=======
 <script>
 function updateEvent() {
 	description = document.getElementById("eventdescription").value;
@@ -162,10 +146,8 @@ function updateEvent() {
 }
 </script>
 
->>>>>>> a1d39d5... Added Javascript functionality to html pages
 
 
 
 </body>
-
 </html>
