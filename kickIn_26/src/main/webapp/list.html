@@ -67,7 +67,7 @@
             <span class="close">&times;</span>
             <h2>Add a New Event</h2>
 
-            <form action = "event.html">
+            <div>
                 <div class="form-group row">
                     <label for="eventname" class="col-md-2 col-form-label">Name</label>
                     <div class="col-md-3">
@@ -88,7 +88,7 @@
                     <label for="eventdate" class="col-md-2 col-form-label">Date</label>
                     <div class="col-md-3">
                         <div class='input-group date' id='datetimepicker'>
-                            <input type='text' class="form-control" />
+                            <input type='text' id = "eventdate" class="form-control" />
                             <span class="input-group-addon">
                   <span class="glyphicon glyphicon-calendar" style="font-size: 20px"></span>
                 </span>
@@ -114,9 +114,9 @@
                 </div>
 
                 <div class="bottomright" style="display: flex; justify-content: flex-end;">
-                    <button type="submit" class="btn btn-success btn-circle btn-xl align-self-end">ADD</button>
+                    <button onclick = "addEvent()" class="btn btn-success btn-circle btn-xl align-self-end">ADD</button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
@@ -171,6 +171,9 @@
         <table style = "width:100%" id = "eventtable">
         </table>
     </div>
+    <div>
+    <button onclick = addEvent()>Addboi</button>
+    </div>
 </div>
 <script>
 
@@ -222,7 +225,7 @@
                 var table = document.getElementById("eventtable");
                 var events = JSON.parse(xhr.responseText);
                 console.log(events);
-                var htmltext = "<tr><th>Name</th><th>Creator</th><th>Editor</th><th>Gimme dat info</th><th>Edit meeee</th><th>Gurbuge<tr>";
+                var htmltext = "<tr><th>Name</th><th>Creator</th><th>Editor</th><th>Gimme dat info</th><th>Edit meeee</th><th>Gurbuge</th><tr>";
                 table.innerHTML = htmltext;
                 for (i = 0; i < events.length; i++) {
                     var row = table.insertRow(i + 1);
@@ -248,25 +251,41 @@
 //				"<i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a></div></div></div></div></div>"
                 }
 //			table.innerHTML = htmltext;
-                console.log(events[0]);
             }
         }
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.send();
     }
-
-    function deleteEvent(event) {
-        console.log(event);
-//	const xhr = new XMLHttpRequest();
-//	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/event", true);
-//	xhr.onreadystatechange = function () {
-//		if ((xhr.readyState == 4) && (xhr.status == 200)) {
-//			console.log(xhr.responseText);
-//		}
-//	}
-//	xhr.setRequestHeader("Content-Type", "application/json");
-//	xhr.send(event.id);
-    }
+	function addEvent() {
+		description = document.getElementById("eventdescription").value;
+		namestuff = document.getElementById("eventname").value;
+		locationstuff = document.getElementById("eventlocation");
+		eventloc = locationstuff.options[locationstuff.selectedIndex].value
+		eventdate = document.getElementById("eventdate").value;
+		eventjson = {"createdBy":"CreaJoep", "description":description,"lastEditedBy":"EditJoep", "location":eventloc, "name":namestuff};
+		console.log(JSON.stringify(eventjson));
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/events", true);
+		xhr.onreadystatechange = function() {
+			if ((xhr.readyState == 4) && (xhr.status = 200)) {
+				console.log(xhr.responseText);
+				window.location.href = "http://localhost:8080/kickInTeam26/event.html?id=" + xhr.responseText;
+			}
+		}
+		xhr.setRequestHeader("Content-Type", "application/json");
+		xhr.send(JSON.stringify(eventjson));
+	}
+    function deleteEvent(id) {
+		var xhr = new XMLHttpRequest();
+		xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/event/" + id, true);
+		xhr.onreadystatechange = function () {
+			if ((xhr.readyState == 4) && (xhr.status == 200)) {
+				console.log(xhr.responseText);
+			}
+		}
+		xhr.setRequestHeader("Content-Type", "application/json");
+		xhr.send();
+ 	   }
 
     function logout(){
         const xhr = new XMLHttpRequest();
