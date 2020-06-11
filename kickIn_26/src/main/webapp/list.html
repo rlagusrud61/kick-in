@@ -167,8 +167,8 @@
         </div>
     </div>
     <div class = "eventlist">
-        <h2>Event list</h2>
-        <table style = "width:100%" id = "eventtable">
+        <h2>List of events</h2>
+        <table class="table table-hover" style = "width:100%" id = "eventtable">
         </table>
     </div>
 </div>
@@ -222,7 +222,7 @@
                 var table = document.getElementById("eventtable");
                 var events = JSON.parse(xhr.responseText);
                 console.log(events);
-                var htmltext = "<tr><th>Name</th><th>Creator</th><th>Editor</th><th>Event Info</th><th>Edit Event</th><th>Delete</th><tr>";
+                var htmltext = "<tr><th>Name</th><th>Creator</th><th>Editor</th><th>Event Info</th><th>Edit Event</th><th>Delete Event</th><tr>";
                 table.innerHTML = htmltext;
                 for (i = 0; i < events.length; i++) {
                     var row = table.insertRow(i + 1);
@@ -253,36 +253,36 @@
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.send();
     }
-	function addEvent() {
-		description = document.getElementById("eventdescription").value;
-		namestuff = document.getElementById("eventname").value;
-		locationstuff = document.getElementById("eventlocation");
-		eventloc = locationstuff.options[locationstuff.selectedIndex].value
-		eventdate = document.getElementById("eventdate").value;
-		eventjson = {"createdBy":"CreaJoep", "description":description,"lastEditedBy":"EditJoep", "location":eventloc, "name":namestuff};
-		console.log(JSON.stringify(eventjson));
-		var xhr = new XMLHttpRequest();
-		xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/events", true);
-		xhr.onreadystatechange = function() {
-			if ((xhr.readyState == 4) && (xhr.status = 200)) {
-				console.log(xhr.responseText);
-				window.location.href = "http://localhost:8080/kickInTeam26/event.html?id=" + xhr.responseText;
-			}
-		}
-		xhr.setRequestHeader("Content-Type", "application/json");
-		xhr.send(JSON.stringify(eventjson));
-	}
+    function addEvent() {
+        description = document.getElementById("eventdescription").value;
+        namestuff = document.getElementById("eventname").value;
+        locationstuff = document.getElementById("eventlocation");
+        eventloc = locationstuff.options[locationstuff.selectedIndex].value
+        eventdate = document.getElementById("eventdate").value;
+        eventjson = {"createdBy":"CreaJoep", "description":description,"lastEditedBy":"EditJoep", "location":eventloc, "name":namestuff};
+        console.log(JSON.stringify(eventjson));
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/events", true);
+        xhr.onreadystatechange = function() {
+            if ((xhr.readyState == 4) && (xhr.status = 200)) {
+                console.log(xhr.responseText);
+                window.location.href = "http://localhost:8080/kickInTeam26/event.html?id=" + xhr.responseText;
+            }
+        }
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(JSON.stringify(eventjson));
+    }
     function deleteEvent(id) {
-		var xhr = new XMLHttpRequest();
-		xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/event/" + id, true);
-		xhr.onreadystatechange = function () {
-			if ((xhr.readyState == 4) && (xhr.status == 200)) {
-				console.log(xhr.responseText);
-			}
-		}
-		xhr.setRequestHeader("Content-Type", "application/json");
-		xhr.send();
- 	   }
+        var xhr = new XMLHttpRequest();
+        xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/event/" + id, true);
+        xhr.onreadystatechange = function () {
+            if ((xhr.readyState == 4) && (xhr.status == 200)) {
+                console.log(xhr.responseText);
+            }
+        }
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send();
+    }
 
     function logout(){
         const xhr = new XMLHttpRequest();
