@@ -66,3 +66,21 @@ CREATE TABLE MapObjects
     FOREIGN KEY (mapId) REFERENCES Maps (mapId) ON DELETE CASCADE,
     FOREIGN KEY (resourceId) REFERENCES TypeOfResource (resourceId) ON DELETE CASCADE
 );
+
+create table users
+(
+    userid bigserial,
+    email text unique not null,
+    password text not null,
+    clarificationLevel int not null,
+    primary key (userid)
+);
+
+create table session
+(
+    tokenId bigserial,
+    token text unique not null ,
+    userid bigint unique not null ,
+    foreign key (userid) references users (userid),
+    primary key (tokenId)
+);
