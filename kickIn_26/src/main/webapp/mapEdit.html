@@ -141,7 +141,7 @@ nav ul {
 		</div>
 	</div>
 
-	<div class= "container">
+	<divclass= "container">
 	<div class="row">
 		<div style="padding-left: 75px;" class="col-sm-3">
 			<div class="shadow-lg p-3 mb-5 bg-white rounded">
@@ -151,6 +151,36 @@ nav ul {
 				<br>
 				<nav>
 					<ul id = "itemlist">
+						<label><li>Item 1 :</li></label>
+						<input id="input" type="number" name="quantity">
+						<button style="background-color: #58BD0F; border-color: #C1FF94">+</button>
+						<br>
+						<br>
+						<label><li>Item 2:</li></label>
+						<input id="input" type="number" name="quantity">
+						<button style="background-color: #58BD0F; border-color: #C1FF94">+</button>
+						<br>
+						<br>
+						<label><li>Item 3:</li></label>
+						<input id="input" type="number" name="quantity">
+						<button style="background-color: #58BD0F; border-color: #C1FF94">+</button>
+						<br>
+						<br>
+						<label><li>Item 4:</li></label>
+						<input id="input" type="number" name="quantity">
+						<button style="background-color: #58BD0F; border-color: #C1FF94">+</button>
+						<br>
+						<br>
+						<label><li>Item 5:</li></label>
+						<input id="input" type="number" name="quantity">
+						<button style="background-color: #58BD0F; border-color: #C1FF94">+</button>
+						<br>
+						<br>
+						<label><li>Item 6:</li></label>
+						<input id="input" type="number" name="quantity">
+						<button style="background-color: #58BD0F; border-color: #C1FF94">+</button>
+						<br>
+						<br>
 					</ul>
 				</nav>
 			</div>
@@ -178,10 +208,16 @@ nav ul {
 				<h3>Your added items</h3>
 				<br>
 				<nav>
-					<ul id="report" style="font-size: 18px;">
-<!--						<li>Fences : 500</li>-->
-<!--						<li>Benches : 45</li>-->
-<!--						<li>Tennis balls : 100</li>-->
+					<ul id = "itemlist2" style="font-size: 18px;">
+						<li>Fences : 500</li>
+						<li>Benches : 45</li>
+						<li>Tennis balls : 100</li>
+						<li>Fences : 500</li>
+						<li>Benches : 45</li>
+						<li>Tennis balls : 100</li>
+						<li>Fences : 500</li>
+						<li>Benches : 45</li>
+						<li>Tennis balls : 100</li>
 					</ul>
 				</nav>
 			</div>
@@ -196,7 +232,6 @@ nav ul {
 		zoom : 16,
 		keyboard : false
 	});
-
 	let tiles = L.tileLayer(
 					'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 					{
@@ -241,7 +276,6 @@ nav ul {
 
 	//the array in which all the images added are stored
 	let imgGroup = [];
-	let resourceArray = [];
 	//boolean to check weather free hand drawing is being done.
 	let inFreeHand = false;
 
@@ -259,10 +293,10 @@ nav ul {
 //				<button style="background-color: #58BD0F; border-color: #C1FF94">+</button>
 //				<br>
 //				<br>
-			for (let i = 0; i < materialsList.length; i++) {
+			for (i = 0; i < materialsList.length; i++) {
 				htmltext += "<label><li>Item " + materialsList[i].resourceId + ":</li></label> ";
-				htmltext += "<input id =" + i + " type = 'number' name = 'quantity'> "
-				htmltext += "<button onclick ='addItem(" + i + ")' style='background-color: #58BD0F; border-color: #C1FF94'>+</button> "
+				htmltext += "<input id ='input" + materialsList[i].resourceId + "' type = 'number' name = 'quantity'> "
+				htmltext += "<button onclick ='addItem(" + materialsList[i].resourceId + ")' style='background-color: #58BD0F; border-color: #C1FF94'>+</button> "
 				htmltext += "<br><br>";
 				
 			}
@@ -273,7 +307,31 @@ nav ul {
 	}
 	objReq.open("GET", ("http://localhost:8080/kickInTeam26/rest/materials"));
 	objReq.send();
-
+	var jsonObj = {
+			items: {
+			}
+	}
+	function addItem(inum) {
+		itemnum =jsonObj.items["item" + inum];
+		inputvalue = document.getElementById("input" + inum).value
+		inputvalue = Number(inputvalue);
+		itemlist2 = document.getElementById("itemlist2");
+		if (itemnum == null) {
+			itemnum = inputvalue;
+		} else {
+			itemnum = itemnum + inputvalue;
+		}
+		
+		jsonObj.items["item" + inum] = itemnum;
+		htmltext = "";
+		for (x in jsonObj.items) {
+			htmltext += "<li>" + x + " : " + jsonObj.items[x] + "</li>";
+			console.log(x);
+			console.log(jsonObj.items[x]);
+		}
+		itemlist2.innerHTML = htmltext;
+		console.log(jsonObj.items);
+	}
 	// let img = L.distortableImageOverlay('..\\resources\\testImages\\example.jpg', {
 	//     actions: [L.RotateAction, L.DragAction, L.ScaleAction, L.DeleteAction]
 	// }).addTo(map);
@@ -284,6 +342,7 @@ nav ul {
 	//         imgGroup.splice(index, 1);
 	//     }
 	// });
+
 	// //function to enter free hand, if already in free hand, we exit free hand drawing.
 	// function callEnterFreeHand() {
 	// 	if (!inFreeHand) {
@@ -406,51 +465,6 @@ nav ul {
 	// 	}
 	// 	inFreeHand = false;
 	// }
-
-	function addItem(resourceId) {
-		let count = document.getElementById(resourceId.toString()).value;
-
-		for (let i = 0; i < count; i++) {
-			let img = L.distortableImageOverlay("data:image/png;utf-8;base64," + materialsList[resourceId].image, {
-				actions: [L.RotateAction, L.DragAction, L.ScaleAction, L.DeleteAction]
-			}).addTo(map);
-
-			imgGroup.push(img);
-			resourceArray.push(materialsList[resourceId]);
-
-			const index = imgGroup.indexOf(img);
-			img.on('remove', function() {
-
-				if (index !== -1) {
-					imgGroup.splice(index, 1);
-					resourceArray.splice(index, 1);
-				}
-			});
-		}
-	}
-	function save() {
-		let save = new XMLHttpRequest();
-		save.open("POST", "http://localhost:8080/kickInTeam26/rest/objects/")
-		save.setRequestHeader("Content-Type", "application/json");
-		save.send(constructSave())
-	}
-
-	function constructSave() {
-		let string = "[";
-		for (let i = 0; i < imgGroup.length; i++) {
-			if (i !== 0) {
-				string += ",";
-			}
-			string += '{ "mapid":"' + mapId + '", "resourceId":"' + resourceArray[i].resourceId + '", "latlangs":"' + '[' + imgGroup[i].getCorners() + ']" }';
-		}
-		string += "]";
-		return string;
-	}
-
-	function retrieve() {
-		let mapState = new XMLHttpRequest();
-		mapState.open("GET", "http://localhost:8080/kickInTeam26/rest/objects/"+id);
-	}
 
 	//get the geoJSON data that can be used to reconstruct the map if needed.
 	function getGeoJSON() {
