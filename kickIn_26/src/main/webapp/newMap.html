@@ -91,12 +91,13 @@
                 let createMapRelation = new XMLHttpRequest();
                 createMapRelation.onreadystatechange = function() {
                     if (createMapRelation.readyState === 4 && createMapRelation.status === 200) {
-                        console.log(createMapRelation.responseText);
+                        window.location.href = "http://localhost:8080/kickInTeam26/list.html";
                     }
                 }
                 createMapRelation.open("POST", ("http://localhost:8080/kickInTeam26/rest/eventMap"));
                 createMapRelation.setRequestHeader("Content-Type", "application/json");
                 createMapRelation.send('{"eventId":"'+eventId+'","mapId":"'+mapId+'"}')
+            }
         }
         createMap.open("POST", ("http://localhost:8080/kickInTeam26/rest/maps"));
         createMap.setRequestHeader("Content-Type", "application/json");
