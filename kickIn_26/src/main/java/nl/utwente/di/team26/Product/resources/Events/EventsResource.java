@@ -31,7 +31,7 @@ public class EventsResource {
     }
 
     @POST
-//    @Secured({Roles.EDITOR})
+    @Secured({Roles.EDITOR})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String addNewEvent(Event eventToAdd) {
