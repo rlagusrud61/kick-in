@@ -408,13 +408,10 @@ nav ul {
 	// }
 
 	function addItem(resourceId) {
-		let image = new Image();
-		let png = materialsList[resourceId].image;
-		image.src = "data:image/png;base64," + png;
 		let count = document.getElementById(resourceId.toString()).value;
 
 		for (let i = 0; i < count; i++) {
-			let img = L.distortableImageOverlay(image, {
+			let img = L.distortableImageOverlay("data:image/png;utf-8;base64," + materialsList[resourceId].image, {
 				actions: [L.RotateAction, L.DragAction, L.ScaleAction, L.DeleteAction]
 			}).addTo(map);
 
