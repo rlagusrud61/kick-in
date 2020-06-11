@@ -167,7 +167,7 @@
         </div>
     </div>
     <div class = "eventlist">
-        <h2>Event list</h2>
+        <h2>List of events</h2>
         <table style = "width:100%" id = "eventtable">
         </table>
     </div>
@@ -222,7 +222,7 @@
                 var table = document.getElementById("eventtable");
                 var events = JSON.parse(xhr.responseText);
                 console.log(events);
-                var htmltext = "<tr><th>Name</th><th>Creator</th><th>Editor</th><th>Event Info</th><th>Edit Event</th><th>Delete</th><tr>";
+                var htmltext = "<tr><th>Name</th><th>Creator</th><th>Editor</th><th>Event Info</th><th>Edit Event</th><th>Delete Event</th><tr>";
                 table.innerHTML = htmltext;
                 for (i = 0; i < events.length; i++) {
                     var row = table.insertRow(i + 1);

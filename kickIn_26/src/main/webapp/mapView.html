@@ -31,19 +31,10 @@
 
 body{
   background-color:#f2f2f2;
-  font-size: 15px;
   font-family: 'Quicksand';
+    font-size: 15px;
   color:#6B6B6B;
 }
-
-table  tbody tr td{
-  font-size:15px;
-}
-table  thead tr th{
-  font-size:15px;
-}
-
-
 
 </style>
 <body onload="everything()">
@@ -90,43 +81,43 @@ table  thead tr th{
   </div>
       
 </div>
-</div>
+<!--</div>-->
 
 
-    <!-- The Map Deletion Popup -->
-    <div id="popupMapDelete" class="modal">
+<!--    &lt;!&ndash; The Map Deletion Popup &ndash;&gt;-->
+<!--    <div id="popupMapDelete" class="modal">-->
 
-        <!-- Popup content -->
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Do you really want to delete this map?</h2>
-            <div class="bottomright" style="display: flex; justify-content: center;">
-                <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">YES</button>
-                <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">NO</button>
-            </div>
-        </div>
-    </div>
-</div>
+<!--        &lt;!&ndash; Popup content &ndash;&gt;-->
+<!--        <div class="modal-content">-->
+<!--            <span class="close">&times;</span>-->
+<!--            <h2>Do you really want to delete this map?</h2>-->
+<!--            <div class="bottomright" style="display: flex; justify-content: center;">-->
+<!--                <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">YES</button>-->
+<!--                <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">NO</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 <script>
 
-// Delete map Modal
-    var deletion = document.getElementById("popupEventDelete");
-// Button for deletion
-    var trash = document.getElementById("deleteEvent");
-// Closing popup
-    var closeDelete = document.getElementsByClassName("closeDelete")[0];
-
-    trash.onclick = function() {
-        deletion.style.display = "block";
-    }
-    closeDelete.onclick = function() {
-        deletion.style.display = "none";
-    }
-    window.onclick = function(event) {
-        if (event.target === deletion) {
-            deletion.style.display = "none";
-        }
-    }
+// // Delete map Modal
+//     var deletion = document.getElementById("popupEventDelete");
+// // Button for deletion
+//     var trash = document.getElementById("deleteEvent");
+// // Closing popup
+//     var closeDelete = document.getElementsByClassName("closeDelete")[0];
+//
+//     trash.onclick = function() {
+//         deletion.style.display = "block";
+//     }
+//     closeDelete.onclick = function() {
+//         deletion.style.display = "none";
+//     }
+//     window.onclick = function(event) {
+//         if (event.target === deletion) {
+//             deletion.style.display = "none";
+//         }
+//     }
 
 function getMap() {
 	var url = window.location.href;
@@ -174,6 +165,7 @@ function listItems() {
 
             let table = document.createElement("table"); // creates the table
             table.setAttribute("id", "resources")
+            table.setAttribute("class","table table-hover")
             let tr = table.insertRow(-1); // add a row to the table
 
             for (let i = 0; i < col.length; i++) {
