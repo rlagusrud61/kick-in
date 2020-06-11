@@ -90,7 +90,7 @@ public class AuthenticationEndpoint {
 
             Cookie cookie = createRemovalCookie();
             response.addCookie(cookie);
-            response.sendRedirect("http://localhost:8080/kickInTeam26/list.html");
+            response.sendRedirect("http://localhost:8080/kickInTeam26/login.html");
 
         } catch (Exception e) {
             e.printStackTrace();
