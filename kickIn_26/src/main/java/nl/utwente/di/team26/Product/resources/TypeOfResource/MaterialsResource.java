@@ -16,8 +16,6 @@ import java.util.List;
 @Path("/materials")
 public class MaterialsResource {
 
-
-
     MaterialsDao materialsDao = new MaterialsDao();
 
     @GET
