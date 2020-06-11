@@ -328,7 +328,6 @@ public class EventsDao {
      * @param stmt This parameter contains the SQL statement to be excuted.
      */
     protected int databaseUpdate(Connection conn, PreparedStatement stmt) throws SQLException {
-
         return stmt.executeUpdate();
     }
 

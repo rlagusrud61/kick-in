@@ -70,7 +70,7 @@
   <div class="form-group row">
     <label for="eventname" class="col-md-2 col-form-label">Name</label>
     <div class="col-md-3">
-      <input type="text" class="form-control" id="eventname" placeholder="Name">
+      <input type="text" id = "eventname" class="form-control" id="eventname" placeholder="Name">
   </div>
 </div>
 
@@ -87,7 +87,7 @@
     <label for="eventdate" class="col-md-2 col-form-label">Date</label>
     <div class="col-md-3">
       <div class='input-group date' id='datetimepicker'>
-        <input type='text' class="form-control" />
+        <input type='text' id = "eventdate" class="form-control" />
         <span class="input-group-addon">
           <span class="glyphicon glyphicon-calendar" style="font-size: 20px"></span>
       </span>
@@ -110,8 +110,10 @@
         <option>Both</option>
     </select>
 </div>
+
 </div>
 </form> 
+<button onclick = "updateEvent()">Updaaaate</button>
 <!-- End of Form -->
 <!-- End of container -->
 </div>
@@ -120,6 +122,32 @@
 </div>
 </div>
 </div>
+
+
+<script>
+function updateEvent() {
+	description = document.getElementById("eventdescription").value;
+	eventId = window.location.search.split("=")[1];
+	namestuff = document.getElementById("eventname").value;
+	locationstuff = document.getElementById("eventlocation");
+	eventloc = locationstuff.options[locationstuff.selectedIndex].value
+	eventdate = document.getElementById("eventdate").value;
+	eventjson = {"createdBy":"CreaJoep", "description":description, "eventId":eventId,"lastEditedBy":"EditJoep", "location":eventloc, "name":namestuff};
+	console.log(JSON.stringify(eventjson));
+	var xhr = new XMLHttpRequest();
+	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/event/" + eventId, true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState == 4) && (xhr.status = 200)) {
+			console.log(xhr.responseText);
+			window.location.href = "http://localhost:8080/kickInTeam26/event.html?id=" + eventId;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send(JSON.stringify(eventjson));
+}
+</script>
+
+
 
 <script>
     function logout(){
@@ -135,6 +163,31 @@
         xhr.send();
     }
 </script>
+
+<script>
+function updateEvent() {
+	description = document.getElementById("eventdescription").value;
+	eventId = window.location.search.split("=")[1];
+	namestuff = document.getElementById("eventname").value;
+	locationstuff = document.getElementById("eventlocation");
+	eventloc = locationstuff.options[locationstuff.selectedIndex].value
+	eventdate = document.getElementById("eventdate").value;
+	eventjson = {"createdBy":"CreaJoep", "description":description, "eventId":eventId,"lastEditedBy":"EditJoep", "location":eventloc, "name":namestuff};
+	console.log(JSON.stringify(eventjson));
+	var xhr = new XMLHttpRequest();
+	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/event/" + eventId, true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState == 4) && (xhr.status = 200)) {
+			console.log(xhr.responseText);
+			window.location.href = "http://localhost:8080/kickInTeam26/event.html?id=" + eventId;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send(JSON.stringify(eventjson));
+}
+</script>
+
+
 
 
 

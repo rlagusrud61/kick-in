@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
+<meta charset="utf-8">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <link rel="stylesheet"
@@ -23,66 +23,111 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
+<link rel="stylesheet"
+	href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
+<script
+	src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/vendor.css">
+<script
+	src="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/vendor.js"></script>
+
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/leaflet.distortableimage.css">
+<script
+	src="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/leaflet.distortableimage.js"></script>
+<script
+	src='https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/leaflet.distortableimage.js.map'></script>
+
+<script
+	src="https://cdn.jsdelivr.net/npm/leaflet-easyprint@2.1.9/dist/bundle.min.js"></script>
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<script src="https://unpkg.com/konva@4.0.0/konva.min.js"></script>
+
+<link rel="stylesheet" href="css/mapEdit.css">
+<script src="js/util/crop.js"></script>
+
 <title>Map Edit</title>
 
 <style type="text/css">
-
-body{
-  background-color:#f2f2f2;
-
+body {
+	background-color: #f2f2f2;
 }
+
 .topnav {
-		background-color: #C1FF94;
-		overflow: hidden;
+	background-color: #C1FF94;
+	overflow: hidden;
 }
+
 #home {
-		float: left;
-		color: #58BD0F;
-		padding-left: 75px;
-		font-size: 30px;
-}	
+	float: left;
+	color: #58BD0F;
+	padding-left: 75px;
+	font-size: 30px;
+}
+
 #logout {
-		float: right;
-		color: #58BD0F;
-		padding-right: 75px;
-		text-decoration: none;
-		font-size: 30px;
+	float: right;
+	color: #58BD0F;
+	padding-right: 75px;
+	text-decoration: none;
+	font-size: 30px;
 }
+
 #back {
-		color: #58BD0F;
-		padding-left: 30px;
-		font-size: 30px;
+	color: #58BD0F;
+	padding-left: 30px;
+	font-size: 30px;
 }
+
 #title1 {
 	color: rgb(189, 194, 161);
 	padding-top: 30px;
-}	
+}
+
 .icon {
 	font-size: 25px;
 	color: green;
 }
-#input{
+
+#input {
 	width: 60px;
 }
-.btn-circle.btn-xl { 
-  width: 70px; 
-  height: 70px; 
-  padding: 10px 16px; 
-  border-radius: 35px; 
-  font-size: 12px; 
-  text-align: center;
-} 
 
-nav ul{height:200px; width:90%;}
-nav ul{overflow:hidden; overflow-y:scroll;}
+.btn-circle.btn-xl {
+	width: 70px;
+	height: 70px;
+	padding: 10px 16px;
+	border-radius: 35px;
+	font-size: 12px;
+	text-align: center;
+}
+
+nav ul {
+	height: 200px;
+	width: 90%;
+}
+
+nav ul {
+	overflow: hidden;
+	overflow-y: scroll;
+}
 </style>
 </head>
 <body style="font-family: 'Quicksand'">
-	<div class = "topnav">
-    <a id="home" href = "list.html"><i class="glyphicon glyphicon-home"></i></a>
-    <a id="logout" onclick="logout()">Logout</a>
-  </div>
-  <div class="card">
+	<div class="topnav">
+		<a id="home" href="list.html"><i class="glyphicon glyphicon-home"></i></a>
+		<a id="logout" href="login.html">Logout</a>
+	</div>
+	<div class="card">
 		<div class="row">
 			<h1 id="title1">&emsp;&emsp;Map Name</h1>
 			<div class="col-9"
@@ -94,71 +139,307 @@ nav ul{overflow:hidden; overflow-y:scroll;}
 				</a>
 			</div>
 		</div>
-  	</div>
-	
+	</div>
+
 	<divclass= "container">
-		<div class="row">
-    		<div style="padding-left: 75px;" class="col-sm-3">
-    			<div class="shadow-lg p-3 mb-5 bg-white rounded">
-    			<h3>Available Items</h3><br>
-    			<input type="text" placeholder="Search.."><br><br><br>
-    			<nav>
-    			<ul>
-  					<label><li>Item 1 :</li></label>
-  					<input id="input" type="number" name="quantity"><button style="background-color: #58BD0F; border-color: #C1FF94">+</button><br><br>
- 					<label><li>Item 2:</li></label>
- 					<input id="input" type="number" name="quantity"><button style="background-color: #58BD0F; border-color: #C1FF94">+</button><br><br>
-    				<label><li>Item 3:</li></label>
-    				<input id="input" type="number" name="quantity"><button style="background-color: #58BD0F; border-color: #C1FF94">+</button><br><br>
-    				<label><li>Item 4:</li></label>
-  					<input id="input" type="number" name="quantity"><button style="background-color: #58BD0F; border-color: #C1FF94">+</button><br><br>
- 					<label><li>Item 5:</li></label>
- 					<input id="input" type="number" name="quantity"><button style="background-color: #58BD0F; border-color: #C1FF94">+</button><br><br>
-    				<label><li>Item 6:</li></label>
-    				<input id="input" type="number" name="quantity"><button style="background-color: #58BD0F; border-color: #C1FF94">+</button><br><br>
-    			</ul>
-    		</nav>
-    		</div>
-    		</div>
-    		<div class="col-sm-6">	
-    			<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3024.544153666493!2d-74.01101428473281!3d40.70603607933259!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a165bedccab%3A0x2cb2ddf003b5ae01!2sWall%20St%2C%20New%20York%2C%20NY%2C%20Statele%20Unite%20ale%20Americii!5e0!3m2!1sro!2sro!4v1591681232767!5m2!1sro!2sro" width="750" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-    		</div>
-    		<div style="padding-right: 75px;" class="col-sm-3">
-    			<div class="shadow-lg p-3 mb-5 bg-white rounded">
-    				<h3>Your added items</h3><br>
-    				<nav>
-    					<ul style="font-size: 18px;">
-    						<li>Fences : 500</li>
-    						<li>Benches : 45</li>
-    						<li>Tennis balls : 100</li>
-    						<li>Fences : 500</li>
-    						<li>Benches : 45</li>
-    						<li>Tennis balls : 100</li>
-    						<li>Fences : 500</li>
-    						<li>Benches : 45</li>
-    						<li>Tennis balls : 100</li>
-    					</ul>
-    				</nav>
-    		</div>
-  		</div>
- 	 </div>
+	<div class="row">
+		<div style="padding-left: 75px;" class="col-sm-3">
+			<div class="shadow-lg p-3 mb-5 bg-white rounded">
+				<h3>Available Items</h3>
+				<br> <input type="text" placeholder="Search.."><br>
+				<br>
+				<br>
+				<nav>
+					<ul>
+						<label><li>Item 1 :</li></label>
+						<input id="input" type="number" name="quantity">
+						<button style="background-color: #58BD0F; border-color: #C1FF94">+</button>
+						<br>
+						<br>
+						<label><li>Item 2:</li></label>
+						<input id="input" type="number" name="quantity">
+						<button style="background-color: #58BD0F; border-color: #C1FF94">+</button>
+						<br>
+						<br>
+						<label><li>Item 3:</li></label>
+						<input id="input" type="number" name="quantity">
+						<button style="background-color: #58BD0F; border-color: #C1FF94">+</button>
+						<br>
+						<br>
+						<label><li>Item 4:</li></label>
+						<input id="input" type="number" name="quantity">
+						<button style="background-color: #58BD0F; border-color: #C1FF94">+</button>
+						<br>
+						<br>
+						<label><li>Item 5:</li></label>
+						<input id="input" type="number" name="quantity">
+						<button style="background-color: #58BD0F; border-color: #C1FF94">+</button>
+						<br>
+						<br>
+						<label><li>Item 6:</li></label>
+						<input id="input" type="number" name="quantity">
+						<button style="background-color: #58BD0F; border-color: #C1FF94">+</button>
+						<br>
+						<br>
+					</ul>
+				</nav>
+			</div>
+		</div>
+		<div class="col-sm-6">
 
+			<div id="mapContainer">
+				<div id="mapid"></div>
+			</div>
 
+<!--			<button type="button" onclick="callEnterFreeHand()">Free-->
+<!--				Hand Drawing Control</button>-->
+			<button type="button" onclick="getGeoJSON()">getGeoJSON</button>
 
+<!--			<div>-->
+<!--				<div id="search-container">-->
+<!--					<input type="text" id="materialsSearch" onkeyup="filterOn()"-->
+<!--						placeholder="Search for resource...">-->
+<!--				</div>-->
+<!--				<div id="materialsContainer"></div>-->
+<!--			</div>-->
+		</div>
+		<div style="padding-right: 75px;" class="col-sm-3">
+			<div class="shadow-lg p-3 mb-5 bg-white rounded">
+				<h3>Your added items</h3>
+				<br>
+				<nav>
+					<ul style="font-size: 18px;">
+						<li>Fences : 500</li>
+						<li>Benches : 45</li>
+						<li>Tennis balls : 100</li>
+						<li>Fences : 500</li>
+						<li>Benches : 45</li>
+						<li>Tennis balls : 100</li>
+						<li>Fences : 500</li>
+						<li>Benches : 45</li>
+						<li>Tennis balls : 100</li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
 </body>
 
 <script>
-	function logout(){
-		const xhr = new XMLHttpRequest();
-		xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/authentication", true);
-		xhr.onreadystatechange = function () {
-			if (xhr.readyState == 4) {
-				console.log(xhr.responseText);
-				window.location.href="http://localhost:8080/kickInTeam26/login.html";
+	//inits the map and properties.
+	let map = L.map('mapid', {
+		center : [ 52.2413, -353.1531 ],
+		zoom : 16,
+		keyboard : false
+	});
+	let tiles = L
+			.tileLayer(
+					'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+					{
+						maxZoom : 19,
+						attribution : '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+					});
+	tiles.addTo(map);
+
+	var printer = L.easyPrint({
+		tileLayer : tiles,
+		sizeModes : [ 'Current', 'A4Landscape', 'A4Portrait' ],
+		filename : 'myMap',
+		exportOnly : true,
+		hideControlContainer : true
+	}).addTo(map);
+
+	let editToggle = L.easyButton({
+		id : 'edit-mode-toggle',
+		states : [ {
+			stateName : 'disable-editing',
+			icon : 'fa-edit',
+			title : 'Disable Editing',
+			onClick : function(control) {
+				imgGroup.forEach(function(img) {
+					img.editing.disable();
+				});
+				control.state('enable-editing');
 			}
+		}, {
+			stateName : 'enable-editing',
+			icon : 'fa-window-close',
+			title : 'Enable Editing',
+			onClick : function(control) {
+				imgGroup.forEach(function(img) {
+					img.editing.enable();
+				});
+				control.state('disable-editing');
+			}
+		} ]
+	});
+	editToggle.addTo(map);
+
+	//the array in which all the images added are stored
+	let imgGroup = [];
+	//boolean to check weather free hand drawing is being done.
+	let inFreeHand = false;
+
+	let materialsList = null;
+
+	let objReq = new XMLHttpRequest();
+	objReq.onreadystatechange = function() {
+		console.log("something")
+		if (this.readyState === 4 && this.status === 200) {
+			materialsList = JSON.parse(objReq.responseText);
+			console.log(materialsList)
+		} else {
+			console.log("failure")
 		}
-		xhr.setRequestHeader("Content-Type", "application/json");
-		xhr.send();
 	}
-	</script>
+	objReq.open("GET", ("http://localhost:8080/kickInTeam26/rest/materials"));
+	objReq.send();
+
+	// let img = L.distortableImageOverlay('..\\resources\\testImages\\example.jpg', {
+	//     actions: [L.RotateAction, L.DragAction, L.ScaleAction, L.DeleteAction]
+	// }).addTo(map);
+	// imgGroup.push(img);
+	// img.on('remove', function() {
+	//     const index = imgGroup.indexOf(img);
+	//     if (index !== -1) {
+	//         imgGroup.splice(index, 1);
+	//     }
+	// });
+
+	// //function to enter free hand, if already in free hand, we exit free hand drawing.
+	// function callEnterFreeHand() {
+	// 	if (!inFreeHand) {
+	// 		enterFreeDrawingMode();
+	// 	} else {
+	// 		exitFreeDraw();
+	// 	}
+	// }
+	//
+	// //enter free hand drawing.
+	// function enterFreeDrawingMode() {
+	// 	inFreeHand = true;
+	// 	map.dragging.disable();
+	// 	map.touchZoom.disable();
+	// 	map.doubleClickZoom.disable();
+	// 	map.scrollWheelZoom.disable();
+	// 	map.boxZoom.disable();
+	// 	map.keyboard.disable();
+	// 	map.zoomControl.disable();
+	// 	if (map.tap)
+	// 		map.tap.disable();
+	// 	document.getElementById('mapid').style.cursor = 'crosshair';
+	// 	if (editToggle.state() === 'disable-editing') {
+	// 		imgGroup.forEach(function(img) {
+	// 			img.editing.disable();
+	// 		});
+	// 	}
+	// 	editToggle.disable();
+	//
+	// 	let divContainer = document.createElement('div');
+	// 	divContainer.setAttribute('id', 'freeDrawContainer');
+	// 	// document.getElementsByClassName('leaflet-pane leaflet-overlay-pane')[0].appendChild(divContainer);
+	// 	document.getElementById('mapContainer').appendChild(divContainer);
+	// 	let dimensionData = document.getElementById('mapContainer');
+	//
+	// 	let stage = new Konva.Stage({
+	// 		container : 'freeDrawContainer', // id of container <div>
+	// 		width : dimensionData.offsetWidth,
+	// 		height : dimensionData.offsetHeight,
+	// 	});
+	// 	let layer = new Konva.Layer();
+	// 	let circle = new Konva.Circle({
+	// 		x : (stage.width() / 2),
+	// 		y : (stage.height() / 2),
+	// 		radius : 70,
+	// 		fill : 'red',
+	// 		stroke : 'black',
+	// 		strokeWidth : 4,
+	// 		draggable : true,
+	// 	});
+	// 	layer.add(circle);
+	// 	stage.add(layer);
+	// 	layer.draw();
+	// }
+	//
+	// //exit free hand drawing.
+	// function exitFreeDraw() {
+	// 	let data;
+	// 	try {
+	// 		data = trimCanvas(document.getElementsByTagName('canvas')[0]);
+	// 	} catch (err) {
+	// 		data = null;
+	// 	}
+	//
+	// 	let needForAdd = true;
+	// 	let canvas = null;
+	// 	let imgFree = null;
+	// 	let nw, ne, sw, se = null;
+	//
+	// 	if (data !== null && (data[2] === 0 || data[3] === 0)) {
+	// 		needForAdd = false;
+	// 	} else {
+	// 		if (data !== null) {
+	// 			nw = map.containerPointToLatLng([ data[0], data[1] ]);
+	// 			ne = map.containerPointToLatLng([ data[0] + data[2], data[1] ]);
+	// 			sw = map.containerPointToLatLng([ data[0], data[1] + data[3] ]);
+	// 			se = map.containerPointToLatLng([ data[0] + data[2],
+	// 					data[1] + data[3] ]);
+	// 			canvas = data[4];
+	// 			imgFree = canvas.toDataURL("image/png");
+	// 		} else {
+	// 			needForAdd = false;
+	// 		}
+	// 	}
+	//
+	// 	document.getElementById('freeDrawContainer').remove();
+	// 	map.dragging.enable();
+	// 	map.touchZoom.enable();
+	// 	map.doubleClickZoom.enable();
+	// 	map.scrollWheelZoom.enable();
+	// 	map.boxZoom.enable();
+	// 	map.keyboard.enable();
+	// 	map.zoomControl.enable()
+	// 	if (map.tap)
+	// 		map.tap.enable();
+	// 	document.getElementById('mapid').style.cursor = 'grab';
+	//
+	// 	if (editToggle.state() === 'disable-editing') {
+	// 		imgGroup.forEach(function(img) {
+	// 			img.editing.enable();
+	// 		});
+	// 	}
+	// 	editToggle.enable();
+	//
+	// 	if (needForAdd) {
+	// 		let freeDrawing = L.distortableImageOverlay(
+	// 				imgFree,
+	// 				{
+	// 					corners : [ nw, ne, sw, se ],
+	// 					actions : [ L.LockAction, L.UnlockAction,
+	// 							L.OpacityAction, L.DeleteAction ],
+	// 				}).addTo(map);
+	// 		imgGroup.push(freeDrawing);
+	// 		freeDrawing.on('remove', function() {
+	// 			const index = imgGroup.indexOf(freeDrawing);
+	// 			if (index !== -1) {
+	// 				imgGroup.splice(index, 1);
+	// 			}
+	// 		});
+	// 	}
+	// 	inFreeHand = false;
+	// }
+
+	//get the geoJSON data that can be used to reconstruct the map if needed.
+	function getGeoJSON() {
+		imgGroup.forEach(function(image) {
+			console.log('{corners: [' + image.getCorners() + '], url: '
+					+ image._url + '}');
+		})
+	}
+
+	//for filtering materials depending on entered text
+	function filterOn() {
+
+	}
+</script>
 </html>
