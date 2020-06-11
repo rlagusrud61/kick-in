@@ -324,13 +324,12 @@ public class MapsDao {
 
         List<Map> searchResults = null;
         String sql =
-                "SELECT m.* " +
-                "FROM maps m inner join eventmap em on m.mapid = em.mapid " +
-                "WHERE em.eventid = ?";
+                "select m.* from maps m inner join eventmap e on m.mapid = e.mapid where (e.eventid = ?)";
 
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
         preparedStatement.setInt(1, eventId);
-        return listQuery(conn, conn.prepareStatement(sql));
+
+        return listQuery(conn, preparedStatement);
     }
 
     /**

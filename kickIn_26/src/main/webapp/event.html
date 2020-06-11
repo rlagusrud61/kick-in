@@ -61,7 +61,7 @@
 		<div class="row">
 			<h1 class="col-8">Event</h1>
 			<div class="col-4" style="display: flex; justify-content: flex-end;">
-				<a id = "editlink"><button type="button" class="myButton btn btn-success btn-circle btn-xl align-self-end"> + </button></a>
+				<a id ="addNewMap"><button type="button" class="myButton btn btn-success btn-circle btn-xl align-self-end"> + </button></a>
 			</div>
 		</div>
 	</div>
@@ -239,20 +239,30 @@
 
 	window.onload = function() {
 		var id = window.location.search.split("=")[1];
-//	console.log(id);
-		const xhr = new XMLHttpRequest();
-		xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/event/" + id, true);
-		xhr.onreadystatechange = function () {
-			if (xhr.readyState === 4) {
-				var event = JSON.parse(xhr.responseText);			
+		const eventDetails = new XMLHttpRequest();
+		eventDetails.open('GET', "http://localhost:8080/kickInTeam26/rest/event/" + id, true);
+		eventDetails.onreadystatechange = function () {
+			if (eventDetails.readyState === 4) {
+				var event = JSON.parse(eventDetails.responseText);
    				document.getElementById("introtext").innerHTML = event.description;
    				document.getElementById("eventlocation").innerHTML = event.location;
    				document.getElementById("eventname").innerHTML = event.name;
-   				document.getElementById("editlink").href = "http://localhost:8080/kickInTeam26/newMap.html";
+   				document.getElementById("addNewMap").href = "http://localhost:8080/kickInTeam26/newMap.html";
 			}
 		}
-		xhr.setRequestHeader("Content-Type", "application/json");
-		xhr.send();
+		eventDetails.setRequestHeader("Content-Type", "application/json");
+		eventDetails.send();
+
+		let mapsList = new XMLHttpRequest();
+		mapsList.open("GET", "http://localhost:8080/kickInTeam26/rest/eventMap/event/"+id);
+		mapsList.setRequestHeader("Content-Type", "application/json")
+		mapsList.onreadystatechange = function () {
+			if (mapsList.status === 4 && mapsList.status === 200) {
+				let maps = JSON.parse(mapsList.responseText);
+				console.log(maps);
+			}
+		}
+		mapsList.send();
 	}
 
 	function logout(){
