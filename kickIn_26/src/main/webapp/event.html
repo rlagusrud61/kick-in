@@ -244,8 +244,7 @@
 		xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/event/" + id, true);
 		xhr.onreadystatechange = function () {
 			if (xhr.readyState === 4) {
-				var event = JSON.parse(xhr.responseText);
-				console.log(event);
+				var event = JSON.parse(xhr.responseText);			
    				document.getElementById("introtext").innerHTML = event.description;
    				document.getElementById("eventlocation").innerHTML = event.location;
    				document.getElementById("eventname").innerHTML = event.name;

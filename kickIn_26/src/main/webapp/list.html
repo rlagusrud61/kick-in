@@ -167,7 +167,7 @@
         </div>
     </div>
     <div class = "eventlist">
-        <h2>OH BABY IT'S A LIST</h2>
+        <h2>Event list</h2>
         <table style = "width:100%" id = "eventtable">
         </table>
     </div>
@@ -225,7 +225,7 @@
                 var table = document.getElementById("eventtable");
                 var events = JSON.parse(xhr.responseText);
                 console.log(events);
-                var htmltext = "<tr><th>Name</th><th>Creator</th><th>Editor</th><th>Gimme dat info</th><th>Edit meeee</th><th>Gurbuge</th><tr>";
+                var htmltext = "<tr><th>Name</th><th>Creator</th><th>Editor</th><th>Event Info</th><th>Edit Event</th><th>Delete</th><tr>";
                 table.innerHTML = htmltext;
                 for (i = 0; i < events.length; i++) {
                     var row = table.insertRow(i + 1);
@@ -238,9 +238,9 @@
                     cell1.innerHTML = events[i].name;
                     cell2.innerHTML = events[i].createdBy;
                     cell3.innerHTML = events[i].lastEditedBy;
-                    cell4.innerHTML = "<button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/event.html?id=" + events[i].eventId + "\";'>Gib</button>"
-                    cell5.innerHTML = "<button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/edit.html?id=" + events[i].eventId + "\";'>Yeahbaby</button>"
-                    cell6.innerHTML = "<button onclick = 'deleteEvent(" + events[i].eventId + ")'>Outta here</button>"
+                    cell4.innerHTML = "<button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/event.html?id=" + events[i].eventId + "\";'>View</button>"
+                    cell5.innerHTML = "<button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/edit.html?id=" + events[i].eventId + "\";'>Edit</button>"
+                    cell6.innerHTML = "<button onclick = 'deleteEvent(" + events[i].eventId + ")'>Delete</button>"
 
 
 //				htmltext += "<div class= 'col-md-12 col-sm-10'><div class='project'><div class='row bg-white has-shadow'>" +
