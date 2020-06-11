@@ -1,5 +1,4 @@
-{
-    "fileImages": [
+[
         {
             "id": 1,
             "name": " Beer table (220x60)",
@@ -2286,5 +2285,4 @@
             "description": " Sweets",
             "url": "b'iVBORw0KGgoAAAANSUhEUgAAADYAAAALCAYAAAA0oX6uAAAAoklEQVR4nN1VQQ6AMAizxv9/uZ40hLRjzizG9QhslMIYSG4rYv+awCwcT4IB3O0liVZM9CtbFVvlqdAsTCXJtoxRIvl8laeCLSyrqRLFGKd0tLt411GXL8fKBrjl0UNUkXk7is6nRMkCxXvs8iCJliqO0Gy0hAXAy28L6xmPkXcQk/fYMy7BIy/VhOFR7Fkk6ly0Kbu7071jN0m2sL9j2Q/6BBAnuBVxIUNbAAAAAElFTkSuQmCC'"
         }
-    ]
-}
+]
