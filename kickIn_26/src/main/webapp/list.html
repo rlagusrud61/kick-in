@@ -46,7 +46,7 @@
 <body>
 <div class = "topnav">
     <a id="home" href = "list.html"><i class="glyphicon glyphicon-home"></i></a>
-    <a id="logout" href="login.html">Logout</a>
+    <a id="logout" onclick="logout()">Logout</a>
 </div>
 <div class="jumbotron jumbotron-fluid">
     <div id = "main" class="container">
@@ -268,6 +268,18 @@
 //	xhr.send(event.id);
     }
 
+    function logout(){
+        const xhr = new XMLHttpRequest();
+        xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/authentication", true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                console.log(xhr.responseText);
+                window.location.href="http://localhost:8080/kickInTeam26/login.html";
+            }
+        }
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send();
+    }
 
 </script>
 </body>
