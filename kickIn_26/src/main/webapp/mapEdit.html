@@ -232,8 +232,7 @@ nav ul {
 		zoom : 16,
 		keyboard : false
 	});
-	let tiles = L
-			.tileLayer(
+	let tiles = L.tileLayer(
 					'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 					{
 						maxZoom : 19,
@@ -284,12 +283,9 @@ nav ul {
 
 	let objReq = new XMLHttpRequest();
 	objReq.onreadystatechange = function() {
-		console.log("something")
 		if (this.readyState === 4 && this.status === 200) {
 			materialsList = JSON.parse(objReq.responseText);
-			console.log(materialsList)
-		} else {
-			console.log("failure")
+			console.log(materialsList);
 		}
 	}
 	objReq.open("GET", ("http://localhost:8080/kickInTeam26/rest/materials"));
