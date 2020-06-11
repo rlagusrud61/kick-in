@@ -96,7 +96,7 @@ public class MapsDao {
      *                    If automatic surrogate-keys are not used the Primary-key
      *                    field must be set for this to work properly.
      */
-    public synchronized void create(Connection conn, Map valueObject) throws SQLException {
+    public synchronized int create(Connection conn, Map valueObject) throws SQLException {
 
         String sql = "";
         PreparedStatement stmt = null;
@@ -104,18 +104,20 @@ public class MapsDao {
 
         try {
             sql = "INSERT INTO Maps (name, description, "
-                    + "createdBy, lastEditedBy) VALUES (?, ?, ?, ?) ";
+                    + "createdBy, lastEditedBy) VALUES (?, ?, ?, ?) returning mapId";
             stmt = conn.prepareStatement(sql);
 
             stmt.setString(1, valueObject.getName());
             stmt.setString(2, valueObject.getDescription());
             stmt.setString(3, valueObject.getCreatedBy());
             stmt.setString(4, valueObject.getLastEditedBy());
+            stmt.execute();
 
-            int rowcount = databaseUpdate(conn, stmt);
-            if (rowcount != 1) {
-                //System.out.println("PrimaryKey Error when updating DB!");
-                throw new SQLException("PrimaryKey Error when updating DB!");
+            ResultSet resultSet = stmt.getResultSet();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            } else {
+                throw new SQLException("Some error creating a new map.");
             }
 
         } finally {
