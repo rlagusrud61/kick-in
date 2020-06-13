@@ -8,17 +8,17 @@ var btn = document.getElementById("myBtn");
 var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks the button, open the modal
-btn.onclick = function () {
+btn.onclick = function() {
     modal.style.display = "block";
 }
 
 // When the user clicks on <span> (x), close the modal
-span.onclick = function () {
+span.onclick = function() {
     modal.style.display = "none";
 }
 
 // When the user clicks anywhere outside of the modal, close it
-window.onclick = function (event) {
+window.onclick = function(event) {
     if (event.target == modal) {
         modal.style.display = "none";
     }
@@ -38,7 +38,7 @@ function createEvent(form) {
     xhr.send(JSON.stringify(form));
 }
 
-window.onload = function () {
+window.onload = function() {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/events", true);
     xhr.onreadystatechange = function () {
@@ -77,24 +77,17 @@ window.onload = function () {
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send();
 }
-
 function addEvent() {
     description = document.getElementById("eventdescription").value;
     namestuff = document.getElementById("eventname").value;
     locationstuff = document.getElementById("eventlocation");
     eventloc = locationstuff.options[locationstuff.selectedIndex].value
     eventdate = document.getElementById("eventdate").value;
-    eventjson = {
-        "createdBy": "CreaJoep",
-        "description": description,
-        "lastEditedBy": "EditJoep",
-        "location": eventloc,
-        "name": namestuff
-    };
+    eventjson = {"createdBy":"CreaJoep", "description":description,"lastEditedBy":"EditJoep", "location":eventloc, "name":namestuff};
     console.log(JSON.stringify(eventjson));
     var xhr = new XMLHttpRequest();
     xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/events", true);
-    xhr.onreadystatechange = function () {
+    xhr.onreadystatechange = function() {
         if ((xhr.readyState == 4) && (xhr.status = 200)) {
             console.log(xhr.responseText);
             window.location.href = "http://localhost:8080/kickInTeam26/event.html?id=" + xhr.responseText;
@@ -103,7 +96,6 @@ function addEvent() {
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(JSON.stringify(eventjson));
 }
-
 function deleteEvent(id) {
     var xhr = new XMLHttpRequest();
     xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/event/" + id, true);
@@ -116,71 +108,15 @@ function deleteEvent(id) {
     xhr.send();
 }
 
-function logout() {
+function logout(){
     const xhr = new XMLHttpRequest();
     xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/authentication", true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4) {
             console.log(xhr.responseText);
-            window.location.href = "http://localhost:8080/kickInTeam26/login.html";
+            window.location.href="http://localhost:8080/kickInTeam26/login.html";
         }
     }
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send();
-}
-
-function searchTables() {
-    // Declare variables
-    let searchValue, filter, table, tr, td, i, txtValue;
-    searchValue = document.getElementById("searchTable");
-    filter = searchValue.value.toUpperCase();
-    table = document.getElementById("eventtable");
-    tr = table.getElementsByTagName("tr");
-    // Loop through all table rows, and hide those who don't match the search query
-    for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[0];
-        if (td) {
-            txtValue = td.textContent || td.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                tr[i].style.display = "";
-            } else {
-                tr[i].style.display = "none";
-            }
-        }
-    }
-}
-
-function sortTableAZ() {
-    let table, rows, switching, i, x, y, shouldSwitch;
-    table = document.getElementById("eventtable");
-    switching = true;
-    /* Make a loop that will continue until
-    no switching has been done: */
-    while (switching) {
-        // Start by saying: no switching is done:
-        switching = false;
-        rows = table.rows;
-        /* Loop through all table rows (except the
-        first, which contains table headers): */
-        for (i = 1; i < (rows.length - 1); i++) {
-            // Start by saying there should be no switching:
-            shouldSwitch = false;
-            /* Get the two elements you want to compare,
-            one from current row and one from the next: */
-            x = rows[i].getElementsByTagName("TD")[0];
-            y = rows[i + 1].getElementsByTagName("TD")[0];
-            // Check if the two rows should switch place:
-            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                // If so, mark as a switch and break the loop:
-                shouldSwitch = true;
-                break;
-            }
-        }
-        if (shouldSwitch) {
-            /* If a switch has been marked, make the switch
-            and mark that a switch has been done: */
-            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-            switching = true;
-        }
-    }
 }

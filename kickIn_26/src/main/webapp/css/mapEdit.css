@@ -1,4 +1,8 @@
-#mapid {height: 500px; z-index: 1}
+#mapid {
+    height: 500px;
+    z-index: 1
+}
+
 #freeDrawContainer {
     height: 500px;
     position: fixed;
@@ -8,24 +12,30 @@
 }
 
 .state-remove-markers,
-.state-add-markers{
+.state-add-markers {
     transition-duration: .5s;
     transform: scaleY(0);
     position: absolute;
     display: block;
     top: 0;
-    width: 100%;}
+    width: 100%;
+}
 
-.state-remove-markers{
-    transform-origin: 50% 0; }
-.state-add-markers{
-    transform-origin: 50% 100%; }
+.state-remove-markers {
+    transform-origin: 50% 0;
+}
 
-.state-remove-markers.remove-markers-active{
-    transform: scaleY(1); }
+.state-add-markers {
+    transform-origin: 50% 100%;
+}
 
-.state-add-markers.add-markers-active{
-    transform: scaleY(1); }
+.state-remove-markers.remove-markers-active {
+    transform: scaleY(1);
+}
+
+.state-add-markers.add-markers-active {
+    transform: scaleY(1);
+}
 
 #materialsContainer {
     font-size: 0;
@@ -53,4 +63,71 @@
     padding: 12px 20px 12px 40px; /* Add some padding */
     border: 1px solid #ddd; /* Add a grey border */
     margin-bottom: 12px; /* Add some space below the input */
+}
+
+body {
+    background-color: #f2f2f2;
+}
+
+.topnav {
+    background-color: #C1FF94;
+    overflow: hidden;
+}
+
+#home {
+    float: left;
+    color: #58BD0F;
+    padding-left: 75px;
+    font-size: 30px;
+}
+
+#logout {
+    float: right;
+    color: #58BD0F;
+    padding-right: 75px;
+    text-decoration: none;
+    font-size: 30px;
+}
+
+#back {
+    color: #58BD0F;
+    padding-left: 30px;
+    font-size: 30px;
+}
+
+#title1 {
+    color: rgb(189, 194, 161);
+    padding-top: 30px;
+}
+
+.icon {
+    font-size: 25px;
+    color: green;
+}
+
+#input {
+    width: 60px;
+}
+
+.btn-circle.btn-xl {
+    width: 70px;
+    height: 70px;
+    padding: 10px 16px;
+    border-radius: 35px;
+    font-size: 12px;
+    text-align: center;
+}
+
+nav ul {
+    height: 200px;
+    width: 90%;
+}
+
+nav ul {
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.body {
+    font-family: 'Quicksand';
 }
