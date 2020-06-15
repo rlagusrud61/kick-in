@@ -6,7 +6,7 @@
 
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" type= "text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <!-- Latest compiled and minified CSS -->
@@ -22,87 +22,46 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
-
+    <link rel="stylesheet" href="http://localhost:8080/kickInTeam26/css/newMap.css">
 </head>
-<style>
-
-    body{
-        background-color:#f2f2f2;
-        font-size: 15px;
-        font-family: 'Quicksand';
-        color:#6B6B6B;
-    }
-</style>
-
 <body>
 <!--Navigation Bar-->
-<div class = "topnav">
-    <a id="home" href = "list.html"><i class="glyphicon glyphicon-home"></i></a>
+<div class="topnav">
+    <a id="home" href="list.html"><i class="glyphicon glyphicon-home"></i></a>
     <a id="logout" onclick="logout()">Logout</a>
 </div>
 <!--Jumbotron (Page Description)-->
 <div class="jumbotron jumbotron-fluid">
-    <div id = "main" class="container">
+    <div id="main" class="container">
         <div class="row">
             <h1 class="col-8">Add a New Map</h1>
             <div class="col-4" style="display: flex; justify-content: flex-end;">
-                <button type="button" class="myButton btn btn-success btn-circle btn-xl align-self-end" onclick="addNewMap();"> ADD </button>
+                <button type="button" class="myButton btn btn-success btn-circle btn-xl align-self-end"
+                        onclick="addNewMap();"> ADD
+                </button>
             </div>
         </div>
     </div>
 </div>
 
 <!--Page Content-->
-    <div class="container has-shadow" style="background-color: #ffffff;">
-        <form action = "event.html" style="margin: 5% 5% 5% 5%">
-            <div class="form-group row">
-                <label for="mapName" class="col-md-2 col-form-label">Name</label>
-                <div class="col-md-3">
-                    <input type="text" class="form-control" id="mapName" placeholder="Name">
-                </div>
+<div class="container has-shadow" style="background-color: #ffffff;">
+    <form action="event.html" style="margin: 5% 5% 5% 5%">
+        <div class="form-group row">
+            <label for="mapName" class="col-md-2 col-form-label">Name</label>
+            <div class="col-md-3">
+                <input type="text" class="form-control" id="mapName" placeholder="Name">
             </div>
+        </div>
 
-            <div class="form-group row">
-                <label for="description" class="col-md-2 col-form-label">Description</label>
-                <div class="col-md-8">
-                    <textarea class="form-control" id="description" rows="5"></textarea>
-                </div>
+        <div class="form-group row">
+            <label for="description" class="col-md-2 col-form-label">Description</label>
+            <div class="col-md-8">
+                <textarea class="form-control" id="description" rows="5"></textarea>
             </div>
-        </form>
-            </div>
-
+        </div>
+    </form>
+</div>
 </body>
-
-
-<script>
-
-    function addNewMap() {
-        let mapName = document.getElementById("mapName").value;
-        let description = document.getElementById("description").value;
-
-        let createMap = new XMLHttpRequest();
-        let mapId;
-        let eventId = 3;
-
-        createMap.onreadystatechange = function() {
-            if (this.readyState === 4 && this.status === 200) {
-
-                mapId = parseInt(createMap.responseText);
-                let createMapRelation = new XMLHttpRequest();
-                createMapRelation.onreadystatechange = function() {
-                    if (createMapRelation.readyState === 4 && createMapRelation.status === 200) {
-                        window.location.href = "http://localhost:8080/kickInTeam26/list.html";
-                    }
-                }
-                createMapRelation.open("POST", ("http://localhost:8080/kickInTeam26/rest/eventMap"));
-                createMapRelation.setRequestHeader("Content-Type", "application/json");
-                createMapRelation.send('{"eventId":"'+eventId+'","mapId":"'+mapId+'"}')
-            }
-        }
-        createMap.open("POST", ("http://localhost:8080/kickInTeam26/rest/maps"));
-        createMap.setRequestHeader("Content-Type", "application/json");
-        createMap.send('{"name":"'+mapName+'","description":"'+description+'"}');
-    }
-
-</script>
+<script src="http://localhost:8080/kickInTeam26/js/newMap.js"></script>
 </html>
