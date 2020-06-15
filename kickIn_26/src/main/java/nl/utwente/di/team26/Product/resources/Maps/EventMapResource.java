@@ -27,7 +27,7 @@ public class EventMapResource {
     EventsDao eventsDao = new EventsDao();
 
     @GET
-    @Secured({Roles.VISITOR})
+//    @Secured({Roles.VISITOR})
     @Path("event/{eventId}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Map> getAllMapsForEvent(@PathParam("eventId") int eventId) {
