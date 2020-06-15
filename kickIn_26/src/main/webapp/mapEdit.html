@@ -23,22 +23,22 @@
     <script
             src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet"
-          href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"/>
+    <link href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+          rel="stylesheet"/>
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
 
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
+    <link href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css"
+          rel="stylesheet">
     <script
             src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
 
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/vendor.css">
+    <link href="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/vendor.css"
+          rel="stylesheet">
     <script
             src="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/vendor.js"></script>
 
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/leaflet.distortableimage.css">
+    <link href="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/leaflet.distortableimage.css"
+          rel="stylesheet">
     <script
             src="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/leaflet.distortableimage.js"></script>
     <script
@@ -47,82 +47,62 @@
     <script
             src="https://cdn.jsdelivr.net/npm/leaflet-easyprint@2.1.9/dist/bundle.min.js"></script>
 
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+          rel="stylesheet">
 
     <script src="https://unpkg.com/konva@4.0.0/konva.min.js"></script>
 
-    <link rel="stylesheet" href="http://localhost:8080/kickInTeam26/css/mapEdit.css"> <!-- link to css file -->
+    <link href="http://localhost:8080/kickInTeam26/css/mapEdit.css" rel="stylesheet"> <!-- link to css file -->
+    <link href="http://localhost:8080/kickInTeam26/css/style.css" rel="stylesheet"> <!-- link to css file -->
     <script src="js/util/crop.js"></script>
     <title>Map Edit</title>
 </head>
+
 <body>
 <div class="topnav">
-    <a id="home" href="list.html"><i class="glyphicon glyphicon-home"></i></a>
-    <a id="logout" href="login.html">Logout</a>
+    <a href="list.html" id="home"><i class="glyphicon glyphicon-home"></i></a>
+    <a href="login.html" id="logout">Logout</a>
 </div>
-<div class="card">
-    <div class="row">
-        <h1 id="title1">&emsp;&emsp;Map Name</h1>
-        <div class="col-9"
-             style="display: flex; justify-content: flex-end; padding-bottom: 10px">
-            <a href="list.html"></a>
-            <button type="button"
-                    class="myButton btn btn-success btn-circle btn-xl align-self-end"
-                    id="myBtn">Save
-            </button>
-            </a>
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container" id="main">
+        <div class="row">
+            <h1 class="col-8">Edit Your Map</h1>
+            <div class="col-4" style="display: flex; justify-content: flex-end;">
+                <button class="myButton btn btn-success btn-circle btn-xl align-self-end" id="myBtn" type="button"> +
+                </button>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="container">
+<div class="container-fluid">
     <div class="row">
-        <div style="padding-left: 75px;" class="col-sm-3">
+        <div class="col-sm-3 col-md-3">
             <div class="shadow-lg p-3 mb-5 bg-white rounded">
                 <h3>Available Items</h3>
                 <br> <input type="text" id="searchItems" onkeyup="XSSInputSanitation('searchItems')" placeholder="Search.."><br>
                 <br>
                 <br>
                 <nav>
-                    <ul id="itemlist">
+                    <ul id="itemlist" style="font-size:13px;">
                     </ul>
                 </nav>
             </div>
         </div>
-        <div class="col-sm-6">
-
+        <div class="col-sm-6 col-md-6">
             <div id="mapContainer">
                 <div id="mapid"></div>
             </div>
-
-            <!--			<button type="button" onclick="callEnterFreeHand()">Free-->
-            <!--				Hand Drawing Control</button>-->
-            <button type="button" onclick="getGeoJSON()">getGeoJSON</button>
-
-            <!--			<div>-->
-            <!--				<div id="search-container">-->
-            <!--					<input type="text" id="materialsSearch" onkeyup="filterOn()"-->
-            <!--						placeholder="Search for resource...">-->
-            <!--				</div>-->
-            <!--				<div id="materialsContainer"></div>-->
-            <!--			</div>-->
+            <button onclick="getGeoJSON()" type="button">getGeoJSON</button>
         </div>
-        <div style="padding-right: 75px;" class="col-sm-3">
-            <div class="shadow-lg p-3 mb-5 bg-white rounded">
+        <div class="col-sm-3 col-md-3">
+            <div class="shadow-lg p-4 mb-5 bg-white rounded">
                 <h3>Your added items</h3>
                 <br>
                 <nav>
-                    <ul id="itemlist2" style="font-size: 18px;">
-                        <li>Fences : 500</li>
-                        <li>Benches : 45</li>
-                        <li>Tennis balls : 100</li>
-                        <li>Fences : 500</li>
-                        <li>Benches : 45</li>
-                        <li>Tennis balls : 100</li>
-                        <li>Fences : 500</li>
-                        <li>Benches : 45</li>
-                        <li>Tennis balls : 100</li>
+                    <ul id="itemlist2" style="font-size: 13px;">
+                        Your List is empty!
                     </ul>
                 </nav>
             </div>
