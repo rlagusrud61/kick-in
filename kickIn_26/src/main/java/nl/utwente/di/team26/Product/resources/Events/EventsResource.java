@@ -5,15 +5,21 @@ import nl.utwente.di.team26.Product.dao.Events.EventsDao;
 import nl.utwente.di.team26.Product.model.Event.Event;
 import nl.utwente.di.team26.Security.Filters.Secured;
 import nl.utwente.di.team26.Security.User.Roles;
+import nl.utwente.di.team26.Utils;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
 @Path("/events")
 public class EventsResource {
+
+    @Context
+    SecurityContext securityContext;
 
     public EventsDao eventsDao = new EventsDao();
 
@@ -34,7 +40,12 @@ public class EventsResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String addNewEvent(Event eventToAdd) {
+
+        String userId = String.valueOf(Utils.getUserFromContext(securityContext));
+
         try (Connection conn = CONSTANTS.getConnection()) {
+            eventToAdd.setCreatedBy(userId);
+            eventToAdd.setLastEditedBy(userId);
             return String.valueOf(eventsDao.create(conn, eventToAdd));
         } catch (SQLException throwables) {
             throwables.printStackTrace();

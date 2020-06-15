@@ -1,6 +1,7 @@
 package nl.utwente.di.team26;
 
 import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.core.SecurityContext;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -19,6 +20,7 @@ public class CONSTANTS {
     public static final String FAILURE = "Failure";
     public static final String ISSUER = "http://localhost:8080/kickInTeam26/";
     public static final long TTK = 7200000;
+    public static final String AUTH_SCHEME = "JWT-TOKEN";
 
     public static Connection getConnection() throws InternalServerErrorException {
 
