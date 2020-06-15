@@ -298,3 +298,12 @@ function getGeoJSON() {
 function filterOn() {
 
 }
+
+function XSSInputSanitation(id) {
+    let element = document.getElementById(id).value;
+    if (element.indexOf("onload") !== -1 || element.indexOf("<script>") !== -1 ||
+        element.indexOf("onerror") !== -1 || element.indexOf("alert") !== -1) {
+        console.log("done")
+        document.getElementById(id).value = "";
+    }
+}

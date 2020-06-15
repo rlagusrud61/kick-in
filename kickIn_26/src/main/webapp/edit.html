@@ -21,32 +21,8 @@
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet" type="text/css">
 
+    <link rel="stylesheet" href="http://localhost:8080/kickInTeam26/css/edit.css"> <!-- link to css file -->
 </head>
-
-<style>
-
-    h1 {
-        margin: 0;
-        display: inline-block;
-    }
-
-    h2 {
-        text-align: center;
-        font-size: 50px;
-        padding-bottom: 5%;
-    }
-
-    .form-group {
-        padding-left: 10%;
-    }
-
-    body {
-        background-color: #f2f2f2;
-        font-size: 15px;
-        font-family: 'Quicksand';
-        color: #6B6B6B;
-    }
-</style>
 
 <body>
 <!-- Navigation Bar -->
@@ -74,14 +50,14 @@
         <div class="form-group row">
             <label class="col-md-2 col-form-label" for="eventname">Name</label>
             <div class="col-md-3">
-                <input class="form-control" id="eventname" placeholder="Name" type="text">
+                <input class="form-control" id="eventname" onkeyup="XSSInputSanitation('eventname')" placeholder="Name" type="text">
             </div>
         </div>
 
         <div class="form-group row">
             <label class="col-md-2 col-form-label" for="eventdescription">Description</label>
             <div class="col-md-8">
-                <textarea class="form-control" id="eventdescription" rows="5"></textarea>
+                <textarea class="form-control" id="eventdescription" onkeyup="XSSInputSanitation('eventdescription')" rows="5"></textarea>
             </div>
         </div>
 
@@ -110,5 +86,6 @@
     <!-- End of Form -->
     <!-- End of container -->
 </div>
+<script src="http://localhost:8080/kickInTeam26/js/edit.js"></script>
 </body>
 </html>
