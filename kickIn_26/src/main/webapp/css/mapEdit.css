@@ -80,6 +80,10 @@ h1{
     color: #6B6B6B;
 }
 
+h3{
+    text-align:center;
+}
+
 .topnav {
     background-image:linear-gradient(to right, #D4FC79, #A3EB98);
     overflow: hidden;
@@ -130,6 +134,7 @@ h1{
 nav ul {
     height: 200px;
     width: 90%;
+    list-style-type: none;
 }
 
 nav ul {
