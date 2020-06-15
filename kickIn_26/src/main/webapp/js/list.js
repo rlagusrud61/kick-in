@@ -83,7 +83,7 @@ function addEvent() {
     namestuff = document.getElementById("eventname").value;
     locationstuff = document.getElementById("eventlocation");
     eventloc = locationstuff.options[locationstuff.selectedIndex].value
-    eventdate = document.getElementById("eventdate").value;
+    eventdate = document.getElementById("eventDate").value;
     eventjson = {
         "createdBy": "CreaJoep",
         "description": description,
@@ -132,8 +132,12 @@ function logout() {
 function searchTables() {
     // Declare variables
     let searchValue, filter, table, tr, td, i, txtValue;
-    searchValue = document.getElementById("searchTable");
-    filter = searchValue.value.toUpperCase();
+    searchValue = document.getElementById("searchTable").value;
+    if (searchValue.indexOf("onload") !== -1 || searchValue.indexOf("<script>") !== -1  ||
+        searchValue.indexOf("onerror") !== -1 || searchValue.indexOf("alert") !== -1) {
+        document.getElementById("searchTable").value = "";
+    }
+    filter = searchValue.toUpperCase();
     table = document.getElementById("eventtable");
     tr = table.getElementsByTagName("tr");
     // Loop through all table rows, and hide those who don't match the search query
