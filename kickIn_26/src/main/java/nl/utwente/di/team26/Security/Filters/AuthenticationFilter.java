@@ -37,7 +37,6 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
 
-        final SecurityContext currentSecurityContext = requestContext.getSecurityContext();
         Map<String, Cookie> cookieJar = requestContext.getCookies();
         String authenticatedUserId = null;
         User authenticatedUser = null;
@@ -84,7 +83,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
                 @Override
                 public boolean isSecure() {
-                    return currentSecurityContext.isSecure();
+                    return securityContext.isSecure();
                 }
 
                 @Override
