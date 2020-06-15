@@ -17,6 +17,7 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.lang.reflect.AnnotatedElement;
@@ -35,23 +36,26 @@ public class AuthorizationFilter implements ContainerRequestFilter {
     @Context
     private ResourceInfo resourceInfo;
 
+    @Context
+    private SecurityContext securityContext;
+
     UserDao userDao = new UserDao();
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        String jwtToken = requestContext.getCookies().get(CONSTANTS.COOKIENAME).getValue();
-        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-        Key signingKey = new SecretKeySpec(CONSTANTS.SECRET.getBytes(), signatureAlgorithm.getJcaName());
-
-        int userId = Integer.parseInt(
-                Jwts.parserBuilder()
-                        .setSigningKey(signingKey)
-                        .build()
-                        .parseClaimsJws(jwtToken)
-                        .getBody()
-                        .getSubject());
-
-        User authenticatedUser = findUser(userId);
+//        String jwtToken = requestContext.getCookies().get(CONSTANTS.COOKIENAME).getValue();
+//        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+//        Key signingKey = new SecretKeySpec(CONSTANTS.SECRET.getBytes(), signatureAlgorithm.getJcaName());
+//
+//        int userId = Integer.parseInt(
+//                Jwts.parserBuilder()
+//                        .setSigningKey(signingKey)
+//                        .build()
+//                        .parseClaimsJws(jwtToken)
+//                        .getBody()
+//                        .getSubject());
+//
+//        User authenticatedUser = findUser(userId);
 
         // Get the resource class which matches with the requested URL
         // Extract the roles declared by it
@@ -68,9 +72,9 @@ public class AuthorizationFilter implements ContainerRequestFilter {
             // Check if the user is allowed to execute the method
             // The method annotations override the class annotations
             if (methodRoles.isEmpty()) {
-                checkPermissions(classRoles, authenticatedUser);
+                checkPermissions(classRoles);
             } else {
-                checkPermissions(methodRoles, authenticatedUser);
+                checkPermissions(methodRoles);
             }
 
         } catch (NotAuthorizedException e) {
@@ -94,15 +98,15 @@ public class AuthorizationFilter implements ContainerRequestFilter {
         }
     }
 
-    private void checkPermissions(List<Roles> allowedRoles, User authenticatedUser) throws NotAuthorizedException {
+    private void checkPermissions(List<Roles> allowedRoles) throws NotAuthorizedException {
         // Check if the user contains one of the allowed roles
         // Throw an Exception if the user has not permission to execute the method
 
-        if (allowedRoles.size() == 0) {
+        if (allowedRoles.isEmpty()) {
             return;
         }
 
-        if (authenticatedUser.getClarificationLevel() < allowedRoles.get(0).ordinal()) {
+        if (!securityContext.isUserInRole(allowedRoles.get(0).getString())) {
             throw new NotAuthorizedException("You shall not pass!");
         }
 
