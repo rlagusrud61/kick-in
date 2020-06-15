@@ -1,8 +1,7 @@
-package nl.utwente.di.team26.Security.Authentication.User;
+package nl.utwente.di.team26.Security.User;
 
 import nl.utwente.di.team26.Exceptions.AuthenticationDeniedException;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
-import nl.utwente.di.team26.Security.Authentication.Credentials;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -51,10 +50,7 @@ import java.util.List;
 
         public User authenticateUser(Connection conn, Credentials credentials) throws AuthenticationDeniedException {
             String sql =
-                    "SELECT u.userid " +
-                    "FROM User u " +
-                    "WHERE email = ? " +
-                      "AND password = ?";
+                    "SELECT * FROM users WHERE email like ? AND password like ?";
             User valueObject = new User();
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -62,7 +58,10 @@ import java.util.List;
                 stmt.setString(2, credentials.getPassword());
                 singleQuery(conn, stmt, valueObject);
                 return valueObject;
-            } catch (SQLException | NotFoundException e) {
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new AuthenticationDeniedException("SQL Error");
+            } catch (NotFoundException e) {
                 throw new AuthenticationDeniedException("No!");
             }
 
@@ -83,7 +82,7 @@ import java.util.List;
          */
         public void load(Connection conn, User valueObject) throws NotFoundException, SQLException {
 
-            String sql = "SELECT * FROM User WHERE (userId = ? ) ";
+            String sql = "SELECT * FROM users WHERE (userId = ? ) ";
 
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setInt(1, valueObject.getUserId());
@@ -105,7 +104,7 @@ import java.util.List;
          */
         public List<User> loadAll(Connection conn) throws SQLException {
 
-            String sql = "SELECT * FROM User ORDER BY userId ASC ";
+            String sql = "SELECT * FROM Users ORDER BY userId ASC ";
 
             return listQuery(conn, conn.prepareStatement(sql));
         }
@@ -132,7 +131,7 @@ import java.util.List;
             ResultSet result = null;
 
             try {
-                sql = "INSERT INTO User (email, password, "
+                sql = "INSERT INTO users (email, password, "
                         + "clarificationLevel) VALUES (?, ?, ?) ";
                 stmt = conn.prepareStatement(sql);
 
@@ -169,7 +168,7 @@ import java.util.List;
         public void save(Connection conn, User valueObject)
                 throws NotFoundException, SQLException {
 
-            String sql = "UPDATE User SET email = ?, password = ?, clarificationLevel = ? WHERE (userId = ? ) ";
+            String sql = "UPDATE users SET email = ?, password = ?, clarificationLevel = ? WHERE (userId = ? ) ";
 
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, valueObject.getEmail());
@@ -206,7 +205,7 @@ import java.util.List;
         public void delete(Connection conn, User valueObject)
                 throws NotFoundException, SQLException {
 
-            String sql = "DELETE FROM User WHERE (userId = ? ) ";
+            String sql = "DELETE FROM users WHERE (userId = ? ) ";
 
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setInt(1, valueObject.getUserId());
@@ -237,7 +236,7 @@ import java.util.List;
          */
         public void deleteAll(Connection conn) throws SQLException {
 
-            String sql = "DELETE FROM User";
+            String sql = "DELETE FROM users";
 
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 int rowcount = databaseUpdate(conn, stmt);
@@ -255,7 +254,7 @@ import java.util.List;
          */
         public int countAll(Connection conn) throws SQLException {
 
-            String sql = "SELECT count(*) FROM User";
+            String sql = "SELECT count(*) FROM users";
             PreparedStatement stmt = null;
             ResultSet result = null;
             int allRows = 0;

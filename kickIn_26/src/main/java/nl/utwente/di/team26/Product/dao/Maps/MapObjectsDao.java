@@ -413,4 +413,27 @@ public class MapObjectsDao {
 
         return searchResults;
     }
+
+    public String generateReport(Connection conn, MapObject mapObject) throws SQLException, NotFoundException {
+        String sql =
+                "select jsonb_agg(itemReport.resource)::text as resources " +
+                "from ( " +
+                "         select jsonb_build_object( " +
+                "                        'name', tor.name, " +
+                "                        'count', count(tor.name) " +
+                "                    ) as resource " +
+                "         from typeofresource tor inner join mapobjects m on tor.resourceid = m.resourceid " +
+                "         where m.mapid = ? " +
+                "         group by m.mapid, tor.name " +
+                "     ) as itemReport;";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, mapObject.getMapId());
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString(1);
+            } else {
+                throw new NotFoundException("You no give correct param: " + mapObject.getMapId() + " not valid");
+            }
+        }
+    }
 }

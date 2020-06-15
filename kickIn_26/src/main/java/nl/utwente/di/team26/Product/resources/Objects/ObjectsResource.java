@@ -4,12 +4,9 @@ import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Maps.MapObjectsDao;
 import nl.utwente.di.team26.Product.model.Map.MapObject;
-import nl.utwente.di.team26.Security.Authentication.Secured;
-import nl.utwente.di.team26.Security.Authentication.User.AuthenticatedUser;
-import nl.utwente.di.team26.Security.Authentication.User.User;
-import nl.utwente.di.team26.Security.Authorization.Role;
+import nl.utwente.di.team26.Security.Filters.Secured;
+import nl.utwente.di.team26.Security.User.Roles;
 
-import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.Connection;
@@ -19,14 +16,10 @@ import java.util.List;
 @Path("/objects")
 public class ObjectsResource {
 
-    @Inject
-    @AuthenticatedUser
-    User authenticatedUser;
-
     MapObjectsDao mapObjectsDao = new MapObjectsDao();
 
     @GET
-    @Secured(Role.VISITOR)
+    @Secured(Roles.VISITOR)
     @Path("{mapId}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<MapObject> getAllObjectsForMap(@PathParam("mapId") int mapId) {
@@ -38,8 +31,21 @@ public class ObjectsResource {
         }
     }
 
+    @GET
+    @Secured(Roles.VISITOR)
+    @Path("{mapId}/report")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String generateReportForMap(@PathParam("mapId") int mapId) {
+        try (Connection conn = CONSTANTS.getConnection()) {
+            return mapObjectsDao.generateReport(conn, new MapObject(0, mapId, 0, null));
+        } catch (SQLException | NotFoundException throwables) {
+            throwables.printStackTrace();
+            return CONSTANTS.FAILURE + ": " + throwables.getMessage();
+        }
+    }
+
     @POST
-    @Secured(Role.EDITOR)
+    @Secured(Roles.EDITOR)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String addObjectToMap(MapObject newObjectToAdd) {
@@ -53,7 +59,7 @@ public class ObjectsResource {
     }
 
     @DELETE
-    @Secured(Role.EDITOR)
+    @Secured(Roles.EDITOR)
     @Path("{mapId}")
     @Produces(MediaType.TEXT_PLAIN)
     public String clearMap(@PathParam("mapId") int mapId) {
@@ -67,7 +73,7 @@ public class ObjectsResource {
     }
 
     @DELETE
-    @Secured(Role.ADMIN)
+    @Secured(Roles.ADMIN)
     @Produces(MediaType.TEXT_PLAIN)
     public String clearAllMaps() {
         try (Connection conn = CONSTANTS.getConnection()) {

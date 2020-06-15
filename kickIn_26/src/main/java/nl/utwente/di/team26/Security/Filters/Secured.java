@@ -1,6 +1,6 @@
-package nl.utwente.di.team26.Security.Authentication;
+package nl.utwente.di.team26.Security.Filters;
 
-import nl.utwente.di.team26.Security.Authorization.Role;
+import nl.utwente.di.team26.Security.User.Roles;
 
 import javax.ws.rs.NameBinding;
 import java.lang.annotation.Retention;
@@ -14,5 +14,5 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Target({TYPE, METHOD})
 public @interface Secured {
-    Role[] value() default {};
+    Roles[] value() default {};
 }

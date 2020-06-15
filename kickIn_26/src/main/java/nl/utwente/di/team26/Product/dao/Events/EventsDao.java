@@ -96,16 +96,12 @@ public class EventsDao {
      *                    If automatic surrogate-keys are not used the Primary-key
      *                    field must be set for this to work properly.
      */
-    public synchronized void create(Connection conn, Event valueObject) throws SQLException {
+    public synchronized int create(Connection conn, Event valueObject) throws SQLException {
 
-        String sql = "";
-        PreparedStatement stmt = null;
-        ResultSet result = null;
+        String sql = "INSERT INTO Events (name, description, "
+                + "location, createdBy, lastEditedBy) VALUES (?, ?, ?, ?, ?) returning eventid";
 
-        try {
-            sql = "INSERT INTO Events (name, description, "
-                    + "location, createdBy, lastEditedBy) VALUES (?, ?, ?, ?, ?) ";
-            stmt = conn.prepareStatement(sql);
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, valueObject.getName());
             stmt.setString(2, valueObject.getDescription());
@@ -113,18 +109,15 @@ public class EventsDao {
             stmt.setString(4, valueObject.getCreatedBy());
             stmt.setString(5, valueObject.getLastEditedBy());
 
-            int rowcount = databaseUpdate(conn, stmt);
-            if (rowcount != 1) {
+            ResultSet resultSet = stmt.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            } else {
                 //System.out.println("PrimaryKey Error when updating DB!");
                 throw new SQLException("PrimaryKey Error when updating DB!");
             }
-
-        } finally {
-            if (stmt != null)
-                stmt.close();
         }
-
-
     }
 
 
@@ -335,7 +328,6 @@ public class EventsDao {
      * @param stmt This parameter contains the SQL statement to be excuted.
      */
     protected int databaseUpdate(Connection conn, PreparedStatement stmt) throws SQLException {
-
         return stmt.executeUpdate();
     }
 

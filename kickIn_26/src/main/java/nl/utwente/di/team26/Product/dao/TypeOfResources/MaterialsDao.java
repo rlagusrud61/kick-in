@@ -86,9 +86,9 @@ public class MaterialsDao {
      */
     public List<Material> loadAll(Connection conn) throws SQLException {
 
-        String sql = "SELECT * " +
-                "FROM Materials m INNER JOIN TypeOfResource tor ON m.resourceId = tor.resourceId " +
-                "ORDER BY tor.resourceId ASC ";
+        String sql = "SELECT m.resourceId, t.name, t.description, m.image " +
+                "from materials m inner join typeofresource t on m.resourceid = t.resourceid " +
+                "ORDER BY t.resourceId ASC ";
 
         return listQuery(conn, conn.prepareStatement(sql));
     }
