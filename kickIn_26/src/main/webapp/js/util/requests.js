@@ -10,7 +10,7 @@
  * service provider with the given URL, where the content is in JSON format. The method then returns
  * the value from the back-end if the request was successful.
  *
- * @returns {json | object} - The response from the RESTful service provider which will be a JSON object
+ * @returns {json | Object} - The response from the RESTful service provider which will be a JSON object
  * of the required event.
  */
 function getEvent(eventId) {
@@ -26,7 +26,7 @@ function getEvent(eventId) {
 }
 
 /**
- * @param {json | object} event - The event to be updated.
+ * @param {json | Object} event - The event to be updated.
  *
  * @summary This method updates the required event.
  *
@@ -83,7 +83,7 @@ function deleteEvent(eventId) {
  * where the content is in JSON format. The method then returns the value from the back-end
  * if the request was successful.
  *
- * @returns {json | object | Array} - The response from the RESTful service provider which will be an
+ * @returns {json | Object | Array} - The response from the RESTful service provider which will be an
  * array of all the events. Each event will be a JSON object.
  */
 function getAllEvents() {
@@ -99,7 +99,7 @@ function getAllEvents() {
 }
 
 /**
- * @param {json | object} event - The event to be added.
+ * @param {json | Object} event - The event to be added.
  *
  * @summary This method adds the event to the database.
  *
@@ -154,7 +154,7 @@ function deleteAllEvents() {
  * service provider with the given URL, where the content is in JSON format. The method then returns
  * the value from the back-end if the request was successful.
  *
- * @returns {json | object} - The response from the RESTful service provider which will be a JSON object
+ * @returns {json | Object} - The response from the RESTful service provider which will be a JSON object
  * of the required map.
  */
 function getMap(mapId) {
@@ -170,7 +170,7 @@ function getMap(mapId) {
 }
 
 /**
- * @param {json | object} map - The map to be updated.
+ * @param {json | Object} map - The map to be updated.
  *
  * @summary This method updates the required map.
  *
