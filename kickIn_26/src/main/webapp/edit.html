@@ -1,12 +1,13 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
 
     <meta charset="utf-8">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -17,26 +18,50 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" href="http://localhost:8080/kickInTeam26/css/edit.css"> <!-- link to css file -->
+    <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+
 </head>
+
+<style>
+
+    h1 {
+        margin: 0;
+        display: inline-block;
+    }
+
+    h2 {
+        text-align: center;
+        font-size: 50px;
+        padding-bottom: 5%;
+    }
+
+    .form-group {
+        padding-left: 10%;
+    }
+
+    body {
+        background-color: #f2f2f2;
+        font-size: 15px;
+        font-family: 'Quicksand';
+        color: #6B6B6B;
+    }
+</style>
 
 <body>
 <!-- Navigation Bar -->
 <div class="topnav">
-    <a id="home" href="list.html"><i class="glyphicon glyphicon-home"></i></a>
-    <a id="logout" onclick="logout()">Logout</a>
+    <a href="list.html" id="home"><i class="glyphicon glyphicon-home"></i></a>
+    <a href="login.html" id="logout">Logout</a>
 </div>
 
 
 <div class="jumbotron jumbotron-fluid">
-    <div id="main" class="container">
+    <div class="container" id="main">
         <div class="row">
             <h1 class="col-8">Edit Your Event</h1>
             <div class="col-4" style="display: flex; justify-content: flex-end;">
-                <button type="button" onclick="updateEvent()"
-                        class="myButton btn btn-success btn-circle btn-xl align-self-end" id="myBtn"> SAVE
+                <button class="myButton btn btn-success btn-circle btn-xl align-self-end" id="myBtn" type="button"> +
                 </button>
             </div>
         </div>
@@ -47,14 +72,14 @@
 <div class="container has-shadow" style="background-color: #ffffff;">
     <form action="event.html" style="margin: 5% 5% 5% 5%">
         <div class="form-group row">
-            <label for="eventname" class="col-md-2 col-form-label">Name</label>
+            <label class="col-md-2 col-form-label" for="eventname">Name</label>
             <div class="col-md-3">
-                <input type="text" id="eventname" class="form-control" id="eventname" placeholder="Name">
+                <input class="form-control" id="eventname" placeholder="Name" type="text">
             </div>
         </div>
 
         <div class="form-group row">
-            <label for="eventdescription" class="col-md-2 col-form-label">Description</label>
+            <label class="col-md-2 col-form-label" for="eventdescription">Description</label>
             <div class="col-md-8">
                 <textarea class="form-control" id="eventdescription" rows="5"></textarea>
             </div>
@@ -62,25 +87,17 @@
 
 
         <div class="form-group row">
-            <label for="eventdate" class="col-md-2 col-form-label">Date</label>
+            <label class="col-md-2 col-form-label" for="eventDate">Date</label>
             <div class="col-md-3">
                 <div class='input-group date' id='datetimepicker'>
-                    <input type='text' id="eventdate" class="form-control"/>
-                    <span class="input-group-addon">
-          <span class="glyphicon glyphicon-calendar" style="font-size: 20px"></span>
-      </span>
-                    <script type="text/javascript">
-                        $(function () {
-                            $('#datetimepicker').datetimepicker();
-                        });
-                    </script>
+                    <input class="form-control" id="eventDate" type="date"/>
                 </div>
             </div>
         </div>
 
 
         <div class="form-group row">
-            <label for="eventlocation" class="col-md-2 col-form-label">Location</label>
+            <label class="col-md-2 col-form-label" for="eventlocation">Location</label>
             <div class="col-md-3">
                 <select class="form-control" id="eventlocation">
                     <option>University Campus</option>
@@ -88,15 +105,10 @@
                     <option>Both</option>
                 </select>
             </div>
-
         </div>
     </form>
     <!-- End of Form -->
     <!-- End of container -->
 </div>
-
-<script src="http://localhost:8080/kickInTeam26/js/edit.js"></script>
-
 </body>
-
 </html>
