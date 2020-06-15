@@ -268,7 +268,7 @@ nav ul {
 			for (let i = 0; i < materialsList.length; i++) {
 				htmltext += "<label><li>Item " + materialsList[i].resourceId + ":</li></label> ";
 				htmltext += "<input id ='input" + materialsList[i].resourceId + "' type = 'number' name = 'quantity'> "
-				htmltext += "<button onclick ='addItem(" + materialsList[i].resourceId + ")' style='background-color: #58BD0F; border-color: #C1FF94'>+</button> "
+				htmltext += "<button onclick ='addItem2(" + materialsList[i].resourceId + ")' style='background-color: #58BD0F; border-color: #C1FF94'>+</button> "
 				htmltext += "<br><br>";
 				
 			}
@@ -283,7 +283,7 @@ nav ul {
 			items: {
 			}
 	}
-	function addItem(inum) {
+	function addItem2(inum) {
 		itemnum =jsonObj.items["item" + inum];
 		inputvalue = document.getElementById("input" + inum).value
 		inputvalue = Number(inputvalue);
