@@ -5,6 +5,7 @@ import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.model.Event.Event;
 import nl.utwente.di.team26.Product.model.Map.Map;
 
+import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -95,7 +96,7 @@ public class EventsDao {
      *                    If automatic surrogate-keys are not used the Primary-key
      *                    field must be set for this to work properly.
      */
-    public synchronized int create(Connection conn, Event valueObject) throws SQLException {
+    public synchronized long create(Connection conn, Event valueObject) throws SQLException {
 
         String sql = "INSERT INTO Events (name, description, location, date, createdBy, lastEditedBy) VALUES (?, ?, ?, ?::date, ?, ?) returning eventid";
 
@@ -111,7 +112,7 @@ public class EventsDao {
             ResultSet resultSet = stmt.executeQuery();
 
             if (resultSet.next()) {
-                return resultSet.getInt(1);
+                return resultSet.getLong(1);
             } else {
                 //System.out.println("PrimaryKey Error when updating DB!");
                 throw new SQLException("PrimaryKey Error when updating DB!");
@@ -135,16 +136,15 @@ public class EventsDao {
             throws NotFoundException, SQLException {
 
         String sql = "UPDATE Events SET name = ?, description = ?, location = ?, "
-                + "createdBy = ?, lastEditedBy = ? WHERE (eventId = ? ) ";
+                + "lastEditedBy = ? WHERE (eventId = ? ) ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, valueObject.getName());
             stmt.setString(2, valueObject.getDescription());
             stmt.setString(3, valueObject.getLocation());
-            stmt.setLong(4, valueObject.getCreatedBy());
-            stmt.setLong(5, valueObject.getLastEditedBy());
+            stmt.setLong(4, valueObject.getLastEditedBy());
 
-            stmt.setLong(6, valueObject.getEventId());
+            stmt.setLong(5, valueObject.getEventId());
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount == 0) {
@@ -183,10 +183,6 @@ public class EventsDao {
             if (rowcount == 0) {
                 //System.out.println("Object could not be deleted (PrimaryKey not found)");
                 throw new NotFoundException("Object could not be deleted! (PrimaryKey not found)");
-            }
-            if (rowcount > 1) {
-                //System.out.println("PrimaryKey Error when updating DB! (Many objects were deleted!)");
-                throw new SQLException("PrimaryKey Error when updating DB! (Many objects were deleted!)");
             }
         }
     }
@@ -334,5 +330,40 @@ public class EventsDao {
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
         preparedStatement.setInt(1, mapId);
         return listQuery(conn, conn.prepareStatement(sql));
+    }
+
+    public String getAllEvents(Connection conn) throws SQLException, NotFoundException {
+        String sql = "SELECT getAllEvents();";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                String result = resultSet.getString(1);
+                if (result == null || result.equals("")) {
+                    throw new NotFoundException("No Result Returned, no Events in the Database");
+                } else {
+                    return result;
+                }
+            } else {
+                throw new NotFoundException("No Result returned, no Events");
+            }
+        }
+    }
+
+    public String getEvent(Connection conn, long eventId) throws NotFoundException, SQLException {
+        String sql = "SELECT getEvent(?);";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, eventId);
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                String result = resultSet.getString(1);
+                if (result == null || result.equals("")) {
+                    throw new NotFoundException("No Result Returned, no Event of ID: " + eventId + " in the Database");
+                } else {
+                    return result;
+                }
+            } else {
+                throw new NotFoundException("No Result Returned, no Event of ID: " + eventId + " in the Database");
+            }
+        }
     }
 }
