@@ -5,9 +5,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Session {
 
-    int tokenId;
+    long tokenId;
     String token;
-    int userId;
+    long userId;
 
     public Session() {
 
@@ -17,22 +17,22 @@ public class Session {
         this.userId = userId;
     }
 
-    public Session(String token, int userId) {
+    public Session(String token, long userId) {
         this.token = token;
         this.userId = userId;
     }
 
-    public Session(int tokenId, String token, int userId) {
+    public Session(long tokenId, String token, long userId) {
         this.tokenId = tokenId;
         this.token = token;
         this.userId = userId;
     }
 
-    public int getTokenId() {
+    public long getTokenId() {
         return tokenId;
     }
 
-    public void setTokenId(int tokenId) {
+    public void setTokenId(long tokenId) {
         this.tokenId = tokenId;
     }
 
@@ -44,11 +44,11 @@ public class Session {
         this.token = token;
     }
 
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 }

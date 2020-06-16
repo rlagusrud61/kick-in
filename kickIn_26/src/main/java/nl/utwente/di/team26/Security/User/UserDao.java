@@ -40,7 +40,7 @@ import java.util.List;
          * for the real load-method which accepts the valueObject as a parameter. Returned
          * valueObject will be created using the createValueObject() method.
          */
-        public User getObject(Connection conn, int userId) throws NotFoundException, SQLException {
+        public User getObject(Connection conn, long userId) throws SQLException, AuthenticationDeniedException {
 
             User valueObject = createValueObject();
             valueObject.setUserId(userId);
@@ -48,12 +48,11 @@ import java.util.List;
             return valueObject;
         }
 
-        public User authenticateUser(Connection conn, Credentials credentials) throws AuthenticationDeniedException {
+        public User authenticateUser(Connection conn, Credentials credentials) throws AuthenticationDeniedException, SQLException {
             String sql =
-                    "SELECT * FROM users WHERE email like ? AND password like ?";
+                    "SELECT * FROM users WHERE email = ? AND password = ?";
             User valueObject = new User();
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-
                 stmt.setString(1, credentials.getEmail());
                 stmt.setString(2, credentials.getPassword());
                 singleQuery(conn, stmt, valueObject);
@@ -80,15 +79,20 @@ import java.util.List;
          * @param valueObject  This parameter contains the class instance to be loaded.
          *                     Primary-key field must be set for this to work properly.
          */
-        public void load(Connection conn, User valueObject) throws NotFoundException, SQLException {
+        public void load(Connection conn, User valueObject) throws SQLException, AuthenticationDeniedException {
 
             String sql = "SELECT * FROM users WHERE (userId = ? ) ";
-
-            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-                stmt.setInt(1, valueObject.getUserId());
-
+            PreparedStatement stmt = null;
+            try {
+                stmt = conn.prepareStatement(sql);
+                stmt.setLong(1, valueObject.getUserId());
                 singleQuery(conn, stmt, valueObject);
-
+            } catch (NotFoundException e) {
+                throw new AuthenticationDeniedException("user not existent");
+            } finally {
+                if (stmt != null) {
+                    stmt.close();
+                }
             }
         }
 
@@ -175,7 +179,7 @@ import java.util.List;
                 stmt.setString(2, valueObject.getPassword());
                 stmt.setInt(3, valueObject.getclearanceLevel());
 
-                stmt.setInt(4, valueObject.getUserId());
+                stmt.setLong(4, valueObject.getUserId());
 
                 int rowcount = databaseUpdate(conn, stmt);
                 if (rowcount == 0) {
@@ -208,7 +212,7 @@ import java.util.List;
             String sql = "DELETE FROM users WHERE (userId = ? ) ";
 
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-                stmt.setInt(1, valueObject.getUserId());
+                stmt.setLong(1, valueObject.getUserId());
 
                 int rowcount = databaseUpdate(conn, stmt);
                 if (rowcount == 0) {

@@ -9,6 +9,7 @@ import nl.utwente.di.team26.Security.Filters.Secured;
 import nl.utwente.di.team26.Security.User.Roles;
 import nl.utwente.di.team26.Security.User.User;
 import nl.utwente.di.team26.Security.User.UserDao;
+import nl.utwente.di.team26.Utils;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 import java.security.Key;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -28,6 +30,9 @@ public class MapsResource {
 
     @Context
     HttpHeaders httpHeaders;
+
+    @Context
+    SecurityContext securityContext;
 
     @GET
     @Secured(Roles.VISITOR)
@@ -47,27 +52,15 @@ public class MapsResource {
     @Produces(MediaType.TEXT_PLAIN)
     public String addNewMap(Map mapToAdd) {
 
-        String jwtToken = httpHeaders.getCookies().get(CONSTANTS.COOKIENAME).getValue();
-        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-        Key signingKey = new SecretKeySpec(CONSTANTS.SECRET.getBytes(), signatureAlgorithm.getJcaName());
-
-        int userId = Integer.parseInt(
-                Jwts.parserBuilder()
-                        .setSigningKey(signingKey)
-                        .build()
-                        .parseClaimsJws(jwtToken)
-                        .getBody()
-                        .getSubject());
-
+        long userId = Utils.getUserFromContext(securityContext);
 
         try (Connection conn = CONSTANTS.getConnection()) {
-            User user = (new UserDao()).getObject(conn, userId);
 
-            mapToAdd.setCreatedBy(user.getEmail());
-            mapToAdd.setLastEditedBy(user.getEmail());
+            mapToAdd.setCreatedBy(userId);
+            mapToAdd.setLastEditedBy(userId);
 
             return String.valueOf(mapsDao.create(conn, mapToAdd));
-        } catch (SQLException | nl.utwente.di.team26.Exceptions.NotFoundException throwables) {
+        } catch (SQLException throwables) {
             throwables.printStackTrace();
             return CONSTANTS.FAILURE + ": " + throwables.getMessage();
         }
