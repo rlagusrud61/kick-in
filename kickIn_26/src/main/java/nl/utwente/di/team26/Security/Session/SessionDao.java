@@ -48,7 +48,7 @@ public class SessionDao {
 
     public void checkExist(Connection conn, String token) throws NotFoundException, SQLException {
         String sql = "SELECT * FROM session where token = ?";
-        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+        try (conn; PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setString(1, token);
             singleQuery(conn, preparedStatement, new Session());
         }

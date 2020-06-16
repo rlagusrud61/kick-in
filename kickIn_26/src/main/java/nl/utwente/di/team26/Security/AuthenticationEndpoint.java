@@ -24,6 +24,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.security.Key;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Date;
 
@@ -86,7 +87,9 @@ public class AuthenticationEndpoint {
             System.out.println(tokenId);
             System.out.println(userId);
 
-            sessionDao.clearTokensForUser(CONSTANTS.getConnection(),userId);
+            try(Connection conn = CONSTANTS.getConnection()) {
+                sessionDao.clearTokensForUser(conn, userId);
+            }
 
             Cookie cookie = createRemovalCookie();
             response.addCookie(cookie);
@@ -112,14 +115,19 @@ public class AuthenticationEndpoint {
     }
 
     private User matchingPassword(Credentials credentials) throws AuthenticationDeniedException, SQLException {
-        return userDao.authenticateUser(CONSTANTS.getConnection(), credentials);
+        try (Connection conn = CONSTANTS.getConnection()) {
+            return userDao.authenticateUser(conn, credentials);
+        }
     }
 
     private Cookie createCookie(long userId) throws SQLException {
         String tokenId = getMaxId() + 1;
         String token = createJWT(String.valueOf(userId), tokenId);
 
-        sessionDao.create(CONSTANTS.getConnection(), new Session(token, userId));
+        try (Connection conn = CONSTANTS.getConnection()) {
+            sessionDao.create(conn, new Session(token, userId));
+        }
+
         return new Cookie(CONSTANTS.COOKIENAME, token);
     }
 
@@ -133,8 +141,8 @@ public class AuthenticationEndpoint {
 
     private String getMaxId() {
         String maxIdSet = null;
-        try {
-            maxIdSet = String.valueOf(sessionDao.maxId(CONSTANTS.getConnection()));
+        try(Connection conn = CONSTANTS.getConnection()) {
+            maxIdSet = String.valueOf(sessionDao.maxId(conn));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

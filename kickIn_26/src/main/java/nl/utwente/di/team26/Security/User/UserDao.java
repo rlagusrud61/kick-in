@@ -82,17 +82,11 @@ import java.util.List;
         public void load(Connection conn, User valueObject) throws SQLException, AuthenticationDeniedException {
 
             String sql = "SELECT * FROM users WHERE (userId = ? ) ";
-            PreparedStatement stmt = null;
-            try {
-                stmt = conn.prepareStatement(sql);
+            try (conn; PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setLong(1, valueObject.getUserId());
                 singleQuery(conn, stmt, valueObject);
             } catch (NotFoundException e) {
                 throw new AuthenticationDeniedException("user not existent");
-            } finally {
-                if (stmt != null) {
-                    stmt.close();
-                }
             }
         }
 

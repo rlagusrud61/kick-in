@@ -23,6 +23,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.Key;
 import java.security.Principal;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
 
@@ -149,8 +150,8 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         // Hit the the database or a service to find a user by its username and return it
         // Return the User instance
         User user = null;
-        try {
-            user = userDao.getObject(CONSTANTS.getConnection(), userId);
+        try(Connection conn = CONSTANTS.getConnection()) {
+            user = userDao.getObject(conn, userId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -158,8 +159,8 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     }
 
     private void checkTokenExists(String token) throws TokenObsoleteException {
-        try {
-            sessionDao.checkExist(CONSTANTS.getConnection(), token);
+        try(Connection conn = CONSTANTS.getConnection()) {
+            sessionDao.checkExist(conn, token);
         } catch (NotFoundException | SQLException e) {
             throw new TokenObsoleteException("Session Not Found");
         }
