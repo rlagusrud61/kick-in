@@ -132,12 +132,12 @@ import java.util.List;
 
             try {
                 sql = "INSERT INTO users (email, password, "
-                        + "clarificationLevel) VALUES (?, ?, ?) ";
+                        + "clearanceLevel) VALUES (?, ?, ?) ";
                 stmt = conn.prepareStatement(sql);
 
                 stmt.setString(1, valueObject.getEmail());
                 stmt.setString(2, valueObject.getPassword());
-                stmt.setInt(3, valueObject.getClarificationLevel());
+                stmt.setInt(3, valueObject.getclearanceLevel());
 
                 int rowcount = databaseUpdate(conn, stmt);
                 if (rowcount != 1) {
@@ -168,12 +168,12 @@ import java.util.List;
         public void save(Connection conn, User valueObject)
                 throws NotFoundException, SQLException {
 
-            String sql = "UPDATE users SET email = ?, password = ?, clarificationLevel = ? WHERE (userId = ? ) ";
+            String sql = "UPDATE users SET email = ?, password = ?, clearanceLevel = ? WHERE (userId = ? ) ";
 
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, valueObject.getEmail());
                 stmt.setString(2, valueObject.getPassword());
-                stmt.setInt(3, valueObject.getClarificationLevel());
+                stmt.setInt(3, valueObject.getclearanceLevel());
 
                 stmt.setInt(4, valueObject.getUserId());
 
@@ -309,7 +309,7 @@ import java.util.List;
                     valueObject.setUserId(result.getInt("userId"));
                     valueObject.setEmail(result.getString("email"));
                     valueObject.setPassword(result.getString("password"));
-                    valueObject.setClarificationLevel(result.getInt("clarificationLevel"));
+                    valueObject.setclearanceLevel(result.getInt("clearanceLevel"));
 
                 } else {
                     //System.out.println("User Object Not Found!");
@@ -342,7 +342,7 @@ import java.util.List;
                     temp.setUserId(result.getInt("userId"));
                     temp.setEmail(result.getString("email"));
                     temp.setPassword(result.getString("password"));
-                    temp.setClarificationLevel(result.getInt("clarificationLevel"));
+                    temp.setclearanceLevel(result.getInt("clearanceLevel"));
 
                     searchResults.add(temp);
                 }
