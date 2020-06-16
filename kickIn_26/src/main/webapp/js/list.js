@@ -50,7 +50,7 @@ function XSSInputSanitation(id) {
 }
 
 function loadTable() {
-    let xhr, col, tr, th, i, table, events, row, cell1, cell2, cell3, cell4, cell5, cell6;
+    let xhr, header, tr, th, i, table, events, row, name, creator, editor, eventInfo, editEvent, deleteEvent;
     xhr = new XMLHttpRequest();
     xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/events", true);
     xhr.onreadystatechange = function () {
@@ -59,36 +59,36 @@ function loadTable() {
             events = JSON.parse(xhr.responseText);
             console.log(events);
 
-            col = [];
-            col.push('Name');
-            col.push('Creator');
-            col.push('Editor');
-            col.push('Event Information');
-            col.push('Edit Event');
-            col.push('Delete Event');
+            header = [];
+            header.push('Name');
+            header.push('Creator');
+            header.push('Editor');
+            header.push('Event Information');
+            header.push('Edit Event');
+            header.push('Delete Event');
 
             tr = table.insertRow(-1); // add a row to the table
 
-            for (i = 0; i < col.length; i++) {
+            for (i = 0; i < header.length; i++) {
                 th = document.createElement("th"); // add a header to the table
-                th.innerHTML = col[i];
+                th.innerHTML = header[i];
                 tr.appendChild(th);
             }
 
             for (i = 0; i < events.length; i++) {
                 row = table.insertRow(-1);
-                cell1 = row.insertCell(0);
-                cell2 = row.insertCell(1);
-                cell3 = row.insertCell(2);
-                cell4 = row.insertCell(3);
-                cell5 = row.insertCell(4);
-                cell6 = row.insertCell(5);
-                cell1.innerHTML = events[i].name;
-                cell2.innerHTML = events[i].createdBy;
-                cell3.innerHTML = events[i].lastEditedBy;
-                cell4.innerHTML = "<button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/event.html?id=" + events[i].eventId + "\";'>View</button>"
-                cell5.innerHTML = "<button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/edit.html?id=" + events[i].eventId + "\";'>Edit</button>"
-                cell6.innerHTML = "<button onclick = 'deleteEvent(" + events[i].eventId + ")'>Delete</button>"
+                name = row.insertCell(0);
+                creator = row.insertCell(1);
+                editor = row.insertCell(2);
+                eventInfo = row.insertCell(3);
+                editEvent = row.insertCell(4);
+                deleteEvent = row.insertCell(5);
+                name.innerHTML = events[i].name;
+                creator.innerHTML = events[i].createdBy;
+                editor.innerHTML = events[i].lastEditedBy;
+                eventInfo.innerHTML = "<button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/event.html?id=" + events[i].eventId + "\";'>View</button>"
+                editEvent.innerHTML = "<button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/edit.html?id=" + events[i].eventId + "\";'>Edit</button>"
+                deleteEvent.innerHTML = "<button onclick = 'deleteEvent(" + events[i].eventId + ")'>Delete</button>"
 
 
 //				htmltext += "<div class= 'col-md-12 col-sm-10'><div class='project'><div class='row bg-white has-shadow'>" +
