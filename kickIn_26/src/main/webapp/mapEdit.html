@@ -32,7 +32,7 @@
     <title>Map Edit</title>
 </head>
 
-<body>
+<body onload = "addItems()">
 <div class="topnav">
     <a href="list.html" id="home"><i class="glyphicon glyphicon-home"></i></a>
     <a id="arrow" onclick="goBack()"><i class="glyphicon glyphicon-arrow-left"></i></a>
@@ -56,13 +56,11 @@
         <div class="col-sm-3 col-md-3">
             <div class="shadow-lg p-3 mb-5 bg-white rounded">
                 <h3>Available Items</h3>
-                <br> <input type="text" id="searchItems" onkeyup="XSSInputSanitation('searchItems')" placeholder="Search.."><br>
+                <br>
+                <input type="text" id="searchItems" onkeyup="searchItems()" placeholder="Search..">
                 <br>
                 <br>
-                <nav>
-                    <ul id="itemlist" style="font-size:13px;">
-                    </ul>
-                </nav>
+                <div id = "itemlist"></div>
             </div>
         </div>
         <div class="col-sm-6 col-md-6">
@@ -73,13 +71,9 @@
         </div>
         <div class="col-sm-3 col-md-3">
             <div class="shadow-lg p-3 mb-5 bg-white rounded">
-                <h3>Your added items</h3>
+                <h3>Items Added</h3>
                 <br>
-                <nav>
-                    <ul id="itemlist2" style="font-size: 13px;">
-                        Your List is empty!
-                    </ul>
-                </nav>
+                <div id="displayitems">Your list is currently empty.</div>
             </div>
         </div>
     </div>
