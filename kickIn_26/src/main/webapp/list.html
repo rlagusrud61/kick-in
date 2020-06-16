@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -12,7 +11,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-
     <!-- Material Design Bootstrap -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.18.0/css/mdb.min.css" rel="stylesheet">
     <!-- Latest compiled JavaScript -->
@@ -37,15 +35,12 @@
         </div>
     </div>
     <!-- Trigger/Open The Popup -->
-
     <!-- The Popup -->
     <div id="myModal" class="modal">
-
         <!-- Popup content -->
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Add a New Event</h2>
-
             <div>
                 <div class="form-group row">
                     <label for="eventname" class="col-md-2 col-form-label">Name</label>
@@ -60,26 +55,14 @@
                         <textarea class="form-control" id="eventdescription" onkeyup="XSSInputSanitation('eventdescription')" rows="5"></textarea>
                     </div>
                 </div>
-
-
                 <div class="form-group row">
-                    <label for="eventdate" class="col-md-2 col-form-label">Date</label>
+                    <label class="col-md-2 col-form-label" for="eventDate">Date</label>
                     <div class="col-md-3">
                         <div class='input-group date' id='datetimepicker'>
-                            <input type='text' id="eventdate" class="form-control"/>
-                            <span class="input-group-addon">
-                  <span class="glyphicon glyphicon-calendar" style="font-size: 20px"></span>
-                </span>
-                            <script type="text/javascript">
-                                $(function () {
-                                    $('#datetimepicker').datetimepicker();
-                                });
-                            </script>
+                            <input class="form-control" id="eventDate" type="date"/>
                         </div>
                     </div>
                 </div>
-
-
                 <div class="form-group row">
                     <label for="eventlocation" class="col-md-2 col-form-label">Location</label>
                     <div class="col-md-3">
@@ -90,7 +73,6 @@
                         </select>
                     </div>
                 </div>
-
                 <div class="bottomright" style="display: flex; justify-content: flex-end;">
                     <button onclick="addEvent()" class="btn btn-success btn-circle btn-xl align-self-end">ADD</button>
                 </div>
@@ -98,8 +80,6 @@
         </div>
     </div>
 </div>
-
-
 <div class="container">
     <!-- Search Bar -->
     <div class="col-md-3">
@@ -109,8 +89,6 @@
                    aria-label="Search">
         </form>
     </div>
-
-
     <!-- Order By Dropdown Button-->
     <div class="col-md-9 dropdown">
         <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" style="float:right;">Order
@@ -123,30 +101,7 @@
             <a class="dropdown-item" href="#">Event Date (Old - New)</a>
         </div>
     </div>
-
-    <!-- List of Events -->
-    <div class="col-md-12 col-sm-10">
-        <!-- Event 1 -->
-        <div class="project">
-            <div class="row bg-white has-shadow">
-                <div class="col-lg-12 col-md-12 d-flex align-items-center justify-content-between">
-                    <h3 class="h4"><a href="event.html">Event Title</a></h3>
-                    <h3 class="h4">20/4/2020</h3>
-                    <h3 class="h4">Carl The Creator</h3>
-                    <h3 class="h4">Eddie the Editor</h3>
-                    <div class="col-md-1 col-sm-1 col-lg-1 d-flex justify-content-between">
-                        <a href="edit.html" class="text-success"><i class="glyphicon glyphicon-pencil"
-                                                                    style="font-size:20px;"></i></a>
-                        <a href="edit.html" class="text-success"><i class="glyphicon glyphicon-trash"
-                                                                    style="font-size:20px;"></i></a>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
     <div class="eventlist">
-        <h2>List of events</h2>
         <table class="table table-hover" style="width:100%" id="eventtable">
         </table>
     </div>
