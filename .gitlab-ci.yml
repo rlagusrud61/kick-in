@@ -1,5 +1,3 @@
-image: node:latest
-
 pages:
   stage: deploy
   script:
