@@ -11,9 +11,7 @@ def main():
         name = data[1]
         description = data[2][:-1]
 
-        stringToPutIntoImage, heightMultiplier = prepareString(name)
-        width = 10 * len(name)
-        height = 15 * heightMultiplier
+        stringToPutIntoImage = prepareString(name)
 
         img = Image.new('RGB', (1000, 1000), color=(255, 255, 255))
         drawing = ImageDraw.Draw(img)
@@ -34,8 +32,9 @@ def main():
                 newData.append(item)
 
         img.putdata(newData)
-        img.save('D:\Documents\Downloads\materials\pictures\\' + picId + '.png', 'PNG')
-        url = base64.b64encode(open('D:\Documents\Downloads\materials\pictures\\' + picId + '.png', 'rb').read())
+        img.save('.\pictures\\' + picId + '.png', 'PNG')
+        url = base64.b64encode(open('.\pictures\\' + picId + '.png', 'rb').read())
+        print(url)
         jsonDumps['fileImages'].append({'id': int(picId), 'name': name, 'description': description, 'url': str(url)})
     file.close()
 
@@ -45,13 +44,11 @@ def main():
 
 def prepareString(text):
     stringToReturn = ''
-    heightMultiplier = 1
     for letter in text:
         if letter == '(':
             stringToReturn += '\n('
-            heightMultiplier += 1
         else:
             stringToReturn += letter
-    return stringToReturn, heightMultiplier
+    return stringToReturn
 
 main()
