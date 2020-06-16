@@ -91,13 +91,13 @@ function loadTable() {
 
 window.onload = loadTable;
 
-function addEvent() {
+function addEventPopup() {
     let description = document.getElementById("eventdescription").value;
     let namestuff = document.getElementById("eventname").value;
     let locationstuff = document.getElementById("eventlocation");
 
     let eventdate = document.getElementById("eventDate").value;
-
+    console.log(eventdate);
     var dateControl = document.querySelector('input[type="date"]');
     dateControl.value = eventdate.value;
     console.log(dateControl.value); // prints "2017-06-01"

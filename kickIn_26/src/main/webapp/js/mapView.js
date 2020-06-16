@@ -310,8 +310,7 @@ function listItems() {
                 }
             }
 
-            document.getElementById("listItems").appendChild(
-                table);
+            document.getElementById("itemlist").appendChild(table);
 
             return table;
 
