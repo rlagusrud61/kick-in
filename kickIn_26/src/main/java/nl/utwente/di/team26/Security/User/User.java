@@ -9,23 +9,23 @@ public class User {
     int userId;
     String email;
     String password;
-    int clarificationLevel;
+    int clearanceLevel;
 
     public User() {
 
     }
 
-    public User(String email, String password, int clarificationLevel) {
+    public User(String email, String password, int clearanceLevel) {
         this.email = email;
         this.password = password;
-        this.clarificationLevel = clarificationLevel;
+        this.clearanceLevel = clearanceLevel;
     }
 
-    public User(int userId, String email, String password, int clarificationLevel) {
+    public User(int userId, String email, String password, int clearanceLevel) {
         this.userId = userId;
         this.email = email;
         this.password = password;
-        this.clarificationLevel = clarificationLevel;
+        this.clearanceLevel = clearanceLevel;
     }
 
     public int getUserId() {
@@ -52,12 +52,12 @@ public class User {
         this.password = password;
     }
 
-    public int getClarificationLevel() {
-        return clarificationLevel;
+    public int getclearanceLevel() {
+        return clearanceLevel;
     }
 
-    public void setClarificationLevel(int clarificationLevel) {
-        this.clarificationLevel = clarificationLevel;
+    public void setclearanceLevel(int clearanceLevel) {
+        this.clearanceLevel = clearanceLevel;
     }
 
     @Override
@@ -78,7 +78,7 @@ public class User {
         return "User{" +
                 "userId=" + userId +
                 ", email='" + email + '\'' +
-                ", clarificationLevel=" + clarificationLevel +
+                ", clearanceLevel=" + clearanceLevel +
                 '}';
     }
 }

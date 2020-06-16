@@ -77,7 +77,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
                 @Override
                 public boolean isUserInRole(String forLevel) {
-                    int userClearanceLevel = finalAuthenticatedUser.getClarificationLevel();
+                    int userClearanceLevel = finalAuthenticatedUser.getclearanceLevel();
                     return userClearanceLevel >= Integer.parseInt(forLevel);
                 }
 
