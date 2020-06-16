@@ -44,29 +44,45 @@ function XSSInputSanitation(id) {
         element.indexOf("onerror") !== -1 || element.indexOf("alert") !== -1) {
         document.getElementById(id).value = "";
         return "";
-    } else{
+    } else {
         return element;
     }
 }
 
 function loadTable() {
-    const xhr = new XMLHttpRequest();
+    let xhr, col, tr, th, i, table, events, row, cell1, cell2, cell3, cell4, cell5, cell6;
+    xhr = new XMLHttpRequest();
     xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/events", true);
     xhr.onreadystatechange = function () {
         if ((xhr.readyState == 4) && (xhr.status == 200)) {
-            var table = document.getElementById("eventtable");
-            var events = JSON.parse(xhr.responseText);
+            table = document.getElementById("eventtable");
+            events = JSON.parse(xhr.responseText);
             console.log(events);
-            var htmltext = "<tr><th>Name</th><th>Creator</th><th>Editor</th><th>Event Info</th><th>Edit Event</th><th>Delete Event</th><tr>";
-            table.innerHTML = htmltext;
+
+            col = [];
+            col.push('Name');
+            col.push('Creator');
+            col.push('Editor');
+            col.push('Event Information');
+            col.push('Edit Event');
+            col.push('Delete Event');
+
+            tr = table.insertRow(-1); // add a row to the table
+
+            for (i = 0; i < col.length; i++) {
+                th = document.createElement("th"); // add a header to the table
+                th.innerHTML = col[i];
+                tr.appendChild(th);
+            }
+
             for (i = 0; i < events.length; i++) {
-                var row = table.insertRow(i + 1);
-                var cell1 = row.insertCell(0);
-                var cell2 = row.insertCell(1);
-                var cell3 = row.insertCell(2);
-                var cell4 = row.insertCell(3);
-                var cell5 = row.insertCell(4);
-                var cell6 = row.insertCell(5);
+                row = table.insertRow(-1);
+                cell1 = row.insertCell(0);
+                cell2 = row.insertCell(1);
+                cell3 = row.insertCell(2);
+                cell4 = row.insertCell(3);
+                cell5 = row.insertCell(4);
+                cell6 = row.insertCell(5);
                 cell1.innerHTML = events[i].name;
                 cell2.innerHTML = events[i].createdBy;
                 cell3.innerHTML = events[i].lastEditedBy;
@@ -153,7 +169,7 @@ function searchTables() {
     // Declare variables
     let searchValue, filter, table, tr, td, i, txtValue;
     searchValue = XSSInputSanitation('searchTable');
-    if (searchValue !== ""){
+    if (searchValue !== "") {
         filter = searchValue.toUpperCase();
         table = document.getElementById("eventtable");
         tr = table.getElementsByTagName("tr");
