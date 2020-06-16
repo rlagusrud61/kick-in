@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -16,43 +16,45 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
-    <link rel="stylesheet" href="http://localhost:8080/kickInTeam26/css/list.css"> <!-- link to css file -->
+    <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+    <link href="http://localhost:8080/kickInTeam26/css/list.css" rel="stylesheet"> <!-- link to css file -->
 </head>
 <body>
 <div class="topnav">
-    <a id="home" href="list.html"><i class="glyphicon glyphicon-home"></i></a>
+    <a href="list.html" id="home"><i class="glyphicon glyphicon-home"></i></a>
     <a id="logout" onclick="logout()">Logout</a>
 </div>
 <div class="jumbotron jumbotron-fluid">
-    <div id="main" class="container">
+    <div class="container" id="main">
         <div class="row">
             <h1 class="col-8">List Of Events</h1>
             <div class="col-4" style="display: flex; justify-content: flex-end;">
-                <button type="button" class="myButton btn btn-success btn-circle btn-xl align-self-end" id="myBtn"> +
+                <button class="myButton btn btn-success btn-circle btn-xl align-self-end" id="myBtn" type="button"> +
                 </button>
             </div>
         </div>
     </div>
     <!-- Trigger/Open The Popup -->
     <!-- The Popup -->
-    <div id="myModal" class="modal">
+    <div class="modal" id="myModal">
         <!-- Popup content -->
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Add a New Event</h2>
             <div>
                 <div class="form-group row">
-                    <label for="eventname" class="col-md-2 col-form-label">Name</label>
+                    <label class="col-md-2 col-form-label" for="eventname">Name</label>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" id="eventname" onkeyup="XSSInputSanitation('eventname')" placeholder="Name">
+                        <input class="form-control" id="eventname" onkeyup="XSSInputSanitation('eventname')" placeholder="Name"
+                               type="text">
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="eventdescription" class="col-md-2 col-form-label">Description</label>
+                    <label class="col-md-2 col-form-label" for="eventdescription">Description</label>
                     <div class="col-md-8">
-                        <textarea class="form-control" id="eventdescription" onkeyup="XSSInputSanitation('eventdescription')" rows="5"></textarea>
+                        <textarea class="form-control" id="eventdescription"
+                                  onkeyup="XSSInputSanitation('eventdescription')" rows="5"></textarea>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -64,7 +66,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="eventlocation" class="col-md-2 col-form-label">Location</label>
+                    <label class="col-md-2 col-form-label" for="eventlocation">Location</label>
                     <div class="col-md-3">
                         <select class="form-control" id="eventlocation">
                             <option>University Campus</option>
@@ -74,7 +76,7 @@
                     </div>
                 </div>
                 <div class="bottomright" style="display: flex; justify-content: flex-end;">
-                    <button onclick="addEvent()" class="btn btn-success btn-circle btn-xl align-self-end">ADD</button>
+                    <button class="btn btn-success btn-circle btn-xl align-self-end" onclick="addEvent()">ADD</button>
                 </div>
             </div>
         </div>
@@ -83,15 +85,16 @@
 <div class="container">
     <!-- Search Bar -->
     <div class="col-md-3">
-        <form class="form-inline d-flex justify-content-center md-form form-sm mt-0">
-            <i class="fas fa-search" aria-hidden="true"></i>
-            <input id="searchTable" onkeyup="searchTables()" class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search"
-                   aria-label="Search">
+        <form class="form-inline d-flex justify-content-center md-form active-green form-sm mt-0">
+            <input aria-label="Search" class="form-control form-control-sm ml-3 w-75" id="searchTable" onkeyup="searchTables()"
+                   placeholder="Search"
+                   type="text">
         </form>
     </div>
+
     <!-- Order By Dropdown Button-->
     <div class="col-md-9 dropdown">
-        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" style="float:right;">Order
+        <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" style="float:right;" type="button">Order
             By
         </button>
         <div class="dropdown-menu dropdown-menu-right">
@@ -102,7 +105,7 @@
         </div>
     </div>
     <div class="eventlist">
-        <table class="table table-hover" style="width:100%" id="eventtable">
+        <table class="table table-hover" id="eventtable" style="width:100%">
         </table>
     </div>
 </div>

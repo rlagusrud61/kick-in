@@ -19,3 +19,8 @@ body {
     font-family: 'Quicksand';
     color: #6B6B6B;
 }
+
+.active-green input.form-control[type=text]:focus:not([readonly]) {
+    border-bottom: 1px solid #89BD26;
+    box-shadow: 0 1px 0 0 #89BD26;
+}
