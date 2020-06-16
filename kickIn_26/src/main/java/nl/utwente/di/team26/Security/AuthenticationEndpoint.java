@@ -12,16 +12,14 @@ import nl.utwente.di.team26.Security.User.User;
 import nl.utwente.di.team26.Security.User.UserDao;
 import nl.utwente.di.team26.Security.Session.Session;
 import nl.utwente.di.team26.Security.Session.SessionDao;
+import nl.utwente.di.team26.Utils;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import java.io.IOException;
 import java.security.Key;
 import java.sql.Connection;
@@ -36,6 +34,11 @@ public class AuthenticationEndpoint {
 
     @Context
     HttpServletRequest request;
+
+    @Context
+    SecurityContext securityContext;
+    @Context
+    UriInfo uriInfo;
 
     UserDao userDao = new UserDao();
     SessionDao sessionDao = new SessionDao();
@@ -57,8 +60,7 @@ public class AuthenticationEndpoint {
             cookie.setPath("/");
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
-
-            response.sendRedirect("http://localhost:8080/kickInTeam26/list.html");
+            response.sendRedirect(uriInfo.getAbsolutePathBuilder().replacePath("/kickInTeam26/list.html").toString());
         } catch (AuthenticationDeniedException e) {
             response.sendError(Response.Status.UNAUTHORIZED.getStatusCode(), e.getMessage());
         } catch (SQLException throwables) {
@@ -72,20 +74,8 @@ public class AuthenticationEndpoint {
     public void deleteToken(@Context HttpHeaders headers) throws IOException {
 
         try {
-            String jwtToken = headers.getCookies().get(CONSTANTS.COOKIENAME).getValue();
-            SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-            Key signingKey = new SecretKeySpec(CONSTANTS.SECRET.getBytes(), signatureAlgorithm.getJcaName());
 
-            Claims claims = Jwts.parserBuilder()
-                            .setSigningKey(signingKey)
-                            .build()
-                            .parseClaimsJws(jwtToken)
-                            .getBody();
-            int userId = Integer.parseInt(claims.getSubject());
-            int tokenId = Integer.parseInt(claims.getId());
-
-            System.out.println(tokenId);
-            System.out.println(userId);
+            long userId = Utils.getUserFromContext(securityContext);
 
             try(Connection conn = CONSTANTS.getConnection()) {
                 sessionDao.clearTokensForUser(conn, userId);
@@ -93,10 +83,9 @@ public class AuthenticationEndpoint {
 
             Cookie cookie = createRemovalCookie();
             response.addCookie(cookie);
-            response.sendRedirect("http://localhost:8080/kickInTeam26/login.html");
+            response.sendRedirect(uriInfo.getAbsolutePathBuilder().replacePath("/kickInTeam26/login.html").toString());
 
         } catch (Exception e) {
-            e.printStackTrace();
             response.sendError(Response.Status.NOT_ACCEPTABLE.getStatusCode(),CONSTANTS.FAILURE + ": " + e.getMessage());
         }
 
@@ -106,15 +95,6 @@ public class AuthenticationEndpoint {
     private User authenticateCredentials(Credentials credentials) throws AuthenticationDeniedException, SQLException {
         // Authenticate against a database, LDAP, file or whatever
         // Throw an Exception if the credentials are invalid
-
-        User user = matchingPassword(credentials);
-        if (user.equals(new User())) {
-            throw new AuthenticationDeniedException("You shall not pass");
-        }
-        return user;
-    }
-
-    private User matchingPassword(Credentials credentials) throws AuthenticationDeniedException, SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             return userDao.authenticateUser(conn, credentials);
         }
@@ -139,12 +119,10 @@ public class AuthenticationEndpoint {
         return cookie;
     }
 
-    private String getMaxId() {
+    private String getMaxId() throws SQLException {
         String maxIdSet = null;
         try(Connection conn = CONSTANTS.getConnection()) {
             maxIdSet = String.valueOf(sessionDao.maxId(conn));
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
         return maxIdSet;
     }

@@ -143,25 +143,20 @@ public class MapsDao {
     public void save(Connection conn, Map valueObject)
             throws NotFoundException, SQLException {
 
-        String sql = "UPDATE Maps SET name = ?, description = ?, createdBy = ?, "
+        String sql = "UPDATE Maps SET name = ?, description = ?, "
                 + "lastEditedBy = ? WHERE (mapId = ? ) ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, valueObject.getName());
             stmt.setString(2, valueObject.getDescription());
-            stmt.setLong(3, valueObject.getCreatedBy());
-            stmt.setLong(4, valueObject.getLastEditedBy());
+            stmt.setLong(3, valueObject.getLastEditedBy());
 
-            stmt.setLong(5, valueObject.getMapId());
+            stmt.setLong(4, valueObject.getMapId());
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount == 0) {
                 //System.out.println("Object could not be saved! (PrimaryKey not found)");
                 throw new NotFoundException("Object could not be saved! (PrimaryKey not found)");
-            }
-            if (rowcount > 1) {
-                //System.out.println("PrimaryKey Error when updating DB! (Many objects were affected!)");
-                throw new SQLException("PrimaryKey Error when updating DB! (Many objects were affected!)");
             }
         }
     }
@@ -191,10 +186,6 @@ public class MapsDao {
             if (rowcount == 0) {
                 //System.out.println("Object could not be deleted (PrimaryKey not found)");
                 throw new NotFoundException("Object could not be deleted! (PrimaryKey not found)");
-            }
-            if (rowcount > 1) {
-                //System.out.println("PrimaryKey Error when updating DB! (Many objects were deleted!)");
-                throw new SQLException("PrimaryKey Error when updating DB! (Many objects were deleted!)");
             }
         }
     }
@@ -342,5 +333,40 @@ public class MapsDao {
         }
 
         return searchResults;
+    }
+
+    public String getAllMaps(Connection conn) throws NotFoundException, SQLException {
+        String sql = "SELECT getAllMaps();";
+        try(PreparedStatement stmt = conn.prepareStatement(sql)) {
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                String result = resultSet.getString(1);
+                if (result == null || result.equals("")) {
+                    throw new NotFoundException("No Result Returned, no Maps in the Database");
+                } else {
+                    return result;
+                }
+            } else {
+                throw new NotFoundException("No Result returned, no Maps");
+            }
+        }
+    }
+
+    public String getMap(Connection conn, int mapId) throws SQLException, NotFoundException {
+        String sql = "SELECT getMap(?)";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, mapId);
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                String result = resultSet.getString(1);
+                if (result == null || result.equals("")) {
+                    throw new NotFoundException("No Result Returned, no Map of ID: " + mapId + " in the Database");
+                } else {
+                    return result;
+                }
+            } else {
+                throw new NotFoundException("No Result Returned, no Map of ID: " + mapId + " in the Database");
+            }
+        }
     }
 }
