@@ -42,8 +42,10 @@ function XSSInputSanitation(id) {
     let element = document.getElementById(id).value;
     if (element.indexOf("onload") !== -1 || element.indexOf("<script>") !== -1 ||
         element.indexOf("onerror") !== -1 || element.indexOf("alert") !== -1) {
-        console.log("done")
         document.getElementById(id).value = "";
+        return "";
+    } else{
+        return element;
     }
 }
 
@@ -93,8 +95,15 @@ function addEvent() {
     let description = document.getElementById("eventdescription").value;
     let namestuff = document.getElementById("eventname").value;
     let locationstuff = document.getElementById("eventlocation");
-    let eventloc = locationstuff.options[locationstuff.selectedIndex].value
+
     let eventdate = document.getElementById("eventDate").value;
+
+    var dateControl = document.querySelector('input[type="date"]');
+    dateControl.value = eventdate.value;
+    console.log(dateControl.value); // prints "2017-06-01"
+    console.log(dateControl.valueAsNumber); // prints 1496275200000, a UNIX timestamp
+
+    let eventloc = locationstuff.options[locationstuff.selectedIndex].value
     let eventjson = {
         "createdBy": "CreaJoep",
         "description": description,
@@ -143,8 +152,7 @@ function logout() {
 function searchTables() {
     // Declare variables
     let searchValue, filter, table, tr, td, i, txtValue;
-    searchValue = document.getElementById("searchTable").value;
-    XSSInputSanitation('searchTable');
+    searchValue = XSSInputSanitation('searchTable');
     if (searchValue !== ""){
         filter = searchValue.toUpperCase();
         table = document.getElementById("eventtable");
@@ -162,7 +170,6 @@ function searchTables() {
             }
         }
     } else {
-        console.log("here")
         loadTable()
     }
 }
@@ -188,6 +195,41 @@ function sortTableAZ() {
             y = rows[i + 1].getElementsByTagName("TD")[0];
             // Check if the two rows should switch place:
             if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                // If so, mark as a switch and break the loop:
+                shouldSwitch = true;
+                break;
+            }
+        }
+        if (shouldSwitch) {
+            /* If a switch has been marked, make the switch
+            and mark that a switch has been done: */
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+        }
+    }
+}
+
+function sortTableZA() {
+    let table, rows, switching, i, x, y, shouldSwitch;
+    table = document.getElementById("eventtable");
+    switching = true;
+    /* Make a loop that will continue until
+    no switching has been done: */
+    while (switching) {
+        // Start by saying: no switching is done:
+        switching = false;
+        rows = table.rows;
+        /* Loop through all table rows (except the
+        first, which contains table headers): */
+        for (i = 1; i < (rows.length - 1); i++) {
+            // Start by saying there should be no switching:
+            shouldSwitch = false;
+            /* Get the two elements you want to compare,
+            one from current row and one from the next: */
+            x = rows[i].getElementsByTagName("TD")[0];
+            y = rows[i + 1].getElementsByTagName("TD")[0];
+            // Check if the two rows should switch place:
+            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
                 // If so, mark as a switch and break the loop:
                 shouldSwitch = true;
                 break;

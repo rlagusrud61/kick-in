@@ -308,7 +308,6 @@ function listItems() {
                     let tabCell = tr.insertCell(-1);
                     tabCell.innerHTML = returnedItems[i][col[j]]; // adds the required data to the table
                 }
-
             }
 
             document.getElementById("listItems").appendChild(
@@ -365,11 +364,10 @@ function deleteMap() {
 
 function logout() {
     const xhr = new XMLHttpRequest();
-    xhr
-        .open(
-            'DELETE',
-            "http://localhost:8080/kickInTeam26/rest/authentication",
-            true);
+    xhr.open(
+        'DELETE',
+        "http://localhost:8080/kickInTeam26/rest/authentication",
+        true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4) {
             console.log(xhr.responseText);
@@ -378,4 +376,8 @@ function logout() {
     }
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send();
+}
+
+function goBack() {
+    window.history.back();
 }

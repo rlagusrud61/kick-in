@@ -307,3 +307,7 @@ function XSSInputSanitation(id) {
         document.getElementById(id).value = "";
     }
 }
+
+function goBack() {
+    window.history.back();
+}

@@ -92,3 +92,7 @@ function logout(){
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send();
 }
+
+function goBack() {
+    window.history.back();
+}

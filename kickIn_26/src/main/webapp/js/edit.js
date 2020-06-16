@@ -75,3 +75,7 @@ function updateEvent() {
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(JSON.stringify(eventjson));
 }
+
+function goBack() {
+    window.history.back();
+}
