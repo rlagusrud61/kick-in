@@ -218,7 +218,6 @@ function deleteMap(mapId) {
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.send();
-	
 }
 
 function getAllMaps() {
