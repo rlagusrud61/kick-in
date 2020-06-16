@@ -240,10 +240,11 @@ function filterOn() {
 }
 
 function getMap() {
-    var url = window.location.href;
+    let url, xhr;
+    url = window.location.href;
     url = url.split("/");
     url = url[10];
-    const xhr = new XMLHttpRequest();
+    xhr = new XMLHttpRequest();
     xhr.open('GET',
         "http://localhost:8080/kickInTeam26/rest/map/"
         + url, true);
@@ -263,14 +264,11 @@ function everything() {
 
 function listItems() {
 
-    let xhr = new XMLHttpRequest();
-    let mapId = 1;
-    let returnedItems = '';
-    xhr
-        .open(
-            'GET',
-            "http://localhost:8080/kickInTeam26/rest/objects/1/report",
-            true);
+    let xhr, mapId, returnedItems, col, key, table, th, tr, i, j, tableCell;
+    xhr = new XMLHttpRequest();
+    mapId = 1;
+    returnedItems = '';
+    xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/objects/1/report",true);
 
     xhr.onreadystatechange = function () {
 
@@ -280,39 +278,36 @@ function listItems() {
 
             returnedItems = JSON.parse(xhr.responseText);
 
-            let col = [];
-            for (let i = 0; i < returnedItems.length; i++) {
-                for (let key in returnedItems[i]) {
-                    if (col.indexOf(key) === -1
-                        && (key === 'name' || key === 'count')) {
+            col = [];
+            for (i = 0; i < returnedItems.length; i++) {
+                for (key in returnedItems[i]) {
+                    if (col.indexOf(key) === -1 && (key === 'name' || key === 'count')) {
                         col.push(key);
                     }
                 }
             }
 
-            let table = document.createElement("table"); // creates the table
+            table = document.createElement("table"); // creates the table
             table.setAttribute("id", "resources")
             table.setAttribute("class", "table table-hover")
-            let tr = table.insertRow(-1); // add a row to the table
+            tr = table.insertRow(-1); // add a row to the table
 
-            for (let i = 0; i < col.length; i++) {
-                let th = document.createElement("th"); // add a header to the table
+            for (i = 0; i < col.length; i++) {
+                th = document.createElement("th"); // add a header to the table
                 th.innerHTML = col[i];
                 tr.appendChild(th);
             }
 
-            for (let i = 0; i < returnedItems.length; i++) {
+            for (i = 0; i < returnedItems.length; i++) {
 
                 tr = table.insertRow(-1); // adds a new row
-                for (let j = 0; j < col.length; j++) {
-                    let tabCell = tr.insertCell(-1);
-                    tabCell.innerHTML = returnedItems[i][col[j]]; // adds the required data to the table
+                for (j = 0; j < col.length; j++) {
+                    tableCell = tr.insertCell(-1);
+                    tableCell.innerHTML = returnedItems[i][col[j]]; // adds the required data to the table
                 }
             }
 
             document.getElementById("itemlist").appendChild(table);
-
-            return table;
 
         }
     }
@@ -345,10 +340,11 @@ function getMapNameAndDescription() {
 }
 
 function deleteMap() {
-    var url = window.location.href;
+    let url, xhr;
+    url = window.location.href;
     url = url.split("/");
     url = url[10];
-    const xhr = new XMLHttpRequest();
+    xhr = new XMLHttpRequest();
     xhr.open('DELETE',
         "http://localhost:8080/kickInTeam26/rest/map/"
         + url, true);
@@ -362,7 +358,7 @@ function deleteMap() {
 }
 
 function logout() {
-    const xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
     xhr.open(
         'DELETE',
         "http://localhost:8080/kickInTeam26/rest/authentication",
