@@ -26,7 +26,7 @@
 <!-- Navigation Bar -->
 <div class="topnav">
     <a class="glyphicon glyphicon-home" href="list.html" id="home"></a>
-    <a class="glyphicon glyphicon-arrow-left" id="arrow" onclick="goBack()"></a>
+    <a id="arrow" onclick="goBack()" class="glyphicon glyphicon-arrow-left"></a>
     <a id="logout" onclick="logout()">Logout</a>
 </div>
 
@@ -46,28 +46,30 @@
 
 <!-- Container For Event Descriptions -->
 <div class="container">
-    <div class="row">
-        <div class="col-md-6 col-sm-7 col-lg-5 d-flex justify-content-between">
-            <h1 class="text-left" id="eventname">Epic_Event_1</h1>
-            <a class="glyphicon glyphicon-share"></a>
-            <a class="glyphicon glyphicon-pencil" href="edit.html"></a>
-            <a class="glyphicon glyphicon-trash" id="deleteEvent"></a>
+    <div class="shadow-lg p-3 mb-5 bg-white rounded">
+        <div class="row">
+            <div class="col-md-6 col-sm-7 col-lg-5 d-inline-flex">
+                <h1 class="text-left" id="eventname">Epic_Event_1</h1>
+                <a class="glyphicon glyphicon-share text-success"></a>
+                <a class="glyphicon glyphicon-pencil" href="edit.html"></a>
+                <a class="glyphicon glyphicon-trash text-success" id="deleteEvent"></a>
+            </div>
         </div>
-    </div>
-    <div id="intro">
-        <p id="introtext" style="text-align:justify;">Paragraphs are the building blocks of papers. Many students
-            define paragraphs in terms of length: a paragraph is a group of at
-            least five sentences, a paragraph is half a page long, etc. In
-            reality, though, the unity and coherence of ideas among sentences
-            is what constitutes a paragraph. A paragraph is defined as “a group
-            of sentences or a single sentence that forms a unit” (Lunsford and
-            Connors 116).</p>
+        <div id="intro">
+            <p id="introtext" style="text-align:justify;">Paragraphs are the building blocks of papers. Many students
+                define paragraphs in terms of length: a paragraph is a group of at
+                least five sentences, a paragraph is half a page long, etc. In
+                reality, though, the unity and coherence of ideas among sentences
+                is what constitutes a paragraph. A paragraph is defined as “a group
+                of sentences or a single sentence that forms a unit” (Lunsford and
+                Connors 116).</p>
 
-        <i class="glyphicon glyphicon-calendar text-success"></i><label id="eventdate">01/01/2020</label>
-        <i class="glyphicon glyphicon-time text-success"></i><label id="eventtime">4:20AM</label>
-        <i class="glyphicon glyphicon-map-marker text-success"></i><label id="eventlocation">University of
-        Twente</label>
+            <i class="glyphicon glyphicon-calendar text-success"></i><label id="eventdate">01/01/2020</label>
+            <i class="glyphicon glyphicon-time text-success"></i><label id="eventtime">4:20AM</label>
+            <i class="glyphicon glyphicon-map-marker text-success"></i><label id="eventlocation">University of
+            Twente</label>
 
+        </div>
     </div>
 </div>
 
@@ -90,9 +92,9 @@
 
                 <div class="row">
                     <h1 class="text-left">FirstMap
-                        <a class="glyphicon glyphicon-eye-open text-success" href="mapView.html"
+                        <a href="mapView.html" class="glyphicon glyphicon-eye-open text-success"
                            style="font-size:20px;"></a>
-                        <a class="glyphicon glyphicon-pencil text-success" href="mapEdit.html"
+                        <a href="mapEdit.html" class="glyphicon glyphicon-pencil text-success"
                            style="font-size:20px;"></a>
                         <a class="glyphicon glyphicon-trash text-success" id="deleteMap"
                            style="font-size:20px;"></a>
