@@ -21,12 +21,14 @@ public class EventResource {
     @Context
     SecurityContext securityContext;
 
+    EventsDao eventsDao = new EventsDao();
+
     @GET
     @Secured({Roles.VISITOR})
     @Produces(MediaType.APPLICATION_JSON)
     public Event getEventById(@PathParam("eventId") int eventId) {
         try (Connection conn = CONSTANTS.getConnection()) {
-            return (new EventsDao()).getObject(conn, eventId);
+            return eventsDao.getObject(conn, eventId);
         } catch (NotFoundException | SQLException e) {
             return null;
         }
@@ -42,7 +44,7 @@ public class EventResource {
         eventToUpdate.setLastEditedBy(userId);
 
         try (Connection conn = CONSTANTS.getConnection()) {
-            (new EventsDao()).save(conn, eventToUpdate);
+            eventsDao.save(conn, eventToUpdate);
             return CONSTANTS.SUCCESS;
         } catch (NotFoundException | SQLException e) {
             return CONSTANTS.FAILURE + " " + e.getMessage();
@@ -54,7 +56,7 @@ public class EventResource {
     @Produces(MediaType.TEXT_PLAIN)
     public String deleteEvent(@PathParam("eventId") int eventToDelete) {
         try (Connection conn = CONSTANTS.getConnection()) {
-            (new EventsDao()).delete(conn, new Event(eventToDelete));
+            eventsDao.delete(conn, new Event(eventToDelete));
             return CONSTANTS.SUCCESS;
         } catch (NotFoundException | SQLException e) {
             return CONSTANTS.FAILURE + " " + e.getMessage();
