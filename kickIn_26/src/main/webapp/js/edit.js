@@ -12,7 +12,7 @@ function updateEvent() {
     eventId = window.location.search.split("=")[1];
     namestuff = document.getElementById("eventname").value;
     locationstuff = document.getElementById("eventlocation");
-    eventloc = locationstuff.options[locationstuff.selectedIndex].value
+    eventloc = locationstuff.options[locationstuff.selectedIndex].value;
     eventdate = document.getElementById("eventdate").value;
     eventjson = {
         "createdBy": "CreaJoep",
@@ -26,7 +26,7 @@ function updateEvent() {
     var xhr = new XMLHttpRequest();
     xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/event/" + eventId, true);
     xhr.onreadystatechange = function () {
-        if ((xhr.readyState == 4) && (xhr.status = 200)) {
+        if ((xhr.readyState === 4) && (xhr.status = 200)) {
             console.log(xhr.responseText);
             window.location.href = "http://localhost:8080/kickInTeam26/event.html?id=" + eventId;
         }
@@ -67,7 +67,7 @@ function updateEvent() {
     var xhr = new XMLHttpRequest();
     xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/event/" + eventId, true);
     xhr.onreadystatechange = function () {
-        if ((xhr.readyState == 4) && (xhr.status = 200)) {
+        if ((xhr.readyState === 4) && (xhr.status = 200)) {
             console.log(xhr.responseText);
             window.location.href = "http://localhost:8080/kickInTeam26/event.html?id=" + eventId;
         }
