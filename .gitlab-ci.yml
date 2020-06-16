@@ -2,7 +2,7 @@ pages:
   stage: deploy
   script:
   - npm install -g redoc-cli
-  - redoc-cli bundle -o public/index.html documentation/openapi.yaml
+  - redoc-cli bundle -o public/index.html documentation/kickInTeam26.v1.yaml
   artifacts:
     paths:
     - public
