@@ -34,4 +34,5 @@ public class CONSTANTS {
             throw new InternalServerErrorException("SQL failed");
         }
     }
+
 }

@@ -1,5 +1,6 @@
 package nl.utwente.di.team26.Product.dao.Events;
 
+import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.model.Event.Event;
 import nl.utwente.di.team26.Product.model.Map.Map;
@@ -59,9 +60,7 @@ public class EventsDao {
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, valueObject.getEventId());
-
             singleQuery(conn, stmt, valueObject);
-
         }
     }
 
