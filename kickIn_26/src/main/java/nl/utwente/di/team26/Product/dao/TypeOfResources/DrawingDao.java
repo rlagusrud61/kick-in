@@ -89,7 +89,7 @@ public class DrawingDao {
     public List<Drawing> loadAll(Connection conn) throws SQLException {
 
         String sql = "SELECT d.resourceId, t.name, t.description, d.image " +
-                "from Drawing d inner join typeofresource t on d.resourceid = t.resourceid " +
+                "from drawing d inner join typeofresource t on d.resourceid = t.resourceid " +
                 "ORDER BY t.resourceId ASC ";
 
         return listQuery(conn, conn.prepareStatement(sql));

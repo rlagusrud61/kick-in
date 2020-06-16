@@ -6,14 +6,20 @@ import nl.utwente.di.team26.Product.dao.Events.EventsDao;
 import nl.utwente.di.team26.Product.model.Event.Event;
 import nl.utwente.di.team26.Security.Filters.Secured;
 import nl.utwente.di.team26.Security.User.Roles;
+import nl.utwente.di.team26.Utils;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 import java.sql.Connection;
 import java.sql.SQLException;
 
 @Path("/event/{eventId}")
 public class EventResource {
+
+    @Context
+    SecurityContext securityContext;
 
     @GET
     @Secured({Roles.VISITOR})
@@ -31,6 +37,10 @@ public class EventResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String updateEvent(Event eventToUpdate) {
+
+        long userId = Utils.getUserFromContext(securityContext);
+        eventToUpdate.setLastEditedBy(userId);
+
         try (Connection conn = CONSTANTS.getConnection()) {
             (new EventsDao()).save(conn, eventToUpdate);
             return CONSTANTS.SUCCESS;

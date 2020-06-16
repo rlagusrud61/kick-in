@@ -15,12 +15,13 @@ public class Event implements Serializable {
      * Persistent Instance variables. This data is directly
      * mapped to the columns of database table.
      */
-    private int eventId;
+    private long eventId;
     private String name;
     private String description;
     private String location;
-    private String createdBy;
-    private String lastEditedBy;
+    private String date;
+    private long createdBy;
+    private long lastEditedBy;
 
 
     /**
@@ -34,146 +35,86 @@ public class Event implements Serializable {
 
     }
 
-    public Event(int eventIdIn) {
-        this.eventId = eventIdIn;
+    public Event(int eventId) {
+        this.eventId = eventId;
     }
 
-    public Event(String name, String description, String location, String createdBy, String lastEditedBy) {
+    public Event(String name, String description, String location, String date) {
         this.name = name;
         this.description = description;
         this.location = location;
-        this.createdBy = createdBy;
-        this.lastEditedBy = lastEditedBy;
+        this.date = date;
     }
 
-    public Event(int eventId, String name, String description, String location, String createdBy, String lastEditedBy) {
+    public Event(int eventId, String name, String description, String location, String date) {
         this.eventId = eventId;
         this.name = name;
         this.description = description;
         this.location = location;
-        this.createdBy = createdBy;
-        this.lastEditedBy = lastEditedBy;
+        this.date = date;
     }
 
     /**
      * Get- and Set-methods for persistent variables. The default
      * behaviour does not make any checks against malformed data,
      * so these might require some manual additions.
+     *
      */
-
-    public int getEventId() {
+    public long getEventId() {
         return this.eventId;
     }
 
-    public void setEventId(int eventIdIn) {
-        this.eventId = eventIdIn;
+    public void setEventId(long eventId) {
+        this.eventId = eventId;
     }
 
     public String getName() {
         return this.name;
     }
 
-    public void setName(String nameIn) {
-        this.name = nameIn;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
         return this.description;
     }
 
-    public void setDescription(String descriptionIn) {
-        this.description = descriptionIn;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getLocation() {
         return this.location;
     }
 
-    public void setLocation(String locationIn) {
-        this.location = locationIn;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
-    public String getCreatedBy() {
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public long getCreatedBy() {
         return this.createdBy;
     }
 
-    public void setCreatedBy(String createdByIn) {
-        this.createdBy = createdByIn;
+    public void setCreatedBy(long createdBy) {
+        this.createdBy = createdBy;
     }
 
-    public String getLastEditedBy() {
+    public long getLastEditedBy() {
         return this.lastEditedBy;
     }
 
-    public void setLastEditedBy(String lastEditedByIn) {
-        this.lastEditedBy = lastEditedByIn;
+    public void setLastEditedBy(long lastEditedBy) {
+        this.lastEditedBy = lastEditedBy;
     }
-
-
-    /**
-     * setAll allows to set all persistent variables in one method call.
-     * This is useful, when all data is available and it is needed to
-     * set the initial state of this object. Note that this method will
-     * directly modify instance variales, without going trough the
-     * individual set-methods.
-     */
-
-    public void setAll(int eventIdIn,
-                       String nameIn,
-                       String descriptionIn,
-                       String locationIn,
-                       String createdByIn,
-                       String lastEditedByIn) {
-        this.eventId = eventIdIn;
-        this.name = nameIn;
-        this.description = descriptionIn;
-        this.location = locationIn;
-        this.createdBy = createdByIn;
-        this.lastEditedBy = lastEditedByIn;
-    }
-
-
-    /**
-     * hasEqualMapping-method will compare two Event instances
-     * and return true if they contain same values in all persistent instance
-     * variables. If hasEqualMapping returns true, it does not mean the objects
-     * are the same instance. However it does mean that in that moment, they
-     * are mapped to the same row in database.
-     */
-    public boolean hasEqualMapping(Event valueObject) {
-
-        if (valueObject.getEventId() != this.eventId) {
-            return (false);
-        }
-        if (this.name == null) {
-            if (valueObject.getName() != null)
-                return (false);
-        } else if (!this.name.equals(valueObject.getName())) {
-            return (false);
-        }
-        if (this.description == null) {
-            if (valueObject.getDescription() != null)
-                return (false);
-        } else if (!this.description.equals(valueObject.getDescription())) {
-            return (false);
-        }
-        if (this.location == null) {
-            if (valueObject.getLocation() != null)
-                return (false);
-        } else if (!this.location.equals(valueObject.getLocation())) {
-            return (false);
-        }
-        if (this.createdBy == null) {
-            if (valueObject.getCreatedBy() != null)
-                return (false);
-        } else if (!this.createdBy.equals(valueObject.getCreatedBy())) {
-            return (false);
-        }
-        if (this.lastEditedBy == null) {
-            return valueObject.getLastEditedBy() == null;
-        } else return this.lastEditedBy.equals(valueObject.getLastEditedBy());
-    }
-
 
     /**
      * toString will return String object representing the state of this

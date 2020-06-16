@@ -15,11 +15,11 @@ public class Map implements Serializable {
      * Persistent Instance variables. This data is directly
      * mapped to the columns of database table.
      */
-    private int mapId;
+    private long mapId;
     private String name;
     private String description;
-    private String createdBy;
-    private String lastEditedBy;
+    private long createdBy;
+    private long lastEditedBy;
 
 
     /**
@@ -37,19 +37,15 @@ public class Map implements Serializable {
         this.mapId = mapIdIn;
     }
 
-    public Map(String name, String description, String createdBy, String lastEditedBy) {
+    public Map(String name, String description) {
         this.name = name;
         this.description = description;
-        this.createdBy = createdBy;
-        this.lastEditedBy = lastEditedBy;
     }
 
-    public Map(int mapId, String name, String description, String createdBy, String lastEditedBy) {
+    public Map(int mapId, String name, String description) {
         this.mapId = mapId;
         this.name = name;
         this.description = description;
-        this.createdBy = createdBy;
-        this.lastEditedBy = lastEditedBy;
     }
 
     /**
@@ -58,11 +54,11 @@ public class Map implements Serializable {
      * so these might require some manual additions.
      */
 
-    public int getMapId() {
+    public long getMapId() {
         return this.mapId;
     }
 
-    public void setMapId(int mapIdIn) {
+    public void setMapId(long mapIdIn) {
         this.mapId = mapIdIn;
     }
 
@@ -82,79 +78,21 @@ public class Map implements Serializable {
         this.description = descriptionIn;
     }
 
-    public String getCreatedBy() {
+    public long getCreatedBy() {
         return this.createdBy;
     }
 
-    public void setCreatedBy(String createdByIn) {
+    public void setCreatedBy(long createdByIn) {
         this.createdBy = createdByIn;
     }
 
-    public String getLastEditedBy() {
+    public long getLastEditedBy() {
         return this.lastEditedBy;
     }
 
-    public void setLastEditedBy(String lastEditedByIn) {
+    public void setLastEditedBy(long lastEditedByIn) {
         this.lastEditedBy = lastEditedByIn;
     }
-
-
-    /**
-     * setAll allows to set all persistent variables in one method call.
-     * This is useful, when all data is available and it is needed to
-     * set the initial state of this object. Note that this method will
-     * directly modify instance variales, without going trough the
-     * individual set-methods.
-     */
-
-    public void setAll(int mapIdIn,
-                       String nameIn,
-                       String descriptionIn,
-                       String createdByIn,
-                       String lastEditedByIn) {
-        this.mapId = mapIdIn;
-        this.name = nameIn;
-        this.description = descriptionIn;
-        this.createdBy = createdByIn;
-        this.lastEditedBy = lastEditedByIn;
-    }
-
-
-    /**
-     * hasEqualMapping-method will compare two Map instances
-     * and return true if they contain same values in all persistent instance
-     * variables. If hasEqualMapping returns true, it does not mean the objects
-     * are the same instance. However it does mean that in that moment, they
-     * are mapped to the same row in database.
-     */
-    public boolean hasEqualMapping(Map valueObject) {
-
-        if (valueObject.getMapId() != this.mapId) {
-            return (false);
-        }
-        if (this.name == null) {
-            if (valueObject.getName() != null)
-                return (false);
-        } else if (!this.name.equals(valueObject.getName())) {
-            return (false);
-        }
-        if (this.description == null) {
-            if (valueObject.getDescription() != null)
-                return (false);
-        } else if (!this.description.equals(valueObject.getDescription())) {
-            return (false);
-        }
-        if (this.createdBy == null) {
-            if (valueObject.getCreatedBy() != null)
-                return (false);
-        } else if (!this.createdBy.equals(valueObject.getCreatedBy())) {
-            return (false);
-        }
-        if (this.lastEditedBy == null) {
-            return valueObject.getLastEditedBy() == null;
-        } else return this.lastEditedBy.equals(valueObject.getLastEditedBy());
-    }
-
 
     /**
      * toString will return String object representing the state of this

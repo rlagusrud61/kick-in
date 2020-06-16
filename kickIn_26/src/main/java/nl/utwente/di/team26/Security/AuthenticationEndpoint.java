@@ -100,7 +100,7 @@ public class AuthenticationEndpoint {
 
     }
 
-    private User authenticateCredentials(Credentials credentials) throws AuthenticationDeniedException {
+    private User authenticateCredentials(Credentials credentials) throws AuthenticationDeniedException, SQLException {
         // Authenticate against a database, LDAP, file or whatever
         // Throw an Exception if the credentials are invalid
 
@@ -111,11 +111,11 @@ public class AuthenticationEndpoint {
         return user;
     }
 
-    private User matchingPassword(Credentials credentials) throws AuthenticationDeniedException {
+    private User matchingPassword(Credentials credentials) throws AuthenticationDeniedException, SQLException {
         return userDao.authenticateUser(CONSTANTS.getConnection(), credentials);
     }
 
-    private Cookie createCookie(int userId) throws SQLException {
+    private Cookie createCookie(long userId) throws SQLException {
         String tokenId = getMaxId() + 1;
         String token = createJWT(String.valueOf(userId), tokenId);
 
