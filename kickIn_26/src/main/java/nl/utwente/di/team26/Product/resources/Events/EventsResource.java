@@ -40,9 +40,7 @@ public class EventsResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String addNewEvent(Event eventToAdd) {
-
-        String userId = String.valueOf(Utils.getUserFromContext(securityContext));
-
+        long userId = Utils.getUserFromContext(securityContext);
         try (Connection conn = CONSTANTS.getConnection()) {
             eventToAdd.setCreatedBy(userId);
             eventToAdd.setLastEditedBy(userId);

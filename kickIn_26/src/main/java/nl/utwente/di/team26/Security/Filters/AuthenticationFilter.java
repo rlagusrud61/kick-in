@@ -6,6 +6,8 @@ import nl.utwente.di.team26.Exceptions.AuthenticationDeniedException;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Exceptions.TokenObsoleteException;
 import nl.utwente.di.team26.Product.dao.Events.EventMapDao;
+import nl.utwente.di.team26.Security.Session.Session;
+import nl.utwente.di.team26.Security.Session.SessionDao;
 import nl.utwente.di.team26.Security.User.User;
 import nl.utwente.di.team26.Security.User.UserDao;
 
@@ -33,6 +35,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     UriInfo uriInfo;
 
     private final UserDao userDao = new UserDao();
+    private final SessionDao sessionDao = new SessionDao();
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -51,7 +54,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
             try {
                 // Validate the token
                 authenticatedUserId = validateToken(token);
-                authenticatedUser = findUser(Integer.parseInt(authenticatedUserId));
+                authenticatedUser = findUser(Long.parseLong(authenticatedUserId));
             } catch (TokenObsoleteException e) {
                 e.printStackTrace();
                 sendToLogin(requestContext);
@@ -120,7 +123,9 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         // Throw an Exception if the token is invalid
         //return the userId which always put into the subject to get the user.
         try {
-            return decodeJWT(token).getSubject();
+            String validTokenSubject = decodeJWT(token).getSubject();
+            checkTokenExists(token);
+            return validTokenSubject;
         } catch (ExpiredJwtException e) {
             throw new TokenObsoleteException("Time for a new Token!");
         } catch (JwtException e) {
@@ -140,15 +145,23 @@ public class AuthenticationFilter implements ContainerRequestFilter {
                 .getBody();
     }
 
-    private User findUser(int userId) {
+    private User findUser(long userId) throws AuthenticationDeniedException {
         // Hit the the database or a service to find a user by its username and return it
         // Return the User instance
         User user = null;
         try {
             user = userDao.getObject(CONSTANTS.getConnection(), userId);
-        } catch (NotFoundException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return user;
+    }
+
+    private void checkTokenExists(String token) throws TokenObsoleteException {
+        try {
+            sessionDao.checkExist(CONSTANTS.getConnection(), token);
+        } catch (NotFoundException | SQLException e) {
+            throw new TokenObsoleteException("Session Not Found");
+        }
     }
 }
