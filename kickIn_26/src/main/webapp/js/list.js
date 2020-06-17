@@ -169,7 +169,7 @@ function searchTables() {
     // Declare variables
     let searchValue, filter, table, tr, td, i, txtValue;
     searchValue = XSSInputSanitation('searchTable');
-    if (searchValue !== "") {
+    //if (searchValue !== "") {
         filter = searchValue.toUpperCase();
         table = document.getElementById("eventtable");
         tr = table.getElementsByTagName("tr");
@@ -185,9 +185,10 @@ function searchTables() {
                 }
             }
         }
-    } else {
-        loadTable()
-    }
+    //}
+    // else {
+    //     loadTable()
+    // }
 }
 
 function sortTableAZ() {
