@@ -28,13 +28,9 @@ public class EventMapResource {
     @Secured({Roles.VISITOR})
     @Path("event/{eventId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllMapsForEvent(@PathParam("eventId") long eventId) {
+    public Response getAllMapsForEvent(@PathParam("eventId") long eventId) throws NotFoundException, SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             return Utils.returnOkResponse(eventMapDao.getAllMapsFor(conn, eventId));
-        } catch (NotFoundException e) {
-            return Utils.returnNotFoundError(e.getMessage());
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
@@ -42,13 +38,9 @@ public class EventMapResource {
     @Secured({Roles.VISITOR})
     @Path("map/{mapId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllEventsForMap(@PathParam("mapId") int mapId) {
+    public Response getAllEventsForMap(@PathParam("mapId") int mapId) throws NotFoundException, SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             return Utils.returnOkResponse(eventMapDao.allEventsFor(conn, mapId));
-        } catch (NotFoundException e) {
-            return Utils.returnNotFoundError(e.getMessage());
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
@@ -56,12 +48,10 @@ public class EventMapResource {
     @Secured(Roles.EDITOR)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addEventMap(EventMap eventMapToCreate) {
+    public Response addEventMap(EventMap eventMapToCreate) throws SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             eventMapDao.create(conn, eventMapToCreate);
             return Utils.returnCreated();
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
@@ -69,14 +59,10 @@ public class EventMapResource {
     @Secured(Roles.EDITOR)
     @Path("event/{eventId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response clearEvent(@PathParam("eventId") long eventId) {
+    public Response clearEvent(@PathParam("eventId") long eventId) throws NotFoundException, SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             eventMapDao.deleteAllForEvent(conn, eventId);
             return Utils.returnNoContent();
-        } catch (NotFoundException e) {
-            return Utils.returnNotFoundError(e.getMessage());
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
@@ -84,26 +70,20 @@ public class EventMapResource {
     @Secured(Roles.EDITOR)
     @Path("{eventId}/{mapId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteEventMap(@PathParam("eventId") long eventId, @PathParam("mapId") long mapId) {
+    public Response deleteEventMap(@PathParam("eventId") long eventId, @PathParam("mapId") long mapId) throws NotFoundException, SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             eventMapDao.delete(conn, new EventMap(eventId, mapId));
             return Utils.returnNoContent();
-        } catch (NotFoundException e) {
-            return Utils.returnNotFoundError(e.getMessage());
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
     @DELETE
     @Secured(Roles.ADMIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteAllRelations() {
+    public Response deleteAllRelations() throws SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             eventMapDao.deleteAll(conn);
             return Utils.returnNoContent();
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 

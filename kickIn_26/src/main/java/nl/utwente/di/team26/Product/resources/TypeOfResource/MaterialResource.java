@@ -22,14 +22,10 @@ public class MaterialResource {
     @GET
     @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllMaterials() {
+    public Response getAllMaterials() throws NotFoundException, SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             String allMaterials = resourceDao.getAllMaterials(conn);
             return Utils.returnOkResponse(allMaterials);
-        } catch (NotFoundException e) {
-            return Utils.returnNotFoundError(e.getMessage());
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
@@ -38,14 +34,10 @@ public class MaterialResource {
     @Secured(Roles.EDITOR)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateMap(Material materialToSave) {
+    public Response updateMap(Material materialToSave) throws NotFoundException, SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             resourceDao.save(conn, materialToSave);
             return Utils.returnNoContent();
-        } catch (NotFoundException e) {
-            return Utils.returnNotFoundError(e.getMessage());
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
@@ -53,12 +45,10 @@ public class MaterialResource {
     @Secured(Roles.ADMIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addNewMaterial(Material materialToAdd) {
+    public Response addNewMaterial(Material materialToAdd) throws SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             long drawingId = resourceDao.create(conn, materialToAdd);
             return Utils.returnCreated(drawingId);
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 

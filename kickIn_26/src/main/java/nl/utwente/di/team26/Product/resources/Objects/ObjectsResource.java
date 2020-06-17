@@ -32,14 +32,10 @@ public class ObjectsResource {
     @Secured(Roles.VISITOR)
     @Path("{mapId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllObjectsForMap(@PathParam("mapId") long mapId) {
+    public Response getAllObjectsForMap(@PathParam("mapId") long mapId) throws NotFoundException, SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             String allObjectsOnMap = mapObjectsDao.getAllObjectsOnMap(conn, mapId);
             return Utils.returnOkResponse(allObjectsOnMap);
-        } catch (NotFoundException e) {
-            return Utils.returnNotFoundError(e.getMessage());
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
@@ -47,14 +43,10 @@ public class ObjectsResource {
     @Secured(Roles.VISITOR)
     @Path("{mapId}/report")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response generateReportForMap(@PathParam("mapId") long mapId) {
+    public Response generateReportForMap(@PathParam("mapId") long mapId) throws NotFoundException, SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             String allObjectsOnMap = mapObjectsDao.generateReport(conn, mapId);
             return Utils.returnOkResponse(allObjectsOnMap);
-        } catch (NotFoundException e) {
-            return Utils.returnNotFoundError(e.getMessage());
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
@@ -62,16 +54,12 @@ public class ObjectsResource {
     @Secured(Roles.EDITOR)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addObjectToMap(MapObject newObjectToAdd) {
+    public Response addObjectToMap(MapObject newObjectToAdd) throws NotFoundException, SQLException {
         long userId = Utils.getUserFromContext(securityContext);
         try (Connection conn = CONSTANTS.getConnection()) {
             long objectId = mapObjectsDao.create(conn, newObjectToAdd);
             mapsDao.saveLastEditedBy(conn, newObjectToAdd.getMapId(), userId);
             return Utils.returnCreated(objectId);
-        } catch (NotFoundException e) {
-            return Utils.returnNotFoundError(e.getMessage());
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
@@ -79,26 +67,20 @@ public class ObjectsResource {
     @Secured(Roles.EDITOR)
     @Path("{mapId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response clearMap(@PathParam("mapId") int mapId) {
+    public Response clearMap(@PathParam("mapId") int mapId) throws NotFoundException, SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             mapObjectsDao.deleteAllForMap(conn, new MapObject(0, mapId, 0, null));
             return Utils.returnNoContent();
-        } catch (NotFoundException e) {
-            return Utils.returnNotFoundError(e.getMessage());
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
     @DELETE
     @Secured(Roles.ADMIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response clearAllMaps() {
+    public Response clearAllMaps() throws SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             mapObjectsDao.deleteAll(conn);
             return Utils.returnNoContent();
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 

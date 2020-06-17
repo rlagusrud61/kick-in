@@ -22,28 +22,20 @@ public class ResourceResource {
     @GET
     @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllResources(@PathParam("resourceId") long resourceId) {
+    public Response getAllResources(@PathParam("resourceId") long resourceId) throws NotFoundException, SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             String allMaps = resourceDao.getResource(conn, resourceId);
             return Utils.returnOkResponse(allMaps);
-        } catch (NotFoundException e) {
-            return Utils.returnNotFoundError(e.getMessage());
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
     @DELETE
     @Secured(Roles.ADMIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteResource(@PathParam("resourceId") long resourceId) {
+    public Response deleteResource(@PathParam("resourceId") long resourceId) throws NotFoundException, SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             resourceDao.delete(conn, new TypeOfResource(resourceId));
             return Utils.returnNoContent();
-        } catch (NotFoundException e) {
-            return Utils.returnNotFoundError(e.getMessage());
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
