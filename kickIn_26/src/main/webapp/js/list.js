@@ -84,13 +84,12 @@ function loadTable() {
                 eventDate.innerHTML = events[i].date;
                 creator.innerHTML = events[i].createdBy;
                 lastEditor.innerHTML = events[i].lastEditedBy;
-                action.innerHTML = '<a href="http://localhost:8080/kickInTeam26/event.html?id=' +
-                    events[i].eventId + '" class="text-success"><i class="glyphicon glyphicon-eye-open" ' +
-                    'style="font-size:20px;"></i></a><a href="http://localhost:8080/kickInTeam26/edit.html?id=' +
-                    events[i].eventId + '" class="text-success"><i class="glyphicon glyphicon-pencil" ' +
-                    'style="font-size:20px;"></i></a><a href="javascript: window.deleteEvent(\"' +
-                    events[i].eventId + '\"class="text-success"><i class="glyphicon glyphicon-trash" ' +
-                    'style="font-size:20px;"></i></a>';
+                action.innerHTML = "<a href='http://localhost:8080/kickInTeam26/event.html?id='" +
+                    events[i].eventId + " class='text-success'><i class='glyphicon glyphicon-eye-open' " +
+                    "style='font-size:20px;'></i></a><a href='http://localhost:8080/kickInTeam26/edit.html?id='" +
+                    events[i].eventId + "' class='text-success'><i class='glyphicon glyphicon-pencil' " +
+                    "style='font-size:20px;'></i></a><a href='javascript: window.deleteEvent(" + events[i].eventId + ")'" +
+                    "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
             }
         }
     }
