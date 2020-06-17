@@ -21,6 +21,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>List Of Events</title>
 </head>
+<style>
+
+    table th{
+        font-size: 1.8rem;
+    }
+    table td {
+        font-size: 1.5rem;
+    }
+    table{
+        background-color: #ffffff;
+    }
+
+</style>
 <body>
 <div class="topnav">
     <a href="list.html" id="home"><i class="glyphicon glyphicon-home"></i></a>
@@ -83,6 +96,24 @@
             </div>
         </div>
     </div>
+
+
+
+    <!-- The Event Deletion Popup -->
+    <div id="eventDeleteModal" class="modal">
+
+        <!-- Popup content -->
+        <div class="modal-content">
+            <span class="closeDelete">&times;</span>
+            <h2>Do you really want to delete this event?</h2>
+            <div class="bottomright" style="display: flex; justify-content: center;">
+                <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">YES</button>
+                <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">NO</button>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 <div class="container">
     <!-- Search Bar -->
