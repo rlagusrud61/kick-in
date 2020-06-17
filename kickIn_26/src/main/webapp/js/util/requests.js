@@ -87,18 +87,19 @@ function deleteEvent(eventId) {
  * @returns {json | Object | Array} - The response from the RESTful service provider which will be an
  * array of all the events. Each event will be a JSON object.
  */
-function getAllEvents() {
+function getAllEvents(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/events" , true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr)
+			return(xhr.responseText)
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
-	xhr.send();
+	xhr.send();	
 }
-
+a = getAllEvents()
 /**
  * @param {json | Object} event - The event to be added.
  *
@@ -111,12 +112,12 @@ function getAllEvents() {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function addEvent(event) {
+function addEvent(event, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/events" , true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+		if ((xhr.readyState === 4) && (xhr.status === 201)) {
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -132,7 +133,7 @@ function addEvent(event) {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function deleteAllEvents() {
+function deleteAllEvents(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/events" , true);
 	xhr.onreadystatechange = function() {
@@ -158,7 +159,7 @@ function deleteAllEvents() {
  * @returns {json | Object} - The response from the RESTful service provider which will be a JSON object
  * of the required map.
  */
-function getMap(mapId) {
+function getMap(mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/map/" + mapId , true);
 	xhr.onreadystatechange = function() {
@@ -184,7 +185,7 @@ function getMap(mapId) {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function updateMap(map) {
+function updateMap(map, callback) {
 	let xhr, mapId;
 	mapId = map.mapId
 	xhr = new XMLHttpRequest();
@@ -210,7 +211,7 @@ function updateMap(map) {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function deleteMap(mapId) {
+function deleteMap(mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/map/" + mapId , true);
 	xhr.onreadystatechange = function() {
@@ -222,7 +223,7 @@ function deleteMap(mapId) {
 	xhr.send();
 }
 
-function getAllMaps() {
+function getAllMaps(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/maps" , true);
 	xhr.onreadystatechange = function() {
@@ -234,7 +235,7 @@ function getAllMaps() {
 	xhr.send();
 }
 
-function addMap(map) {
+function addMap(map, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/maps" , true);
 	xhr.onreadystatechange = function() {
@@ -246,7 +247,7 @@ function addMap(map) {
 	xhr.send();
 }
 
-function deleteAllMaps() {
+function deleteAllMaps(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/maps" , true);
 	xhr.onreadystatechange = function() {
@@ -260,7 +261,7 @@ function deleteAllMaps() {
 }
 
 //Eventmap functions
-function getAllMapsForEvent(eventId) {
+function getAllMapsForEvent(eventId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/eventMap/event/" + eventId , true);
 	xhr.onreadystatechange = function() {
@@ -272,7 +273,7 @@ function getAllMapsForEvent(eventId) {
 	xhr.send();
 }
 
-function getAllEventsForMap(mapId) {
+function getAllEventsForMap(mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/eventMap/map/" + mapId , true);
 	xhr.onreadystatechange = function() {
@@ -284,7 +285,7 @@ function getAllEventsForMap(mapId) {
 	xhr.send();
 }
 
-function addEventMap(eventMap) {
+function addEventMap(eventMap, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/eventMap", true);
 	xhr.onreadystatechange = function() {
@@ -296,7 +297,7 @@ function addEventMap(eventMap) {
 	xhr.send(JSON.stringify(eventMap));
 }
 
-function clearEvent(eventId) {
+function clearEvent(eventId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/eventMap/" + eventId, true);
 	xhr.onreadystatechange = function() {
@@ -308,7 +309,7 @@ function clearEvent(eventId) {
 	xhr.send();
 }
 
-function deleteEventMap(eventId, mapId) {
+function deleteEventMap(eventId, mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/eventMap/" + eventId + "/" + mapId, true);
 	xhr.onreadystatechange = function() {
@@ -320,7 +321,7 @@ function deleteEventMap(eventId, mapId) {
 	xhr.send();
 }
 
-function deleteAllRelations() {
+function deleteAllRelations(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/eventMap", true);
 	xhr.onreadystatechange = function() {
@@ -333,7 +334,7 @@ function deleteAllRelations() {
 }
 
 //Functions for objects
-function getObject(objectId) {
+function getObject(objectId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/object/" + objectId, true);
 	xhr.onreadystatechange = function() {
@@ -345,7 +346,7 @@ function getObject(objectId) {
 	xhr.send();
 }
 
-function updateObject(mapObject) {
+function updateObject(mapObject, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/object", true);
 	xhr.onreadystatechange = function() {
@@ -357,7 +358,7 @@ function updateObject(mapObject) {
 	xhr.send(JSON.stringify(mapObject));
 }
 
-function deleteObject(objectId) {
+function deleteObject(objectId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/object/" + objectId, true);
 	xhr.onreadystatechange = function() {
@@ -369,7 +370,7 @@ function deleteObject(objectId) {
 	xhr.send();
 }
 
-function getAllObjectsForMap(mapId) {
+function getAllObjectsForMap(mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/objects/" + mapId, true);
 	xhr.onreadystatechange = function() {
@@ -381,7 +382,7 @@ function getAllObjectsForMap(mapId) {
 	xhr.send();
 }
 
-function generateReportForMap(mapId) {
+function generateReportForMap(mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/objects/" + mapId + "/report", true);
 	xhr.onreadystatechange = function() {
@@ -393,7 +394,7 @@ function generateReportForMap(mapId) {
 	xhr.send();
 }
 
-function addObjectToMap(mapObject) {
+function addObjectToMap(mapObject, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/objects", true);
 	xhr.onreadystatechange = function() {
@@ -405,7 +406,7 @@ function addObjectToMap(mapObject) {
 	xhr.send(JSON.stringify(mapObject));
 }
 
-function clearMap(mapId) {
+function clearMap(mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/objects/" + mapId, true);
 	xhr.onreadystatechange = function() {
@@ -417,7 +418,7 @@ function clearMap(mapId) {
 	xhr.send();
 }
 
-function clearAllMaps() {
+function clearAllMaps(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/objects", true);
 	xhr.onreadystatechange = function() {
@@ -430,7 +431,7 @@ function clearAllMaps() {
 }
 
 //Functions for drawings
-function getDrawing(drawingId) {
+function getDrawing(drawingId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/drawing/" + drawingId, true);
 	xhr.onreadystatechange = function() {
@@ -442,7 +443,7 @@ function getDrawing(drawingId) {
 	xhr.send();
 }
 
-function updateDrawing(drawing) {
+function updateDrawing(drawing, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/drawing", true);
 	xhr.onreadystatechange = function() {
@@ -454,7 +455,7 @@ function updateDrawing(drawing) {
 	xhr.send(JSON.stringify(drawing));
 }
 
-function deleteDrawing(drawingId) {
+function deleteDrawing(drawingId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/drawing/" + drawingId, true);
 	xhr.onreadystatechange = function() {
@@ -466,7 +467,7 @@ function deleteDrawing(drawingId) {
 	xhr.send();
 }
 
-function getAllDrawings() {
+function getAllDrawings(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/drawings", true);
 	xhr.onreadystatechange = function() {
@@ -478,7 +479,7 @@ function getAllDrawings() {
 	xhr.send();
 }
 
-function addDrawing(drawing) {
+function addDrawing(drawing, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/drawings", true);
 	xhr.onreadystatechange = function() {
@@ -491,7 +492,7 @@ function addDrawing(drawing) {
 }
 
 //Functions for materials
-function getMaterialDrawing(materialId) {
+function getMaterialDrawing(materialId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/material/" + materialId, true);
 	xhr.onreadystatechange = function() {
@@ -503,7 +504,7 @@ function getMaterialDrawing(materialId) {
 	xhr.send();
 }
 
-function updateMaterial(material) {
+function updateMaterial(material, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/material", true);
 	xhr.onreadystatechange = function() {
@@ -515,7 +516,7 @@ function updateMaterial(material) {
 	xhr.send(JSON.stringify(material));
 }
 
-function deleteMaterial(materialId) {
+function deleteMaterial(materialId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/material/" + materialId, true);
 	xhr.onreadystatechange = function() {
@@ -527,7 +528,7 @@ function deleteMaterial(materialId) {
 	xhr.send();
 }
 
-function getAllMaterials() {
+function getAllMaterials(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/materials", true);
 	xhr.onreadystatechange = function() {
@@ -539,7 +540,7 @@ function getAllMaterials() {
 	xhr.send();
 }
 
-function addMaterial(material) {
+function addMaterial(material, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/materials", true);
 	xhr.onreadystatechange = function() {
@@ -552,7 +553,7 @@ function addMaterial(material) {
 }
 
 //Functions for resources
-function deleteAllResources() {
+function deleteAllResources(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/resources", true);
 	xhr.onreadystatechange = function() {
@@ -564,7 +565,7 @@ function deleteAllResources() {
 	xhr.send();
 }
 
-function deleteResource(resourceId) {
+function deleteResource(resourceId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/resources/" + resourceId, true);
 	xhr.onreadystatechange = function() {
