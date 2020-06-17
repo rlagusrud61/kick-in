@@ -37,7 +37,9 @@ function XSSInputSanitation(id) {
 
 function loadTable() {
     let xhr, header, tr, th, i, table, events, row, name, eventDate, creator, lastEditor, action;
+    console.log("hello");
     xhr = new XMLHttpRequest();
+    var h = "hello \"world\"";
     xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/events", true);
     xhr.onreadystatechange = function () {
         if ((xhr.readyState == 4) && (xhr.status == 200)) {
@@ -72,13 +74,15 @@ function loadTable() {
                 eventDate = events[i].date;
                 creator.innerHTML = events[i].createdBy;
                 lastEditor.innerHTML = events[i].lastEditedBy;
-                action.innerHTML = '<a href="http://localhost:8080/kickInTeam26/edit.html?id=' + events[i].eventId + '" class="text-success"><i class="glyphicon glyphicon-pencil" style="font-size:20px;"></i></a><a href="javascript: window.deleteEvent("' + events[i].eventId + '");" class="text-success"><i class="glyphicon glyphicon-trash" style="font-size:20px;"></span></a></i>';
+//                action.innerHTML = '<a href="http://localhost:8080/kickInTeam26/edit.html?id=' + events[i].eventId + '" class="text-success"><i class="glyphicon glyphicon-pencil" style="font-size:20px;"></i></a><a href="javascript: window.deleteEvent("' + events[i].eventId + '");" class="text-success"><i class="glyphicon glyphicon-trash" style="font-size:20px;"></span></a></i>';
+                action.innerHTML = '<a href="http://localhost:8080/kickInTeam26/event.html?id=' + events[i].eventId + '" class="text-success"><i class="glyphicon glyphicon-eye-open" style="font-size:20px;"></i></a><a href="http://localhost:8080/kickInTeam26/edit.html?id=' + events[i].eventId + '" class="text-success"><i class="glyphicon glyphicon-pencil" style="font-size:20px;"></i></a><a href="javascript: deleteEvent("' + events[i].eventId + '");" class="text-success"><i class="glyphicon glyphicon-trash" style="font-size:20px;"></i></a>';
             }
-            document.getElementById(id).style.property = new style
 
 //			table.innerHTML = htmltext;
         }
     }
+    xhr.setRequestHeader("Content-Type", "Application/json");
+    xhr.send();
 }
 
 

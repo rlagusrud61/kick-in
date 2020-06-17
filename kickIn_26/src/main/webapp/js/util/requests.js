@@ -92,7 +92,6 @@ function getAllEvents(callback) {
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/events" , true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			callback.apply(xhr)
 			return(xhr.responseText)
 		}
 	}
@@ -117,7 +116,7 @@ function addEvent(event, callback) {
 	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/events" , true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 201)) {
-			callback.apply(xhr);
+			console.log(xhr.responseText);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
