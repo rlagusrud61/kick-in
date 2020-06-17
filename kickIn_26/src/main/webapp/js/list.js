@@ -50,7 +50,7 @@ function XSSInputSanitation(id) {
 }
 
 function loadTable() {
-    let xhr, header, tr, th, i, table, events, row, name, creator, editor, eventInfo, editEvent, deleteEvent;
+    let xhr, header, tr, th, i, table, events, row, name, eventDate, creator, lastEditor, action;
     xhr = new XMLHttpRequest();
     xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/events", true);
     xhr.onreadystatechange = function () {
@@ -61,11 +61,10 @@ function loadTable() {
 
             header = [];
             header.push('Name');
+            header.push('Date Of Event')
             header.push('Creator');
-            header.push('Editor');
-            header.push('Event Information');
-            header.push('Edit Event');
-            header.push('Delete Event');
+            header.push('Last Editted By');
+            header.push('Action');
 
             tr = table.insertRow(-1); // add a row to the table
 
@@ -78,17 +77,23 @@ function loadTable() {
             for (i = 0; i < events.length; i++) {
                 row = table.insertRow(-1);
                 name = row.insertCell(0);
-                creator = row.insertCell(1);
-                editor = row.insertCell(2);
-                eventInfo = row.insertCell(3);
-                editEvent = row.insertCell(4);
-                deleteEvent = row.insertCell(5);
-                name.innerHTML = events[i].name;
+                eventDate = row.insertCell(1);
+                creator = row.insertCell(2);
+                lastEditor = row.insertCell(3);
+                action = row.insertCell(4);
+                // deleteEvent = row.insertCell(5);
+                name.innerHTML = '<a href = "http://localhost:8080/kickInTeam26/event.html?id=' + events[i].eventId + '">' + events[i].name + '</a>';
+                eventDate = events[i].date;
                 creator.innerHTML = events[i].createdBy;
-                editor.innerHTML = events[i].lastEditedBy;
-                eventInfo.innerHTML = "<button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/event.html?id=" + events[i].eventId + "\";'>View</button>"
-                editEvent.innerHTML = "<button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/edit.html?id=" + events[i].eventId + "\";'>Edit</button>"
-                deleteEvent.innerHTML = "<button onclick = 'deleteEvent(" + events[i].eventId + ")'>Delete</button>"
+                lastEditor.innerHTML = events[i].lastEditedBy;
+                action.innerHTML = '<a href="http://localhost:8080/kickInTeam26/edit.html?id=' + events[i].eventId + '" class="text-success"><i class="glyphicon glyphicon-pencil" style="font-size:20px;"></i></a><a href="javascript: window.deleteEvent("' + events[i].eventId + '");" class="text-success"><i class="glyphicon glyphicon-trash" style="font-size:20px;"></span></a></i>';
+                // action.innerHTML = "<button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/event.html?id=" + events[i].eventId + "\";'>View</button>"
+                // editEvent.innerHTML = "<button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/edit.html?id=" + events[i].eventId + "\";'>Edit</button>"
+                // deleteEvent.innerHTML = "<button onclick = 'deleteEvent(" + events[i].eventId + ")'>Delete</button>"
+
+                    // '<a href="http://localhost:8080/kickInTeam26/edit.html?id=' + events[i].eventId + '" class="text-success"><i class="glyphicon glyphicon-pencil" style="font-size:20px;"></i></a>' +
+                    // '' +
+                    // '<a href='edit.html' class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>
 
 
 //				htmltext += "<div class= 'col-md-12 col-sm-10'><div class='project'><div class='row bg-white has-shadow'>" +
