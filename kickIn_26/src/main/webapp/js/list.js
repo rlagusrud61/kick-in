@@ -102,33 +102,30 @@ function loadTable() {
 window.onload = loadTable;
 
 function addEventPopup() {
-    let description = document.getElementById("eventdescription").value;
-    let namestuff = document.getElementById("eventname").value;
-    let locationstuff = document.getElementById("eventlocation");
-
-    let eventdate = document.getElementById("eventDate").value;
-    console.log(eventdate);
-    var dateControl = document.querySelector('input[type="date"]');
-    dateControl.value = eventdate.value;
-    console.log(dateControl.value); // prints "2017-06-01"
-    console.log(dateControl.valueAsNumber); // prints 1496275200000, a UNIX timestamp
-    let eventloc = locationstuff.options[locationstuff.selectedIndex].value;
-    let eventjson = {
+    let description, eventName, location, eventDate, dateControl, eventLocation, eventJSON, xhr;
+    description = document.getElementById("eventDescription").value;
+    eventName = document.getElementById("eventName").value;
+    location = document.getElementById("eventLocation");
+    eventDate = document.getElementById("eventDate").value;
+    eventLocation = location.options[location.selectedIndex].value;
+    eventJSON = {
+        "name": eventName,
+        "date": eventDate,
         "description": description,
-        "location": eventloc,
-        "name": namestuff
+        "location": eventLocation,
     };
-    console.log(JSON.stringify(eventjson));
-    let xhr = new XMLHttpRequest();
+    console.log(JSON.stringify(eventJSON));
+    xhr = new XMLHttpRequest();
     xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/events", true);
     xhr.onreadystatechange = function () {
         if ((xhr.readyState == 4) && (xhr.status = 200)) {
             console.log(xhr.responseText);
-//            window.location.href = "http://localhost:8080/kickInTeam26/mapEdit.html?id=" + xhr.responseText;
+            window.location.href = "http://localhost:8080/kickInTeam26/list.html";
+            //window.location.href = "http://localhost:8080/kickInTeam26/mapEdit.html?id=" + xhr.responseText;
         }
     }
     xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send(JSON.stringify(eventjson));
+    xhr.send(JSON.stringify(eventJSON));
 }
 
 function deleteEvent(id) {
