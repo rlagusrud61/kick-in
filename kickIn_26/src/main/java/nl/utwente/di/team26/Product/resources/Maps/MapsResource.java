@@ -1,25 +1,17 @@
 package nl.utwente.di.team26.Product.resources.Maps;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import nl.utwente.di.team26.CONSTANTS;
+import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Maps.MapsDao;
 import nl.utwente.di.team26.Product.model.Map.Map;
 import nl.utwente.di.team26.Security.Filters.Secured;
 import nl.utwente.di.team26.Security.User.Roles;
-import nl.utwente.di.team26.Security.User.User;
-import nl.utwente.di.team26.Security.User.UserDao;
+import nl.utwente.di.team26.Utils;
 
-import javax.crypto.spec.SecretKeySpec;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import java.security.Key;
+import javax.ws.rs.core.*;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
 @Path("/maps")
 public class MapsResource {
@@ -29,15 +21,20 @@ public class MapsResource {
     @Context
     HttpHeaders httpHeaders;
 
+    @Context
+    SecurityContext securityContext;
+
     @GET
     @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Map> getAllMaps() {
+    public Response getAllMaps() {
         try (Connection conn = CONSTANTS.getConnection()) {
-            return mapsDao.loadAll(conn);
-        } catch (NotFoundException | SQLException throwables) {
-            throwables.printStackTrace();
-            return null;
+            String allMaps = mapsDao.getAllMaps(conn);
+            return Response.ok(allMaps).build();
+        } catch (NotFoundException throwables) {
+            return Response.status(Response.Status.NOT_FOUND).entity(throwables.getMessage()).build();
+        } catch (SQLException throwables) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(throwables.getMessage()).build();
         }
     }
 
@@ -45,44 +42,31 @@ public class MapsResource {
     @Secured(Roles.EDITOR)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public String addNewMap(Map mapToAdd) {
+    public Response addNewMap(Map mapToAdd) {
 
-        String jwtToken = httpHeaders.getCookies().get(CONSTANTS.COOKIENAME).getValue();
-        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-        Key signingKey = new SecretKeySpec(CONSTANTS.SECRET.getBytes(), signatureAlgorithm.getJcaName());
-
-        int userId = Integer.parseInt(
-                Jwts.parserBuilder()
-                        .setSigningKey(signingKey)
-                        .build()
-                        .parseClaimsJws(jwtToken)
-                        .getBody()
-                        .getSubject());
-
+        long userId = Utils.getUserFromContext(securityContext);
 
         try (Connection conn = CONSTANTS.getConnection()) {
-            User user = (new UserDao()).getObject(conn, userId);
 
-            mapToAdd.setCreatedBy(user.getEmail());
-            mapToAdd.setLastEditedBy(user.getEmail());
+            mapToAdd.setCreatedBy(userId);
+            mapToAdd.setLastEditedBy(userId);
 
-            return String.valueOf(mapsDao.create(conn, mapToAdd));
-        } catch (SQLException | nl.utwente.di.team26.Exceptions.NotFoundException throwables) {
-            throwables.printStackTrace();
-            return CONSTANTS.FAILURE + ": " + throwables.getMessage();
+            long mapId = mapsDao.create(conn, mapToAdd);
+            return Response.status(Response.Status.CREATED).entity(mapId).build();
+        } catch (SQLException throwables) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(throwables.getMessage()).build();
         }
     }
 
     @DELETE
     @Secured(Roles.ADMIN)
     @Produces(MediaType.TEXT_PLAIN)
-    public String deleteAllMaps() {
+    public Response deleteAllMaps() {
         try (Connection conn = CONSTANTS.getConnection()) {
             mapsDao.deleteAll(conn);
-            return CONSTANTS.SUCCESS;
+            return Response.noContent().build();
         } catch (SQLException e) {
-            e.printStackTrace();
-            return CONSTANTS.FAILURE + ": " + e.getMessage();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
     }
 

@@ -1,11 +1,10 @@
 package nl.utwente.di.team26.Security.Filters;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import io.jsonwebtoken.*;
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exceptions.AuthenticationDeniedException;
-import nl.utwente.di.team26.Exceptions.NotFoundException;
-import nl.utwente.di.team26.Exceptions.TokenObsoleteException;
-import nl.utwente.di.team26.Product.dao.Events.EventMapDao;
+import nl.utwente.di.team26.Exceptions.*;
+import nl.utwente.di.team26.Security.Session.SessionDao;
 import nl.utwente.di.team26.Security.User.User;
 import nl.utwente.di.team26.Security.User.UserDao;
 
@@ -17,10 +16,9 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.*;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.security.Key;
 import java.security.Principal;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
 
@@ -33,6 +31,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     UriInfo uriInfo;
 
     private final UserDao userDao = new UserDao();
+    private final SessionDao sessionDao = new SessionDao();
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -43,7 +42,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
         // Validate the Cookie Token
         if (!hasCookie(cookieJar)) {
-            sendToLogin(requestContext);
+            sendCause(requestContext, "You currently are not part of a Session, please Login before continuing");
         } else {
             // Extract the token from the Cookie
             String token = cookieJar.get(CONSTANTS.COOKIENAME).getValue();
@@ -51,15 +50,13 @@ public class AuthenticationFilter implements ContainerRequestFilter {
             try {
                 // Validate the token
                 authenticatedUserId = validateToken(token);
-                authenticatedUser = findUser(Integer.parseInt(authenticatedUserId));
-            } catch (TokenObsoleteException e) {
-                e.printStackTrace();
-                sendToLogin(requestContext);
-                return;
-            } catch (AuthenticationDeniedException e) {
-                e.printStackTrace();
-                abortWithUnauthorized(requestContext);
-                return;
+                authenticatedUser = findUser(Long.parseLong(authenticatedUserId));
+            } catch (TokenObsoleteException | TokenException e) {
+                sendCause(requestContext, e.getMessage());
+            } catch (NotFoundException e) {
+                sendUnauthorized(requestContext, e.getMessage());
+            } catch (SQLException e) {
+                sendError(requestContext, e.getMessage());
             }
         }
 
@@ -103,28 +100,32 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         return cookieJar.containsKey(CONSTANTS.COOKIENAME);
     }
 
-    private void sendToLogin(ContainerRequestContext requestContext) {
-        requestContext.abortWith(Response.seeOther(requestContext.getUriInfo().getAbsolutePath()).build());
+    private void sendCause(ContainerRequestContext requestContext, String msg) {
+        requestContext.abortWith(Response.status(Response.Status.NOT_ACCEPTABLE).entity(msg).build());
     }
 
-
-    private void abortWithUnauthorized(ContainerRequestContext requestContext) {
-
-        // Abort the filter chain with a 401 status code response
-        requestContext.abortWith(
-                Response.status(Response.Status.UNAUTHORIZED).build());
+    private void sendUnauthorized(ContainerRequestContext requestContext, String msg) {
+        requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity(msg).build());
     }
 
-    private String validateToken(String token) throws AuthenticationDeniedException, TokenObsoleteException {
+    private void sendError(ContainerRequestContext requestContext, String msg) {
+        requestContext.abortWith(Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(msg).build());
+    }
+
+    private String validateToken(String token) throws TokenObsoleteException, SQLException, TokenException {
         // Check if the token was issued by the server and if it's not expired
         // Throw an Exception if the token is invalid
         //return the userId which always put into the subject to get the user.
         try {
-            return decodeJWT(token).getSubject();
-        } catch (ExpiredJwtException e) {
-            throw new TokenObsoleteException("Time for a new Token!");
-        } catch (JwtException e) {
-            throw new AuthenticationDeniedException("Denied");
+            String validTokenSubject = decodeJWT(token).getSubject();
+            checkTokenExists(token);
+            return validTokenSubject;
+        } catch (SessionNotFoundException | ExpiredJwtException e) {
+            throw new TokenObsoleteException("The token has expired or is no longer in the Database. Please login-again.");
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        } catch (Exception e) {
+            throw new TokenException("Token is not Valid. Please try clearing cookies and logging in Again.");
         }
     }
 
@@ -140,15 +141,21 @@ public class AuthenticationFilter implements ContainerRequestFilter {
                 .getBody();
     }
 
-    private User findUser(int userId) {
+    private User findUser(long userId) throws SQLException, NotFoundException {
         // Hit the the database or a service to find a user by its username and return it
         // Return the User instance
         User user = null;
-        try {
-            user = userDao.getObject(CONSTANTS.getConnection(), userId);
-        } catch (NotFoundException | SQLException e) {
-            e.printStackTrace();
+        try(Connection conn = CONSTANTS.getConnection()) {
+            user = userDao.getObject(conn, userId);
         }
         return user;
+    }
+
+    private void checkTokenExists(String token) throws SessionNotFoundException, SQLException {
+        try(Connection conn = CONSTANTS.getConnection()) {
+            sessionDao.checkExist(conn, token);
+        } catch (NotFoundException e) {
+            throw new SessionNotFoundException("Session Not Found");
+        }
     }
 }

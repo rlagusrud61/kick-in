@@ -1,6 +1,7 @@
 package nl.utwente.di.team26.Product.resources.Events;
 
 import nl.utwente.di.team26.CONSTANTS;
+import nl.utwente.di.team26.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Events.EventsDao;
 import nl.utwente.di.team26.Product.model.Event.Event;
 import nl.utwente.di.team26.Security.Filters.Secured;
@@ -10,6 +11,7 @@ import nl.utwente.di.team26.Utils;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -26,12 +28,14 @@ public class EventsResource {
     @GET
     @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Event> getAllEvents() {
+    public Response getAllEvents() {
         try (Connection conn = CONSTANTS.getConnection()) {
-            return eventsDao.loadAll(conn);
-        } catch (NotFoundException | SQLException throwables) {
-            throwables.printStackTrace();
-            return null;
+            String allEvents = eventsDao.getAllEvents(conn);
+            return Response.ok(allEvents).build();
+        } catch (NotFoundException throwables) {
+            return Response.status(Response.Status.NOT_FOUND).entity(throwables.getMessage()).build();
+        } catch (SQLException throwables) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(throwables.getMessage()).build();
         }
     }
 
@@ -39,30 +43,30 @@ public class EventsResource {
     @Secured({Roles.EDITOR})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public String addNewEvent(Event eventToAdd) {
-
-        String userId = String.valueOf(Utils.getUserFromContext(securityContext));
+    public Response addNewEvent(Event eventToAdd) {
+        //get the userId stored into the security Context during authentication.
+        long userId = Utils.getUserFromContext(securityContext);
 
         try (Connection conn = CONSTANTS.getConnection()) {
             eventToAdd.setCreatedBy(userId);
             eventToAdd.setLastEditedBy(userId);
-            return String.valueOf(eventsDao.create(conn, eventToAdd));
+
+            long eventId = eventsDao.create(conn, eventToAdd);
+            return Response.status(Response.Status.CREATED).entity(eventId).build();
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return CONSTANTS.FAILURE + ": " + throwables.getMessage();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(throwables.getMessage()).build();
         }
     }
 
     @DELETE
     @Secured({Roles.ADMIN})
     @Produces(MediaType.TEXT_PLAIN)
-    public String deleteAllEvents() {
+    public Response deleteAllEvents() {
         try (Connection conn = CONSTANTS.getConnection()) {
             eventsDao.deleteAll(conn);
-            return CONSTANTS.SUCCESS;
+            return Response.noContent().build();
         } catch (SQLException e) {
-            e.printStackTrace();
-            return CONSTANTS.FAILURE + ": " + e.getMessage();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
     }
 

@@ -34,3 +34,7 @@ function addNewMap() {
     createMap.setRequestHeader("Content-Type", "application/json");
     createMap.send('{"name":"' + mapName + '","description":"' + description + '"}');
 }
+
+function goBack() {
+    window.history.back();
+}

@@ -131,14 +131,15 @@ h3{
     text-align: center;
 }
 
-nav ul {
+#itemlist {
     height: 200px;
-    width: 90%;
-    list-style-type: none;
-}
-
-nav ul {
     overflow: hidden;
     overflow-y: scroll;
 }
+
+table{
+    border: none;
+    width: 100%;
+}
+
 

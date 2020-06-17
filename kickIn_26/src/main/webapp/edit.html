@@ -22,12 +22,14 @@
     <link href="css/style.css" rel="stylesheet" type="text/css">
 
     <link rel="stylesheet" href="http://localhost:8080/kickInTeam26/css/edit.css"> <!-- link to css file -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
 <!-- Navigation Bar -->
 <div class="topnav">
     <a href="list.html" id="home"><i class="glyphicon glyphicon-home"></i></a>
+    <a id="arrow" onclick="goBack()"><i class="glyphicon glyphicon-arrow-left"></i></a>
     <a href="login.html" id="logout">Logout</a>
 </div>
 
@@ -37,7 +39,7 @@
         <div class="row">
             <h1 class="col-8">Edit Your Event</h1>
             <div class="col-4" style="display: flex; justify-content: flex-end;">
-                <button class="myButton btn btn-success btn-circle btn-xl align-self-end" id="myBtn" type="button"> +
+                <button class="myButton btn btn-success btn-circle btn-xl align-self-end" id="myBtn" type="button" onclick="updateEvent()"> EDIT
                 </button>
             </div>
         </div>

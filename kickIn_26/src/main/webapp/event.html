@@ -18,6 +18,7 @@
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet" type="text/css">
     <link href="http://localhost:8080/kickInTeam26/css/event.css" rel="stylesheet"> <!-- link to css file -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
@@ -26,6 +27,7 @@
 <!-- Navigation Bar -->
 <div class="topnav">
     <a class="glyphicon glyphicon-home" href="list.html" id="home"></a>
+    <a id="arrow" onclick="goBack()" class="glyphicon glyphicon-arrow-left"></a>
     <a id="logout" onclick="logout()">Logout</a>
 </div>
 
@@ -47,13 +49,11 @@
 <div class="container">
     <div class="shadow-lg p-3 mb-5 bg-white rounded">
         <div class="row">
-            <div class="col-md-6 col-sm-7 col-lg-5 d-flex justify-content-between">
-                <h1 class="text-left" id="eventname">Epic_Event_1
-                    <a class="glyphicon glyphicon-share"></a>
-                    <a class="glyphicon glyphicon-pencil" href="edit.html"></a>
-                    <a class="glyphicon glyphicon-trash" id="deleteEvent"></a>
-                </h1>
-
+            <div class="col-md-6 col-sm-7 col-lg-5 d-inline-flex">
+                <h1 class="text-left" id="eventname">Epic_Event_1</h1>
+                <a class="glyphicon glyphicon-share text-success"></a>
+                <a class="glyphicon glyphicon-pencil" href="edit.html"></a>
+                <a class="glyphicon glyphicon-trash text-success" id="deleteEvent"></a>
             </div>
         </div>
         <div id="intro">
@@ -93,9 +93,9 @@
 
                 <div class="row">
                     <h1 class="text-left">FirstMap
-                        <a class="glyphicon glyphicon-eye-open text-success"
+                        <a href="mapView.html" class="glyphicon glyphicon-eye-open text-success"
                            style="font-size:20px;"></a>
-                        <a class="glyphicon glyphicon-pencil text-success"
+                        <a href="mapEdit.html" class="glyphicon glyphicon-pencil text-success"
                            style="font-size:20px;"></a>
                         <a class="glyphicon glyphicon-trash text-success" id="deleteMap"
                            style="font-size:20px;"></a>

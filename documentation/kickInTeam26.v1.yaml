@@ -1,0 +1,469 @@
+openapi: 3.0.0
+info:
+  title: Kick In Team 26
+  version: '1.0'
+  description: |
+    This project is related to Module 4, Data & Information, TCS Year1.
+    The goal is to deliver a web application with Map Editing and Event management system, where an Event has many Maps, since they may take place in multiple places,
+    generate reports from the maps based on objects placed on them, provide a means for adding new events, maps, users, and the entire project to be secure.
+    This documentation is for the endpoints that exist in the system.
+  x-logo:
+    url: 'https://www.kick-in.nl/cache/img/header_theme_picture/uploads/event/img/5e4509fc74503_logogrootmetthema.png'
+    altText: KickIn-Logo
+servers:
+  - url: 'http://localhost:8080/kickInTeam26/'
+    description: For tesing locally on home computers.
+tags:
+  - name: events
+    description: everything about the events.
+  - name: maps
+    description: everything about the maps.
+  - name: authentication
+    description: all about that auth, auth.
+x-tagGroups:
+  - name: Authentication
+    tags:
+      - authentication
+  - name: General
+    tags:
+      - events
+      - maps
+paths:
+  /authentication:
+    delete:
+      tags:
+        - authentication
+      summary: Sign-Out
+      operationId: delete-authentication
+      responses:
+        '200':
+          description: OK
+        '406':
+          description: Not Acceptable
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                Invalid token passed:
+                  value: Token is not Valid
+                Logging out without a token:
+                  value: 'You currently are not part of a Session, please Login before continuing'
+      description: 'Logs You out of the session, which is basically revoking your current token.'
+    post:
+      tags:
+        - authentication
+      summary: Sign-In
+      operationId: post-authentication
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+          content:
+            text/html:
+              schema:
+                type: string
+              examples:
+                Invalid Crednetials:
+                  value: 'Sorry, your credentials do not Match, please contact your administrator if you have lost your Credentials.'
+      description: 'Provide your login credentials here, which will then be checked against the databse to produce a cookie which will attached to the response so that the token generated can be validated for each request and also used accordingly for authorization.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+            examples:
+              AdminLogin:
+                value:
+                  email: admin@gmail.com
+                  password: adminpass
+  /events:
+    get:
+      tags:
+        - events
+      summary: Get all your Events.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                Get All Events:
+                  value:
+                    - date: '2020-01-01'
+                      name: Second Event
+                      eventId: 8
+                      location: On Campus
+                      createdBy: admin
+                      description: Second Event
+                      lastEditedBy: admin
+                    - date: '2020-01-01'
+                      name: FirstEvent
+                      eventId: 9
+                      location: Somewhere
+                      createdBy: Puru
+                      description: FirstEvent
+                      lastEditedBy: Puru
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: string
+      operationId: get-events
+      description: Returns all the elements in the Database.
+      parameters: []
+    post:
+      tags:
+        - events
+      summary: Add a new Event.
+      operationId: post-events
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: integer
+              examples:
+                First Event:
+                  value: 1
+        '500':
+          description: Internal Server Error
+      description: Adds a new Event to the Database.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+            examples:
+              Add a New Event 1:
+                value:
+                  name: FirstEvent
+                  description: FirstEvent
+                  location: Somewhere
+                  date: '2020-01-01'
+        description: The event details.
+    delete:
+      tags:
+        - events
+      summary: Delete all the Events.
+      operationId: delete-events
+      responses:
+        '204':
+          description: No Content
+        '500':
+          description: Internal Server Error
+      description: Deleted all the events in the Database.
+  '/event/{eventId}':
+    get:
+      tags:
+        - events
+      summary: Get an Event using eventId.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                Event1:
+                  value:
+                    date: '2020-01-01'
+                    maps:
+                      - name: m1
+                        createdBy: admin
+                        description: m1
+                        lastEditedBy: admin
+                      - name: m2
+                        createdBy: admin
+                        description: m2
+                        lastEditedBy: admin
+                    name: First Event
+                    eventId: 1
+                    location: On Campus
+                    createdBy: admin
+                    description: First Event
+                    lastEditedBy: admin
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                example-1:
+                  value: 'No Result Returned, no Event of ID: 7 in the Database'
+        '500':
+          description: Internal Server Error
+      operationId: get-event
+      description: Get a specific event from the Database.
+    put:
+      tags:
+        - events
+      summary: Update an existing Event
+      operationId: put-event
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                example-1:
+                  value: 'Object could not be saved! (PrimaryKey not found)'
+        '500':
+          description: Internal Server Error
+          content:
+            text/plain:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                example-1:
+                  value: 'ERROR: insert or update on table events'
+      description: Update an existing event with new Data.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+            examples:
+              Updated Event:
+                value:
+                  eventId: 1
+                  name: FirstMap
+                  description: FirstMap-Edited
+                  location: Somewhere
+                  date: '2020-01-02'
+        description: 'The new data, for the event.'
+    delete:
+      tags:
+        - events
+      summary: Delete an Event.
+      operationId: delete-event
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                example-1:
+                  value: 'Object could not be deleted! (PrimaryKey not found)'
+        '500':
+          description: Internal Server Error
+      description: Deletes a specific event from the database.
+    parameters:
+      - schema:
+          type: number
+        name: eventId
+        in: path
+        description: 'the id of the event to be modified, as stored in the databse.'
+        required: true
+  /maps:
+    get:
+      summary: Get all the Maps.
+      tags:
+        - maps
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                All Maps:
+                  value:
+                    - name: m1
+                      mapId: 1
+                      createdBy: admin
+                      description: m1
+                      lastEditedBy: admin
+                    - name: m2
+                      mapId: 2
+                      createdBy: admin
+                      description: m2
+                      lastEditedBy: admin
+                    - name: Third
+                      mapId: 3
+                      createdBy: Puru
+                      description: Third
+                      lastEditedBy: Puru
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      operationId: get-maps
+      description: Gets all the maps stored in the database.
+    post:
+      tags:
+        - maps
+      summary: Add a new Map to the database.
+      operationId: post-maps
+      responses:
+        '201':
+          description: Created
+          content:
+            text/plain:
+              schema:
+                type: integer
+              examples:
+                mapId Returned:
+                  value: '1'
+        '500':
+          description: Internal Server Error
+      description: Adds a new Map to the database.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+            examples:
+              First Map:
+                value:
+                  name: FirstMap
+                  description: FirstMap
+        description: The new Map to be added to the database.
+    delete:
+      tags:
+        - maps
+      summary: Delete All the Maps.
+      operationId: delete-maps
+      responses:
+        '204':
+          description: No Content
+        '500':
+          description: Internal Server Error
+      description: deletes all the maps to the database.
+  '/map/{mapId}':
+    parameters:
+      - schema:
+          type: integer
+        name: mapId
+        in: path
+        required: true
+        description: The mapId of the object to be modified as in the database.
+    get:
+      tags:
+        - maps
+      summary: Get a single Map using mapId.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                Map 1:
+                  value:
+                    name: FirstMap
+                    mapId: 1
+                    report:
+                      - name: ' Leaf blower'
+                        count: 1
+                      - name: ' Mobile fence (with black tarp)'
+                        count: 3
+                    createdBy: admin
+                    description: FirstMap- I have now been edited
+                    lastEditedBy: Puru
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                No Map:
+                  value: 'No Result Returned, no Map of ID: 89 in the Database'
+        '500':
+          description: Internal Server Error
+      operationId: get-map-mapId
+      description: Get the particular map in the database.
+    post:
+      tags:
+        - maps
+      summary: Update an existing map.
+      operationId: post-map-mapId
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                Error Example:
+                  value: 'Object could not be saved! (PrimaryKey not found)'
+        '500':
+          description: Internal Server Error
+      description: Update the map details.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+            examples:
+              UpdatedInfo for Map1:
+                value:
+                  mapId: 1
+                  name: FirstMap
+                  description: FirstMap- I have now been edited
+        description: The new map info.
+    delete:
+      tags:
+        - maps
+      summary: Delete an exisintg map.
+      operationId: delete-map-mapId
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                Error Deleting:
+                  value: 'Object could not be saved! (PrimaryKey not found)'
+        '500':
+          description: Internal Server Error
+      description: Delete the specific map from the database.
+components:
+  schemas: {}
+  securitySchemes: {}

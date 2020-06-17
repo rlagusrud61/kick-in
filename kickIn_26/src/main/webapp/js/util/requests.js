@@ -40,8 +40,9 @@ function getEvent(eventId) {
  * @returns {string} - The response from the RESTful service provider.
  */
 function updateEvent(event) {
-	let eventId = event.eventId;
-	let xhr = new XMLHttpRequest();
+	let eventId, xhr;
+	eventId= event.eventId;
+	xhr = new XMLHttpRequest();
 	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/event/" + eventId, true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
@@ -184,8 +185,9 @@ function getMap(mapId) {
  * @returns {string} - The response from the RESTful service provider.
  */
 function updateMap(map) {
-	mapId = map.mapId;
-	let xhr = new XMLHttpRequest();
+	let xhr, mapId;
+	mapId = map.mapId
+	xhr = new XMLHttpRequest();
 	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/map/" + mapId , true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
@@ -218,7 +220,6 @@ function deleteMap(mapId) {
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.send();
-	
 }
 
 function getAllMaps() {

@@ -58,7 +58,7 @@ public class MapsDao {
         String sql = "SELECT * FROM Maps WHERE (mapId = ? ) ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, valueObject.getMapId());
+            stmt.setLong(1, valueObject.getMapId());
 
             singleQuery(conn, stmt, valueObject);
 
@@ -109,8 +109,8 @@ public class MapsDao {
 
             stmt.setString(1, valueObject.getName());
             stmt.setString(2, valueObject.getDescription());
-            stmt.setString(3, valueObject.getCreatedBy());
-            stmt.setString(4, valueObject.getLastEditedBy());
+            stmt.setLong(3, valueObject.getCreatedBy());
+            stmt.setLong(4, valueObject.getLastEditedBy());
             stmt.execute();
 
             ResultSet resultSet = stmt.getResultSet();
@@ -143,25 +143,20 @@ public class MapsDao {
     public void save(Connection conn, Map valueObject)
             throws NotFoundException, SQLException {
 
-        String sql = "UPDATE Maps SET name = ?, description = ?, createdBy = ?, "
+        String sql = "UPDATE Maps SET name = ?, description = ?, "
                 + "lastEditedBy = ? WHERE (mapId = ? ) ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, valueObject.getName());
             stmt.setString(2, valueObject.getDescription());
-            stmt.setString(3, valueObject.getCreatedBy());
-            stmt.setString(4, valueObject.getLastEditedBy());
+            stmt.setLong(3, valueObject.getLastEditedBy());
 
-            stmt.setInt(5, valueObject.getMapId());
+            stmt.setLong(4, valueObject.getMapId());
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount == 0) {
                 //System.out.println("Object could not be saved! (PrimaryKey not found)");
                 throw new NotFoundException("Object could not be saved! (PrimaryKey not found)");
-            }
-            if (rowcount > 1) {
-                //System.out.println("PrimaryKey Error when updating DB! (Many objects were affected!)");
-                throw new SQLException("PrimaryKey Error when updating DB! (Many objects were affected!)");
             }
         }
     }
@@ -185,16 +180,12 @@ public class MapsDao {
         String sql = "DELETE FROM Maps WHERE (mapId = ? ) ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, valueObject.getMapId());
+            stmt.setLong(1, valueObject.getMapId());
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount == 0) {
                 //System.out.println("Object could not be deleted (PrimaryKey not found)");
                 throw new NotFoundException("Object could not be deleted! (PrimaryKey not found)");
-            }
-            if (rowcount > 1) {
-                //System.out.println("PrimaryKey Error when updating DB! (Many objects were deleted!)");
-                throw new SQLException("PrimaryKey Error when updating DB! (Many objects were deleted!)");
             }
         }
     }
@@ -251,75 +242,6 @@ public class MapsDao {
         return allRows;
     }
 
-
-    /**
-     * searchMatching-Method. This method provides searching capability to
-     * get matching valueObjects from database. It works by searching all
-     * objects that match permanent instance variables of given object.
-     * Upper layer should use this by setting some parameters in valueObject
-     * and then  call searchMatching. The result will be 0-N objects in a List,
-     * all matching those criteria you specified. Those instance-variables that
-     * have NULL values are excluded in search-criteria.
-     *
-     * @param conn        This method requires working database connection.
-     * @param valueObject This parameter contains the class instance where search will be based.
-     *                    Primary-key field should not be set.
-     */
-    public List<Map> searchMatching(Connection conn, Map valueObject) throws SQLException {
-
-        List<Map> searchResults;
-
-        boolean first = true;
-        StringBuilder sql = new StringBuilder("SELECT * FROM Map WHERE 1=1 ");
-
-        if (valueObject.getMapId() != 0) {
-            if (first) {
-                first = false;
-            }
-            sql.append("AND mapId = ").append(valueObject.getMapId()).append(" ");
-        }
-
-        if (valueObject.getName() != null) {
-            if (first) {
-                first = false;
-            }
-            sql.append("AND name LIKE '").append(valueObject.getName()).append("%' ");
-        }
-
-        if (valueObject.getDescription() != null) {
-            if (first) {
-                first = false;
-            }
-            sql.append("AND description LIKE '").append(valueObject.getDescription()).append("%' ");
-        }
-
-        if (valueObject.getCreatedBy() != null) {
-            if (first) {
-                first = false;
-            }
-            sql.append("AND createdBy LIKE '").append(valueObject.getCreatedBy()).append("%' ");
-        }
-
-        if (valueObject.getLastEditedBy() != null) {
-            if (first) {
-                first = false;
-            }
-            sql.append("AND lastEditedBy LIKE '").append(valueObject.getLastEditedBy()).append("%' ");
-        }
-
-
-        sql.append("ORDER BY mapId ASC ");
-
-        // Prevent accidential full table results.
-        // Use loadAll if all rows must be returned.
-        if (first)
-            searchResults = new ArrayList<>();
-        else
-            searchResults = listQuery(conn, conn.prepareStatement(sql.toString()));
-
-        return searchResults;
-    }
-
     public List<Map> getAllMapsFor(Connection conn, int eventId) throws SQLException {
 
         List<Map> searchResults = null;
@@ -365,8 +287,8 @@ public class MapsDao {
                 valueObject.setMapId(result.getInt("mapId"));
                 valueObject.setName(result.getString("name"));
                 valueObject.setDescription(result.getString("description"));
-                valueObject.setCreatedBy(result.getString("createdBy"));
-                valueObject.setLastEditedBy(result.getString("lastEditedBy"));
+                valueObject.setCreatedBy(result.getLong("createdBy"));
+                valueObject.setLastEditedBy(result.getLong("lastEditedBy"));
 
             } else {
                 //System.out.println("Map Object Not Found!");
@@ -399,8 +321,8 @@ public class MapsDao {
                 temp.setMapId(result.getInt("mapId"));
                 temp.setName(result.getString("name"));
                 temp.setDescription(result.getString("description"));
-                temp.setCreatedBy(result.getString("createdBy"));
-                temp.setLastEditedBy(result.getString("lastEditedBy"));
+                temp.setCreatedBy(result.getLong("createdBy"));
+                temp.setLastEditedBy(result.getLong("lastEditedBy"));
 
                 searchResults.add(temp);
             }
@@ -411,5 +333,40 @@ public class MapsDao {
         }
 
         return searchResults;
+    }
+
+    public String getAllMaps(Connection conn) throws NotFoundException, SQLException {
+        String sql = "SELECT getAllMaps();";
+        try(PreparedStatement stmt = conn.prepareStatement(sql)) {
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                String result = resultSet.getString(1);
+                if (result == null || result.equals("")) {
+                    throw new NotFoundException("No Result Returned, no Maps in the Database");
+                } else {
+                    return result;
+                }
+            } else {
+                throw new NotFoundException("No Result returned, no Maps");
+            }
+        }
+    }
+
+    public String getMap(Connection conn, int mapId) throws SQLException, NotFoundException {
+        String sql = "SELECT getMap(?)";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, mapId);
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                String result = resultSet.getString(1);
+                if (result == null || result.equals("")) {
+                    throw new NotFoundException("No Result Returned, no Map of ID: " + mapId + " in the Database");
+                } else {
+                    return result;
+                }
+            } else {
+                throw new NotFoundException("No Result Returned, no Map of ID: " + mapId + " in the Database");
+            }
+        }
     }
 }

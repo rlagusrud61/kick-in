@@ -42,35 +42,53 @@ function XSSInputSanitation(id) {
     let element = document.getElementById(id).value;
     if (element.indexOf("onload") !== -1 || element.indexOf("<script>") !== -1 ||
         element.indexOf("onerror") !== -1 || element.indexOf("alert") !== -1) {
-        console.log("done")
         document.getElementById(id).value = "";
+        return "";
+    } else {
+        return element;
     }
 }
 
 function loadTable() {
-    const xhr = new XMLHttpRequest();
+    let xhr, header, tr, th, i, table, events, row, name, creator, editor, eventInfo, editEvent, deleteEvent;
+    xhr = new XMLHttpRequest();
     xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/events", true);
     xhr.onreadystatechange = function () {
         if ((xhr.readyState == 4) && (xhr.status == 200)) {
-            var table = document.getElementById("eventtable");
-            var events = JSON.parse(xhr.responseText);
+            table = document.getElementById("eventtable");
+            events = JSON.parse(xhr.responseText);
             console.log(events);
-            var htmltext = "<tr><th>Name</th><th>Creator</th><th>Editor</th><th>Event Info</th><th>Edit Event</th><th>Delete Event</th><tr>";
-            table.innerHTML = htmltext;
+
+            header = [];
+            header.push('Name');
+            header.push('Creator');
+            header.push('Editor');
+            header.push('Event Information');
+            header.push('Edit Event');
+            header.push('Delete Event');
+
+            tr = table.insertRow(-1); // add a row to the table
+
+            for (i = 0; i < header.length; i++) {
+                th = document.createElement("th"); // add a header to the table
+                th.innerHTML = header[i];
+                tr.appendChild(th);
+            }
+
             for (i = 0; i < events.length; i++) {
-                var row = table.insertRow(i + 1);
-                var cell1 = row.insertCell(0);
-                var cell2 = row.insertCell(1);
-                var cell3 = row.insertCell(2);
-                var cell4 = row.insertCell(3);
-                var cell5 = row.insertCell(4);
-                var cell6 = row.insertCell(5);
-                cell1.innerHTML = events[i].name;
-                cell2.innerHTML = events[i].createdBy;
-                cell3.innerHTML = events[i].lastEditedBy;
-                cell4.innerHTML = "<button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/event.html?id=" + events[i].eventId + "\";'>View</button>"
-                cell5.innerHTML = "<button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/edit.html?id=" + events[i].eventId + "\";'>Edit</button>"
-                cell6.innerHTML = "<button onclick = 'deleteEvent(" + events[i].eventId + ")'>Delete</button>"
+                row = table.insertRow(-1);
+                name = row.insertCell(0);
+                creator = row.insertCell(1);
+                editor = row.insertCell(2);
+                eventInfo = row.insertCell(3);
+                editEvent = row.insertCell(4);
+                deleteEvent = row.insertCell(5);
+                name.innerHTML = events[i].name;
+                creator.innerHTML = events[i].createdBy;
+                editor.innerHTML = events[i].lastEditedBy;
+                eventInfo.innerHTML = "<button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/event.html?id=" + events[i].eventId + "\";'>View</button>"
+                editEvent.innerHTML = "<button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/edit.html?id=" + events[i].eventId + "\";'>Edit</button>"
+                deleteEvent.innerHTML = "<button onclick = 'deleteEvent(" + events[i].eventId + ")'>Delete</button>"
 
 
 //				htmltext += "<div class= 'col-md-12 col-sm-10'><div class='project'><div class='row bg-white has-shadow'>" +
@@ -89,13 +107,18 @@ function loadTable() {
 
 window.onload = loadTable;
 
-function addEvent() {
+function addEventPopup() {
     let description = document.getElementById("eventdescription").value;
     let namestuff = document.getElementById("eventname").value;
     let locationstuff = document.getElementById("eventlocation");
-    let eventloc = locationstuff.options[locationstuff.selectedIndex].value
+
     let eventdate = document.getElementById("eventDate").value;
     console.log(eventdate);
+    var dateControl = document.querySelector('input[type="date"]');
+    dateControl.value = eventdate.value;
+    console.log(dateControl.value); // prints "2017-06-01"
+    console.log(dateControl.valueAsNumber); // prints 1496275200000, a UNIX timestamp
+    let eventloc = locationstuff.options[locationstuff.selectedIndex].value;
     let eventjson = {
         "description": description,
         "location": eventloc,
@@ -142,9 +165,8 @@ function logout() {
 function searchTables() {
     // Declare variables
     let searchValue, filter, table, tr, td, i, txtValue;
-    searchValue = document.getElementById("searchTable").value;
-    XSSInputSanitation('searchTable');
-    if (searchValue !== ""){
+    searchValue = XSSInputSanitation('searchTable');
+    if (searchValue !== "") {
         filter = searchValue.toUpperCase();
         table = document.getElementById("eventtable");
         tr = table.getElementsByTagName("tr");
@@ -161,7 +183,6 @@ function searchTables() {
             }
         }
     } else {
-        console.log("here")
         loadTable()
     }
 }
@@ -187,6 +208,41 @@ function sortTableAZ() {
             y = rows[i + 1].getElementsByTagName("TD")[0];
             // Check if the two rows should switch place:
             if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                // If so, mark as a switch and break the loop:
+                shouldSwitch = true;
+                break;
+            }
+        }
+        if (shouldSwitch) {
+            /* If a switch has been marked, make the switch
+            and mark that a switch has been done: */
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+        }
+    }
+}
+
+function sortTableZA() {
+    let table, rows, switching, i, x, y, shouldSwitch;
+    table = document.getElementById("eventtable");
+    switching = true;
+    /* Make a loop that will continue until
+    no switching has been done: */
+    while (switching) {
+        // Start by saying: no switching is done:
+        switching = false;
+        rows = table.rows;
+        /* Loop through all table rows (except the
+        first, which contains table headers): */
+        for (i = 1; i < (rows.length - 1); i++) {
+            // Start by saying there should be no switching:
+            shouldSwitch = false;
+            /* Get the two elements you want to compare,
+            one from current row and one from the next: */
+            x = rows[i].getElementsByTagName("TD")[0];
+            y = rows[i + 1].getElementsByTagName("TD")[0];
+            // Check if the two rows should switch place:
+            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
                 // If so, mark as a switch and break the loop:
                 shouldSwitch = true;
                 break;

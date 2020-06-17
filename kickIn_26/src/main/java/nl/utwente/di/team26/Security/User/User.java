@@ -6,7 +6,7 @@ import java.util.Objects;
 @XmlRootElement
 public class User {
 
-    int userId;
+    long userId;
     String email;
     String password;
     int clearanceLevel;
@@ -21,18 +21,18 @@ public class User {
         this.clearanceLevel = clearanceLevel;
     }
 
-    public User(int userId, String email, String password, int clearanceLevel) {
+    public User(long userId, String email, String password, int clearanceLevel) {
         this.userId = userId;
         this.email = email;
         this.password = password;
         this.clearanceLevel = clearanceLevel;
     }
 
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 

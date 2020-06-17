@@ -46,6 +46,13 @@ public class SessionDao {
         return valueObject;
     }
 
+    public void checkExist(Connection conn, String token) throws NotFoundException, SQLException {
+        String sql = "SELECT * FROM session where token = ?";
+        try (conn; PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+            preparedStatement.setString(1, token);
+            singleQuery(conn, preparedStatement, new Session());
+        }
+    }
 
     /**
      * load-method. This will load valueObject contents from database using
@@ -64,7 +71,7 @@ public class SessionDao {
         String sql = "SELECT * FROM session WHERE (tokenId = ? ) ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, valueObject.getTokenId());
+            stmt.setLong(1, valueObject.getTokenId());
 
             singleQuery(conn, stmt, valueObject);
 
@@ -112,16 +119,16 @@ public class SessionDao {
             clearTokensForUser(conn, valueObject.userId);
 
             stmt.setString(1, valueObject.getToken());
-            stmt.setInt(2, valueObject.getUserId());
+            stmt.setLong(2, valueObject.getUserId());
             databaseUpdate(conn, stmt);
         }
     }
 
-    public void clearTokensForUser(Connection conn, int userId) throws SQLException {
+    public void clearTokensForUser(Connection conn, long userId) throws SQLException {
         String sql = "DELETE FROM session WHERE (userId = ? ) ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, userId);
+            stmt.setLong(1, userId);
             int rowcount = databaseUpdate(conn, stmt);
         }
     }
@@ -144,7 +151,7 @@ public class SessionDao {
         String sql = "DELETE FROM session WHERE (tokenId = ? ) ";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, valueObject.getTokenId());
+            stmt.setLong(1, valueObject.getTokenId());
 
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount == 0) {
