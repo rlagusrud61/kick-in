@@ -24,20 +24,6 @@ window.onclick = function (event) {
     }
 }
 
-
-function createEvent(form) {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/events", true);
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4) {
-            window.location.href = 'http://localhost:8080/kickInTeam26/event.html/' + xhr.responseText
-            console.log(xhr.responseText);
-        }
-    }
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send(JSON.stringify(form));
-}
-
 function XSSInputSanitation(id) {
     let element = document.getElementById(id).value;
     if (element.indexOf("onload") !== -1 || element.indexOf("<script>") !== -1 ||
@@ -50,88 +36,69 @@ function XSSInputSanitation(id) {
 }
 
 function loadTable() {
-    let xhr, header, tr, th, i, table, events, row, name, eventDate, creator, lastEditor, action;
-    xhr = new XMLHttpRequest();
-    xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/events", true);
-    xhr.onreadystatechange = function () {
-        if ((xhr.readyState == 4) && (xhr.status == 200)) {
-            table = document.getElementById("eventtable");
-            events = JSON.parse(xhr.responseText);
-            console.log(events);
+	let xhr, header, tr, th, i, table, events, row, name, creator, editor, eventInfo, editEvent, deleteEvent;
+	getAllEvents(function() {
+		this.responseText;
+	});
+	getAllEvents(function() {
+		table = document.getElementById("eventtable");
+		events = JSON.parse(this.responseText);
+        console.log(events);
 
-            header = [];
-            header.push('Name');
-            header.push('Date Of Event')
-            header.push('Creator');
-            header.push('Last Editted By');
-            header.push('Action');
+        header = [];
+        header.push('Name');
+        header.push('Creator');
+        header.push('Editor');
+        header.push('Event Information');
+        header.push('Edit Event');
+        header.push('Delete Event');
 
-            tr = table.insertRow(-1); // add a row to the table
+        tr = table.insertRow(-1); // add a row to the table
 
-            for (i = 0; i < header.length; i++) {
-                th = document.createElement("th"); // add a header to the table
-                th.innerHTML = header[i];
-                tr.appendChild(th);
-            }
-
-            for (i = 0; i < events.length; i++) {
-                row = table.insertRow(-1);
-                name = row.insertCell(0);
-                eventDate = row.insertCell(1);
-                creator = row.insertCell(2);
-                lastEditor = row.insertCell(3);
-                action = row.insertCell(4);
-                name.innerHTML = events[i].name;
-                eventDate.innerHTML = events[i].date;
-                creator.innerHTML = events[i].createdBy;
-                lastEditor.innerHTML = events[i].lastEditedBy;
-                action.innerHTML = '<a href="http://localhost:8080/kickInTeam26/event.html?id=' +
-                    events[i].eventId + '" class="text-success"><i class="glyphicon glyphicon-eye-open" ' +
-                    'style="font-size:20px;"></i></a><a href="http://localhost:8080/kickInTeam26/edit.html?id=' +
-                    events[i].eventId + '" class="text-success"><i class="glyphicon glyphicon-pencil" ' +
-                    'style="font-size:20px;"></i></a><a href="javascript: window.deleteEvent(\"' +
-                    events[i].eventId + '\");" class="text-success"><i class="glyphicon glyphicon-trash" ' +
-                    'style="font-size:20px;"></i></a>';
-            }
+        for (i = 0; i < header.length; i++) {
+            th = document.createElement("th"); // add a header to the table
+            th.innerHTML = header[i];
+            tr.appendChild(th);
         }
-    }
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send();
+
+        for (i = 0; i < events.length; i++) {
+            row = table.insertRow(-1);
+            name = row.insertCell(0);
+            creator = row.insertCell(1);
+            editor = row.insertCell(2);
+            eventInfo = row.insertCell(3);
+            editEvent = row.insertCell(4);
+            deleteEvent = row.insertCell(5);
+            name.innerHTML = events[i].name;
+            creator.innerHTML = events[i].createdBy;
+            editor.innerHTML = events[i].lastEditedBy;
+            eventInfo.innerHTML = "<button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/event.html?id=" + events[i].eventId + "\";'>View</button>"
+            editEvent.innerHTML = "<button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/edit.html?id=" + events[i].eventId + "\";'>Edit</button>"
+            deleteEvent.innerHTML = "<button onclick = 'deleteEvent(" + events[i].eventId + ")'>Delete</button>"
+        }
+	});
 }
 
 window.onload = loadTable;
 
-function addEventPopup() {
-    let description = document.getElementById("eventdescription").value;
-    let namestuff = document.getElementById("eventname").value;
-    let locationstuff = document.getElementById("eventlocation");
-
-    let eventdate = document.getElementById("eventDate").value;
-    console.log(eventdate);
-    var dateControl = document.querySelector('input[type="date"]');
-    dateControl.value = eventdate.value;
-    console.log(dateControl.value); // prints "2017-06-01"
-    console.log(dateControl.valueAsNumber); // prints 1496275200000, a UNIX timestamp
-
-    let eventloc = locationstuff.options[locationstuff.selectedIndex].value
-    let eventjson = {
-        "createdBy": "CreaJoep",
-        "description": description,
-        "lastEditedBy": "EditJoep",
-        "location": eventloc,
-        "name": namestuff
+function creatEvent() {
+	let eventDescription, eventName, eventLocation, eventDate, eventLoc, eventJson
+    eventDescription = document.getElementById("eventDescription").value;
+    eventName = document.getElementById("eventName").value;
+    eventLoc = document.getElementById("eventLocation");
+    eventDate = document.getElementById("eventDate").value;
+    eventLocation = eventLoc.options[eventLoc.selectedIndex].value;
+    eventJson = {
+    	"date": eventDate,
+        "description": eventDescription,
+        "location": eventLocation,
+        "name": eventName
     };
-    console.log(JSON.stringify(eventjson));
-    let xhr = new XMLHttpRequest();
-    xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/events", true);
-    xhr.onreadystatechange = function () {
-        if ((xhr.readyState == 4) && (xhr.status = 200)) {
-            console.log(xhr.responseText);
-            window.location.href = "http://localhost:8080/kickInTeam26/event.html?id=" + xhr.responseText;
-        }
-    }
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send(JSON.stringify(eventjson));
+    console.log(eventJson);
+    addEvent(eventJson, function() {
+    	resp = this.responseText;
+    	window.location.href = "http://localhost:8080/kickInTeam26/event.html?id=" + resp;
+    })
 }
 
 function deleteEvent(id) {
@@ -163,20 +130,24 @@ function searchTables() {
     // Declare variables
     let searchValue, filter, table, tr, td, i, txtValue;
     searchValue = XSSInputSanitation('searchTable');
-    filter = searchValue.toUpperCase();
-    table = document.getElementById("eventtable");
-    tr = table.getElementsByTagName("tr");
-    // Loop through all table rows, and hide those who don't match the search query
-    for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[0];
-        if (td) {
-            txtValue = td.textContent || td.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                tr[i].style.display = "";
-            } else {
-                tr[i].style.display = "none";
+    if (searchValue !== "") {
+        filter = searchValue.toUpperCase();
+        table = document.getElementById("eventtable");
+        tr = table.getElementsByTagName("tr");
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
             }
         }
+    } else {
+        loadTable()
     }
 }
 
@@ -248,12 +219,4 @@ function sortTableZA() {
             switching = true;
         }
     }
-}
-
-function sortTableNewOld() {
-
-}
-
-function sortTableOldNew() {
-
 }
