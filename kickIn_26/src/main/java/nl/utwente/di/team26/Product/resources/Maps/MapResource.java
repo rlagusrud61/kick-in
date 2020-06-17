@@ -27,14 +27,10 @@ public class MapResource {
     @GET
     @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getMapById(@PathParam("mapId") long mapId) {
+    public Response getMapById(@PathParam("mapId") long mapId) throws NotFoundException, SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             String mapData = mapsDao.getMap(conn, mapId);
             return Utils.returnOkResponse(mapData);
-        } catch (NotFoundException e) {
-            return Utils.returnNotFoundError(e.getMessage());
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
@@ -42,30 +38,22 @@ public class MapResource {
     @Secured(Roles.EDITOR)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateMap(Map mapToUpdate) {
+    public Response updateMap(Map mapToUpdate) throws NotFoundException, SQLException {
         long userId = Utils.getUserFromContext(securityContext);
         mapToUpdate.setLastEditedBy(userId);
         try (Connection conn = CONSTANTS.getConnection()) {
             mapsDao.save(conn, mapToUpdate);
             return Utils.returnNoContent();
-        } catch (NotFoundException e) {
-            return Utils.returnNotFoundError(e.getMessage());
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
     @DELETE
     @Secured(Roles.EDITOR)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteMap(@PathParam("mapId") int mapToDelete) {
+    public Response deleteMap(@PathParam("mapId") int mapToDelete) throws NotFoundException, SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             mapsDao.delete(conn, new Map(mapToDelete));
             return Utils.returnNoContent();
-        } catch (NotFoundException e) {
-            return Utils.returnNotFoundError(e.getMessage());
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 

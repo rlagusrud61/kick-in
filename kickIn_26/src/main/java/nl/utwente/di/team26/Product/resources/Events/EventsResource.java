@@ -28,14 +28,10 @@ public class EventsResource {
     @GET
     @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllEvents() {
+    public Response getAllEvents() throws NotFoundException, SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             String allEvents = eventsDao.getAllEvents(conn);
             return Utils.returnOkResponse(allEvents);
-        } catch (NotFoundException e) {
-            return Utils.returnNotFoundError(e.getMessage());
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
@@ -43,7 +39,7 @@ public class EventsResource {
     @Secured({Roles.EDITOR})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addNewEvent(Event eventToAdd) {
+    public Response addNewEvent(Event eventToAdd) throws SQLException {
         //get the userId stored into the security Context during authentication.
         long userId = Utils.getUserFromContext(securityContext);
 
@@ -53,20 +49,16 @@ public class EventsResource {
 
             long eventId = eventsDao.create(conn, eventToAdd);
             return Utils.returnCreated(eventId);
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
     @DELETE
     @Secured({Roles.ADMIN})
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteAllEvents() {
+    public Response deleteAllEvents() throws SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             eventsDao.deleteAll(conn);
             return Utils.returnNoContent();
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
