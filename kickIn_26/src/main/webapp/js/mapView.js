@@ -306,9 +306,7 @@ function listItems() {
                     tableCell.innerHTML = returnedItems[i][col[j]]; // adds the required data to the table
                 }
             }
-
-            document.getElementById("itemlist").appendChild(table);
-
+            document.getElementById("listItems").appendChild(table);
         }
     }
 
