@@ -71,8 +71,8 @@ window.onload = function() {
     eventDetails.send();
 
     let mapsList = new XMLHttpRequest();
-    mapsList.open("GET", "http://localhost:8080/kickInTeam26/rest/eventMap/event/"+id);
-    mapsList.setRequestHeader("Content-Type", "application/json")
+    mapsList.open('GET', "http://localhost:8080/kickInTeam26/rest/eventMap/event/"+id);
+//    mapsList.setRequestHeader("Content-Type", "application/json")
     mapsList.onreadystatechange = function () {
         if (mapsList.status === 4 && mapsList.status === 200) {
             let maps = JSON.parse(mapsList.responseText);
