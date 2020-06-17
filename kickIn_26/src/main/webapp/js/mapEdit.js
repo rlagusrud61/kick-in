@@ -86,6 +86,18 @@ function addItems (){
     objReq.send();
 }
 
+function addItems2() {
+    let row, label, numInput, addButton, materialsList, objReq, table, i;
+
+    if('content' in document.createElement('template')) {
+        // Instantiate the table with the existing HTML tbody
+        // and the row with the template
+        var tbody = document.querySelector("tbody");
+        var template = document.querySelector('#itemRow');
+    }
+
+}
+
 function displayItems(inum) {
     let itemnum, inputvalue, displayitems, htmltext, x;
     itemnum = jsonObj.items["item" + inum];

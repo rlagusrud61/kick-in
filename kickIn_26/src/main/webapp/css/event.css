@@ -7,12 +7,13 @@ h2{
 .glyphicon {
     font-size:20px;
     color:#00CC33;
-    padding-left: 15px;
+    padding-left: 20px;
 }
 
 body{
     background-color:#f2f2f2;
-    font-size: 15px;
     font-family: 'Quicksand';
     color:#6B6B6B;
+    font-size: 15px;
+
 }

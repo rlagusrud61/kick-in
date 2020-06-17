@@ -1,21 +1,23 @@
-// // Delete map Modal
-//     var deletion = document.getElementById("popupEventDelete");
-// // Button for deletion
-//     var trash = document.getElementById("deleteEvent");
-// // Closing popup
-//     var closeDelete = document.getElementsByClassName("closeDelete")[0];
-//
-//     trash.onclick = function() {
-//         deletion.style.display = "block";
-//     }
-//     closeDelete.onclick = function() {
-//         deletion.style.display = "none";
-//     }
-//     window.onclick = function(event) {
-//         if (event.target === deletion) {
-//             deletion.style.display = "none";
-//         }
-//     }
+// Get the modal
+var modal = document.getElementById("popupMapDelete");
+// Button for deletion
+var trash = document.getElementById("deleteEvent");
+// Closing popup
+var closeDelete = document.getElementsByClassName("close")[0];
+
+     trash.onclick = function() {
+         modal.style.display = "block";
+     }
+
+     closeDelete.onclick = function() {
+            modal.style.display = "none";
+     }
+
+     window.onclick = function(event) {
+         if (event.target === modal) {
+             modal.style.display = "none";
+         }
+     }
 
 //inits the map and properties.
 let map = L.map('mapid', {
@@ -306,9 +308,7 @@ function listItems() {
                     tableCell.innerHTML = returnedItems[i][col[j]]; // adds the required data to the table
                 }
             }
-
-            document.getElementById("itemlist").appendChild(table);
-
+            document.getElementById("listItems").appendChild(table);
         }
     }
 

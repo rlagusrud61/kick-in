@@ -118,12 +118,9 @@ function addEventPopup() {
     dateControl.value = eventdate.value;
     console.log(dateControl.value); // prints "2017-06-01"
     console.log(dateControl.valueAsNumber); // prints 1496275200000, a UNIX timestamp
-
-    let eventloc = locationstuff.options[locationstuff.selectedIndex].value
+    let eventloc = locationstuff.options[locationstuff.selectedIndex].value;
     let eventjson = {
-        "createdBy": "CreaJoep",
         "description": description,
-        "lastEditedBy": "EditJoep",
         "location": eventloc,
         "name": namestuff
     };
@@ -133,7 +130,7 @@ function addEventPopup() {
     xhr.onreadystatechange = function () {
         if ((xhr.readyState == 4) && (xhr.status = 200)) {
             console.log(xhr.responseText);
-            window.location.href = "http://localhost:8080/kickInTeam26/event.html?id=" + xhr.responseText;
+//            window.location.href = "http://localhost:8080/kickInTeam26/mapEdit.html?id=" + xhr.responseText;
         }
     }
     xhr.setRequestHeader("Content-Type", "application/json");
@@ -169,7 +166,7 @@ function searchTables() {
     // Declare variables
     let searchValue, filter, table, tr, td, i, txtValue;
     searchValue = XSSInputSanitation('searchTable');
-    if (searchValue !== "") {
+    //if (searchValue !== "") {
         filter = searchValue.toUpperCase();
         table = document.getElementById("eventtable");
         tr = table.getElementsByTagName("tr");
@@ -185,9 +182,10 @@ function searchTables() {
                 }
             }
         }
-    } else {
-        loadTable()
-    }
+    //}
+    // else {
+    //     loadTable()
+    // }
 }
 
 function sortTableAZ() {
