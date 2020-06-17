@@ -70,6 +70,7 @@ function deleteEvent(eventId) {
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/event/" + eventId , true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			window.location.href = "http://localhost:8080/kickInTeam26/list.html";
 			return xhr.responseText;
 		}
 	}

@@ -133,6 +133,7 @@ function deleteEvent(id) {
     xhr.onreadystatechange = function () {
         if ((xhr.readyState == 4) && (xhr.status == 200)) {
             console.log(xhr.responseText);
+            window.location.href = "http://localhost:8080/kickInTeam26/list.html";
         }
     }
     xhr.setRequestHeader("Content-Type", "application/json");
