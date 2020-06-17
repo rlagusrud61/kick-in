@@ -36,48 +36,55 @@ function XSSInputSanitation(id) {
 }
 
 function loadTable() {
-	let xhr, header, tr, th, i, table, events, row, name, creator, editor, eventInfo, editEvent, deleteEvent;
-	getAllEvents(function() {
-		this.responseText;
-	});
-	getAllEvents(function() {
-		table = document.getElementById("eventtable");
-		events = JSON.parse(this.responseText);
-        console.log(events);
+    let xhr, header, tr, th, i, table, events, row, name, eventDate, creator, lastEditor, action;
+    console.log("hello");
+    xhr = new XMLHttpRequest();
+    var h = "hello \"world\"";
+    xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/events", true);
+    xhr.onreadystatechange = function () {
+        if ((xhr.readyState == 4) && (xhr.status == 200)) {
+            table = document.getElementById("eventtable");
+            events = JSON.parse(xhr.responseText);
+            console.log(events);
 
-        header = [];
-        header.push('Name');
-        header.push('Creator');
-        header.push('Editor');
-        header.push('Event Information');
-        header.push('Edit Event');
-        header.push('Delete Event');
+            header = [];
+            header.push('Name');
+            header.push('Date Of Event')
+            header.push('Creator');
+            header.push('Last Editted By');
+            header.push('Action');
 
-        tr = table.insertRow(-1); // add a row to the table
+            tr = table.insertRow(-1); // add a row to the table
 
-        for (i = 0; i < header.length; i++) {
-            th = document.createElement("th"); // add a header to the table
-            th.innerHTML = header[i];
-            tr.appendChild(th);
+            for (i = 0; i < header.length; i++) {
+                th = document.createElement("th"); // add a header to the table
+                th.innerHTML = header[i];
+                tr.appendChild(th);
+            }
+
+            for (i = 0; i < events.length; i++) {
+                row = table.insertRow(-1);
+                name = row.insertCell(0);
+                eventDate = row.insertCell(1);
+                creator = row.insertCell(2);
+                lastEditor = row.insertCell(3);
+                action = row.insertCell(4);
+                // deleteEvent = row.insertCell(5);
+                name.innerHTML = '<a href = "http://localhost:8080/kickInTeam26/event.html?id=' + events[i].eventId + '">' + events[i].name + '</a>';
+                eventDate = events[i].date;
+                creator.innerHTML = events[i].createdBy;
+                lastEditor.innerHTML = events[i].lastEditedBy;
+//                action.innerHTML = '<a href="http://localhost:8080/kickInTeam26/edit.html?id=' + events[i].eventId + '" class="text-success"><i class="glyphicon glyphicon-pencil" style="font-size:20px;"></i></a><a href="javascript: window.deleteEvent("' + events[i].eventId + '");" class="text-success"><i class="glyphicon glyphicon-trash" style="font-size:20px;"></span></a></i>';
+                action.innerHTML = '<a href="http://localhost:8080/kickInTeam26/event.html?id=' + events[i].eventId + '" class="text-success"><i class="glyphicon glyphicon-eye-open" style="font-size:20px;"></i></a><a href="http://localhost:8080/kickInTeam26/edit.html?id=' + events[i].eventId + '" class="text-success"><i class="glyphicon glyphicon-pencil" style="font-size:20px;"></i></a><a href="javascript: deleteEvent("' + events[i].eventId + '");" class="text-success"><i class="glyphicon glyphicon-trash" style="font-size:20px;"></i></a>';
+            }
+
+//			table.innerHTML = htmltext;
         }
-
-        for (i = 0; i < events.length; i++) {
-            row = table.insertRow(-1);
-            name = row.insertCell(0);
-            creator = row.insertCell(1);
-            editor = row.insertCell(2);
-            eventInfo = row.insertCell(3);
-            editEvent = row.insertCell(4);
-            deleteEvent = row.insertCell(5);
-            name.innerHTML = events[i].name;
-            creator.innerHTML = events[i].createdBy;
-            editor.innerHTML = events[i].lastEditedBy;
-            eventInfo.innerHTML = "<button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/event.html?id=" + events[i].eventId + "\";'>View</button>"
-            editEvent.innerHTML = "<button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/edit.html?id=" + events[i].eventId + "\";'>Edit</button>"
-            deleteEvent.innerHTML = "<button onclick = 'deleteEvent(" + events[i].eventId + ")'>Delete</button>"
-        }
-	});
+    }
+    xhr.setRequestHeader("Content-Type", "Application/json");
+    xhr.send();
 }
+
 
 window.onload = loadTable;
 
@@ -130,7 +137,7 @@ function searchTables() {
     // Declare variables
     let searchValue, filter, table, tr, td, i, txtValue;
     searchValue = XSSInputSanitation('searchTable');
-    if (searchValue !== "") {
+    //if (searchValue !== "") {
         filter = searchValue.toUpperCase();
         table = document.getElementById("eventtable");
         tr = table.getElementsByTagName("tr");
@@ -146,9 +153,10 @@ function searchTables() {
                 }
             }
         }
-    } else {
-        loadTable()
-    }
+    //}
+    // else {
+    //     loadTable()
+    // }
 }
 
 function sortTableAZ() {
