@@ -30,18 +30,18 @@ public class EventResource {
     public Response getEventById(@PathParam("eventId") long eventId) {
         try (Connection conn = CONSTANTS.getConnection()) {
             String eventData = eventsDao.getEvent(conn, eventId);
-            return Response.ok(eventData).build();
+            return Utils.returnOkResponse(eventData);
         } catch (NotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+            return Utils.returnNotFoundError(e.getMessage());
         } catch (SQLException e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
     @PUT
     @Secured({Roles.EDITOR})
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response updateEvent(Event eventToUpdate) {
 
         long userId = Utils.getUserFromContext(securityContext);
@@ -49,25 +49,25 @@ public class EventResource {
 
         try (Connection conn = CONSTANTS.getConnection()) {
             eventsDao.save(conn, eventToUpdate);
-            return Response.noContent().build();
+            return Utils.returnNoContent();
         } catch (NotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+            return Utils.returnNotFoundError(e.getMessage());
         } catch (SQLException e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
     @DELETE
     @Secured({Roles.EDITOR})
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response deleteEvent(@PathParam("eventId") int eventToDelete) {
         try (Connection conn = CONSTANTS.getConnection()) {
             eventsDao.delete(conn, new Event(eventToDelete));
-            return Response.noContent().build();
+            return Utils.returnNoContent();
         } catch (NotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+            return Utils.returnNotFoundError(e.getMessage());
         } catch (SQLException e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 }

@@ -31,18 +31,18 @@ public class EventsResource {
     public Response getAllEvents() {
         try (Connection conn = CONSTANTS.getConnection()) {
             String allEvents = eventsDao.getAllEvents(conn);
-            return Response.ok(allEvents).build();
-        } catch (NotFoundException throwables) {
-            return Response.status(Response.Status.NOT_FOUND).entity(throwables.getMessage()).build();
-        } catch (SQLException throwables) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(throwables.getMessage()).build();
+            return Utils.returnOkResponse(allEvents);
+        } catch (NotFoundException e) {
+            return Utils.returnNotFoundError(e.getMessage());
+        } catch (SQLException e) {
+            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
     @POST
     @Secured({Roles.EDITOR})
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response addNewEvent(Event eventToAdd) {
         //get the userId stored into the security Context during authentication.
         long userId = Utils.getUserFromContext(securityContext);
@@ -52,21 +52,21 @@ public class EventsResource {
             eventToAdd.setLastEditedBy(userId);
 
             long eventId = eventsDao.create(conn, eventToAdd);
-            return Response.status(Response.Status.CREATED).entity(eventId).build();
-        } catch (SQLException throwables) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(throwables.getMessage()).build();
+            return Utils.returnCreated(eventId);
+        } catch (SQLException e) {
+            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
     @DELETE
     @Secured({Roles.ADMIN})
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response deleteAllEvents() {
         try (Connection conn = CONSTANTS.getConnection()) {
             eventsDao.deleteAll(conn);
-            return Response.noContent().build();
+            return Utils.returnNoContent();
         } catch (SQLException e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 

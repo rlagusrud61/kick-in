@@ -4,8 +4,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 /**
- * Drawing Value Object.
- * This class is value object representing database table Drawing
+ * DrawingResource Value Object.
+ * This class is value object representing database table DrawingResource
  * This class is intented to be used together with associated Dao object.
  */
 @XmlRootElement
@@ -28,11 +28,11 @@ public class Drawing extends TypeOfResource implements Serializable {
 
     }
 
-    public Drawing(int resourceId) {
+    public Drawing(long resourceId) {
         super(resourceId);
     }
 
-    public Drawing(int resourceId, String name, String description, String image) {
+    public Drawing(long resourceId, String name, String description, String image) {
         super(resourceId, name, description);
         this.image = image;
     }
@@ -50,23 +50,6 @@ public class Drawing extends TypeOfResource implements Serializable {
         this.image = imageIn;
     }
 
-    /**
-     * hasEqualMapping-method will compare two Drawing instances
-     * and return true if they contain same values in all persistent instance
-     * variables. If hasEqualMapping returns true, it does not mean the objects
-     * are the same instance. However it does mean that in that moment, they
-     * are mapped to the same row in database.
-     */
-    public boolean hasEqualMapping(Drawing valueObject) {
-
-        if (super.hasEqualMapping(valueObject)) {
-            return (false);
-        }
-        if (this.image == null) {
-            return valueObject.getImage() == null;
-        } else return this.image.equals(valueObject.getImage());
-    }
-
 
     /**
      * toString will return String object representing the state of this
@@ -74,7 +57,7 @@ public class Drawing extends TypeOfResource implements Serializable {
      * possibly when application is writing object states in textlog.
      */
     public String toString() {
-        return "\nclass Drawing, mapping to table Drawing\n" +
+        return "\nclass DrawingResource, mapping to table DrawingResource\n" +
                 "Persistent attributes: \n" +
                 "resourceId = " + this.getResourceId() + "\n" +
                 "name = " + this.getName() + "\n" +

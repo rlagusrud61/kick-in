@@ -17,7 +17,6 @@ public class Material extends TypeOfResource implements Serializable {
      */
     private String image;
 
-
     /**
      * Constructors. DaoGen generates two constructors by default.
      * The first one takes no arguments and provides the most simple
@@ -29,20 +28,14 @@ public class Material extends TypeOfResource implements Serializable {
 
     }
 
-    public Material(int resourceId, String name, String description, String image) {
+    public Material(long resourceId, String name, String description, String image) {
         super(resourceId, name, description);
         this.image = image;
     }
 
-    public Material(int materialId) {
+    public Material(long materialId) {
         super(materialId);
     }
-
-    /**
-     * Get- and Set-methods for persistent variables. The default
-     * behaviour does not make any checks against malformed data,
-     * so these might require some manual additions.
-     */
 
     public String getImage() {
         return this.image;
@@ -50,23 +43,6 @@ public class Material extends TypeOfResource implements Serializable {
 
     public void setImage(String imageIn) {
         this.image = imageIn;
-    }
-
-    /**
-     * hasEqualMapping-method will compare two Material instances
-     * and return true if they contain same values in all persistent instance
-     * variables. If hasEqualMapping returns true, it does not mean the objects
-     * are the same instance. However it does mean that in that moment, they
-     * are mapped to the same row in database.
-     */
-    public boolean hasEqualMapping(Material valueObject) {
-
-        if (super.hasEqualMapping(valueObject)) {
-            return (false);
-        }
-        if (this.image == null) {
-            return valueObject.getImage() == null;
-        } else return this.image.equals(valueObject.getImage());
     }
 
 

@@ -63,8 +63,8 @@ public class AuthenticationEndpoint {
             response.sendRedirect(uriInfo.getAbsolutePathBuilder().replacePath("/kickInTeam26/list.html").toString());
         } catch (AuthenticationDeniedException e) {
             response.sendError(Response.Status.UNAUTHORIZED.getStatusCode(), e.getMessage());
-        } catch (SQLException throwables) {
-            response.sendError(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), throwables.getMessage());
+        } catch (SQLException e) {
+            response.sendError(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), e.getMessage());
         }
     }
 
