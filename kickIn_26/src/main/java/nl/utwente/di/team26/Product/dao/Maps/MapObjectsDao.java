@@ -290,7 +290,7 @@ public class MapObjectsDao {
         List<MapObject> searchResults;
 
         boolean first = true;
-        StringBuilder sql = new StringBuilder("SELECT * FROM MapObject WHERE 1=1 ");
+        StringBuilder sql = new StringBuilder("SELECT * FROM MapObjects WHERE 1=1 ");
 
         if (valueObject.getObjectId() != 0) {
             if (first) {

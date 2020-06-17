@@ -95,10 +95,9 @@ function addEvent() {
     let locationstuff = document.getElementById("eventlocation");
     let eventloc = locationstuff.options[locationstuff.selectedIndex].value
     let eventdate = document.getElementById("eventDate").value;
+    console.log(eventdate);
     let eventjson = {
-        "createdBy": "CreaJoep",
         "description": description,
-        "lastEditedBy": "EditJoep",
         "location": eventloc,
         "name": namestuff
     };
@@ -108,7 +107,7 @@ function addEvent() {
     xhr.onreadystatechange = function () {
         if ((xhr.readyState == 4) && (xhr.status = 200)) {
             console.log(xhr.responseText);
-            window.location.href = "http://localhost:8080/kickInTeam26/event.html?id=" + xhr.responseText;
+//            window.location.href = "http://localhost:8080/kickInTeam26/mapEdit.html?id=" + xhr.responseText;
         }
     }
     xhr.setRequestHeader("Content-Type", "application/json");
