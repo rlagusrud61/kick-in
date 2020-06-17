@@ -19,24 +19,8 @@
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
     <link href="http://localhost:8080/kickInTeam26/css/list.css" rel="stylesheet"> <!-- link to css file -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Of Events</title>
 </head>
-
-<style>
-
-    table th{
-        font-size: 1.8rem;
-    }
-    table td {
-        font-size: 1.5rem;
-    }
-    table{
-        background-color: #ffffff;
-    }
-
-
-
-</style>
-
 <body>
 <div class="topnav">
     <a href="list.html" id="home"><i class="glyphicon glyphicon-home"></i></a>
@@ -94,7 +78,7 @@
                     </div>
                 </div>
                 <div class="bottomright" style="display: flex; justify-content: flex-end;">
-                    <button class="btn btn-success btn-circle btn-xl align-self-end" onclick="creatEvent()">ADD</button>
+                    <button class="btn btn-success btn-circle btn-xl align-self-end" onclick="addEventPopup()">ADD</button>
                 </div>
             </div>
         </div>
@@ -118,8 +102,8 @@
         <div class="dropdown-menu dropdown-menu-right">
             <a class="dropdown-item" onclick="sortTableAZ()">A - Z</a>
             <a class="dropdown-item" onclick="sortTableZA()">Z - A</a>
-            <a class="dropdown-item" href="#">Event Date (New - Old)</a>
-            <a class="dropdown-item" href="#">Event Date (Old - New)</a>
+            <a class="dropdown-item" onclick="sortTableNewOld()">Event Date (New - Old)</a>
+            <a class="dropdown-item" onclick="sortTableOldNew()">Event Date (Old - New)</a>
         </div>
     </div>
     <div class="eventlist">

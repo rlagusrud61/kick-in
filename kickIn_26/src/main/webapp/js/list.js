@@ -24,6 +24,20 @@ window.onclick = function (event) {
     }
 }
 
+
+function createEvent(form) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/events", true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+            window.location.href = 'http://localhost:8080/kickInTeam26/event.html/' + xhr.responseText
+            console.log(xhr.responseText);
+        }
+    }
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(JSON.stringify(form));
+}
+
 function XSSInputSanitation(id) {
     let element = document.getElementById(id).value;
     if (element.indexOf("onload") !== -1 || element.indexOf("<script>") !== -1 ||
@@ -37,9 +51,7 @@ function XSSInputSanitation(id) {
 
 function loadTable() {
     let xhr, header, tr, th, i, table, events, row, name, eventDate, creator, lastEditor, action;
-    console.log("hello");
     xhr = new XMLHttpRequest();
-    var h = "hello \"world\"";
     xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/events", true);
     xhr.onreadystatechange = function () {
         if ((xhr.readyState == 4) && (xhr.status == 200)) {
@@ -69,43 +81,54 @@ function loadTable() {
                 creator = row.insertCell(2);
                 lastEditor = row.insertCell(3);
                 action = row.insertCell(4);
-                // deleteEvent = row.insertCell(5);
-                name.innerHTML = '<a href = "http://localhost:8080/kickInTeam26/event.html?id=' + events[i].eventId + '">' + events[i].name + '</a>';
-                eventDate = events[i].date;
+                name.innerHTML = events[i].name;
+                eventDate.innerHTML = events[i].date;
                 creator.innerHTML = events[i].createdBy;
                 lastEditor.innerHTML = events[i].lastEditedBy;
-//                action.innerHTML = '<a href="http://localhost:8080/kickInTeam26/edit.html?id=' + events[i].eventId + '" class="text-success"><i class="glyphicon glyphicon-pencil" style="font-size:20px;"></i></a><a href="javascript: window.deleteEvent("' + events[i].eventId + '");" class="text-success"><i class="glyphicon glyphicon-trash" style="font-size:20px;"></span></a></i>';
-                action.innerHTML = '<a href="http://localhost:8080/kickInTeam26/event.html?id=' + events[i].eventId + '" class="text-success"><i class="glyphicon glyphicon-eye-open" style="font-size:20px;"></i></a><a href="http://localhost:8080/kickInTeam26/edit.html?id=' + events[i].eventId + '" class="text-success"><i class="glyphicon glyphicon-pencil" style="font-size:20px;"></i></a><a href="javascript: deleteEvent("' + events[i].eventId + '");" class="text-success"><i class="glyphicon glyphicon-trash" style="font-size:20px;"></i></a>';
+                action.innerHTML = '<a href="http://localhost:8080/kickInTeam26/event.html?id=' +
+                    events[i].eventId + '" class="text-success"><i class="glyphicon glyphicon-eye-open" ' +
+                    'style="font-size:20px;"></i></a><a href="http://localhost:8080/kickInTeam26/edit.html?id=' +
+                    events[i].eventId + '" class="text-success"><i class="glyphicon glyphicon-pencil" ' +
+                    'style="font-size:20px;"></i></a><a href="javascript: window.deleteEvent(\"' +
+                    events[i].eventId + '\");" class="text-success"><i class="glyphicon glyphicon-trash" ' +
+                    'style="font-size:20px;"></i></a>';
             }
-
-//			table.innerHTML = htmltext;
         }
     }
-    xhr.setRequestHeader("Content-Type", "Application/json");
+    xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send();
 }
 
-
 window.onload = loadTable;
 
-function creatEvent() {
-	let eventDescription, eventName, eventLocation, eventDate, eventLoc, eventJson
-    eventDescription = document.getElementById("eventDescription").value;
-    eventName = document.getElementById("eventName").value;
-    eventLoc = document.getElementById("eventLocation");
-    eventDate = document.getElementById("eventDate").value;
-    eventLocation = eventLoc.options[eventLoc.selectedIndex].value;
-    eventJson = {
-    	"date": eventDate,
-        "description": eventDescription,
-        "location": eventLocation,
-        "name": eventName
+function addEventPopup() {
+    let description = document.getElementById("eventdescription").value;
+    let namestuff = document.getElementById("eventname").value;
+    let locationstuff = document.getElementById("eventlocation");
+
+    let eventdate = document.getElementById("eventDate").value;
+    console.log(eventdate);
+    var dateControl = document.querySelector('input[type="date"]');
+    dateControl.value = eventdate.value;
+    console.log(dateControl.value); // prints "2017-06-01"
+    console.log(dateControl.valueAsNumber); // prints 1496275200000, a UNIX timestamp
+    let eventloc = locationstuff.options[locationstuff.selectedIndex].value;
+    let eventjson = {
+        "description": description,
+        "location": eventloc,
+        "name": namestuff
     };
-    console.log(eventJson);
-    addEvent(eventJson, function() {
-    	resp = this.responseText;
-    	window.location.href = "http://localhost:8080/kickInTeam26/event.html?id=" + resp;
-    })
+    console.log(JSON.stringify(eventjson));
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/events", true);
+    xhr.onreadystatechange = function () {
+        if ((xhr.readyState == 4) && (xhr.status = 200)) {
+            console.log(xhr.responseText);
+//            window.location.href = "http://localhost:8080/kickInTeam26/mapEdit.html?id=" + xhr.responseText;
+        }
+    }
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(JSON.stringify(eventjson));
 }
 
 function deleteEvent(id) {
@@ -137,26 +160,21 @@ function searchTables() {
     // Declare variables
     let searchValue, filter, table, tr, td, i, txtValue;
     searchValue = XSSInputSanitation('searchTable');
-    //if (searchValue !== "") {
-        filter = searchValue.toUpperCase();
-        table = document.getElementById("eventtable");
-        tr = table.getElementsByTagName("tr");
-        // Loop through all table rows, and hide those who don't match the search query
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
-            if (td) {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
+    filter = searchValue.toUpperCase();
+    table = document.getElementById("eventtable");
+    tr = table.getElementsByTagName("tr");
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
             }
         }
-    //}
-    // else {
-    //     loadTable()
-    // }
+    }
 }
 
 function sortTableAZ() {
@@ -215,6 +233,76 @@ function sortTableZA() {
             y = rows[i + 1].getElementsByTagName("TD")[0];
             // Check if the two rows should switch place:
             if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                // If so, mark as a switch and break the loop:
+                shouldSwitch = true;
+                break;
+            }
+        }
+        if (shouldSwitch) {
+            /* If a switch has been marked, make the switch
+            and mark that a switch has been done: */
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+        }
+    }
+}
+
+function sortTableNewOld() {
+    let table, rows, switching, i, x, y, shouldSwitch;
+    table = document.getElementById("eventtable");
+    switching = true;
+    /* Make a loop that will continue until
+    no switching has been done: */
+    while (switching) {
+        // Start by saying: no switching is done:
+        switching = false;
+        rows = table.rows;
+        /* Loop through all table rows (except the
+        first, which contains table headers): */
+        for (i = 1; i < (rows.length - 1); i++) {
+            // Start by saying there should be no switching:
+            shouldSwitch = false;
+            /* Get the two elements you want to compare,
+            one from current row and one from the next: */
+            x = rows[i].getElementsByTagName("TD")[1];
+            y = rows[i + 1].getElementsByTagName("TD")[1];
+            // Check if the two rows should switch place:
+            if (x.innerHTML < y.innerHTML) {
+                // If so, mark as a switch and break the loop:
+                shouldSwitch = true;
+                break;
+            }
+        }
+        if (shouldSwitch) {
+            /* If a switch has been marked, make the switch
+            and mark that a switch has been done: */
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+        }
+    }
+}
+
+function sortTableOldNew() {
+    let table, rows, switching, i, x, y, shouldSwitch;
+    table = document.getElementById("eventtable");
+    switching = true;
+    /* Make a loop that will continue until
+    no switching has been done: */
+    while (switching) {
+        // Start by saying: no switching is done:
+        switching = false;
+        rows = table.rows;
+        /* Loop through all table rows (except the
+        first, which contains table headers): */
+        for (i = 1; i < (rows.length - 1); i++) {
+            // Start by saying there should be no switching:
+            shouldSwitch = false;
+            /* Get the two elements you want to compare,
+            one from current row and one from the next: */
+            x = rows[i].getElementsByTagName("TD")[1];
+            y = rows[i + 1].getElementsByTagName("TD")[1];
+            // Check if the two rows should switch place:
+            if (x.innerHTML > y.innerHTML) {
                 // If so, mark as a switch and break the loop:
                 shouldSwitch = true;
                 break;
