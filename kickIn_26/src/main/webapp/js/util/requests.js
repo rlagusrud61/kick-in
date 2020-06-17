@@ -114,7 +114,7 @@ function addEvent(event) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/events" , true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 201)) {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
 			return xhr.responseText;
 		}
 	}
@@ -222,118 +222,355 @@ function deleteMap(mapId) {
 }
 
 function getAllMaps() {
-	
+	let xhr = new XMLHttpRequest();
+	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/maps" , true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
 }
 
 function addMap(map) {
-	
+	let xhr = new XMLHttpRequest();
+	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/maps" , true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
 }
 
 function deleteAllMaps() {
+	let xhr = new XMLHttpRequest();
+	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/maps" , true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
 	
 }
 
 //Eventmap functions
 function getAllMapsForEvent(eventId) {
-	
+	let xhr = new XMLHttpRequest();
+	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/eventMap/event/" + eventId , true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
 }
 
 function getAllEventsForMap(mapId) {
-	
+	let xhr = new XMLHttpRequest();
+	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/eventMap/map/" + mapId , true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
 }
 
 function addEventMap(eventMap) {
-	
+	let xhr = new XMLHttpRequest();
+	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/eventMap", true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send(JSON.stringify(eventMap));
 }
 
 function clearEvent(eventId) {
-	
+	let xhr = new XMLHttpRequest();
+	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/eventMap/" + eventId, true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
 }
 
 function deleteEventMap(eventId, mapId) {
-	
+	let xhr = new XMLHttpRequest();
+	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/eventMap/" + eventId + "/" + mapId, true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
 }
 
 function deleteAllRelations() {
-	
+	let xhr = new XMLHttpRequest();
+	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/eventMap", true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
 }
 
 //Functions for objects
 function getObject(objectId) {
-	
+	let xhr = new XMLHttpRequest();
+	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/object/" + objectId, true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
 }
 
 function updateObject(mapObject) {
-	
+	let xhr = new XMLHttpRequest();
+	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/object", true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send(JSON.stringify(mapObject));
 }
 
 function deleteObject(objectId) {
-	
+	let xhr = new XMLHttpRequest();
+	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/object/" + objectId, true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
 }
 
-function getAllObjects() {
-	
+function getAllObjectsForMap(mapId) {
+	let xhr = new XMLHttpRequest();
+	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/objects/" + mapId, true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
 }
 
 function generateReportForMap(mapId) {
-	
+	let xhr = new XMLHttpRequest();
+	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/objects/" + mapId + "/report", true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
 }
 
 function addObjectToMap(mapObject) {
-	
+	let xhr = new XMLHttpRequest();
+	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/objects", true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send(JSON.stringify(mapObject));
+}
+
+function clearMap(mapId) {
+	let xhr = new XMLHttpRequest();
+	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/objects/" + mapId, true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
 }
 
 function clearAllMaps() {
-	
+	let xhr = new XMLHttpRequest();
+	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/objects", true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
 }
 
 //Functions for drawings
 function getDrawing(drawingId) {
-	
+	let xhr = new XMLHttpRequest();
+	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/drawing/" + drawingId, true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
 }
 
 function updateDrawing(drawing) {
-	
+	let xhr = new XMLHttpRequest();
+	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/drawing", true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send(JSON.stringify(drawing));
 }
 
 function deleteDrawing(drawingId) {
-	
+	let xhr = new XMLHttpRequest();
+	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/drawing/" + drawingId, true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
 }
 
 function getAllDrawings() {
-	
+	let xhr = new XMLHttpRequest();
+	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/drawings", true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
 }
 
 function addDrawing(drawing) {
-	
+	let xhr = new XMLHttpRequest();
+	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/drawings", true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send(JSON.stringify(drawing));
 }
 
 //Functions for materials
 function getMaterialDrawing(materialId) {
-	
+	let xhr = new XMLHttpRequest();
+	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/material/" + materialId, true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
 }
 
 function updateMaterial(material) {
-	
+	let xhr = new XMLHttpRequest();
+	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/material", true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send(JSON.stringify(material));
 }
 
 function deleteMaterial(materialId) {
-	
+	let xhr = new XMLHttpRequest();
+	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/material/" + materialId, true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
 }
 
 function getAllMaterials() {
-	
+	let xhr = new XMLHttpRequest();
+	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/materials", true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
 }
 
 function addMaterial(material) {
-	
+	let xhr = new XMLHttpRequest();
+	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/materials", true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send(JSON.stringify(material));
 }
 
 //Functions for resources
 function deleteAllResources() {
-	
+	let xhr = new XMLHttpRequest();
+	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/resources", true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
 }
 
 function deleteResource(resourceId) {
-	
+	let xhr = new XMLHttpRequest();
+	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/resources/" + resourceId, true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			return xhr.responseText;
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
 }
