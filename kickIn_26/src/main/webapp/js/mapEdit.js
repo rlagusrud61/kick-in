@@ -57,7 +57,7 @@ let jsonObj = {
     items: {}
 }
 
-function addItems (){
+function addItems() {
     let row, label, numInput, addButton, materialsList, objReq, table, i;
     materialsList = null;
     objReq = new XMLHttpRequest();
@@ -84,6 +84,36 @@ function addItems (){
     }
     objReq.open("GET", ("http://localhost:8080/kickInTeam26/rest/materials"));
     objReq.send();
+}
+
+//addItems2() defined for <template> implementation, still not done.
+function addItems2() {
+    let materialsList, objReq;
+
+    materialsList = null;
+    objReq = new XMLHttpRequest();
+    objReq.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            materialsList = JSON.parse(objReq.responseText);
+
+            if ('content' in document.createElement('template')) {
+                // Instantiate the table with the existing HTML tbody
+                // and the row with the template
+                var tbody = document.querySelector("tbody");
+                var template = document.querySelector('#itemRow');
+                for (let i = 0; i < materialsList.length ; i++) {
+                    // Clone the new row and insert it into the table
+                    var clone = template.content.cloneNode(true);
+                    var td = clone.querySelectorAll("td");
+                    td[0].textContent = '<label>Item ' + materialsList[i].resourceId + '</label>';
+                    td[1].textContent = '<input id ="input' + materialsList[i].resourceId + '" type = "number" name = "Quantity"/>';
+                    td[2].textContent = '<button onclick ="displayItems(\' + materialsList[i].resourceId + \')" style="background-color: #58BD0F;border-color: #C1FF94;">+</button>\"';
+                    tbody.appendChild(clone);
+                }
+
+            }
+        }
+    }
 }
 
 function displayItems(inum) {
@@ -114,7 +144,7 @@ function XSSInputSanitation(id) {
         element.indexOf("onerror") !== -1 || element.indexOf("alert") !== -1) {
         document.getElementById(id).value = "";
         return "";
-    } else{
+    } else {
         return element;
     }
 }
@@ -123,7 +153,7 @@ function searchItems() {
     // Declare variables
     let searchValue, filter, table, tr, td, i, txtValue;
     searchValue = XSSInputSanitation('searchItems');
-    if (searchValue !== ""){
+    if (searchValue !== "") {
         filter = searchValue.toUpperCase();
         table = document.getElementById("addItems");
         tr = table.getElementsByTagName("tr");
@@ -253,7 +283,6 @@ function goBack() {
 // function filterOn() {
 //
 // }
-
 
 
 // let img = L.distortableImageOverlay('..\\resources\\testImages\\example.jpg', {

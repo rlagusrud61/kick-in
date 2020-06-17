@@ -3,9 +3,6 @@
     z-index: 1
 }
 
-ul {
-    font-size:13px;
-}
 
 #freeDrawContainer {
     height: 500px;
@@ -122,6 +119,14 @@ h3{
     width: 60px;
 }
 
+#addItemBtn{
+    width: 14px;
+    height: 14px;
+    border-radius: 35px;
+    font-size: 12px;
+    text-align: center;
+}
+
 .btn-circle.btn-xl {
     width: 70px;
     height: 70px;
@@ -142,4 +147,6 @@ table{
     width: 100%;
 }
 
-
+th, td {
+    font-size: 18px;
+}
