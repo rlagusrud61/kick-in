@@ -81,31 +81,18 @@ function loadTable() {
                 creator = row.insertCell(2);
                 lastEditor = row.insertCell(3);
                 action = row.insertCell(4);
-                // deleteEvent = row.insertCell(5);
-                name.innerHTML = '<a href = "http://localhost:8080/kickInTeam26/event.html?id=' + events[i].eventId + '">' + events[i].name + '</a>';
-                eventDate = events[i].date;
+                name.innerHTML = events[i].name;
+                eventDate.innerHTML = events[i].date;
                 creator.innerHTML = events[i].createdBy;
                 lastEditor.innerHTML = events[i].lastEditedBy;
-                action.innerHTML = '<a href="http://localhost:8080/kickInTeam26/edit.html?id=' + events[i].eventId + '" class="text-success"><i class="glyphicon glyphicon-pencil" style="font-size:20px;"></i></a><a href="javascript: window.deleteEvent("' + events[i].eventId + '");" class="text-success"><i class="glyphicon glyphicon-trash" style="font-size:20px;"></span></a></i>';
-                // action.innerHTML = "<button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/event.html?id=" + events[i].eventId + "\";'>View</button>"
-                // editEvent.innerHTML = "<button onclick = 'window.location.href = \"http://localhost:8080/kickInTeam26/edit.html?id=" + events[i].eventId + "\";'>Edit</button>"
-                // deleteEvent.innerHTML = "<button onclick = 'deleteEvent(" + events[i].eventId + ")'>Delete</button>"
-
-                    // '<a href="http://localhost:8080/kickInTeam26/edit.html?id=' + events[i].eventId + '" class="text-success"><i class="glyphicon glyphicon-pencil" style="font-size:20px;"></i></a>' +
-                    // '' +
-                    // '<a href='edit.html' class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>
-
-
-//				htmltext += "<div class= 'col-md-12 col-sm-10'><div class='project'><div class='row bg-white has-shadow'>" +
-//				"<div class='col-lg-12 col-md-12 d-flex align-items-center justify-content-between'><h3 class='h4'><a href='event.html'>" + events[i].name + "</a>" +
-//				"</h3><h3 class='h4'>20/4/2020</h3><h3 class='h4'>" + events[i].createdBy + "</h3><h3 class='h4'> " + events[i].lastEditedBy + "</h3>" +
-//				"<div class='col-md-1 col-sm-1 col-lg-1 d-flex justify-content-between'><a href='edit.html' class='text-success'>" +
-//				"<i class='glyphicon glyphicon-pencil' style='font-size:20px;'></i></a><a href='edit.html' class='text-success'> " +
-//				"<i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a></div></div></div></div></div>"
+                action.innerHTML = '<a href="http://localhost:8080/kickInTeam26/event.html?id=' +
+                    events[i].eventId + '" class="text-success"><i class="glyphicon glyphicon-eye-open" ' +
+                    'style="font-size:20px;"></i></a><a href="http://localhost:8080/kickInTeam26/edit.html?id=' +
+                    events[i].eventId + '" class="text-success"><i class="glyphicon glyphicon-pencil" ' +
+                    'style="font-size:20px;"></i></a><a href="javascript: window.deleteEvent(\"' +
+                    events[i].eventId + '\");" class="text-success"><i class="glyphicon glyphicon-trash" ' +
+                    'style="font-size:20px;"></i></a>';
             }
-            document.getElementById(id).style.property = new style
-
-//			table.innerHTML = htmltext;
         }
     }
     xhr.setRequestHeader("Content-Type", "application/json");
@@ -173,26 +160,21 @@ function searchTables() {
     // Declare variables
     let searchValue, filter, table, tr, td, i, txtValue;
     searchValue = XSSInputSanitation('searchTable');
-    //if (searchValue !== "") {
-        filter = searchValue.toUpperCase();
-        table = document.getElementById("eventtable");
-        tr = table.getElementsByTagName("tr");
-        // Loop through all table rows, and hide those who don't match the search query
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
-            if (td) {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
+    filter = searchValue.toUpperCase();
+    table = document.getElementById("eventtable");
+    tr = table.getElementsByTagName("tr");
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
             }
         }
-    //}
-    // else {
-    //     loadTable()
-    // }
+    }
 }
 
 function sortTableAZ() {
@@ -263,4 +245,12 @@ function sortTableZA() {
             switching = true;
         }
     }
+}
+
+function sortTableNewOld() {
+
+}
+
+function sortTableOldNew() {
+
 }
