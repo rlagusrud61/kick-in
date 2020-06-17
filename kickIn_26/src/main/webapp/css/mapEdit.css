@@ -119,6 +119,12 @@ h3{
     width: 60px;
 }
 
+
+.active-green input.form-control[type=text]:focus:not([readonly]) {
+    border-bottom: 1px solid #89BD26;
+    box-shadow: 0 1px 0 0 #89BD26;
+}
+
 #addItemBtn{
     width: 14px;
     height: 14px;
