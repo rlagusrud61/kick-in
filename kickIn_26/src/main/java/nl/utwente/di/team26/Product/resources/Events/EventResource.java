@@ -27,14 +27,10 @@ public class EventResource {
     @GET
     @Secured({Roles.VISITOR})
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getEventById(@PathParam("eventId") long eventId) {
+    public Response getEventById(@PathParam("eventId") long eventId) throws SQLException, NotFoundException {
         try (Connection conn = CONSTANTS.getConnection()) {
             String eventData = eventsDao.getEvent(conn, eventId);
             return Utils.returnOkResponse(eventData);
-        } catch (NotFoundException e) {
-            return Utils.returnNotFoundError(e.getMessage());
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
@@ -42,7 +38,7 @@ public class EventResource {
     @Secured({Roles.EDITOR})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateEvent(Event eventToUpdate) {
+    public Response updateEvent(Event eventToUpdate) throws NotFoundException, SQLException {
 
         long userId = Utils.getUserFromContext(securityContext);
         eventToUpdate.setLastEditedBy(userId);
@@ -50,24 +46,16 @@ public class EventResource {
         try (Connection conn = CONSTANTS.getConnection()) {
             eventsDao.save(conn, eventToUpdate);
             return Utils.returnNoContent();
-        } catch (NotFoundException e) {
-            return Utils.returnNotFoundError(e.getMessage());
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
     @DELETE
     @Secured({Roles.EDITOR})
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteEvent(@PathParam("eventId") int eventToDelete) {
+    public Response deleteEvent(@PathParam("eventId") int eventToDelete) throws NotFoundException, SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             eventsDao.delete(conn, new Event(eventToDelete));
             return Utils.returnNoContent();
-        } catch (NotFoundException e) {
-            return Utils.returnNotFoundError(e.getMessage());
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 }

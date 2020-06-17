@@ -22,14 +22,10 @@ public class DrawingResource {
     @GET
     @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllDrawings() {
+    public Response getAllDrawings() throws NotFoundException, SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             String allDrawings = resourceDao.getAllDrawings(conn);
             return Utils.returnOkResponse(allDrawings);
-        } catch (NotFoundException e) {
-            return Utils.returnNotFoundError(e.getMessage());
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
@@ -38,16 +34,10 @@ public class DrawingResource {
     @Secured(Roles.EDITOR)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateMap(Drawing drawingToSave) {
+    public Response updateMap(Drawing drawingToSave) throws NotFoundException, SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             resourceDao.save(conn, drawingToSave);
             return Utils.returnNoContent();
-        } catch (NotFoundException e) {
-            e.printStackTrace();
-            return Utils.returnNotFoundError(e.getMessage());
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
@@ -55,13 +45,10 @@ public class DrawingResource {
     @Secured(Roles.ADMIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addNewDrawing(Drawing drawingToAdd) {
+    public Response addNewDrawing(Drawing drawingToAdd) throws SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             long drawingId = resourceDao.create(conn, drawingToAdd);
             return Utils.returnCreated(drawingId);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 

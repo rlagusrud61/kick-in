@@ -31,7 +31,7 @@ public abstract class Dao {
             if (resultSet.next()) {
                 String result = resultSet.getString(1);
                 if (result == null || result.equals("")) {
-                    throw new NotFoundException("No Result Returned, no Maps in the Database");
+                    throw new NotFoundException("No Result Returned, the object either does not exist, or the database is empty in the Database");
                 } else {
                     return result;
                 }

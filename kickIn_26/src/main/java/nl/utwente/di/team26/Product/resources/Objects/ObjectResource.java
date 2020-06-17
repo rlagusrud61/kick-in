@@ -23,28 +23,20 @@ public class ObjectResource {
     @Secured(Roles.EDITOR)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateObject(MapObject objectToUpdate) {
+    public Response updateObject(MapObject objectToUpdate) throws NotFoundException, SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             mapObjectsDao.save(conn, objectToUpdate);
             return Utils.returnNoContent();
-        } catch (NotFoundException e) {
-            return Utils.returnNotFoundError(e.getMessage());
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
     @DELETE
     @Secured(Roles.EDITOR)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteObject(@PathParam("objectId") long objectToDelete) {
+    public Response deleteObject(@PathParam("objectId") long objectToDelete) throws NotFoundException, SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             mapObjectsDao.delete(conn, new MapObject(objectToDelete));
             return Utils.returnNoContent();
-        } catch (NotFoundException e) {
-            return Utils.returnNotFoundError(e.getMessage());
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 }

@@ -27,14 +27,10 @@ public class MapsResource {
     @GET
     @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllMaps() {
+    public Response getAllMaps() throws NotFoundException, SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             String allMaps = mapsDao.getAllMaps(conn);
             return Utils.returnOkResponse(allMaps);
-        } catch (NotFoundException e) {
-            return Utils.returnNotFoundError(e.getMessage());
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
@@ -42,7 +38,7 @@ public class MapsResource {
     @Secured(Roles.EDITOR)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addNewMap(Map mapToAdd) {
+    public Response addNewMap(Map mapToAdd) throws SQLException {
 
         long userId = Utils.getUserFromContext(securityContext);
 
@@ -53,20 +49,16 @@ public class MapsResource {
 
             long mapId = mapsDao.create(conn, mapToAdd);
             return Utils.returnCreated(mapId);
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
     @DELETE
     @Secured(Roles.ADMIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteAllMaps() {
+    public Response deleteAllMaps() throws SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             mapsDao.deleteAll(conn);
             return Utils.returnNoContent();
-        } catch (SQLException e) {
-            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
