@@ -142,4 +142,6 @@ table{
     width: 100%;
 }
 
-
+th, td {
+    font-size: 18px;
+}

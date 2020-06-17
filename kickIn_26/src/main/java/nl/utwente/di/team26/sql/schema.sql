@@ -10,7 +10,6 @@ create table users
     clearanceLevel  int not null,
     primary key (userid)
 );
-
 create table session
 (
     tokenId bigserial,
@@ -19,7 +18,6 @@ create table session
     foreign key (userid) references users (userid),
     primary key (tokenId)
 );
-
 CREATE TABLE Events
 (
     eventId      bigserial NOT NULL,
@@ -33,7 +31,6 @@ CREATE TABLE Events
     FOREIGN KEY (createdBy) REFERENCES users(userid) ON DELETE CASCADE,
     FOREIGN KEY (lastEditedBy) REFERENCES users(userid) ON DELETE CASCADE
 );
-
 CREATE TABLE Maps
 (
     mapId        bigserial NOT NULL,
@@ -45,7 +42,6 @@ CREATE TABLE Maps
     FOREIGN KEY (createdBy) REFERENCES users(userid) ON DELETE CASCADE,
     FOREIGN KEY (lastEditedBy) REFERENCES users(userid) ON DELETE CASCADE
 );
-
 CREATE TABLE TypeOfResource
 (
     resourceId  bigserial NOT NULL,
@@ -53,7 +49,6 @@ CREATE TABLE TypeOfResource
     description text,
     PRIMARY KEY (resourceId)
 );
-
 CREATE TABLE Materials
 (
     resourceId bigint NOT NULL,
@@ -61,7 +56,6 @@ CREATE TABLE Materials
     PRIMARY KEY (resourceId),
     FOREIGN KEY (resourceId) REFERENCES TypeOfResource (resourceId) ON DELETE CASCADE
 );
-
 CREATE TABLE Drawing
 (
     resourceId bigint NOT NULL,
@@ -69,7 +63,6 @@ CREATE TABLE Drawing
     PRIMARY KEY (resourceId),
     FOREIGN KEY (resourceId) REFERENCES TypeOfResource (resourceId) ON DELETE CASCADE
 );
-
 CREATE TABLE EventMap
 (
     eventId bigint NOT NULL,
@@ -78,7 +71,6 @@ CREATE TABLE EventMap
     FOREIGN KEY (eventId) REFERENCES Events (eventId) ON DELETE CASCADE,
     FOREIGN KEY (mapId) REFERENCES Maps (mapID) ON DELETE CASCADE
 );
-
 CREATE TABLE MapObjects
 (
     objectId   bigserial NOT NULL,
@@ -89,9 +81,6 @@ CREATE TABLE MapObjects
     FOREIGN KEY (mapId) REFERENCES Maps (mapId) ON DELETE CASCADE,
     FOREIGN KEY (resourceId) REFERENCES TypeOfResource (resourceId) ON DELETE CASCADE
 );
-
-insert into users (email, password, nickname, clearanceLevel) VALUES ('admin@gmail.com','admin', 'adminpass', 2);
-
 insert into typeofresource (resourceid, name, description)
 select (elem ->> 'id')::bigint,
        (elem ->> 'name')::text,
@@ -4675,3 +4664,364 @@ from jsonb_array_elements('[
     "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADYAAAALCAYAAAA0oX6uAAAAoklEQVR4nN1VQQ6AMAizxv9/uZ40hLRjzizG9QhslMIYSG4rYv+awCwcT4IB3O0liVZM9CtbFVvlqdAsTCXJtoxRIvl8laeCLSyrqRLFGKd0tLt411GXL8fKBrjl0UNUkXk7is6nRMkCxXvs8iCJliqO0Gy0hAXAy28L6xmPkXcQk/fYMy7BIy/VhOFR7Fkk6ly0Kbu7071jN0m2sL9j2Q/6BBAnuBVxIUNbAAAAAElFTkSuQmCC"
   }
 ]') as arr(elem);
+
+--the upper code messes the SEQUENCE of bigserial, since we use the code in the csv, not our own ones.
+select max(resourceId) from typeofresource;
+SELECT nextval('typeofresource_resourceid_seq');
+BEGIN;
+-- protect against concurrent inserts while you update the counter
+LOCK TABLE drawing IN EXCLUSIVE MODE;
+-- Update the sequence
+SELECT setval('typeofresource_resourceid_seq', COALESCE((SELECT MAX(resourceId)+1 FROM typeofresource), 1), false);
+COMMIT;
+
+create or replace function getAllEvents()
+    returns text
+    language plpgsql
+as
+$$
+begin
+    return
+        (
+            select jsonb_agg(events.eventInfo)::text as events
+            from (
+                     select jsonb_build_object(
+                                    'eventId',eventid,
+                                    'name', name,
+                                    'description', description,
+                                    'date', date,
+                                    'location', location,
+                                    'createdBy', cb.nickname,
+                                    'lastEditedBy', leb.nickname
+                                ) as eventInfo
+                     from events e, users cb, users leb
+                     where e.createdBy = cb.userid
+                       and e.lastEditedBy = leb.userid
+                     order by e.eventid
+                 ) events
+        );
+end;
+$$;
+create or replace function getAllMaps()
+    returns text
+    language plpgsql
+as
+$$
+begin
+    return
+        (
+            select jsonb_agg(maps.mapInfo)::text
+            from (
+                     select jsonb_build_object(
+                                    'mapId',mapId,
+                                    'name', name,
+                                    'description', description,
+                                    'createdBy', cb.nickname,
+                                    'lastEditedBy', leb.nickname
+                                ) as mapInfo
+                     from maps m, users cb, users leb
+                     where m.createdBy = cb.userid
+                       and m.lastEditedBy = leb.userid
+                     order by m.mapid
+                 ) maps
+        );
+end;
+$$;
+create or replace function getAllResourcesJSON()
+    returns jsonb
+    language plpgsql
+as
+$$
+begin
+    return
+        (
+            select jsonb_agg(resources.resourceInfo)
+            from (
+                     (select jsonb_build_object(
+                                     'resourceId', dtor.resourceId,
+                                     'name', dtor.name,
+                                     'description', dtor.description,
+                                     'image', d.image
+                                 ) as resourceInfo
+                      from typeofresource dtor inner join drawing d on dtor.resourceId = d.resourceid)
+                     union
+                     (select jsonb_build_object(
+                                     'resourceId', mtor.resourceId,
+                                     'name', mtor.name,
+                                     'description', mtor.description,
+                                     'image', m.image
+                                 ) as resourceInfo
+                      from typeofresource mtor inner join materials m on mtor.resourceId = m.resourceid)
+                 ) resources
+        );
+end;
+$$;
+create or replace function getAllResources()
+    returns text
+    language plpgsql
+as
+$$
+begin
+    return (
+        select getAllResourcesJSON()::text
+    );
+end;
+$$;
+create or replace function getEvent(eid bigint)
+    returns text
+    language plpgsql
+as
+$$
+begin
+    return
+        (
+            select chosenEvent.eventInfo::text
+            from (
+                     select jsonb_build_object(
+                                    'eventId', e.eventid,
+                                    'name', e.name,
+                                    'description', e.description,
+                                    'date', e.date,
+                                    'location', e.location,
+                                    'createdBy', cb.nickname,
+                                    'lastEditedBy', leb.nickname,
+                                    'maps', getAllMapsForEventJSON(eid),
+                                    'report', generateEventReportJSON(eid)
+                                ) as eventInfo
+                     from events e, users cb, users leb
+                     where e.createdBy = cb.userid
+                       and e.lastEditedBy = leb.userid
+                       and e.eventid = eid
+                 ) chosenEvent
+        );
+end;
+$$;
+create or replace function getAllMapsForEventJSON(eid bigint)
+    returns jsonb
+    language plpgsql
+as
+$$
+begin
+    return (select jsonb_agg(
+                           jsonb_build_object(
+                                   'name', m.name,
+                                   'description', m.description,
+                                   'createdBy', cbm.nickname,
+                                   'lastEditedBy', lebm.nickname))
+            from maps m, users cbm, users lebm, eventmap em
+            where m.createdBy = cbm.userid
+              and m.lastEditedBy = lebm.userid
+              and em.mapId = m.mapId
+              and em.eventid = eid);
+end;
+$$;
+create or replace function getAllMapsForEvent(eid bigint)
+    returns text
+    language plpgsql
+as
+$$
+begin
+    return (getAllMapsForEventJSON(eid));
+end;
+$$;
+create or replace function getAllEventsForMap(mid bigint)
+    returns text
+    language plpgsql
+as
+$$
+begin
+    return (
+        select json_agg(
+                       jsonb_build_object(
+                               'eventId', e.eventId,
+                               'name', e.name,
+                               'description', e.description
+                           )
+                   )
+        from events e, eventmap em
+        where e.eventid = em.eventid
+          and em.mapId = mid
+    );
+end;
+$$;
+create or replace function getMap(mid bigint)
+    returns text
+    language plpgsql
+as
+$$
+begin
+    return (
+        select map.mapData::text
+        from (
+                 select jsonb_build_object(
+                                'mapId', m.mapId,
+                                'name', m.name,
+                                'description', m.description,
+                                'createdBy', cb.nickname,
+                                'lastEditedBy', leb.nickname,
+                                'report', generateMapReportJSON(mid)) as mapData
+                 from maps m, users cb, users leb
+                 where m.createdBy = cb.userid
+                   and m.lastEditedBy = leb.userid
+                   and m.mapId = mid) map
+    );
+end;
+$$;
+create or replace function getResource(rid bigint)
+    returns text
+    language plpgsql
+as
+$$
+begin
+    return (
+        select elem::text
+        from jsonb_array_elements(getallresourcesjson()) as arr(elem)
+        where (elem ->> 'resourceId')::bigint = rid
+    );
+end;
+$$;
+create or replace function getAllObjectsOnMap(mid bigint)
+    returns text
+    language plpgsql
+as
+$$
+begin
+    return (
+
+        select jsonb_agg(mapObjects.object)
+        from (
+                 select jsonb_build_object(
+                                'objectId', mo.objectId,
+                                'resourceId', mo.resourceId,
+                                'latLangs', mo.latLangs) as object
+                 from mapobjects mo
+                 where mo.mapId = mid) mapObjects
+
+    );
+end;
+$$;
+create or replace function generateMapReport(mid bigint)
+    returns text
+    language plpgsql
+as
+$$
+begin
+    return (
+        select jsonb_agg(itemReport.resource)::text as resources
+        from (
+                 select jsonb_build_object(
+                                'name', tor.name,
+                                'count', count(tor.name)
+                            ) as resource
+                 from typeofresource tor, mapobjects m
+                 where tor.resourceid = m.resourceid
+                   and m.mapid = mid
+                 group by m.mapid, tor.name
+             ) as itemReport
+    );
+end;
+$$;
+create or replace function generateMapReportJSON(mid bigint)
+    returns jsonb
+    language plpgsql
+as
+$$
+begin
+    return (
+        select jsonb_agg(itemReport.resource) as resources
+        from (
+                 select jsonb_build_object(
+                                'name', tor.name,
+                                'count', count(tor.name)
+                            ) as resource
+                 from typeofresource tor, mapobjects m
+                 where tor.resourceid = m.resourceid
+                   and m.mapid = mid
+                 group by m.mapid, tor.name
+             ) as itemReport
+    );
+end;
+$$;
+create or replace function generateEventReportJSON(eid bigint)
+    returns jsonb
+    language plpgsql
+as
+$$
+begin
+    return (
+        select jsonb_agg(itemReport.resource) as resources
+        from (
+                 select jsonb_build_object(
+                                'name', tor.name,
+                                'count', count(tor.name)
+                            ) as resource
+                 from typeofresource tor, mapobjects mo, eventmap em
+                 where em.eventid = eid
+                   and em.mapId = mo.mapId
+                   and mo.resourceid = tor.resourceid
+                 group by tor.resourceId
+             ) as itemReport
+    );
+end;
+$$;
+create or replace function generateEventReport(eid bigint)
+    returns text
+    language plpgsql
+as
+$$
+begin
+    return (
+        generateEventReportJSON(eid)
+        );
+end;
+$$;
+create or replace function getAllMaterials()
+    returns text
+    language plpgsql
+as
+$$
+begin
+    return (
+        select json_agg(
+                       jsonb_build_object(
+                               'resourceId', tor.resourceId,
+                               'name', tor.name,
+                               'description', tor.description,
+                               'image', m.image
+                           )
+                   )::text
+        from typeofresource tor, materials m
+        where tor.resourceId = m.resourceId
+    );
+end;
+$$;
+create or replace function getAllDrawings()
+    returns text
+    language plpgsql
+as
+$$
+begin
+    return (
+        select json_agg(
+                       jsonb_build_object(
+                               'resourceId', tor.resourceId,
+                               'name', tor.name,
+                               'description', tor.description,
+                               'image', d.image
+                           )
+                   )::text
+        from typeofresource tor, drawing d
+        where tor.resourceId = d.resourceId
+    );
+end;
+$$;
+create or replace function terminateIdle()
+    returns table(terminated boolean)
+    language plpgsql
+as
+$$
+begin
+    return query select pg_terminate_backend(pid) as terminated FROM pg_stat_activity
+                 WHERE usename = 'dab_di19202b_27' and state='idle';
+end;
+$$;

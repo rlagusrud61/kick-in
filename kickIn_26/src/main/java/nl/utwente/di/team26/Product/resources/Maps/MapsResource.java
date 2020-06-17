@@ -30,18 +30,18 @@ public class MapsResource {
     public Response getAllMaps() {
         try (Connection conn = CONSTANTS.getConnection()) {
             String allMaps = mapsDao.getAllMaps(conn);
-            return Response.ok(allMaps).build();
-        } catch (NotFoundException throwables) {
-            return Response.status(Response.Status.NOT_FOUND).entity(throwables.getMessage()).build();
-        } catch (SQLException throwables) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(throwables.getMessage()).build();
+            return Utils.returnOkResponse(allMaps);
+        } catch (NotFoundException e) {
+            return Utils.returnNotFoundError(e.getMessage());
+        } catch (SQLException e) {
+            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
     @POST
     @Secured(Roles.EDITOR)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response addNewMap(Map mapToAdd) {
 
         long userId = Utils.getUserFromContext(securityContext);
@@ -52,21 +52,21 @@ public class MapsResource {
             mapToAdd.setLastEditedBy(userId);
 
             long mapId = mapsDao.create(conn, mapToAdd);
-            return Response.status(Response.Status.CREATED).entity(mapId).build();
-        } catch (SQLException throwables) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(throwables.getMessage()).build();
+            return Utils.returnCreated(mapId);
+        } catch (SQLException e) {
+            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
     @DELETE
     @Secured(Roles.ADMIN)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response deleteAllMaps() {
         try (Connection conn = CONSTANTS.getConnection()) {
             mapsDao.deleteAll(conn);
-            return Response.noContent().build();
+            return Utils.returnNoContent();
         } catch (SQLException e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 

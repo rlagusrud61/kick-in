@@ -2,59 +2,65 @@ package nl.utwente.di.team26.Product.resources.TypeOfResource;
 
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exceptions.NotFoundException;
-import nl.utwente.di.team26.Product.dao.TypeOfResources.MaterialsDao;
-import nl.utwente.di.team26.Product.dao.TypeOfResources.TypeOfResourceDao;
+import nl.utwente.di.team26.Product.dao.Resources.ResourceDao;
 import nl.utwente.di.team26.Product.model.TypeOfResource.Material;
 import nl.utwente.di.team26.Security.Filters.Secured;
 import nl.utwente.di.team26.Security.User.Roles;
+import nl.utwente.di.team26.Utils;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-@Path("/materials/{materialId}")
+@Path("/resources/material")
 public class MaterialResource {
 
-
-
-    MaterialsDao materialsDao = new MaterialsDao();
+    ResourceDao resourceDao = new ResourceDao();
 
     @GET
     @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
-    public Material getDrawingObject(@PathParam("materialId") int materialId) {
+    public Response getAllMaterials() {
         try (Connection conn = CONSTANTS.getConnection()) {
-            return materialsDao.getObject(conn, materialId);
-        } catch (SQLException | NotFoundException throwables) {
-            throwables.printStackTrace();
-            return null;
+            String allMaterials = resourceDao.getAllMaterials(conn);
+            return Utils.returnOkResponse(allMaterials);
+        } catch (NotFoundException e) {
+            return Utils.returnNotFoundError(e.getMessage());
+        } catch (SQLException e) {
+            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
     @PUT
-    @Secured(Roles.ADMIN)
+    @Path("{materialId}")
+    @Secured(Roles.EDITOR)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
-    public String updateObject(Material materialToUpdate) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateMap(Material materialToSave) {
         try (Connection conn = CONSTANTS.getConnection()) {
-            materialsDao.save(conn, materialToUpdate);
-            return CONSTANTS.SUCCESS;
-        } catch (NotFoundException | SQLException e) {
-            return CONSTANTS.FAILURE + " " + e.getMessage();
+            resourceDao.save(conn, materialToSave);
+            return Utils.returnNoContent();
+        } catch (NotFoundException e) {
+            return Utils.returnNotFoundError(e.getMessage());
+        } catch (SQLException e) {
+            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
-    @DELETE
+    @POST
     @Secured(Roles.ADMIN)
-    @Produces(MediaType.TEXT_PLAIN)
-    public String deleteObject(@PathParam("materialId") int materialId) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addNewMaterial(Material materialToAdd) {
         try (Connection conn = CONSTANTS.getConnection()) {
-            (new TypeOfResourceDao()).delete(conn, new Material(materialId));
-            return CONSTANTS.SUCCESS;
-        } catch (NotFoundException | SQLException e) {
-            return CONSTANTS.FAILURE + " " + e.getMessage();
+            long drawingId = resourceDao.create(conn, materialToAdd);
+            return Utils.returnCreated(drawingId);
+        } catch (SQLException e) {
+            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
 }
+

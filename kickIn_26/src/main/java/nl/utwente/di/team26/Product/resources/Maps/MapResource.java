@@ -27,45 +27,45 @@ public class MapResource {
     @GET
     @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getMapById(@PathParam("mapId") int mapId) {
+    public Response getMapById(@PathParam("mapId") long mapId) {
         try (Connection conn = CONSTANTS.getConnection()) {
             String mapData = mapsDao.getMap(conn, mapId);
-            return Response.ok(mapData).build();
+            return Utils.returnOkResponse(mapData);
         } catch (NotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+            return Utils.returnNotFoundError(e.getMessage());
         } catch (SQLException e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
     @PUT
     @Secured(Roles.EDITOR)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response updateMap(Map mapToUpdate) {
         long userId = Utils.getUserFromContext(securityContext);
         mapToUpdate.setLastEditedBy(userId);
         try (Connection conn = CONSTANTS.getConnection()) {
             mapsDao.save(conn, mapToUpdate);
-            return Response.noContent().build();
+            return Utils.returnNoContent();
         } catch (NotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+            return Utils.returnNotFoundError(e.getMessage());
         } catch (SQLException e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 
     @DELETE
     @Secured(Roles.EDITOR)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response deleteMap(@PathParam("mapId") int mapToDelete) {
         try (Connection conn = CONSTANTS.getConnection()) {
             mapsDao.delete(conn, new Map(mapToDelete));
-            return Response.noContent().build();
+            return Utils.returnNoContent();
         } catch (NotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+            return Utils.returnNotFoundError(e.getMessage());
         } catch (SQLException e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+            return Utils.returnInternalServerError(e.getMessage());
         }
     }
 

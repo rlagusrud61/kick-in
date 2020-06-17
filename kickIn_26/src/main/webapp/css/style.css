@@ -4,6 +4,12 @@ body{
   font-size: 25px;
 }
 
+
+.active-green-box {
+  border: 1px solid #89BD26;
+  box-shadow: 0 0 0 1px #89BD26;
+}
+
 .table-larger{
   font-size:20px;
 }
