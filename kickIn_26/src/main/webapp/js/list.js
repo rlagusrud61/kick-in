@@ -98,6 +98,8 @@ function loadTable() {
 //				"<i class='glyphicon glyphicon-pencil' style='font-size:20px;'></i></a><a href='edit.html' class='text-success'> " +
 //				"<i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a></div></div></div></div></div>"
             }
+            document.getElementById(id).style.property = new style
+
 //			table.innerHTML = htmltext;
         }
     }
