@@ -87,18 +87,18 @@ function deleteEvent(eventId) {
  * @returns {json | Object | Array} - The response from the RESTful service provider which will be an
  * array of events. Each event will be a JSON object.
  */
-function getAllEvents() {
+function getAllEvents(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/events" , true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			return(xhr.responseText)
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
-	xhr.send();
+	xhr.send();	
 }
-
+a = getAllEvents()
 /**
  * @param {json | Object} event - The event to be added to the database.
  *
@@ -111,12 +111,12 @@ function getAllEvents() {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function addEvent(event) {
+function addEvent(event, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/events" , true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+		if ((xhr.readyState === 4) && (xhr.status === 201)) {
+			console.log(xhr.responseText);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -132,7 +132,7 @@ function addEvent(event) {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function deleteAllEvents() {
+function deleteAllEvents(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/events" , true);
 	xhr.onreadystatechange = function() {
@@ -159,7 +159,7 @@ function deleteAllEvents() {
  * @returns {json | Object} - The response from the RESTful service provider which will be a JSON object
  * of the required map.
  */
-function getMap(mapId) {
+function getMap(mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/map/" + mapId , true);
 	xhr.onreadystatechange = function() {
@@ -185,7 +185,7 @@ function getMap(mapId) {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function updateMap(map) {
+function updateMap(map, callback) {
 	let xhr, mapId;
 	mapId = map.mapId;
 	xhr = new XMLHttpRequest();
@@ -211,7 +211,7 @@ function updateMap(map) {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function deleteMap(mapId) {
+function deleteMap(mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/map/" + mapId , true);
 	xhr.onreadystatechange = function() {
@@ -234,6 +234,7 @@ function deleteMap(mapId) {
  * array of maps. Each map will be a JSON object.
  */
 function getAllMaps() {
+
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/maps" , true);
 	xhr.onreadystatechange = function() {

@@ -38,22 +38,23 @@ window.onclick = function(event) {
 }
 
 //  javascript from Joep
-function getMaps() {
-    var id = window.location.search.split("=")[1];
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/eventMap/event/" + id, true);
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-            console.log(xhr.responseText);
-        }
-    }
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send();
-
-}
+//function getMaps() {
+//    var id = window.location.search.split("=")[1];
+//    const xhr = new XMLHttpRequest();
+//    xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/eventMap/event/" + id, true);
+//    xhr.onreadystatechange = function () {
+//        if (xhr.readyState === 4) {
+//            console.log(xhr.responseText);
+//        }
+//    }
+//    xhr.setRequestHeader("Content-Type", "application/json");
+//    xhr.send();
+//
+//}
 
 window.onload = function() {
     var id = window.location.search.split("=")[1];
+    document.getElementById("editEvent").href = "http://localhost:8080/kickInTeam26/edit.html?id=" + id
     const eventDetails = new XMLHttpRequest();
     eventDetails.open('GET', "http://localhost:8080/kickInTeam26/rest/event/" + id, true);
     eventDetails.onreadystatechange = function () {
@@ -62,7 +63,8 @@ window.onload = function() {
             document.getElementById("introtext").innerHTML = event.description;
             document.getElementById("eventlocation").innerHTML = event.location;
             document.getElementById("eventname").innerHTML = event.name;
-            document.getElementById("addNewMap").href = "http://localhost:8080/kickInTeam26/newMap.html";
+            document.getElementById("eventdate").innerHTML = event.date;
+            document.getElementById("addNewMap").href = "http://localhost:8080/kickInTeam26/newMap.html?id=" + event.eventId;
         }
     }
     eventDetails.setRequestHeader("Content-Type", "application/json");
