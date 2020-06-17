@@ -19,7 +19,21 @@
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
     <link href="http://localhost:8080/kickInTeam26/css/list.css" rel="stylesheet"> <!-- link to css file -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Of Events</title>
 </head>
+<style>
+
+    table th{
+        font-size: 1.8rem;
+    }
+    table td {
+        font-size: 1.5rem;
+    }
+    table{
+        background-color: #ffffff;
+    }
+
+</style>
 <body>
 <div class="topnav">
     <a href="list.html" id="home"><i class="glyphicon glyphicon-home"></i></a>
@@ -46,7 +60,7 @@
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label" for="eventname">Name</label>
                     <div class="col-md-3">
-                        <input class="form-control" id="eventname" onkeyup="XSSInputSanitation('eventname')" placeholder="Name"
+                        <input class="form-control" id="eventName" onkeyup="XSSInputSanitation('eventName')" placeholder="Name"
                                type="text">
                     </div>
                 </div>
@@ -54,8 +68,8 @@
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label" for="eventdescription">Description</label>
                     <div class="col-md-8">
-                        <textarea class="form-control" id="eventdescription"
-                                  onkeyup="XSSInputSanitation('eventdescription')" rows="5"></textarea>
+                        <textarea class="form-control" id="eventDescription"
+                                  onkeyup="XSSInputSanitation('eventDescription')" rows="5"></textarea>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -69,7 +83,7 @@
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label" for="eventlocation">Location</label>
                     <div class="col-md-3">
-                        <select class="form-control" id="eventlocation">
+                        <select class="form-control" id="eventLocation">
                             <option>University Campus</option>
                             <option>Outside Campus (City)</option>
                             <option>Both</option>
@@ -82,6 +96,24 @@
             </div>
         </div>
     </div>
+
+
+
+    <!-- The Event Deletion Popup -->
+    <div id="eventDeleteModal" class="modal">
+
+        <!-- Popup content -->
+        <div class="modal-content">
+            <span class="closeDelete">&times;</span>
+            <h2>Do you really want to delete this event?</h2>
+            <div class="bottomright" style="display: flex; justify-content: center;">
+                <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">YES</button>
+                <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">NO</button>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 <div class="container">
     <!-- Search Bar -->
@@ -101,8 +133,8 @@
         <div class="dropdown-menu dropdown-menu-right">
             <a class="dropdown-item" onclick="sortTableAZ()">A - Z</a>
             <a class="dropdown-item" onclick="sortTableZA()">Z - A</a>
-            <a class="dropdown-item" href="#">Event Date (New - Old)</a>
-            <a class="dropdown-item" href="#">Event Date (Old - New)</a>
+            <a class="dropdown-item" onclick="sortTableNewOld()">Event Date (New - Old)</a>
+            <a class="dropdown-item" onclick="sortTableOldNew()">Event Date (Old - New)</a>
         </div>
     </div>
     <div class="eventlist">
@@ -111,5 +143,6 @@
     </div>
 </div>
 <script src="http://localhost:8080/kickInTeam26/js/list.js"></script>
+<script src="http://localhost:8080/kickInTeam26/js/requests.js"></script>
 </body>
 </html>

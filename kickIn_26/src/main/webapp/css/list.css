@@ -24,3 +24,8 @@ body {
     border-bottom: 1px solid #89BD26;
     box-shadow: 0 1px 0 0 #89BD26;
 }
+
+.btn .btn-success {
+    color: #89BD26;
+}
+

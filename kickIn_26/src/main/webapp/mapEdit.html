@@ -59,31 +59,32 @@
                 <div class="row">
 
                     <!-- Search Bar-->
-                    <div class="md-form mt-0 col-md-8">
+                    <div class="md-form mt-0 col-md-8 active-green">
                         <input aria-label="Search" class="form-control" id="searchItems" onkeyup="searchItems()"
                                placeholder="Search" type="text">
                     </div>
                     <!--List of Available Items Table-->
                     <div class="col-md-11">
-<!--                        <div id="itemlist"></div>-->
-                        <table id="itemListTable">
-                            <thead>
-                            <tr>
-                                <td>Item Name</td>
-                                <td>Quantity</td>
-                                <td>Add</td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+                        <div id="itemlist"></div>
+<!--                        <table id="itemListTable">-->
+<!--                            <thead>-->
+<!--                            <tr>-->
+<!--                                <td>Item Name</td>-->
+<!--                                <td>Quantity</td>-->
+<!--                                <td>Add</td>-->
+<!--                            </tr>-->
+<!--                            </thead>-->
+<!--                            <tbody>-->
+<!--                            </tbody>-->
+<!--                        </table>-->
 
-                        <template id="itemRow">
-                            <tr>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </template>
+<!--                        <template id="itemRow">-->
+<!--                            <tr>-->
+<!--                                <td></td>-->
+<!--                                <td></td>-->
+<!--                                <td></td>-->
+<!--                            </tr>-->
+<!--                        </template>-->
 
                     </div>
                 </div>
@@ -105,5 +106,6 @@
     </div>
 </div>
 </body>
-<script src="js/mapEdit.js"></script>
+<script src="http://localhost:8080/kickInTeam26/js/mapEdit.js"></script>
+<script src="http://localhost:8080/kickInTeam26/js/requests.js"></script>
 </html>
