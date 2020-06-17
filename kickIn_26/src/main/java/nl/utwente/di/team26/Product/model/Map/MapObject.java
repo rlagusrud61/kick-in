@@ -15,9 +15,9 @@ public class MapObject implements Serializable {
      * Persistent Instance variables. This data is directly
      * mapped to the columns of database table.
      */
-    private int objectId;
-    private int mapId;
-    private int resourceId;
+    private long objectId;
+    private long mapId;
+    private long resourceId;
     private String latLangs;
 
     /**
@@ -31,17 +31,17 @@ public class MapObject implements Serializable {
 
     }
 
-    public MapObject(int objectIdIn) {
+    public MapObject(long objectIdIn) {
         this.objectId = objectIdIn;
     }
 
-    public MapObject(int mapId, int resourceId, String latLangs) {
+    public MapObject(long mapId, long resourceId, String latLangs) {
         this.mapId = mapId;
         this.resourceId = resourceId;
         this.latLangs = latLangs;
     }
 
-    public MapObject(int objectId, int mapId, int resourceId, String latLangs) {
+    public MapObject(long objectId, long mapId, long resourceId, String latLangs) {
         this.objectId = objectId;
         this.mapId = mapId;
         this.resourceId = resourceId;
@@ -54,27 +54,27 @@ public class MapObject implements Serializable {
      * so these might require some manual additions.
      */
 
-    public int getObjectId() {
+    public long getObjectId() {
         return this.objectId;
     }
 
-    public void setObjectId(int objectIdIn) {
+    public void setObjectId(long objectIdIn) {
         this.objectId = objectIdIn;
     }
 
-    public int getMapId() {
+    public long getMapId() {
         return this.mapId;
     }
 
-    public void setMapId(int mapIdIn) {
+    public void setMapId(long mapIdIn) {
         this.mapId = mapIdIn;
     }
 
-    public int getResourceId() {
+    public long getResourceId() {
         return this.resourceId;
     }
 
-    public void setResourceId(int resourceIdIn) {
+    public void setResourceId(long resourceIdIn) {
         this.resourceId = resourceIdIn;
     }
 
@@ -85,50 +85,6 @@ public class MapObject implements Serializable {
     public void setLatLangs(String latLangsIn) {
         this.latLangs = latLangsIn;
     }
-
-
-    /**
-     * setAll allows to set all persistent variables in one method call.
-     * This is useful, when all data is available and it is needed to
-     * set the initial state of this object. Note that this method will
-     * directly modify instance variales, without going trough the
-     * individual set-methods.
-     */
-
-    public void setAll(int objectIdIn,
-                       int mapIdIn,
-                       int resourceIdIn,
-                       String latLangsIn) {
-        this.objectId = objectIdIn;
-        this.mapId = mapIdIn;
-        this.resourceId = resourceIdIn;
-        this.latLangs = latLangsIn;
-    }
-
-
-    /**
-     * hasEqualMapping-method will compare two MapObject instances
-     * and return true if they contain same values in all persistent instance
-     * variables. If hasEqualMapping returns true, it does not mean the objects
-     * are the same instance. However it does mean that in that moment, they
-     * are mapped to the same row in database.
-     */
-    public boolean hasEqualMapping(MapObject valueObject) {
-
-        if (valueObject.getObjectId() != this.objectId) {
-            return (false);
-        }
-        if (valueObject.getMapId() != this.mapId) {
-            return (false);
-        }
-        if (valueObject.getResourceId() != this.resourceId) {
-            return (false);
-        }
-        if (this.latLangs == null) {
-            return valueObject.getLatLangs() == null;
-        } else return this.latLangs.equals(valueObject.getLatLangs());
-    }
-
 
     /**
      * toString will return String object representing the state of this
