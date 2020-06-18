@@ -307,3 +307,7 @@ function sortTableLowHigh() {
         }
     }
 }
+
+function goBack() {
+    window.history.back();
+}
