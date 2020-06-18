@@ -5,12 +5,12 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exception.Exceptions.AuthenticationDeniedException;
+import nl.utwente.di.team26.Product.dao.Authentication.SessionDao;
+import nl.utwente.di.team26.Product.dao.Authentication.UserDao;
+import nl.utwente.di.team26.Product.model.Authentication.Session;
 import nl.utwente.di.team26.Security.Filters.Secured;
-import nl.utwente.di.team26.Security.User.Credentials;
-import nl.utwente.di.team26.Security.User.User;
-import nl.utwente.di.team26.Security.User.UserDao;
-import nl.utwente.di.team26.Security.Session.Session;
-import nl.utwente.di.team26.Security.Session.SessionDao;
+import nl.utwente.di.team26.Product.model.Authentication.Credentials;
+import nl.utwente.di.team26.Product.model.Authentication.User;
 import nl.utwente.di.team26.Utils;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -61,8 +61,10 @@ public class AuthenticationEndpoint {
             response.addCookie(cookie);
             response.sendRedirect(uriInfo.getAbsolutePathBuilder().replacePath("/kickInTeam26/list.html").toString());
         } catch (AuthenticationDeniedException e) {
+            e.printStackTrace();
             response.sendError(Response.Status.UNAUTHORIZED.getStatusCode(), e.getMessage());
         } catch (SQLException e) {
+            e.printStackTrace();
             response.sendError(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), e.getMessage());
         }
     }
@@ -77,7 +79,7 @@ public class AuthenticationEndpoint {
             long userId = Utils.getUserFromContext(securityContext);
 
             try(Connection conn = CONSTANTS.getConnection()) {
-                sessionDao.clearTokensForUser(conn, userId);
+                sessionDao.clearTokensForUser(conn, userId, true);
             }
 
             Cookie cookie = createRemovalCookie();

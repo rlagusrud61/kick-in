@@ -6,9 +6,9 @@ import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Exception.Exceptions.SessionNotFoundException;
 import nl.utwente.di.team26.Exception.Exceptions.TokenInvalidException;
 import nl.utwente.di.team26.Exception.Exceptions.TokenObsoleteException;
-import nl.utwente.di.team26.Security.Session.SessionDao;
-import nl.utwente.di.team26.Security.User.User;
-import nl.utwente.di.team26.Security.User.UserDao;
+import nl.utwente.di.team26.Product.dao.Authentication.SessionDao;
+import nl.utwente.di.team26.Product.dao.Authentication.UserDao;
+import nl.utwente.di.team26.Product.model.Authentication.User;
 
 import javax.annotation.Priority;
 import javax.crypto.spec.SecretKeySpec;
@@ -76,7 +76,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
                 @Override
                 public boolean isUserInRole(String forLevel) {
-                    int userClearanceLevel = finalAuthenticatedUser.getclearanceLevel();
+                    int userClearanceLevel = finalAuthenticatedUser.getClearanceLevel();
                     return userClearanceLevel >= Integer.parseInt(forLevel);
                 }
 
@@ -145,10 +145,10 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
     private User findUser(long userId) throws SQLException, NotFoundException {
         // Hit the the database or a service to find a user by its username and return it
-        // Return the User instance
+        // Return the UserDao instance
         User user = null;
         try(Connection conn = CONSTANTS.getConnection()) {
-            user = userDao.getObject(conn, userId);
+            user = userDao.getUserInstance(conn, userId);
         }
         return user;
     }

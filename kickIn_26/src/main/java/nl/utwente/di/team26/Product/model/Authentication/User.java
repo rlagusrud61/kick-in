@@ -1,4 +1,4 @@
-package nl.utwente.di.team26.Security.User;
+package nl.utwente.di.team26.Product.model.Authentication;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Objects;
@@ -9,10 +9,18 @@ public class User {
     long userId;
     String email;
     String password;
+    String nickname;
     int clearanceLevel;
 
     public User() {
 
+    }
+
+    public User(String email, String password, String nickname, int clearanceLevel) {
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+        this.clearanceLevel = clearanceLevel;
     }
 
     public User(String email, String password, int clearanceLevel) {
@@ -21,11 +29,16 @@ public class User {
         this.clearanceLevel = clearanceLevel;
     }
 
-    public User(long userId, String email, String password, int clearanceLevel) {
+    public User(long userId, String email, String password, String nickname, int clearanceLevel) {
         this.userId = userId;
         this.email = email;
         this.password = password;
+        this.nickname = nickname;
         this.clearanceLevel = clearanceLevel;
+    }
+
+    public User(long userId) {
+        this.userId = userId;
     }
 
     public long getUserId() {
@@ -52,11 +65,19 @@ public class User {
         this.password = password;
     }
 
-    public int getclearanceLevel() {
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public int getClearanceLevel() {
         return clearanceLevel;
     }
 
-    public void setclearanceLevel(int clearanceLevel) {
+    public void setClearanceLevel(int clearanceLevel) {
         this.clearanceLevel = clearanceLevel;
     }
 
@@ -75,7 +96,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "UserDao{" +
                 "userId=" + userId +
                 ", email='" + email + '\'' +
                 ", clearanceLevel=" + clearanceLevel +
