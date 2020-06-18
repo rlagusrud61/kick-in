@@ -24,10 +24,8 @@ function login() {
     xhr.send('{"email": "' + emailaddress + '", "password": "' + password + '"}');
 }
 
-window.addEventListener("keydown", checkKeyPress);
-
-    function checkKeyPress(key) {
-        if(key.keyCode === 13){
-            login();
-        }
-    }
+function checkKeyPress() {
+	if (event.keyCode == 13) {
+		login();
+	}
+}
