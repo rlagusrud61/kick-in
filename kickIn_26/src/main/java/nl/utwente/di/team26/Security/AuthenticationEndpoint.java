@@ -61,8 +61,10 @@ public class AuthenticationEndpoint {
             response.addCookie(cookie);
             response.sendRedirect(uriInfo.getAbsolutePathBuilder().replacePath("/kickInTeam26/list.html").toString());
         } catch (AuthenticationDeniedException e) {
+            e.printStackTrace();
             response.sendError(Response.Status.UNAUTHORIZED.getStatusCode(), e.getMessage());
         } catch (SQLException e) {
+            e.printStackTrace();
             response.sendError(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), e.getMessage());
         }
     }
@@ -77,7 +79,7 @@ public class AuthenticationEndpoint {
             long userId = Utils.getUserFromContext(securityContext);
 
             try(Connection conn = CONSTANTS.getConnection()) {
-                sessionDao.clearTokensForUser(conn, userId);
+                sessionDao.clearTokensForUser(conn, userId, true);
             }
 
             Cookie cookie = createRemovalCookie();
