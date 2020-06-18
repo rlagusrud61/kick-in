@@ -23,19 +23,6 @@ window.onclick = function (event) {
     }
 }
 
-function createUser(form) {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/events", true);
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4) {
-            window.location.href = 'http://localhost:8080/kickInTeam26/event.html/' + xhr.responseText
-            console.log(xhr.responseText);
-        }
-    }
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send(JSON.stringify(form));
-}
-
 function XSSInputSanitation(id) {
     let element = document.getElementById(id).value;
     if (element.indexOf("onload") !== -1 || element.indexOf("<script>") !== -1 ||
@@ -96,7 +83,7 @@ window.onload = loadTable;
 
 function addUserPopup() {
     let userName, email, password, level, levelDescription, clearanceLevel, userJSON, xhr;
-    userName = document.getElementById("userName").value;
+	userName = document.getElementById("userName").value;
     email = document.getElementById("email").value;
     password = document.getElementById("password").value;
     level = document.getElementById("clearanceLevel");
@@ -124,9 +111,9 @@ function addUserPopup() {
     xhr = new XMLHttpRequest();
     xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/users", true);
     xhr.onreadystatechange = function () {
-        if ((xhr.readyState == 4) && (xhr.status = 200)) {
+        if ((xhr.readyState == 4) && (xhr.status = 201)) {
             console.log(xhr.responseText);
-            window.location.href = "http://localhost:8080/kickInTeam26/users.html";
+            location.reload();
         }
     }
     xhr.setRequestHeader("Content-Type", "application/json");
@@ -137,9 +124,9 @@ function deleteUser(id) {
     let xhr = new XMLHttpRequest();
     xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/user/" + id, true);
     xhr.onreadystatechange = function () {
-        if ((xhr.readyState == 4) && (xhr.status == 200)) {
+        if ((xhr.readyState == 4) && (xhr.status == 204)) {
             console.log(xhr.responseText);
-            window.location.href = "http://localhost:8080/kickInTeam26/users.html";
+            location.reload();
         }
     }
     xhr.setRequestHeader("Content-Type", "application/json");
