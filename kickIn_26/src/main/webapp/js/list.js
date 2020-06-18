@@ -23,20 +23,6 @@ window.onclick = function (event) {
     }
 }
 
-
-function createEvent(form) {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/events", true);
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4) {
-            window.location.href = 'http://localhost:8080/kickInTeam26/event.html/' + xhr.responseText
-            console.log(xhr.responseText);
-        }
-    }
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send(JSON.stringify(form));
-}
-
 function XSSInputSanitation(id) {
     let element = document.getElementById(id).value;
     if (element.indexOf("onload") !== -1 || element.indexOf("<script>") !== -1 ||
@@ -73,7 +59,7 @@ function loadTable() {
                 th.innerHTML = header[i];
                 tr.appendChild(th);
             }
-
+            
             for (i = 0; i < events.length; i++) {
                 row = table.insertRow(-1);
                 name = row.insertCell(0);
@@ -89,12 +75,12 @@ function loadTable() {
                     events[i].eventId + "' class='text-success'><i class='glyphicon glyphicon-eye-open' " +
                     "style='font-size:20px;'></i></a><a href='http://localhost:8080/kickInTeam26/edit.html?id=" +
                     events[i].eventId + "' class='text-success'><i class='glyphicon glyphicon-pencil' " +
-                    "style='font-size:20px;'></i></a><a href='javascript: window.deleteEvent(" + events[i].eventId + ")'" +
+                    "style='font-size:20px;'></i></a><a href='javascript: window.removeEvent(" + events[i].eventId + ")'" +
                     "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
+                console.log(action.innerHTML);
             }
         }
     }
-
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send();
 }
@@ -128,13 +114,13 @@ function addEventPopup() {
     xhr.send(JSON.stringify(eventJSON));
 }
 
-function deleteEvent(id) {
+function removeEvent(id) {
     let xhr = new XMLHttpRequest();
     xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/event/" + id, true);
     xhr.onreadystatechange = function () {
-        if ((xhr.readyState == 4) && (xhr.status == 200)) {
+        if ((xhr.readyState == 4) && (xhr.status == 204)) {
             console.log(xhr.responseText);
-            window.location.href = "http://localhost:8080/kickInTeam26/list.html";
+            location.reload();
         }
     }
     xhr.setRequestHeader("Content-Type", "application/json");
