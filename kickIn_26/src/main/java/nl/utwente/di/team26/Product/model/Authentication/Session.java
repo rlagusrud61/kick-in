@@ -1,13 +1,13 @@
-package nl.utwente.di.team26.Security.Session;
+package nl.utwente.di.team26.Product.model.Authentication;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Session {
 
-    long tokenId;
-    String token;
-    long userId;
+    private long tokenId;
+    private String token;
+    private long userId;
 
     public Session() {
 

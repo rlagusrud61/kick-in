@@ -5,12 +5,12 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exception.Exceptions.AuthenticationDeniedException;
+import nl.utwente.di.team26.Product.dao.Authentication.SessionDao;
+import nl.utwente.di.team26.Product.dao.Authentication.UserDao;
+import nl.utwente.di.team26.Product.model.Authentication.Session;
 import nl.utwente.di.team26.Security.Filters.Secured;
-import nl.utwente.di.team26.Security.User.Credentials;
-import nl.utwente.di.team26.Security.User.User;
-import nl.utwente.di.team26.Security.User.UserDao;
-import nl.utwente.di.team26.Security.Session.Session;
-import nl.utwente.di.team26.Security.Session.SessionDao;
+import nl.utwente.di.team26.Product.model.Authentication.Credentials;
+import nl.utwente.di.team26.Product.model.Authentication.User;
 import nl.utwente.di.team26.Utils;
 
 import javax.crypto.spec.SecretKeySpec;
