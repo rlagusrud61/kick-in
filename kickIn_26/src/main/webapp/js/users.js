@@ -85,9 +85,7 @@ function loadTable() {
                 email.innerHTML = users[i].email;
                 password.innerHTML = users[i].password;
                 clearanceLevel.innerHTML = users[i].clearanceLevel;
-                action.innerHTML = "<a href='http://localhost:8080/kickInTeam26/edit.html?id=" +
-                    users[i].eventId + "' class='text-success'><i class='glyphicon glyphicon-pencil' " +
-                    "style='font-size:20px;'></i></a><a href='javascript: window.deleteUser(" + users[i].userId + ")'" +
+                action.innerHTML = "<a href='javascript: window.deleteUser(" + users[i].userId + ")'" +
                     "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
             }
         }
@@ -123,7 +121,7 @@ function addUserPopup() {
     xhr.send(JSON.stringify(userJSON));
 }
 
-function deleteEvent(id) {
+function deleteUser(id) {
     let xhr = new XMLHttpRequest();
     xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/event/" + id, true);
     xhr.onreadystatechange = function () {

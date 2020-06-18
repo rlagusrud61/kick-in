@@ -17,18 +17,21 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
-    <link href="http://localhost:8080/kickInTeam26/css/list.css" rel="stylesheet"> <!-- link to css file -->
+    <link href="http://localhost:8080/kickInTeam26/css/style.css" rel="stylesheet" type="text/css">
+    <link href="http://localhost:8080/kickInTeam26/css/users.css" rel="stylesheet"> <!-- link to css file -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Users</title>
 </head>
 <style>
-    table th{
+    table th {
         font-size: 1.8rem;
     }
+
     table td {
         font-size: 1.5rem;
     }
-    table{
+
+    table {
         background-color: #ffffff;
     }
 </style>
@@ -58,67 +61,61 @@
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label" for="userName">Name</label>
                     <div class="col-md-3">
-                        <input class="form-control" id="userName" onkeyup="XSSInputSanitation('userName')" placeholder="Name"
+                        <input class="form-control" id="userName" onkeyup="XSSInputSanitation('userName')"
+                               placeholder="Name"
                                type="text">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label" for="email">E-Mail</label>
                     <div class="col-md-3">
-                        <input class="form-control" id="email" onkeyup="XSSInputSanitation('email')" placeholder="E-Mail"
+                        <input class="form-control" id="email" onkeyup="XSSInputSanitation('email')"
+                               placeholder="E-Mail"
                                type="email">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label" for="password">Password</label>
                     <div class="col-md-3">
-                        <input class="form-control" id="password" onkeyup="XSSInputSanitation('password')" placeholder="Password"
+                        <input class="form-control" id="password" onkeyup="XSSInputSanitation('password')"
+                               placeholder="Password"
                                type="password">
                     </div>
                 </div>
 
                 <div class="form-group row">
-                <!-- Default inline 1-->
-                <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" class="custom-control-input" id="defaultInline1" name="inlineDefaultRadiosExample">
-                    <label class="custom-control-label" for="defaultInline1">1</label>
+                    <label class="col-md-2 col-form-label" for="clearanceLevel">Clearance Level</label>
+                    <div class="col-md-3">
+                        <select class="form-control" id="clearanceLevel">
+                            <option>Visitor</option>
+                            <option>Editor</option>
+                            <option>Admin</option>
+                        </select>
+                    </div>
                 </div>
 
-                <!-- Default inline 2-->
-                <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" class="custom-control-input" id="defaultInline2" name="inlineDefaultRadiosExample">
-                    <label class="custom-control-label" for="defaultInline2">2</label>
-                </div>
-
-                <!-- Default inline 3-->
-                <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" class="custom-control-input" id="defaultInline3" name="inlineDefaultRadiosExample">
-                    <label class="custom-control-label" for="defaultInline3">3</label>
-                </div>
             </div>
-                </div>
-                <div class="bottomright" style="display: flex; justify-content: flex-end;">
-                    <button class="btn btn-success btn-circle btn-xl align-self-end" onclick="addUserPopup()">ADD</button>
-                </div>
+            <div class="bottomright" style="display: flex; justify-content: flex-end;">
+                <button class="btn btn-success btn-circle btn-xl align-self-end" onclick="addUserPopup()">ADD</button>
             </div>
         </div>
     </div>
+</div>
 
 
+<!-- The Event Deletion Popup -->
+<div id="userDeleteModal" class="modal">
 
-    <!-- The Event Deletion Popup -->
-    <div id="userDeleteModal" class="modal">
-
-        <!-- Popup content -->
-        <div class="modal-content">
-            <span class="closeDelete">&times;</span>
-            <h2>Do you really want to delete this user?</h2>
-            <div class="bottomright" style="display: flex; justify-content: center;">
-                <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">YES</button>
-                <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">NO</button>
-            </div>
+    <!-- Popup content -->
+    <div class="modal-content">
+        <span class="closeDelete">&times;</span>
+        <h2>Do you really want to delete this user?</h2>
+        <div class="bottomright" style="display: flex; justify-content: center;">
+            <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">YES</button>
+            <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">NO</button>
         </div>
     </div>
+</div>
 
 
 </div>
@@ -126,7 +123,8 @@
     <!-- Search Bar -->
     <div class="col-md-3">
         <form class="form-inline d-flex justify-content-center md-form active-green form-sm mt-0">
-            <input aria-label="Search" class="form-control form-control-sm ml-3 w-75" id="searchTable" onkeyup="searchTables()"
+            <input aria-label="Search" class="form-control form-control-sm ml-3 w-75" id="searchTable"
+                   onkeyup="searchTables()"
                    placeholder="Search"
                    type="text">
         </form>

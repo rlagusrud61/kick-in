@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet" type="text/css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <!-- Latest compiled and minified CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
@@ -17,6 +16,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+    <link href="http://localhost:8080/kickInTeam26/css/style.css" rel="stylesheet" type="text/css">
     <link href="http://localhost:8080/kickInTeam26/css/list.css" rel="stylesheet"> <!-- link to css file -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>List Of Events</title>
@@ -36,8 +36,8 @@
 </style>
 <body>
 <div class="topnav">
-    <a href="http://localhost:8080/kickInTeam26/list.html" id="home"><i class="glyphicon glyphicon-home"></i></a>
-    <a href="http://localhost:8080/kickInTeam26/users.html" id="users"><i class="glyphicon glyphicon-user"></i></a>
+    <a id="home" href="http://localhost:8080/kickInTeam26/list.html"><i class="glyphicon glyphicon-home"></i></a>
+    <a  id="users" href="http://localhost:8080/kickInTeam26/users.html"><i class="glyphicon glyphicon-user"></i></a>
     <a id="logout" onclick="logout()">Logout</a>
 </div>
 <div class="jumbotron jumbotron-fluid">
@@ -59,7 +59,7 @@
             <h2>Add a New Event</h2>
             <div>
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label" for="eventname">Name</label>
+                    <label class="col-md-2 col-form-label" for="eventName">Name</label>
                     <div class="col-md-3">
                         <input class="form-control" id="eventName" onkeyup="XSSInputSanitation('eventName')" placeholder="Name"
                                type="text">
@@ -67,7 +67,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label" for="eventdescription">Description</label>
+                    <label class="col-md-2 col-form-label" for="eventDescription">Description</label>
                     <div class="col-md-8">
                         <textarea class="form-control" id="eventDescription"
                                   onkeyup="XSSInputSanitation('eventDescription')" rows="5"></textarea>
@@ -82,7 +82,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label" for="eventlocation">Location</label>
+                    <label class="col-md-2 col-form-label" for="eventLocation">Location</label>
                     <div class="col-md-3">
                         <select class="form-control" id="eventLocation">
                             <option>University Campus</option>

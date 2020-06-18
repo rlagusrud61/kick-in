@@ -29,3 +29,17 @@ body {
     color: #89BD26;
 }
 
+input[type=email]:focus {
+    border: 1px solid #89BD26;
+    box-shadow: 0 1px 0 0 #89BD26;
+}
+
+input[type=password]:focus {
+    border: 1px solid #89BD26;
+    box-shadow: 0 1px 0 0 #89BD26;
+}
+
+input[type=text]:focus {
+    border: 1px solid #89BD26;
+    box-shadow: 0 1px 0 0 #89BD26;
+}
