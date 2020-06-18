@@ -23,7 +23,6 @@ window.onclick = function (event) {
     }
 }
 
-//TODO
 function createUser(form) {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/events", true);
@@ -48,7 +47,6 @@ function XSSInputSanitation(id) {
     }
 }
 
-//TODO
 function loadTable() {
     let xhr, header, tr, th, i, table, users, row, name, email, password, clearanceLevel, action;
     xhr = new XMLHttpRequest();
@@ -81,11 +79,11 @@ function loadTable() {
                 password = row.insertCell(2);
                 clearanceLevel = row.insertCell(3);
                 action = row.insertCell(4);
-                name.innerHTML = users[i].name;
+                name.innerHTML = users[i].nickname;
                 email.innerHTML = users[i].email;
                 password.innerHTML = users[i].password;
                 clearanceLevel.innerHTML = users[i].clearanceLevel;
-                action.innerHTML = "<a href='javascript: window.deleteUser(" + users[i].userId + ")'" +
+                action.innerHTML = "<a href='javascript: window.deleteUser(" + users[i].userId + ")' " +
                     "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
             }
         }
@@ -97,13 +95,26 @@ function loadTable() {
 window.onload = loadTable;
 
 function addUserPopup() {
-    let userName, email, password, clearanceLevel, userJSON, xhr;
+    let userName, email, password, level, clearanceLevel, userJSON, xhr;
     userName = document.getElementById("eventDescription").value;
     email = document.getElementById("email").value;
     password = document.getElementById("password");
-    clearanceLevel = document.getElementById("clearanceLevel").value;
+    level = document.getElementById("clearanceLevel").value;
+    switch(level) {
+        case "Visitor":
+            clearanceLevel = 0;
+            break;
+        case "Editor":
+            clearanceLevel = 1;
+            break;
+        case "Admin":
+            clearanceLevel = 2;
+            break;
+        default:
+            clearanceLevel = -1;
+    }
     userJSON = {
-        "userName": userName,
+        "nickname": userName,
         "email": email,
         "password": password,
         "clearanceLevel": clearanceLevel,
@@ -123,11 +134,11 @@ function addUserPopup() {
 
 function deleteUser(id) {
     let xhr = new XMLHttpRequest();
-    xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/event/" + id, true);
+    xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/user/" + id, true);
     xhr.onreadystatechange = function () {
         if ((xhr.readyState == 4) && (xhr.status == 200)) {
             console.log(xhr.responseText);
-            window.location.href = "http://localhost:8080/kickInTeam26/list.html";
+            window.location.href = "http://localhost:8080/kickInTeam26/users.html";
         }
     }
     xhr.setRequestHeader("Content-Type", "application/json");
