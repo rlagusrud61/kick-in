@@ -171,6 +171,7 @@ public class ResourceDao extends Dao implements DaoInterface<TypeOfResource> {
 
     public String getAllMaterials(Connection conn) throws NotFoundException, SQLException {
         String sql = "SELECT getAllMaterials()";
+        beginTransaction(conn, Connection.TRANSACTION_SERIALIZABLE);
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             return getResultOfQuery(conn, stmt);
         }
