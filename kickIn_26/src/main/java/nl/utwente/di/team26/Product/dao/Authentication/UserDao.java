@@ -126,9 +126,11 @@ public class UserDao extends Dao implements DaoInterface<User> {
                 throw new NotFoundException("This user does not exist");
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             conn.rollback();
             throw new DatabaseException(e);
         } catch (NotFoundException e) {
+            e.printStackTrace();
             throw new AuthenticationDeniedException("Sorry, your credentials do not Match, please contact your administrator if you have lost your Credentials.");
         }
     }
@@ -147,6 +149,7 @@ public class UserDao extends Dao implements DaoInterface<User> {
                 throw new NotFoundException("This user does not exist");
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             conn.rollback();
             throw new DatabaseException(e);
         }

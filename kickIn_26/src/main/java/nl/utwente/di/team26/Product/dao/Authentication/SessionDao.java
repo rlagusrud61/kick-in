@@ -12,36 +12,42 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SessionDao extends Dao implements DaoInterface<Session> {
+
     @Override
     public long create(Connection conn, Session valueObject) throws SQLException {
         String sql = "INSERT INTO session (token, userId) VALUES (?, ?) returning tokenId";
         beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            clearTokensForUser(conn, valueObject.getUserId());
+            clearTokensForUser(conn, valueObject.getUserId(), false);
             stmt.setString(1, valueObject.getToken());
             stmt.setLong(2, valueObject.getUserId());
 
             ResultSet resultSet = stmt.executeQuery();
-            endTransaction(conn);
             if (resultSet.next()) {
+                endTransaction(conn);
                 return resultSet.getLong(1);
             } else {
                 throw new DatabaseException("Could not create a new Session.");
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             conn.rollback();
             throw new DatabaseException(e);
         }
     }
 
-    public void clearTokensForUser(Connection conn, long userId) throws SQLException {
+    public void clearTokensForUser(Connection conn, long userId, boolean createNewTransaction) throws SQLException {
         String sql = "DELETE FROM session WHERE (userId = ?);";
-        beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
+        if (createNewTransaction) {
+            beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
+        }
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, userId);
             int rowcount = databaseUpdate(stmt);
-            endTransaction(conn);
+            if (createNewTransaction) {
+                endTransaction(conn);
+            }
         } catch (SQLException e) {
             conn.rollback();
             throw new DatabaseException(e);
