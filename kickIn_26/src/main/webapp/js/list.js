@@ -62,7 +62,7 @@ function loadTable() {
             header.push('Name');
             header.push('Date Of Event')
             header.push('Creator');
-            header.push('Last Editted By');
+            header.push('Last Edited By');
             header.push('Action');
 
             tr = table.insertRow(-1); // add a row to the table
@@ -84,9 +84,9 @@ function loadTable() {
                 eventDate.innerHTML = events[i].date;
                 creator.innerHTML = events[i].createdBy;
                 lastEditor.innerHTML = events[i].lastEditedBy;
-                action.innerHTML = "<a href='http://localhost:8080/kickInTeam26/event.html?id='" +
-                    events[i].eventId + " class='text-success'><i class='glyphicon glyphicon-eye-open' " +
-                    "style='font-size:20px;'></i></a><a href='http://localhost:8080/kickInTeam26/edit.html?id='" +
+                action.innerHTML = "<a href='http://localhost:8080/kickInTeam26/event.html?id=" +
+                    events[i].eventId + "' class='text-success'><i class='glyphicon glyphicon-eye-open' " +
+                    "style='font-size:20px;'></i></a><a href='http://localhost:8080/kickInTeam26/edit.html?id=" +
                     events[i].eventId + "' class='text-success'><i class='glyphicon glyphicon-pencil' " +
                     "style='font-size:20px;'></i></a><a href='javascript: window.deleteEvent(" + events[i].eventId + ")'" +
                     "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
