@@ -48,7 +48,7 @@ function loadTable() {
             header.push('Name');
             header.push('Date Of Event')
             header.push('Creator');
-            header.push('Last Editted By');
+            header.push('Last Edited By');
             header.push('Action');
 
             tr = table.insertRow(-1); // add a row to the table

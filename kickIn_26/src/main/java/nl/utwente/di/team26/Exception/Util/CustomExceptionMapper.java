@@ -1,7 +1,7 @@
-package nl.utwente.di.team26.Exceptions.Util;
+package nl.utwente.di.team26.Exception.Util;
 
-import nl.utwente.di.team26.Exceptions.AuthenticationDeniedException;
-import nl.utwente.di.team26.Exceptions.NotFoundException;
+import nl.utwente.di.team26.Exception.Exceptions.AuthenticationDeniedException;
+import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -23,8 +23,8 @@ public class CustomExceptionMapper implements ExceptionMapper<Throwable> {
             errorCode = Response.Status.NOT_FOUND;
             errorString = e.getMessage();
         } else if (e instanceof SQLException) {
-            errorCode = Status.INTERNAL_SERVER_ERROR;
-            errorString = "SQL error Code: " + ((SQLException) e).getErrorCode() + ": " +e.getMessage();
+            errorCode = Status.BAD_REQUEST;
+            errorString = e.getMessage();
         } else {
             errorCode = Response.Status.INTERNAL_SERVER_ERROR;
             errorString = e.getMessage();

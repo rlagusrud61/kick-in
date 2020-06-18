@@ -1,6 +1,6 @@
 package nl.utwente.di.team26.Product.dao.Maps;
 
-import nl.utwente.di.team26.Exceptions.NotFoundException;
+import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Dao;
 import nl.utwente.di.team26.Product.dao.DaoInterface;
 import nl.utwente.di.team26.Product.model.Map.Map;
@@ -86,7 +86,7 @@ public class MapsDao extends Dao implements DaoInterface<Map> {
     public String getAllMaps(Connection conn) throws NotFoundException, SQLException {
         String sql = "SELECT getAllMaps();";
         try(PreparedStatement stmt = conn.prepareStatement(sql)) {
-            return getResultOfQuery(stmt);
+            return getResultOfQuery(conn, stmt);
         }
     }
 
@@ -94,7 +94,7 @@ public class MapsDao extends Dao implements DaoInterface<Map> {
         String sql = "SELECT getMap(?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, mapId);
-            return getResultOfQuery(stmt);
+            return getResultOfQuery(conn, stmt);
         }
     }
 

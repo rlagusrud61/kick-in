@@ -1,12 +1,35 @@
 package nl.utwente.di.team26.Product.dao;
 
-import nl.utwente.di.team26.Exceptions.NotFoundException;
+import nl.utwente.di.team26.Exception.Exceptions.DatabaseException;
+import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public abstract class Dao {
+
+    /**
+     * Begins a transaction
+     * @param connection The connection to modify
+     * @param isolationLevel the isolation for the connection
+     * @throws SQLException if an sql error occurs.
+     */
+    public static void beginTransaction(Connection connection, int isolationLevel) throws SQLException {
+        connection.setAutoCommit(false);
+        connection.setTransactionIsolation(isolationLevel);
+    }
+
+    /**
+     * Ends a transaction
+     * @param connection the connection to which the transaction belongs.
+     * @throws SQLException if an sql error occurs.
+     */
+    public static void endTransaction(Connection connection) throws SQLException {
+        connection.commit();
+        connection.setAutoCommit(true);
+    }
 
     /**
      * databaseUpdate-method. This method is a helper method for internal use. It will execute
@@ -26,18 +49,22 @@ public abstract class Dao {
      * @throws SQLException When error occurs due to SQL execution
      * @throws NotFoundException When the Select query can not find the needed object.
      */
-    protected String getResultOfQuery(PreparedStatement stmt) throws SQLException, NotFoundException {
+    protected String getResultOfQuery(Connection conn, PreparedStatement stmt) throws SQLException, NotFoundException {
         try (ResultSet resultSet = stmt.executeQuery()) {
             if (resultSet.next()) {
                 String result = resultSet.getString(1);
                 if (result == null || result.equals("")) {
                     throw new NotFoundException("No Result Returned, the object either does not exist, or the database is empty in the Database");
                 } else {
+                    endTransaction(conn);
                     return result;
                 }
             } else {
                 throw new NotFoundException("No Result returned, no Maps");
             }
+        } catch (SQLException e) {
+            conn.rollback();
+            throw new DatabaseException(e);
         }
     }
 

@@ -1,7 +1,7 @@
 package nl.utwente.di.team26.Product.resources.Objects;
 
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exceptions.NotFoundException;
+import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Maps.MapObjectsDao;
 import nl.utwente.di.team26.Product.model.Map.MapObject;
 import nl.utwente.di.team26.Security.Filters.Secured;

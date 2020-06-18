@@ -1,6 +1,6 @@
 package nl.utwente.di.team26.Security.Session;
 
-import nl.utwente.di.team26.Exceptions.NotFoundException;
+import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

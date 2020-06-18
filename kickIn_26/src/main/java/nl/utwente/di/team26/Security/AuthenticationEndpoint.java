@@ -1,11 +1,10 @@
 package nl.utwente.di.team26.Security;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exceptions.AuthenticationDeniedException;
+import nl.utwente.di.team26.Exception.Exceptions.AuthenticationDeniedException;
 import nl.utwente.di.team26.Security.Filters.Secured;
 import nl.utwente.di.team26.Security.User.Credentials;
 import nl.utwente.di.team26.Security.User.User;
@@ -86,7 +85,7 @@ public class AuthenticationEndpoint {
             response.sendRedirect(uriInfo.getAbsolutePathBuilder().replacePath("/kickInTeam26/login.html").toString());
 
         } catch (Exception e) {
-            response.sendError(Response.Status.NOT_ACCEPTABLE.getStatusCode(),CONSTANTS.FAILURE + ": " + e.getMessage());
+            response.sendError(Response.Status.BAD_REQUEST.getStatusCode(),CONSTANTS.FAILURE + ": " + e.getMessage());
         }
 
 
@@ -120,7 +119,7 @@ public class AuthenticationEndpoint {
     }
 
     private String getMaxId() throws SQLException {
-        String maxIdSet = null;
+        String maxIdSet;
         try(Connection conn = CONSTANTS.getConnection()) {
             maxIdSet = String.valueOf(sessionDao.maxId(conn));
         }
