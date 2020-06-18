@@ -4,6 +4,8 @@ var modal = document.getElementById("popupMapDelete");
 var trash = document.getElementById("deleteEvent");
 // Closing popup
 var closeDelete = document.getElementsByClassName("close")[0];
+//Closing by pressing "No"
+var closeDelete2 = document.getElementById("no");
 
      trash.onclick = function() {
          modal.style.display = "block";
@@ -13,11 +15,16 @@ var closeDelete = document.getElementsByClassName("close")[0];
             modal.style.display = "none";
      }
 
+     closeDelete2.onclick = function() {
+         modal.style.display = "none";
+     }
+
      window.onclick = function(event) {
          if (event.target === modal) {
              modal.style.display = "none";
          }
      }
+
 
 //inits the map and properties.
 let map = L.map('mapid', {
