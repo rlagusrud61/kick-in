@@ -110,6 +110,7 @@ public class ResourceDao extends Dao implements DaoInterface<TypeOfResource> {
 
     public String getAllResources(Connection conn) throws NotFoundException, SQLException {
         String sql = "SELECT getAllResources()";
+        beginTransaction(conn, Connection.TRANSACTION_SERIALIZABLE);
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             return getResultOfQuery(conn, stmt);
         }
@@ -117,6 +118,7 @@ public class ResourceDao extends Dao implements DaoInterface<TypeOfResource> {
 
     public String getResource(Connection conn, long resourceId) throws NotFoundException, SQLException {
         String sql = "SELECT getResource(?)";
+        beginTransaction(conn, Connection.TRANSACTION_SERIALIZABLE);
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, resourceId);
             return getResultOfQuery(conn, stmt);
