@@ -18,18 +18,20 @@
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
     <link href="http://localhost:8080/kickInTeam26/css/style.css" rel="stylesheet" type="text/css">
     <link href="http://localhost:8080/kickInTeam26/css/list.css" rel="stylesheet"> <!-- link to css file -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>List Of Events</title>
 </head>
 <style>
 
-    table th{
+    table th {
         font-size: 1.8rem;
     }
+
     table td {
         font-size: 1.5rem;
     }
-    table{
+
+    table {
         background-color: #ffffff;
     }
 
@@ -45,14 +47,15 @@
         <div class="row">
             <h1 class="col-8">List Of Events</h1>
             <div class="col-4" style="display: flex; justify-content: flex-end;">
-                <button class="myButton btn btn-success btn-circle btn-xl align-self-end" id="myBtn" type="button"> +
+                <button class="myButton btn btn-success btn-circle btn-xl align-self-end" id="addEventBtn" type="button"> +
                 </button>
             </div>
         </div>
     </div>
+
     <!-- Trigger/Open The Popup -->
     <!-- The Popup -->
-    <div class="modal" id="myModal">
+    <div class="modal" id="addEvent">
         <!-- Popup content -->
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -61,7 +64,8 @@
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label" for="eventName">Name</label>
                     <div class="col-md-3">
-                        <input class="form-control" id="eventName" onkeyup="XSSInputSanitation('eventName')" placeholder="Name"
+                        <input class="form-control" id="eventName" onkeyup="XSSInputSanitation('eventName')"
+                               placeholder="Name"
                                type="text">
                     </div>
                 </div>
@@ -92,35 +96,34 @@
                     </div>
                 </div>
                 <div class="bottomright" style="display: flex; justify-content: flex-end;">
-                    <button class="btn btn-success btn-circle btn-xl align-self-end" onclick="addEventPopup()">ADD</button>
+                    <button class="btn btn-success btn-circle btn-xl align-self-end" onclick="addEventPopup()">ADD
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-
-
-    <!-- The Event Deletion Popup -->
-    <div id="eventDeleteModal" class="modal">
-
-        <!-- Popup content -->
+    <!-- The Event Deletion Modal -->
+    <div class="modal" id="eventDeleteModal">
+        <!-- Modal content -->
         <div class="modal-content">
-            <span class="closeDelete">&times;</span>
+            <span class="close">&times;</span>
             <h2>Do you really want to delete this event?</h2>
-            <div class="bottomright" style="display: flex; justify-content: center;">
-                <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">YES</button>
-                <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">NO</button>
+            <div class="bottomright" style="display: flex; justify-content: center;" id="removeEventThing">
+                <button class="btn btn-success btn-circle btn-xl align-self-center" type="submit" onclick="" id="yesDeleteButton">YES</button>
+                <a href="list.html"><button class="btn btn-success btn-circle btn-xl align-self-center" type="button">NO</button></a>
             </div>
         </div>
     </div>
 
-
 </div>
+
 <div class="container">
     <!-- Search Bar -->
     <div class="col-md-3">
         <form class="form-inline d-flex justify-content-center md-form active-green form-sm mt-0">
-            <input aria-label="Search" class="form-control form-control-sm ml-3 w-75" id="searchTable" onkeyup="searchTables()"
+            <input aria-label="Search" class="form-control form-control-sm ml-3 w-75" id="searchTable"
+                   onkeyup="searchTables()"
                    placeholder="Search"
                    type="text">
         </form>
@@ -138,10 +141,15 @@
             <a class="dropdown-item" onclick="sortTableOldNew()">Event Date (Old - New)</a>
         </div>
     </div>
+    <!--    Table for the List of Events-->
     <div class="eventlist">
         <table class="table table-hover" id="eventtable" style="width:100%">
         </table>
     </div>
+
+
+
+
 </div>
 <script src="http://localhost:8080/kickInTeam26/js/list.js"></script>
 <script src="http://localhost:8080/kickInTeam26/js/requests.js"></script>

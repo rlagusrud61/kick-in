@@ -1,7 +1,7 @@
 // Get the modal
-var modal = document.getElementById("myModal");
+var modal = document.getElementById("addEvent");
 // Get the button that opens the modal
-var btn = document.getElementById("myBtn");
+var btn = document.getElementById("addEventBtn");
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
 
@@ -21,20 +21,6 @@ window.onclick = function (event) {
     if (event.target == modal) {
         modal.style.display = "none";
     }
-}
-
-
-function createEvent(form) {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/events", true);
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4) {
-            window.location.href = 'http://localhost:8080/kickInTeam26/event.html/' + xhr.responseText
-            console.log(xhr.responseText);
-        }
-    }
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send(JSON.stringify(form));
 }
 
 function XSSInputSanitation(id) {
@@ -60,7 +46,7 @@ function loadTable() {
 
             header = [];
             header.push('Name');
-            
+
             header.push('Date Of Event');
             header.push('Creator');
             header.push('Last Edited By');
@@ -89,8 +75,9 @@ function loadTable() {
                     events[i].eventId + "' class='text-success'><i class='glyphicon glyphicon-eye-open' " +
                     "style='font-size:20px;'></i></a><a href='http://localhost:8080/kickInTeam26/edit.html?id=" +
                     events[i].eventId + "' class='text-success'><i class='glyphicon glyphicon-pencil' " +
-                    "style='font-size:20px;'></i></a><a href='javascript: window.deleteEvent(" + events[i].eventId + ")'" +
+                    "style='font-size:20px;'></i></a><a href='javascript: window.confirmDelete(" + events[i].eventId + ")'" +
                     "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
+                console.log(action.innerHTML);
             }
         }
     }
@@ -98,15 +85,15 @@ function loadTable() {
     xhr.send();
 }
 
-window.onload = loadTable;
+window.onload = loadTable();
 
 function addEventPopup() {
-    let description, eventName, location, eventDate, dateControl, eventLocation, eventJSON, xhr;
+    let description, eventName, eventLoc, eventDate, dateControl, eventLocation, eventJSON, xhr;
     description = document.getElementById("eventDescription").value;
     eventName = document.getElementById("eventName").value;
-    location = document.getElementById("eventLocation");
+    eventLoc = document.getElementById("eventLocation");
     eventDate = document.getElementById("eventDate").value;
-    eventLocation = location.options[location.selectedIndex].value;
+    eventLocation = eventLoc.options[eventLoc.selectedIndex].value;
     eventJSON = {
         "name": eventName,
         "date": eventDate,
@@ -117,23 +104,23 @@ function addEventPopup() {
     xhr = new XMLHttpRequest();
     xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/events", true);
     xhr.onreadystatechange = function () {
-        if ((xhr.readyState == 4) && (xhr.status = 200)) {
+        console.log(xhr.readyState);
+        if ((xhr.readyState === 4) && (xhr.status === 201)) {
             console.log(xhr.responseText);
-            window.location.href = "http://localhost:8080/kickInTeam26/list.html";
-            //window.location.href = "http://localhost:8080/kickInTeam26/mapEdit.html?id=" + xhr.responseText;
+            location.reload();
         }
     }
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(JSON.stringify(eventJSON));
 }
 
-function deleteEvent(id) {
+function removeEvent(id) {
     let xhr = new XMLHttpRequest();
     xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/event/" + id, true);
     xhr.onreadystatechange = function () {
-        if ((xhr.readyState == 4) && (xhr.status == 200)) {
+        if ((xhr.readyState === 4) && (xhr.status === 204)) {
             console.log(xhr.responseText);
-            window.location.href = "http://localhost:8080/kickInTeam26/list.html";
+            location.reload();
         }
     }
     xhr.setRequestHeader("Content-Type", "application/json");
@@ -311,5 +298,35 @@ function sortTableOldNew() {
             rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
             switching = true;
         }
+    }
+}
+
+var trashBtn = document.getElementById("yesDeleteButton");
+// Get the modal
+var deleteModal = document.getElementById("eventDeleteModal");
+// Get the <span> element that closes the modal
+var close = document.getElementsByClassName("close")[1];
+
+// When the user clicks the button, open the modal
+
+
+
+function confirmDelete(eventId) {
+    trashBtn.setAttribute("onclick", "removeEvent(" + eventId + ")");
+    deleteModal.style.display = "block";
+}
+
+
+// When the user clicks on <span> (x), close the modal
+close.onclick = function (event) {
+    if (event.target === deleteModal) {
+        deleteModal.style.display = "none";
+    }
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+    if (event.target === deleteModal) {
+        deleteModal.style.display = "none";
     }
 }
