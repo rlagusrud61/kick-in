@@ -35,60 +35,50 @@ function XSSInputSanitation(id) {
 }
 
 function loadTable() {
-    let xhr, header, tr, th, i, table, events, row, name, eventDate, creator, lastEditor, action;
-    xhr = new XMLHttpRequest();
-    xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/events", true);
-    xhr.onreadystatechange = function () {
-        if ((xhr.readyState == 4) && (xhr.status == 200)) {
-            table = document.getElementById("eventtable");
-            events = JSON.parse(xhr.responseText);
-            console.log(events);
+    let header, tr, th, i, table, events, row, name, eventDate, creator, lastEditor, action;
+    getAllEvents(function() {
+    	table = document.getElementById("eventtable");
+        events = JSON.parse(this.responseText);
+        console.log(events);
+        header = [];
+        header.push('Name');
+        header.push('Date Of Event')
+        header.push('Creator');
+        header.push('Last Edited By');
+        header.push('Action');
 
-            header = [];
-            header.push('Name');
-
-            header.push('Date Of Event');
-            header.push('Creator');
-            header.push('Last Edited By');
-            header.push('Action');
-
-            tr = table.insertRow(-1); // add a row to the table
-
-            for (i = 0; i < header.length; i++) {
-                th = document.createElement("th"); // add a header to the table
-                th.innerHTML = header[i];
-                tr.appendChild(th);
-            }
-
-            for (i = 0; i < events.length; i++) {
-                row = table.insertRow(-1);
-                name = row.insertCell(0);
-                eventDate = row.insertCell(1);
-                creator = row.insertCell(2);
-                lastEditor = row.insertCell(3);
-                action = row.insertCell(4);
-                name.innerHTML = events[i].name;
-                eventDate.innerHTML = events[i].date;
-                creator.innerHTML = events[i].createdBy;
-                lastEditor.innerHTML = events[i].lastEditedBy;
-                action.innerHTML = "<a href='http://localhost:8080/kickInTeam26/event.html?id=" +
-                    events[i].eventId + "' class='text-success'><i class='glyphicon glyphicon-eye-open' " +
-                    "style='font-size:20px;'></i></a><a href='http://localhost:8080/kickInTeam26/edit.html?id=" +
-                    events[i].eventId + "' class='text-success'><i class='glyphicon glyphicon-pencil' " +
-                    "style='font-size:20px;'></i></a><a href='javascript: window.confirmDelete(" + events[i].eventId + ")'" +
-                    "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
-                console.log(action.innerHTML);
-            }
+        tr = table.insertRow(-1); // add a row to the table
+        for (i = 0; i < header.length; i++) {
+            th = document.createElement("th"); // add a header to the table
+            th.innerHTML = header[i];
+            tr.appendChild(th);
         }
-    }
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send();
+        
+        for (i = 0; i < events.length; i++) {
+            row = table.insertRow(-1);
+            name = row.insertCell(0);
+            eventDate = row.insertCell(1);
+            creator = row.insertCell(2);
+            lastEditor = row.insertCell(3);
+            action = row.insertCell(4);
+            name.innerHTML = events[i].name;
+            eventDate.innerHTML = events[i].date;
+            creator.innerHTML = events[i].createdBy;
+            lastEditor.innerHTML = events[i].lastEditedBy;
+            action.innerHTML = "<a href='http://localhost:8080/kickInTeam26/event.html?id=" +
+                events[i].eventId + "' class='text-success'><i class='glyphicon glyphicon-eye-open' " +
+                "style='font-size:20px;'></i></a><a href='http://localhost:8080/kickInTeam26/edit.html?id=" +
+                events[i].eventId + "' class='text-success'><i class='glyphicon glyphicon-pencil' " +
+                "style='font-size:20px;'></i></a><a href='javascript: window.confirmDelete(" + events[i].eventId + ")'" +
+                "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
+        }
+    });
 }
 
 window.onload = loadTable();
 
 function addEventPopup() {
-    let description, eventName, eventLoc, eventDate, dateControl, eventLocation, eventJSON, xhr;
+    let description, eventName, eventLoc, eventDate, dateControl, eventLocation, eventJSON;
     description = document.getElementById("eventDescription").value;
     eventName = document.getElementById("eventName").value;
     eventLoc = document.getElementById("eventLocation");
@@ -100,31 +90,16 @@ function addEventPopup() {
         "description": description,
         "location": eventLocation,
     };
-    console.log(JSON.stringify(eventJSON));
-    xhr = new XMLHttpRequest();
-    xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/events", true);
-    xhr.onreadystatechange = function () {
-        console.log(xhr.readyState);
-        if ((xhr.readyState === 4) && (xhr.status === 201)) {
-            console.log(xhr.responseText);
-            location.reload();
-        }
-    }
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send(JSON.stringify(eventJSON));
+    addEvent(eventJSON, function() {
+    	location.reload();
+    });
 }
 
 function removeEvent(id) {
-    let xhr = new XMLHttpRequest();
-    xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/event/" + id, true);
-    xhr.onreadystatechange = function () {
-        if ((xhr.readyState === 4) && (xhr.status === 204)) {
-            console.log(xhr.responseText);
-            location.reload();
-        }
-    }
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send();
+	deleteEvent(id, function() {
+		console.log(this.responseText);
+        location.reload();
+	});
 }
 
 function logout() {

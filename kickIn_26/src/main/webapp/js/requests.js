@@ -259,14 +259,14 @@ function getAllMaps(callback) {
  */
 function addMap(map, callback) {
 	let xhr = new XMLHttpRequest();
-	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/maps" , true);
+	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/maps" , true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 201)) {
 			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
-	xhr.send();
+	xhr.send(JSON.stringify(map));
 }
 
 /**
