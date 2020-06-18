@@ -5025,3 +5025,44 @@ begin
                  WHERE usename = 'dab_di19202b_27' and state='idle';
 end;
 $$;
+create or replace function getAllUsers()
+    returns text
+    language plpgsql
+as
+$$
+begin
+    return (
+        select jsonb_agg(users.userData)
+        from (
+                 select jsonb_build_object(
+                                'userId', u.userid,
+                                'email', u.email,
+                                'password', u.password,
+                                'nickname', u.nickname,
+                                'clearanceLevel', u.clearanceLevel
+                            ) as userData
+                 from users u) users
+    );
+end;
+$$;
+create or replace function getUser(uid bigint)
+    returns text
+    language plpgsql
+as
+$$
+begin
+    return (
+        select users.userData::text
+        from (
+                 select jsonb_build_object(
+                                'userId', u.userid,
+                                'email', u.email,
+                                'password', u.password,
+                                'nickname', u.nickname,
+                                'clearanceLevel', u.clearanceLevel
+                            ) as userData
+                 from users u
+                 where u.userid = uid) users
+    );
+end;
+$$;
