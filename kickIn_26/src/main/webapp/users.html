@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <!-- Latest compiled and minified CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
@@ -17,33 +18,32 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
     <link href="http://localhost:8080/kickInTeam26/css/style.css" rel="stylesheet" type="text/css">
-    <link href="http://localhost:8080/kickInTeam26/css/list.css" rel="stylesheet"> <!-- link to css file -->
+    <link href="http://localhost:8080/kickInTeam26/css/users.css" rel="stylesheet"> <!-- link to css file -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>List Of Events</title>
+    <title>Users</title>
 </head>
 <style>
-
-    table th{
+    table th {
         font-size: 1.8rem;
     }
+
     table td {
         font-size: 1.5rem;
     }
-    table{
+
+    table {
         background-color: #ffffff;
     }
-
 </style>
 <body>
 <div class="topnav">
-    <a id="home" href="http://localhost:8080/kickInTeam26/list.html"><i class="glyphicon glyphicon-home"></i></a>
-    <a  id="users" href="http://localhost:8080/kickInTeam26/users.html"><i class="glyphicon glyphicon-user"></i></a>
+    <a href="list.html" id="home"><i class="glyphicon glyphicon-home"></i></a>
     <a id="logout" onclick="logout()">Logout</a>
 </div>
 <div class="jumbotron jumbotron-fluid">
     <div class="container" id="main">
         <div class="row">
-            <h1 class="col-8">List Of Events</h1>
+            <h1 class="col-8">Users</h1>
             <div class="col-4" style="display: flex; justify-content: flex-end;">
                 <button class="myButton btn btn-success btn-circle btn-xl align-self-end" id="myBtn" type="button"> +
                 </button>
@@ -56,63 +56,66 @@
         <!-- Popup content -->
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>Add a New Event</h2>
+            <h2>Add a New User</h2>
             <div>
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label" for="eventName">Name</label>
+                    <label class="col-md-2 col-form-label" for="userName">Name</label>
                     <div class="col-md-3">
-                        <input class="form-control" id="eventName" onkeyup="XSSInputSanitation('eventName')" placeholder="Name"
+                        <input class="form-control" id="userName" onkeyup="XSSInputSanitation('userName')"
+                               placeholder="Name"
                                type="text">
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label" for="email">E-Mail</label>
+                    <div class="col-md-3">
+                        <input class="form-control" id="email" onkeyup="XSSInputSanitation('email')"
+                               placeholder="E-Mail"
+                               type="email">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label" for="password">Password</label>
+                    <div class="col-md-3">
+                        <input class="form-control" id="password" onkeyup="XSSInputSanitation('password')"
+                               placeholder="Password"
+                               type="password">
+                    </div>
+                </div>
 
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label" for="eventDescription">Description</label>
-                    <div class="col-md-8">
-                        <textarea class="form-control" id="eventDescription"
-                                  onkeyup="XSSInputSanitation('eventDescription')" rows="5"></textarea>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-2 col-form-label" for="eventDate">Date</label>
+                    <label class="col-md-2 col-form-label" for="clearanceLevel">Clearance Level</label>
                     <div class="col-md-3">
-                        <div class='input-group date' id='datetimepicker'>
-                            <input class="form-control" id="eventDate" type="date"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-2 col-form-label" for="eventLocation">Location</label>
-                    <div class="col-md-3">
-                        <select class="form-control" id="eventLocation">
-                            <option>University Campus</option>
-                            <option>Outside Campus (City)</option>
-                            <option>Both</option>
+                        <select class="form-control" id="clearanceLevel">
+                            <option>Visitor</option>
+                            <option>Editor</option>
+                            <option>Admin</option>
                         </select>
                     </div>
                 </div>
-                <div class="bottomright" style="display: flex; justify-content: flex-end;">
-                    <button class="btn btn-success btn-circle btn-xl align-self-end" onclick="addEventPopup()">ADD</button>
-                </div>
+
+            </div>
+            <div class="bottomright" style="display: flex; justify-content: flex-end;">
+                <button class="btn btn-success btn-circle btn-xl align-self-end" onclick="addUserPopup()">ADD</button>
             </div>
         </div>
     </div>
+</div>
 
 
+<!-- The Event Deletion Popup -->
+<div id="userDeleteModal" class="modal">
 
-    <!-- The Event Deletion Popup -->
-    <div id="eventDeleteModal" class="modal">
-
-        <!-- Popup content -->
-        <div class="modal-content">
-            <span class="closeDelete">&times;</span>
-            <h2>Do you really want to delete this event?</h2>
-            <div class="bottomright" style="display: flex; justify-content: center;">
-                <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">YES</button>
-                <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">NO</button>
-            </div>
+    <!-- Popup content -->
+    <div class="modal-content">
+        <span class="closeDelete">&times;</span>
+        <h2>Do you really want to delete this user?</h2>
+        <div class="bottomright" style="display: flex; justify-content: center;">
+            <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">YES</button>
+            <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">NO</button>
         </div>
     </div>
+</div>
 
 
 </div>
@@ -120,7 +123,8 @@
     <!-- Search Bar -->
     <div class="col-md-3">
         <form class="form-inline d-flex justify-content-center md-form active-green form-sm mt-0">
-            <input aria-label="Search" class="form-control form-control-sm ml-3 w-75" id="searchTable" onkeyup="searchTables()"
+            <input aria-label="Search" class="form-control form-control-sm ml-3 w-75" id="searchTable"
+                   onkeyup="searchTables()"
                    placeholder="Search"
                    type="text">
         </form>
@@ -134,16 +138,16 @@
         <div class="dropdown-menu dropdown-menu-right">
             <a class="dropdown-item" onclick="sortTableAZ()">A - Z</a>
             <a class="dropdown-item" onclick="sortTableZA()">Z - A</a>
-            <a class="dropdown-item" onclick="sortTableNewOld()">Event Date (New - Old)</a>
-            <a class="dropdown-item" onclick="sortTableOldNew()">Event Date (Old - New)</a>
+            <a class="dropdown-item" onclick="sortTableHighLow()">Clearance Level (High - Low)</a>
+            <a class="dropdown-item" onclick="sortTableLowHigh()">Clearance Level (Low - High)</a>
         </div>
     </div>
-    <div class="eventlist">
-        <table class="table table-hover" id="eventtable" style="width:100%">
+    <div class="userlist">
+        <table class="table table-hover" id="usersTable" style="width:100%">
         </table>
     </div>
 </div>
-<script src="http://localhost:8080/kickInTeam26/js/list.js"></script>
+<script src="http://localhost:8080/kickInTeam26/js/users.js"></script>
 <script src="http://localhost:8080/kickInTeam26/js/requests.js"></script>
 </body>
 </html>

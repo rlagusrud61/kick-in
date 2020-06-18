@@ -19,3 +19,9 @@ table  tbody tr td{
 table  thead tr th{
     font-size:15px;
 }
+
+.align-mapname{
+    font-size: 20px; 
+    margin-top: 29px; 
+    padding: 0px 7px 0px 7px;
+}

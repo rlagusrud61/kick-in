@@ -57,7 +57,7 @@
     <script src="https://unpkg.com/konva@4.0.0/konva.min.js"></script>
     <link rel="stylesheet" href="css/mapEdit.css">
     <script src="js/util/crop.js"></script>
-    <link rel="stylesheet" href="http://localhost:8080/kickInTeam26/css/mapView.css"> <!-- link to css file-->
+    <link rel="stylesheet" href="css/mapView.css"> <!-- link to css file-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Map View</title>
 </head>
@@ -79,12 +79,11 @@
 <div class="container" style="background-color: #ffffff">
     <div class="card-body">
         <div class="row">
-        <h1 id="mapName" class="text-left">Map_Name</h1>
+        <h1 id="mapName" class="text-left" style="padding-left: 13px;">Map_Name</h1>
         <a href="list.html"
-           class="glyphicon glyphicon-share text-success"
-           style="font-size:20px; padding-top: 2.5%; padding-left: 3%;"></a>
-        <a href="mapEdit.html" class="glyphicon glyphicon-pencil text-success" style="font-size:20px; padding-top: 2.5%; padding-left: 3%;"></a>
-        <a style="font-size:20px; padding-top: 2.5%; padding-left: 3%;" href="#" class="glyphicon glyphicon-trash text-success" id="deleteEvent"></a>
+           class="glyphicon glyphicon-share text-success align-mapname"></a>
+        <a href="mapEdit.html" class="glyphicon glyphicon-pencil text-success align-mapname"></a>
+        <a href="#" class="glyphicon glyphicon-trash text-success align-mapname" id="deleteEvent"></a>
         </div>
         <p id="description" class="text-left">Paragraphs are the building
             blocks of papers. Many students define paragraphs in terms of
