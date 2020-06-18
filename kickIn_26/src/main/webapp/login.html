@@ -50,7 +50,7 @@
                             <div class="form-label-group">
                                 <label for="inputPassword">Password</label>
                                 <div class="active-green-box mb-4">
-                                    <input class="form-control" id="inputPassword" placeholder="Password" required type="password">
+                                    <input class="form-control" id="inputPassword" onkeyup = "checkKey()" placeholder="Password" required type="password">
                                 </div>
                             </div>
 
@@ -74,6 +74,11 @@
         </div>
     </div>
 </div>
+<script>
+function checkKey() {
+	console.log(event.keyCode);
+}
+</script>
 <script src="http://localhost:8080/kickInTeam26/js/login.js"></script>
 <script src="http://localhost:8080/kickInTeam26/js/requests.js"></script>
 </body>

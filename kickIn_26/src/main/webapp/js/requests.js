@@ -45,7 +45,7 @@ function updateEvent(event, callback) {
 	xhr = new XMLHttpRequest();
 	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/event/" + eventId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);
 		}
 	}
@@ -69,7 +69,7 @@ function deleteEvent(eventId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/event/" + eventId , true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);
 		}
 	}
@@ -98,7 +98,6 @@ function getAllEvents(callback) {
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.send();	
 }
-a = getAllEvents()
 /**
  * @param {json | Object} event - The event to be added to the database.
  *
@@ -136,7 +135,7 @@ function deleteAllEvents(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/events" , true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);
 		}
 	}
@@ -191,7 +190,7 @@ function updateMap(map, callback) {
 	xhr = new XMLHttpRequest();
 	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/map/" + mapId , true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);
 		}
 	}
@@ -215,7 +214,7 @@ function deleteMap(mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/map/" + mapId , true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);
 		}
 	}
@@ -262,7 +261,7 @@ function addMap(map, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/maps" , true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+		if ((xhr.readyState === 4) && (xhr.status === 201)) {
 			callback.apply(xhr);
 		}
 	}
@@ -283,7 +282,7 @@ function deleteAllMaps(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/maps" , true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);
 		}
 	}
@@ -360,7 +359,7 @@ function addEventMap(eventMap, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/eventMap", true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+		if ((xhr.readyState === 4) && (xhr.status === 201)) {
 			callback.apply(xhr);
 		}
 	}
@@ -384,7 +383,7 @@ function clearMapsForEvent(eventId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/eventMap/" + eventId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);
 		}
 	}
@@ -410,7 +409,7 @@ function deleteEventMap(eventId, mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/eventMap/" + eventId + "/" + mapId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);
 		}
 	}
@@ -431,7 +430,7 @@ function deleteAllRelations(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/eventMap", true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);
 		}
 	}
@@ -486,7 +485,7 @@ function updateObject(mapObject, callback) {
 	objectId = mapObject.objectId;
 	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/object/" + objectId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);
 		}
 	}
@@ -510,7 +509,7 @@ function deleteObject(objectId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/object/" + objectId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);
 		}
 	}
@@ -536,7 +535,7 @@ function getAllObjectsForMap(mapId, callback) {
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/objects/" + mapId, true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -585,7 +584,7 @@ function addObjectToMap(mapObject, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/objects", true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+		if ((xhr.readyState === 4) && (xhr.status === 201)) {
 			callback.apply(xhr);
 		}
 	}
@@ -610,7 +609,7 @@ function clearMap(mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/objects/" + mapId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);
 		}
 	}
@@ -631,7 +630,7 @@ function clearAllMaps(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/objects", true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);
 		}
 	}
@@ -685,7 +684,7 @@ function updateDrawing(drawing, callback) {
 	drawingId = drawing.drawingId;
 	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/drawing/" + drawingId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);
 		}
 	}
@@ -709,7 +708,7 @@ function deleteDrawing(drawingId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/drawing/" + drawingId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);
 		}
 	}
@@ -755,7 +754,7 @@ function addDrawing(drawing, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/drawings", true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+		if ((xhr.readyState === 4) && (xhr.status === 201)) {
 			callback.apply(xhr);
 		}
 	}
@@ -809,7 +808,7 @@ function updateMaterial(material, callback) {
 	materialId = material.materialId;
 	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/material/" + materialId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);
 		}
 	}
@@ -833,7 +832,7 @@ function deleteMaterial(materialId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/material/" + materialId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);
 		}
 	}
@@ -879,7 +878,7 @@ function addMaterial(material, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/materials", true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+		if ((xhr.readyState === 4) && (xhr.status === 201)) {
 			callback.apply(xhr);
 		}
 	}
@@ -902,7 +901,7 @@ function deleteAllResources(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/resources", true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);
 		}
 	}
@@ -926,7 +925,7 @@ function deleteResource(resourceId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/resources/" + resourceId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);
 		}
 	}
