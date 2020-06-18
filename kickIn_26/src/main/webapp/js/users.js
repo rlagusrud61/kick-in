@@ -95,12 +95,13 @@ function loadTable() {
 window.onload = loadTable;
 
 function addUserPopup() {
-    let userName, email, password, level, clearanceLevel, userJSON, xhr;
-    userName = document.getElementById("userName").value;
+    let userName, email, password, level, levelDescription, clearanceLevel, userJSON, xhr;
+    userName = document.getElementById("eventDescription").value;
     email = document.getElementById("email").value;
     password = document.getElementById("password");
     level = document.getElementById("clearanceLevel").value;
-    switch(level) {
+    levelDescription = level.options[level.selectedIndex].value;
+    switch(levelDescription) {
         case "Visitor":
             clearanceLevel = 0;
             break;
@@ -123,9 +124,9 @@ function addUserPopup() {
     xhr = new XMLHttpRequest();
     xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/users", true);
     xhr.onreadystatechange = function () {
-        if ((xhr.readyState == 4) && (xhr.status = 201)) {
+        if ((xhr.readyState == 4) && (xhr.status = 200)) {
             console.log(xhr.responseText);
-//            window.location.href = "http://localhost:8080/kickInTeam26/users.html";
+            window.location.href = "http://localhost:8080/kickInTeam26/users.html";
         }
     }
     xhr.setRequestHeader("Content-Type", "application/json");
@@ -136,9 +137,9 @@ function deleteUser(id) {
     let xhr = new XMLHttpRequest();
     xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/user/" + id, true);
     xhr.onreadystatechange = function () {
-        if ((xhr.readyState == 4) && (xhr.status == 204)) {
+        if ((xhr.readyState == 4) && (xhr.status == 200)) {
             console.log(xhr.responseText);
-//            window.location.href = "http://localhost:8080/kickInTeam26/users.html";
+            window.location.href = "http://localhost:8080/kickInTeam26/users.html";
         }
     }
     xhr.setRequestHeader("Content-Type", "application/json");
