@@ -50,7 +50,7 @@ window.onload = function() {
     })
     
     getAllMapsForEvent(id, function() {
-    	let maps = JSON.parse(mapsList.responseText);
+    	let maps = JSON.parse(this.responseText);
             console.log(maps);
     })
 }
