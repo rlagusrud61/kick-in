@@ -1,7 +1,7 @@
 package nl.utwente.di.team26.Product.resources.TypeOfResource;
 
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exceptions.NotFoundException;
+import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Resources.ResourceDao;
 import nl.utwente.di.team26.Product.model.TypeOfResource.Material;
 import nl.utwente.di.team26.Security.Filters.Secured;

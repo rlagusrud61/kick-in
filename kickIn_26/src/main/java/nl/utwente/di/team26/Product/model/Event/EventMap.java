@@ -57,17 +57,11 @@ public class EventMap implements Serializable {
     }
 
 
-    /**
-     * toString will return String object representing the state of this
-     * valueObject. This is useful during application development, and
-     * possibly when application is writing object states in textlog.
-     */
+    @Override
     public String toString() {
-        return "\nclass EventMap, mapping to table EventMap\n" +
-                "Persistent attributes: \n" +
-                "eventId = " + this.eventId + "\n" +
-                "mapId = " + this.mapId + "\n";
+        return "EventMap{" +
+                "eventId=" + eventId +
+                ", mapId=" + mapId +
+                '}';
     }
-
-
 }

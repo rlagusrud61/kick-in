@@ -1,4 +1,4 @@
-package nl.utwente.di.team26.Exceptions;
+package nl.utwente.di.team26.Exception.Exceptions;
 
 public class NotFoundException extends Exception {
 

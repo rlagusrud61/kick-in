@@ -1,10 +1,9 @@
 package nl.utwente.di.team26.Product.dao.Maps;
 
-import nl.utwente.di.team26.Exceptions.NotFoundException;
+import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Dao;
 import nl.utwente.di.team26.Product.dao.DaoInterface;
 import nl.utwente.di.team26.Product.model.Map.MapObject;
-import nl.utwente.di.team26.Utils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -104,7 +103,7 @@ public class MapObjectsDao extends Dao implements DaoInterface<MapObject> {
         String sql = "SELECT generateMapReport(?)";
         try(PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, mapId);
-            return getResultOfQuery(stmt);
+            return getResultOfQuery(conn, stmt);
         }
     }
 
@@ -112,7 +111,7 @@ public class MapObjectsDao extends Dao implements DaoInterface<MapObject> {
         String sql = "SELECT getAllObjectsOnMap(?)";
         try(PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, mapId);
-            return getResultOfQuery(stmt);
+            return getResultOfQuery(conn, stmt);
         }
     }
 }

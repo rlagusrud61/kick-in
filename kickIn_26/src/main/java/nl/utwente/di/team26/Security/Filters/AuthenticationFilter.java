@@ -1,9 +1,11 @@
 package nl.utwente.di.team26.Security.Filters;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import io.jsonwebtoken.*;
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exceptions.*;
+import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
+import nl.utwente.di.team26.Exception.Exceptions.SessionNotFoundException;
+import nl.utwente.di.team26.Exception.Exceptions.TokenInvalidException;
+import nl.utwente.di.team26.Exception.Exceptions.TokenObsoleteException;
 import nl.utwente.di.team26.Security.Session.SessionDao;
 import nl.utwente.di.team26.Security.User.User;
 import nl.utwente.di.team26.Security.User.UserDao;
@@ -51,7 +53,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
                 // Validate the token
                 authenticatedUserId = validateToken(token);
                 authenticatedUser = findUser(Long.parseLong(authenticatedUserId));
-            } catch (TokenObsoleteException | TokenException e) {
+            } catch (TokenObsoleteException | TokenInvalidException e) {
                 sendCause(requestContext, e.getMessage());
             } catch (NotFoundException e) {
                 sendUnauthorized(requestContext, e.getMessage());
@@ -101,7 +103,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     }
 
     private void sendCause(ContainerRequestContext requestContext, String msg) {
-        requestContext.abortWith(Response.status(Response.Status.NOT_ACCEPTABLE).entity(msg).build());
+        requestContext.abortWith(Response.status(Response.Status.BAD_REQUEST).entity(msg).build());
     }
 
     private void sendUnauthorized(ContainerRequestContext requestContext, String msg) {
@@ -112,7 +114,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         requestContext.abortWith(Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(msg).build());
     }
 
-    private String validateToken(String token) throws TokenObsoleteException, SQLException, TokenException {
+    private String validateToken(String token) throws TokenObsoleteException, SQLException, TokenInvalidException {
         // Check if the token was issued by the server and if it's not expired
         // Throw an Exception if the token is invalid
         //return the userId which always put into the subject to get the user.
@@ -125,7 +127,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         } catch (SQLException e) {
             throw new SQLException(e);
         } catch (Exception e) {
-            throw new TokenException("Token is not Valid. Please try clearing cookies and logging in Again.");
+            throw new TokenInvalidException("Token is not Valid. Please try clearing cookies and logging in Again.");
         }
     }
 

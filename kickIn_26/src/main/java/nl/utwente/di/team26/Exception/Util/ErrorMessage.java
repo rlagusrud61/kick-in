@@ -1,4 +1,4 @@
-package nl.utwente.di.team26.Exceptions.Util;
+package nl.utwente.di.team26.Exception.Util;
 
 import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.annotation.XmlRootElement;
