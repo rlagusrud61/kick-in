@@ -25,5 +25,7 @@ function login() {
 }
 
 function checkKeyPress() {
-	console.log(event.keyCode);
+	if (event.keyCode == 13) {
+		login();
+	}
 }
