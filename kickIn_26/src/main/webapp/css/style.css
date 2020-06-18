@@ -20,13 +20,7 @@ body{
   border-radius: 35px; 
   font-size: 12px; 
   text-align: center; 
-} 
-
-.glyphicon-share .glyphicon-pencil .glyphicon-trash {
-  font-size:25px;
-  color:#ffffff;
 }
-
 
 /* The Modal (background) */
 .modal {
@@ -71,7 +65,13 @@ body{
   background-image:linear-gradient(to right, #D4FC79, #A3EB98);
   overflow: hidden;
   width: 100%;
-} 
+}
+
+.glyphicon-share .glyphicon-pencil .glyphicon-trash .glyphicon-user {
+  font-size:25px;
+  color: #ffffff;
+}
+
 #home {
   float: left;
   color: #58BD0F;
@@ -80,7 +80,13 @@ body{
   font-size: 30px;
   padding-left: 4%;
 }
-#arrow{
+#arrow {
+  color: #58BD0F;
+  padding-left: 20px;
+  text-decoration: none;
+  font-size: 30px;
+}
+#users {
   color: #58BD0F;
   padding-left: 20px;
   text-decoration: none;
@@ -148,5 +154,12 @@ body{
   background: #fff !important;
 }
 
+.form-control:focus {
+  border-color: #89BD26;
+  box-shadow: inset 0 1px 1px rgba(0, 0.875, 0, 0.6), 0 0 8px rgba(0, 255, 0, 0.6);
+}
 
+:focus {
+  background: none;
+}
 
