@@ -1,13 +1,9 @@
 package nl.utwente.di.team26.Product.resources.Maps;
 
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exceptions.NotFoundException;
+import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Events.EventMapDao;
-import nl.utwente.di.team26.Product.dao.Events.EventsDao;
-import nl.utwente.di.team26.Product.dao.Maps.MapsDao;
-import nl.utwente.di.team26.Product.model.Event.Event;
 import nl.utwente.di.team26.Product.model.Event.EventMap;
-import nl.utwente.di.team26.Product.model.Map.Map;
 import nl.utwente.di.team26.Security.Filters.Secured;
 import nl.utwente.di.team26.Security.User.Roles;
 import nl.utwente.di.team26.Utils;
@@ -17,7 +13,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
 @Path("/eventMap")
 public class EventMapResource {
@@ -38,7 +33,7 @@ public class EventMapResource {
     @Secured({Roles.VISITOR})
     @Path("map/{mapId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllEventsForMap(@PathParam("mapId") int mapId) throws NotFoundException, SQLException {
+    public Response getAllEventsForMap(@PathParam("mapId") long mapId) throws NotFoundException, SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             return Utils.returnOkResponse(eventMapDao.allEventsFor(conn, mapId));
         }

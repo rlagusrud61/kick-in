@@ -1,10 +1,9 @@
 package nl.utwente.di.team26.Product.resources.Objects;
 
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exceptions.NotFoundException;
+import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Maps.MapObjectsDao;
 import nl.utwente.di.team26.Product.dao.Maps.MapsDao;
-import nl.utwente.di.team26.Product.model.Map.Map;
 import nl.utwente.di.team26.Product.model.Map.MapObject;
 import nl.utwente.di.team26.Security.Filters.Secured;
 import nl.utwente.di.team26.Security.User.Roles;
@@ -17,7 +16,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
 @Path("/objects")
 public class ObjectsResource {
