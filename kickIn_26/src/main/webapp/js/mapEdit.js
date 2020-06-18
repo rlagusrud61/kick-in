@@ -82,7 +82,7 @@ function addItems() {
             console.log("failure")
         }
     }
-    objReq.open("GET", ("http://localhost:8080/kickInTeam26/rest/materials"));
+    objReq.open("GET", ("http://localhost:8080/kickInTeam26/rest/resources"));
     objReq.send();
 }
 
@@ -106,7 +106,7 @@ function addItems2() {
                     var clone = template.content.cloneNode(true);
                     var td = clone.querySelectorAll("td");
                     td[0].textContent = '<label>Item ' + materialsList[i].resourceId + '</label>';
-                    td[1].textContent = '<input id ="input' + materialsList[i].resourceId + '" type = "number" name = "Quantity"/>';
+                    td[1].textContent = '<input type = "number" id ="input' + materialsList[i].resourceId + '" name = "Quantity"/>';
                     td[2].textContent = '<button onclick ="displayItems(\' + materialsList[i].resourceId + \')" style="background-color: #58BD0F;border-color: #C1FF94;">+</button>\"';
                     tbody.appendChild(clone);
                 }
