@@ -96,7 +96,7 @@ window.onload = loadTable;
 
 function addUserPopup() {
     let userName, email, password, level, levelDescription, clearanceLevel, userJSON, xhr;
-    userName = document.getElementById("eventDescription").value;
+    userName = document.getElementById("userName").value;
     email = document.getElementById("email").value;
     password = document.getElementById("password").value;
     level = document.getElementById("clearanceLevel");
