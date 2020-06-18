@@ -19,6 +19,10 @@
     <link href="http://localhost:8080/kickInTeam26/css/style.css" rel="stylesheet" type="text/css">
     <link href="http://localhost:8080/kickInTeam26/css/list.css" rel="stylesheet"> <!-- link to css file -->
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <!--    jQuery for fucking modals-->
+    <script crossorigin="anonymous"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <title>List Of Events</title>
 </head>
 <style>
@@ -38,8 +42,8 @@
 </style>
 <body>
 <div class="topnav">
-    <a id="home" href="http://localhost:8080/kickInTeam26/list.html"><i class="glyphicon glyphicon-home"></i></a>
-    <a  id="users" href="http://localhost:8080/kickInTeam26/users.html"><i class="glyphicon glyphicon-user"></i></a>
+    <a href="http://localhost:8080/kickInTeam26/list.html" id="home"><i class="glyphicon glyphicon-home"></i></a>
+    <a href="http://localhost:8080/kickInTeam26/users.html" id="users"><i class="glyphicon glyphicon-user"></i></a>
     <a id="logout" onclick="logout()">Logout</a>
 </div>
 <div class="jumbotron jumbotron-fluid">
@@ -47,7 +51,8 @@
         <div class="row">
             <h1 class="col-8">List Of Events</h1>
             <div class="col-4" style="display: flex; justify-content: flex-end;">
-                <button class="myButton btn btn-success btn-circle btn-xl align-self-end" id="addEventBtn" type="button"> +
+                <button class="myButton btn btn-success btn-circle btn-xl align-self-end" id="addEventBtn"
+                        type="button"> +
                 </button>
             </div>
         </div>
@@ -109,9 +114,13 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Do you really want to delete this event?</h2>
-            <div class="bottomright" style="display: flex; justify-content: center;" id="removeEventThing">
-                <button class="btn btn-success btn-circle btn-xl align-self-center" type="submit" onclick="" id="yesDeleteButton">YES</button>
-                <a href="list.html"><button class="btn btn-success btn-circle btn-xl align-self-center" type="button">NO</button></a>
+            <div class="bottomright" id="removeEventThing" style="display: flex; justify-content: center;">
+                <button class="btn btn-success btn-circle btn-xl align-self-center" id="yesDeleteButton" onclick=""
+                        type="submit">YES
+                </button>
+                <a href="list.html">
+                    <button class="btn btn-success btn-circle btn-xl align-self-center" type="button">NO</button>
+                </a>
             </div>
         </div>
     </div>
@@ -148,9 +157,20 @@
     </div>
 
 
-
-
 </div>
+<script>
+    $(document).ready(function(){
+        $('.modal-overlay').hide();
+        $('.open-modal').css('cursor' , 'pointer').click(function(){
+            var file = $(this).attr('data');
+            $(".modal-content").load(file + ".html");
+            $('.modal-overlay').fadeIn();
+        });
+        $('.close-modal').css('cursor','pointer').click(function(){
+            $('.modal-overlay').fadeOut();
+        });
+    });
+</script>
 <script src="http://localhost:8080/kickInTeam26/js/list.js"></script>
 <script src="http://localhost:8080/kickInTeam26/js/requests.js"></script>
 </body>
