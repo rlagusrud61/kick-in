@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet" type="text/css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -19,10 +19,9 @@
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
     <link href="http://localhost:8080/kickInTeam26/css/list.css" rel="stylesheet"> <!-- link to css file -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>List Of Events</title>
+    <title>Users</title>
 </head>
 <style>
-
     table th{
         font-size: 1.8rem;
     }
@@ -32,18 +31,16 @@
     table{
         background-color: #ffffff;
     }
-
 </style>
 <body>
 <div class="topnav">
     <a href="list.html" id="home"><i class="glyphicon glyphicon-home"></i></a>
-    <a href="users.html" id="users"><i class="glyphicon glyphicon-user"></i></a>
     <a id="logout" onclick="logout()">Logout</a>
 </div>
 <div class="jumbotron jumbotron-fluid">
     <div class="container" id="main">
         <div class="row">
-            <h1 class="col-8">List Of Events</h1>
+            <h1 class="col-8">Users</h1>
             <div class="col-4" style="display: flex; justify-content: flex-end;">
                 <button class="myButton btn btn-success btn-circle btn-xl align-self-end" id="myBtn" type="button"> +
                 </button>
@@ -56,43 +53,52 @@
         <!-- Popup content -->
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>Add a New Event</h2>
+            <h2>Add a New User</h2>
             <div>
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label" for="eventname">Name</label>
+                    <label class="col-md-2 col-form-label" for="userName">Name</label>
                     <div class="col-md-3">
-                        <input class="form-control" id="eventName" onkeyup="XSSInputSanitation('eventName')" placeholder="Name"
+                        <input class="form-control" id="userName" onkeyup="XSSInputSanitation('userName')" placeholder="Name"
                                type="text">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label" for="email">E-Mail</label>
+                    <div class="col-md-3">
+                        <input class="form-control" id="email" onkeyup="XSSInputSanitation('email')" placeholder="E-Mail"
+                               type="email">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label" for="password">Password</label>
+                    <div class="col-md-3">
+                        <input class="form-control" id="password" onkeyup="XSSInputSanitation('password')" placeholder="Password"
+                               type="password">
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label" for="eventdescription">Description</label>
-                    <div class="col-md-8">
-                        <textarea class="form-control" id="eventDescription"
-                                  onkeyup="XSSInputSanitation('eventDescription')" rows="5"></textarea>
-                    </div>
+                <!-- Default inline 1-->
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" class="custom-control-input" id="defaultInline1" name="inlineDefaultRadiosExample">
+                    <label class="custom-control-label" for="defaultInline1">1</label>
                 </div>
-                <div class="form-group row">
-                    <label class="col-md-2 col-form-label" for="eventDate">Date</label>
-                    <div class="col-md-3">
-                        <div class='input-group date' id='datetimepicker'>
-                            <input class="form-control" id="eventDate" type="date"/>
-                        </div>
-                    </div>
+
+                <!-- Default inline 2-->
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" class="custom-control-input" id="defaultInline2" name="inlineDefaultRadiosExample">
+                    <label class="custom-control-label" for="defaultInline2">2</label>
                 </div>
-                <div class="form-group row">
-                    <label class="col-md-2 col-form-label" for="eventlocation">Location</label>
-                    <div class="col-md-3">
-                        <select class="form-control" id="eventLocation">
-                            <option>University Campus</option>
-                            <option>Outside Campus (City)</option>
-                            <option>Both</option>
-                        </select>
-                    </div>
+
+                <!-- Default inline 3-->
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" class="custom-control-input" id="defaultInline3" name="inlineDefaultRadiosExample">
+                    <label class="custom-control-label" for="defaultInline3">3</label>
+                </div>
+            </div>
                 </div>
                 <div class="bottomright" style="display: flex; justify-content: flex-end;">
-                    <button class="btn btn-success btn-circle btn-xl align-self-end" onclick="addEventPopup()">ADD</button>
+                    <button class="btn btn-success btn-circle btn-xl align-self-end" onclick="addUserPopup()">ADD</button>
                 </div>
             </div>
         </div>
@@ -101,12 +107,12 @@
 
 
     <!-- The Event Deletion Popup -->
-    <div id="eventDeleteModal" class="modal">
+    <div id="userDeleteModal" class="modal">
 
         <!-- Popup content -->
         <div class="modal-content">
             <span class="closeDelete">&times;</span>
-            <h2>Do you really want to delete this event?</h2>
+            <h2>Do you really want to delete this user?</h2>
             <div class="bottomright" style="display: flex; justify-content: center;">
                 <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">YES</button>
                 <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">NO</button>
@@ -134,16 +140,16 @@
         <div class="dropdown-menu dropdown-menu-right">
             <a class="dropdown-item" onclick="sortTableAZ()">A - Z</a>
             <a class="dropdown-item" onclick="sortTableZA()">Z - A</a>
-            <a class="dropdown-item" onclick="sortTableNewOld()">Event Date (New - Old)</a>
-            <a class="dropdown-item" onclick="sortTableOldNew()">Event Date (Old - New)</a>
+            <a class="dropdown-item" onclick="sortTableHighLow()">Clearance Level (High - Low)</a>
+            <a class="dropdown-item" onclick="sortTableLowHigh()">Clearance Level (Low - High)</a>
         </div>
     </div>
-    <div class="eventlist">
-        <table class="table table-hover" id="eventtable" style="width:100%">
+    <div class="userlist">
+        <table class="table table-hover" id="usersTable" style="width:100%">
         </table>
     </div>
 </div>
-<script src="http://localhost:8080/kickInTeam26/js/list.js"></script>
+<script src="http://localhost:8080/kickInTeam26/js/users.js"></script>
 <script src="http://localhost:8080/kickInTeam26/js/requests.js"></script>
 </body>
 </html>

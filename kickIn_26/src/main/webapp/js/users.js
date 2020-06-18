@@ -23,8 +23,8 @@ window.onclick = function (event) {
     }
 }
 
-
-function createEvent(form) {
+//TODO
+function createUser(form) {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/events", true);
     xhr.onreadystatechange = function () {
@@ -48,21 +48,22 @@ function XSSInputSanitation(id) {
     }
 }
 
+//TODO
 function loadTable() {
-    let xhr, header, tr, th, i, table, events, row, name, eventDate, creator, lastEditor, action;
+    let xhr, header, tr, th, i, table, users, row, name, email, password, clearanceLevel, action;
     xhr = new XMLHttpRequest();
-    xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/events", true);
+    xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/users", true);
     xhr.onreadystatechange = function () {
         if ((xhr.readyState == 4) && (xhr.status == 200)) {
-            table = document.getElementById("eventtable");
-            events = JSON.parse(xhr.responseText);
-            console.log(events);
+            table = document.getElementById("usersTable");
+            users = JSON.parse(xhr.responseText);
+            console.log(users);
 
             header = [];
             header.push('Name');
-            header.push('Date Of Event')
-            header.push('Creator');
-            header.push('Last Edited By');
+            header.push('E-Mail')
+            header.push('Password');
+            header.push('Clearance Level');
             header.push('Action');
 
             tr = table.insertRow(-1); // add a row to the table
@@ -73,22 +74,20 @@ function loadTable() {
                 tr.appendChild(th);
             }
 
-            for (i = 0; i < events.length; i++) {
+            for (i = 0; i < users.length; i++) {
                 row = table.insertRow(-1);
                 name = row.insertCell(0);
-                eventDate = row.insertCell(1);
-                creator = row.insertCell(2);
-                lastEditor = row.insertCell(3);
+                email = row.insertCell(1);
+                password = row.insertCell(2);
+                clearanceLevel = row.insertCell(3);
                 action = row.insertCell(4);
-                name.innerHTML = events[i].name;
-                eventDate.innerHTML = events[i].date;
-                creator.innerHTML = events[i].createdBy;
-                lastEditor.innerHTML = events[i].lastEditedBy;
-                action.innerHTML = "<a href='http://localhost:8080/kickInTeam26/event.html?id=" +
-                    events[i].eventId + "' class='text-success'><i class='glyphicon glyphicon-eye-open' " +
-                    "style='font-size:20px;'></i></a><a href='http://localhost:8080/kickInTeam26/edit.html?id=" +
-                    events[i].eventId + "' class='text-success'><i class='glyphicon glyphicon-pencil' " +
-                    "style='font-size:20px;'></i></a><a href='javascript: window.deleteEvent(" + events[i].eventId + ")'" +
+                name.innerHTML = users[i].name;
+                email.innerHTML = users[i].email;
+                password.innerHTML = users[i].password;
+                clearanceLevel.innerHTML = users[i].clearanceLevel;
+                action.innerHTML = "<a href='http://localhost:8080/kickInTeam26/edit.html?id=" +
+                    users[i].eventId + "' class='text-success'><i class='glyphicon glyphicon-pencil' " +
+                    "style='font-size:20px;'></i></a><a href='javascript: window.deleteUser(" + users[i].userId + ")'" +
                     "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
             }
         }
@@ -99,31 +98,29 @@ function loadTable() {
 
 window.onload = loadTable;
 
-function addEventPopup() {
-    let description, eventName, location, eventDate, dateControl, eventLocation, eventJSON, xhr;
-    description = document.getElementById("eventDescription").value;
-    eventName = document.getElementById("eventName").value;
-    location = document.getElementById("eventLocation");
-    eventDate = document.getElementById("eventDate").value;
-    eventLocation = location.options[location.selectedIndex].value;
-    eventJSON = {
-        "name": eventName,
-        "date": eventDate,
-        "description": description,
-        "location": eventLocation,
+function addUserPopup() {
+    let userName, email, password, clearanceLevel, userJSON, xhr;
+    userName = document.getElementById("eventDescription").value;
+    email = document.getElementById("email").value;
+    password = document.getElementById("password");
+    clearanceLevel = document.getElementById("clearanceLevel").value;
+    userJSON = {
+        "userName": userName,
+        "email": email,
+        "password": password,
+        "clearanceLevel": clearanceLevel,
     };
-    console.log(JSON.stringify(eventJSON));
+    console.log(JSON.stringify(userJSON));
     xhr = new XMLHttpRequest();
-    xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/events", true);
+    xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/users", true);
     xhr.onreadystatechange = function () {
         if ((xhr.readyState == 4) && (xhr.status = 200)) {
             console.log(xhr.responseText);
-            window.location.href = "http://localhost:8080/kickInTeam26/list.html";
-            //window.location.href = "http://localhost:8080/kickInTeam26/mapEdit.html?id=" + xhr.responseText;
+            window.location.href = "http://localhost:8080/kickInTeam26/users.html";
         }
     }
     xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send(JSON.stringify(eventJSON));
+    xhr.send(JSON.stringify(userJSON));
 }
 
 function deleteEvent(id) {
@@ -157,7 +154,7 @@ function searchTables() {
     let searchValue, filter, table, tr, td, i, txtValue;
     searchValue = XSSInputSanitation('searchTable');
     filter = searchValue.toUpperCase();
-    table = document.getElementById("eventtable");
+    table = document.getElementById("usersTable");
     tr = table.getElementsByTagName("tr");
     // Loop through all table rows, and hide those who don't match the search query
     for (i = 0; i < tr.length; i++) {
@@ -175,7 +172,7 @@ function searchTables() {
 
 function sortTableAZ() {
     let table, rows, switching, i, x, y, shouldSwitch;
-    table = document.getElementById("eventtable");
+    table = document.getElementById("usersTable");
     switching = true;
     /* Make a loop that will continue until
     no switching has been done: */
@@ -210,7 +207,7 @@ function sortTableAZ() {
 
 function sortTableZA() {
     let table, rows, switching, i, x, y, shouldSwitch;
-    table = document.getElementById("eventtable");
+    table = document.getElementById("usersTable");
     switching = true;
     /* Make a loop that will continue until
     no switching has been done: */
@@ -243,9 +240,9 @@ function sortTableZA() {
     }
 }
 
-function sortTableNewOld() {
+function sortTableHighLow() {
     let table, rows, switching, i, x, y, shouldSwitch;
-    table = document.getElementById("eventtable");
+    table = document.getElementById("usersTable");
     switching = true;
     /* Make a loop that will continue until
     no switching has been done: */
@@ -260,8 +257,8 @@ function sortTableNewOld() {
             shouldSwitch = false;
             /* Get the two elements you want to compare,
             one from current row and one from the next: */
-            x = rows[i].getElementsByTagName("TD")[1];
-            y = rows[i + 1].getElementsByTagName("TD")[1];
+            x = rows[i].getElementsByTagName("TD")[3];
+            y = rows[i + 1].getElementsByTagName("TD")[3];
             // Check if the two rows should switch place:
             if (x.innerHTML < y.innerHTML) {
                 // If so, mark as a switch and break the loop:
@@ -278,9 +275,9 @@ function sortTableNewOld() {
     }
 }
 
-function sortTableOldNew() {
+function sortTableLowHigh() {
     let table, rows, switching, i, x, y, shouldSwitch;
-    table = document.getElementById("eventtable");
+    table = document.getElementById("usersTable");
     switching = true;
     /* Make a loop that will continue until
     no switching has been done: */
@@ -295,8 +292,8 @@ function sortTableOldNew() {
             shouldSwitch = false;
             /* Get the two elements you want to compare,
             one from current row and one from the next: */
-            x = rows[i].getElementsByTagName("TD")[1];
-            y = rows[i + 1].getElementsByTagName("TD")[1];
+            x = rows[i].getElementsByTagName("TD")[3];
+            y = rows[i + 1].getElementsByTagName("TD")[3];
             // Check if the two rows should switch place:
             if (x.innerHTML > y.innerHTML) {
                 // If so, mark as a switch and break the loop:
