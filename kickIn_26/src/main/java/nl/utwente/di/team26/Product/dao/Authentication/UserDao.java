@@ -17,14 +17,15 @@ public class UserDao extends Dao implements DaoInterface<User> {
 
     @Override
     public long create(Connection conn, User valueObject) throws SQLException {
-        String sql = "INSERT INTO users (email, password, "
-                + "clearanceLevel) VALUES (?, ?, ?) RETURNING userId";
+        String sql = "INSERT INTO users (email, password, nickname, "
+                + "clearanceLevel) VALUES (?, ?, ?, ?) RETURNING userId";
         beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
 
         try(PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, valueObject.getEmail());
             stmt.setString(2, valueObject.getPassword());
-            stmt.setInt(3, valueObject.getClearanceLevel());
+            stmt.setString(3, valueObject.getNickname());
+            stmt.setInt(4, valueObject.getClearanceLevel());
 
             ResultSet resultSet = stmt.executeQuery();
             endTransaction(conn);
