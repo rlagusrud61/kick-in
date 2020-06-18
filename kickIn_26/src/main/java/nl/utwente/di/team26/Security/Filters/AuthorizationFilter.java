@@ -1,7 +1,7 @@
 package nl.utwente.di.team26.Security.Filters;
 
+import nl.utwente.di.team26.Product.dao.Authentication.UserDao;
 import nl.utwente.di.team26.Security.User.Roles;
-import nl.utwente.di.team26.Security.User.UserDao;
 
 import javax.annotation.Priority;
 import javax.ws.rs.NotAuthorizedException;

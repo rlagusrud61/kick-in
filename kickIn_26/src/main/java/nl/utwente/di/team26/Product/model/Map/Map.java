@@ -33,7 +33,7 @@ public class Map implements Serializable {
 
     }
 
-    public Map(int mapIdIn) {
+    public Map(long mapIdIn) {
         this.mapId = mapIdIn;
     }
 
@@ -42,7 +42,7 @@ public class Map implements Serializable {
         this.description = description;
     }
 
-    public Map(int mapId, String name, String description) {
+    public Map(long mapId, String name, String description) {
         this.mapId = mapId;
         this.name = name;
         this.description = description;
