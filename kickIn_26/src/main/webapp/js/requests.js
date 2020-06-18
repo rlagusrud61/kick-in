@@ -13,12 +13,12 @@
  * @returns {json | Object} - The response from the RESTful service provider which will be a JSON object
  * of the required event.
  */
-function getEvent(eventId) {
+function getEvent(eventId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/event/" + eventId, true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -39,14 +39,14 @@ function getEvent(eventId) {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function updateEvent(event) {
+function updateEvent(event, callback) {
 	let eventId, xhr;
 	eventId= event.eventId;
 	xhr = new XMLHttpRequest();
 	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/event/" + eventId, true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -65,13 +65,12 @@ function updateEvent(event) {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function deleteEvent(eventId) {
+function deleteEvent(eventId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/event/" + eventId , true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			window.location.href = "http://localhost:8080/kickInTeam26/list.html";
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -93,7 +92,7 @@ function getAllEvents(callback) {
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/events" , true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return(xhr.responseText)
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -117,7 +116,7 @@ function addEvent(event, callback) {
 	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/events" , true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 201)) {
-			console.log(xhr.responseText);
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -138,7 +137,7 @@ function deleteAllEvents(callback) {
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/events" , true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -165,7 +164,7 @@ function getMap(mapId, callback) {
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/map/" + mapId , true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -193,7 +192,7 @@ function updateMap(map, callback) {
 	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/map/" + mapId , true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -217,7 +216,7 @@ function deleteMap(mapId, callback) {
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/map/" + mapId , true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -234,13 +233,13 @@ function deleteMap(mapId, callback) {
  * @returns {json | Object | Array} - The response from the RESTful service provider which will be an
  * array of maps. Each map will be a JSON object.
  */
-function getAllMaps() {
+function getAllMaps(callback) {
 
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/maps" , true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -259,12 +258,12 @@ function getAllMaps() {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function addMap(map) {
+function addMap(map, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/maps" , true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -280,12 +279,12 @@ function addMap(map) {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function deleteAllMaps() {
+function deleteAllMaps(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/maps" , true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -307,12 +306,12 @@ function deleteAllMaps() {
  * @returns {json | Object | Array} - The response from the RESTful service provider which will be
  * an array of the map data for the specific event. Each map data will be a JSON object.
  */
-function getAllMapsForEvent(eventId) {
+function getAllMapsForEvent(eventId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/eventMap/event/" + eventId, true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -332,12 +331,12 @@ function getAllMapsForEvent(eventId) {
  * @returns {json | Object | Array} - The response from the RESTful service provider which will be
  * an array of events associated with the specific map. Each event will be a JSON object.
  */
-function getAllEventsForMap(mapId) {
+function getAllEventsForMap(mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/eventMap/map/" + mapId , true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -357,12 +356,12 @@ function getAllEventsForMap(mapId) {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function addEventMap(eventMap) {
+function addEventMap(eventMap, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/eventMap", true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -381,12 +380,12 @@ function addEventMap(eventMap) {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function clearMapsForEvent(eventId) {
+function clearMapsForEvent(eventId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/eventMap/" + eventId, true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -407,12 +406,12 @@ function clearMapsForEvent(eventId) {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function deleteEventMap(eventId, mapId) {
+function deleteEventMap(eventId, mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/eventMap/" + eventId + "/" + mapId, true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -428,12 +427,12 @@ function deleteEventMap(eventId, mapId) {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function deleteAllRelations() {
+function deleteAllRelations(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/eventMap", true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -456,12 +455,12 @@ function deleteAllRelations() {
  * @returns {json | Object} - The response from the RESTful service provider which will be a JSON
  * object of the required map object.
  */
-function getObject(objectId) {
+function getObject(objectId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/object/" + objectId, true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -481,14 +480,14 @@ function getObject(objectId) {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function updateObject(mapObject) {
+function updateObject(mapObject, callback) {
 	let xhr, objectId;
 	xhr = new XMLHttpRequest();
 	objectId = mapObject.objectId;
 	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/object/" + objectId, true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -507,12 +506,12 @@ function updateObject(mapObject) {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function deleteObject(objectId) {
+function deleteObject(objectId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/object/" + objectId, true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -532,7 +531,7 @@ function deleteObject(objectId) {
  * @returns {json | Object | Array} - The response from the RESTful service provider which will be
  * an array of objects associated with the specific map. Each object will be a JSON object.
  */
-function getAllObjectsForMap(mapId) {
+function getAllObjectsForMap(mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/objects/" + mapId, true);
 	xhr.onreadystatechange = function() {
@@ -558,12 +557,12 @@ function getAllObjectsForMap(mapId) {
  * an array of JSON objects, where each object consists of the name of the map object and its
  * quantity in the map. All the map objects are associated with the specific map.
  */
-function generateReportForMap(mapId) {
+function generateReportForMap(mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/objects/" + mapId + "/report", true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -582,12 +581,12 @@ function generateReportForMap(mapId) {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function addObjectToMap(mapObject) {
+function addObjectToMap(mapObject, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/objects", true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -607,12 +606,12 @@ function addObjectToMap(mapObject) {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function clearMap(mapId) {
+function clearMap(mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/objects/" + mapId, true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -628,12 +627,12 @@ function clearMap(mapId) {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function clearAllMaps() {
+function clearAllMaps(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/objects", true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -655,12 +654,12 @@ function clearAllMaps() {
  * @returns {json | Object} - The response from the RESTful service provider which will be a JSON
  * object of the required drawing.
  */
-function getDrawing(drawingId) {
+function getDrawing(drawingId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/drawing/" + drawingId, true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -680,14 +679,14 @@ function getDrawing(drawingId) {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function updateDrawing(drawing) {
+function updateDrawing(drawing, callback) {
 	let xhr, drawingId;
 	xhr = new XMLHttpRequest();
 	drawingId = drawing.drawingId;
 	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/drawing/" + drawingId, true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -706,12 +705,12 @@ function updateDrawing(drawing) {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function deleteDrawing(drawingId) {
+function deleteDrawing(drawingId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/drawing/" + drawingId, true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -728,12 +727,12 @@ function deleteDrawing(drawingId) {
  * @returns {json | Object | Array} - The response from the RESTful service provider which will be an
  * array of drawings. Each drawing will be a JSON object.
  */
-function getAllDrawings() {
+function getAllDrawings(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/drawings", true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -752,12 +751,12 @@ function getAllDrawings() {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function addDrawing(drawing) {
+function addDrawing(drawing, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/drawings", true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -779,12 +778,12 @@ function addDrawing(drawing) {
  * @returns {json | Object} - The response from the RESTful service provider which will be a JSON object
  * of the required material.
  */
-function getMaterial(materialId) {
+function getMaterial(materialId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/material/" + materialId, true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -804,14 +803,14 @@ function getMaterial(materialId) {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function updateMaterial(material) {
+function updateMaterial(material, callback) {
 	let xhr, materialId;
 	xhr = new XMLHttpRequest();
 	materialId = material.materialId;
 	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/material/" + materialId, true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -830,12 +829,12 @@ function updateMaterial(material) {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function deleteMaterial(materialId) {
+function deleteMaterial(materialId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/material/" + materialId, true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -852,12 +851,12 @@ function deleteMaterial(materialId) {
  * @returns {json | Object | Array} - The response from the RESTful service provider which will be an
  * array of materials. Each material will be a JSON object.
  */
-function getAllMaterials() {
+function getAllMaterials(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/materials", true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -876,12 +875,12 @@ function getAllMaterials() {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function addMaterial(material) {
+function addMaterial(material, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/materials", true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -899,12 +898,12 @@ function addMaterial(material) {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function deleteAllResources() {
+function deleteAllResources(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/resources", true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -923,12 +922,12 @@ function deleteAllResources() {
  *
  * @returns {string} - The response from the RESTful service provider.
  */
-function deleteResource(resourceId) {
+function deleteResource(resourceId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/resources/" + resourceId, true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			return xhr.responseText;
+			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
