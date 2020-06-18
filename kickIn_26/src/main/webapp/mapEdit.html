@@ -16,14 +16,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet" type="text/css">
-
-
     <script src="https://unpkg.com/konva@4.0.0/konva.min.js"></script>
     <script src="js/util/crop.js"></script>
-
-    <link href="css/mapEdit.css" rel="stylesheet"> <!-- link to css file -->
-    <link href="css/style.css" rel="stylesheet"> <!-- link to css file -->
+    <link href="http://localhost:8080/kickInTeam26/css/mapEdit.css" rel="stylesheet"> <!-- link to css file -->
+    <link href="http://localhost:8080/kickInTeam26/css/style.css" rel="stylesheet"> <!-- link to css file -->
 
 
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -32,9 +28,9 @@
 </head>
 <body onload="addItems()">
 <div class="topnav">
-    <a href="list.html" id="home"><i class="glyphicon glyphicon-home"></i></a>
+    <a href="http://localhost:8080/kickInTeam26/list.html" id="home"><i class="glyphicon glyphicon-home"></i></a>
     <a id="arrow" onclick="goBack()"><i class="glyphicon glyphicon-arrow-left"></i></a>
-    <a href="login.html" id="logout">Logout</a>
+    <a id="logout" onclick="logout()">Logout</a>
 </div>
 
 <div class="jumbotron jumbotron-fluid">
