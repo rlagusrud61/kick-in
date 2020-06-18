@@ -53,10 +53,10 @@ public abstract class Dao {
         try (ResultSet resultSet = stmt.executeQuery()) {
             if (resultSet.next()) {
                 String result = resultSet.getString(1);
+                endTransaction(conn);
                 if (result == null || result.equals("")) {
                     throw new NotFoundException("No Result Returned, the object either does not exist, or the database is empty in the Database");
                 } else {
-                    endTransaction(conn);
                     return result;
                 }
             } else {
