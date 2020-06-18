@@ -60,7 +60,8 @@ function loadTable() {
 
             header = [];
             header.push('Name');
-            header.push('Date Of Event')
+            
+            header.push('Date Of Event');
             header.push('Creator');
             header.push('Last Edited By');
             header.push('Action');
