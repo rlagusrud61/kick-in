@@ -12,7 +12,7 @@ var closeDelete2 = document.getElementById("no");
      }
 
      closeDelete.onclick = function() {
-            modal.style.display = "none";
+        modal.style.display = "none";
      }
 
      closeDelete2.onclick = function() {
