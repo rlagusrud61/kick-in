@@ -95,12 +95,13 @@ function loadTable() {
 window.onload = loadTable;
 
 function addUserPopup() {
-    let userName, email, password, level, clearanceLevel, userJSON, xhr;
-    userName = document.getElementById("userName").value;
+    let userName, email, password, level, levelDescription, clearanceLevel, userJSON, xhr;
+	userName = document.getElementById("userName").value;
     email = document.getElementById("email").value;
     password = document.getElementById("password");
     level = document.getElementById("clearanceLevel").value;
-    switch(level) {
+    levelDescription = level.options[level.selectedIndex].value;
+    switch(levelDescription) {
         case "Visitor":
             clearanceLevel = 0;
             break;
