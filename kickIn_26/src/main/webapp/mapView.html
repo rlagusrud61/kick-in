@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="http://localhost:8080/kickInTeam26/css/style.css">
 
     <script
             src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -63,7 +63,7 @@
 </head>
 <body onload="everything()">
 <div class="topnav">
-    <a id="home" href="list.html"><i class="glyphicon glyphicon-home"></i></a>
+    <a id="home" href="http://localhost:8080/kickInTeam26/list.html"><i class="glyphicon glyphicon-home"></i></a>
     <a id="arrow" onclick="goBack()"><i class="glyphicon glyphicon-arrow-left"></i></a>
     <a id="logout" onclick="logout()">Logout</a>
 </div>
@@ -79,12 +79,11 @@
 <div class="container" style="background-color: #ffffff">
     <div class="card-body">
         <div class="row">
-        <h1 id="mapName" class="text-left">Map_Name</h1>
-        <a href="list.html"
-           class="glyphicon glyphicon-share text-success"
-           style="font-size:20px; padding-top: 2.5%; padding-left: 3%;"></a>
-        <a href="mapEdit.html" class="glyphicon glyphicon-pencil text-success" style="font-size:20px; padding-top: 2.5%; padding-left: 3%;"></a>
-        <a style="font-size:20px; padding-top: 2.5%; padding-left: 3%;" href="#" class="glyphicon glyphicon-trash text-success" id="deleteEvent"></a>
+        <h1 id="mapName" class="text-left" style="padding-left: 13px;">Map_Name</h1>
+        <a href="http://localhost:8080/kickInTeam26/list.html"
+           class="glyphicon glyphicon-share text-success align-mapname"></a>
+        <a href="http://localhost:8080/kickInTeam26/mapEdit.html" class="glyphicon glyphicon-pencil text-success align-mapname"></a>
+        <a href="#" class="glyphicon glyphicon-trash text-success align-mapname" id="deleteEvent"></a>
         </div>
         <p id="description" class="text-left">Paragraphs are the building
             blocks of papers. Many students define paragraphs in terms of

@@ -82,7 +82,7 @@ function addItems() {
             console.log("failure")
         }
     }
-    objReq.open("GET", ("http://localhost:8080/kickInTeam26/rest/resources"));
+    objReq.open("GET", "http://localhost:8080/kickInTeam26/rest/resources/material", true);
     objReq.send();
 }
 

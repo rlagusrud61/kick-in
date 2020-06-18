@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet" type="text/css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <!-- Latest compiled and minified CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
@@ -17,26 +16,34 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+    <link href="http://localhost:8080/kickInTeam26/css/style.css" rel="stylesheet" type="text/css">
     <link href="http://localhost:8080/kickInTeam26/css/list.css" rel="stylesheet"> <!-- link to css file -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <!--    jQuery for fucking modals-->
+    <script crossorigin="anonymous"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <title>List Of Events</title>
 </head>
 <style>
 
-    table th{
+    table th {
         font-size: 1.8rem;
     }
+
     table td {
         font-size: 1.5rem;
     }
-    table{
+
+    table {
         background-color: #ffffff;
     }
 
 </style>
 <body>
 <div class="topnav">
-    <a href="list.html" id="home"><i class="glyphicon glyphicon-home"></i></a>
+    <a href="http://localhost:8080/kickInTeam26/list.html" id="home"><i class="glyphicon glyphicon-home"></i></a>
+    <a href="http://localhost:8080/kickInTeam26/users.html" id="users"><i class="glyphicon glyphicon-user"></i></a>
     <a id="logout" onclick="logout()">Logout</a>
 </div>
 <div class="jumbotron jumbotron-fluid">
@@ -44,29 +51,32 @@
         <div class="row">
             <h1 class="col-8">List Of Events</h1>
             <div class="col-4" style="display: flex; justify-content: flex-end;">
-                <button class="myButton btn btn-success btn-circle btn-xl align-self-end" id="myBtn" type="button"> +
+                <button class="myButton btn btn-success btn-circle btn-xl align-self-end" id="addEventBtn"
+                        type="button"> +
                 </button>
             </div>
         </div>
     </div>
+
     <!-- Trigger/Open The Popup -->
     <!-- The Popup -->
-    <div class="modal" id="myModal">
+    <div class="modal" id="addEvent">
         <!-- Popup content -->
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Add a New Event</h2>
             <div>
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label" for="eventname">Name</label>
+                    <label class="col-md-2 col-form-label" for="eventName">Name</label>
                     <div class="col-md-3">
-                        <input class="form-control" id="eventName" onkeyup="XSSInputSanitation('eventName')" placeholder="Name"
+                        <input class="form-control" id="eventName" onkeyup="XSSInputSanitation('eventName')"
+                               placeholder="Name"
                                type="text">
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label" for="eventdescription">Description</label>
+                    <label class="col-md-2 col-form-label" for="eventDescription">Description</label>
                     <div class="col-md-8">
                         <textarea class="form-control" id="eventDescription"
                                   onkeyup="XSSInputSanitation('eventDescription')" rows="5"></textarea>
@@ -81,7 +91,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label" for="eventlocation">Location</label>
+                    <label class="col-md-2 col-form-label" for="eventLocation">Location</label>
                     <div class="col-md-3">
                         <select class="form-control" id="eventLocation">
                             <option>University Campus</option>
@@ -91,35 +101,38 @@
                     </div>
                 </div>
                 <div class="bottomright" style="display: flex; justify-content: flex-end;">
-                    <button class="btn btn-success btn-circle btn-xl align-self-end" onclick="addEventPopup()">ADD</button>
+                    <button class="btn btn-success btn-circle btn-xl align-self-end" onclick="addEventPopup()">ADD
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-
-
-    <!-- The Event Deletion Popup -->
-    <div id="eventDeleteModal" class="modal">
-
-        <!-- Popup content -->
+    <!-- The Event Deletion Modal -->
+    <div class="modal" id="eventDeleteModal">
+        <!-- Modal content -->
         <div class="modal-content">
-            <span class="closeDelete">&times;</span>
+            <span class="close">&times;</span>
             <h2>Do you really want to delete this event?</h2>
-            <div class="bottomright" style="display: flex; justify-content: center;">
-                <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">YES</button>
-                <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">NO</button>
+            <div class="bottomright" id="removeEventThing" style="display: flex; justify-content: center;">
+                <button class="btn btn-success btn-circle btn-xl align-self-center" id="yesDeleteButton" onclick=""
+                        type="submit">YES
+                </button>
+                <a href="list.html">
+                    <button class="btn btn-success btn-circle btn-xl align-self-center" type="button">NO</button>
+                </a>
             </div>
         </div>
     </div>
 
-
 </div>
+
 <div class="container">
     <!-- Search Bar -->
     <div class="col-md-3">
         <form class="form-inline d-flex justify-content-center md-form active-green form-sm mt-0">
-            <input aria-label="Search" class="form-control form-control-sm ml-3 w-75" id="searchTable" onkeyup="searchTables()"
+            <input aria-label="Search" class="form-control form-control-sm ml-3 w-75" id="searchTable"
+                   onkeyup="searchTables()"
                    placeholder="Search"
                    type="text">
         </form>
@@ -137,11 +150,27 @@
             <a class="dropdown-item" onclick="sortTableOldNew()">Event Date (Old - New)</a>
         </div>
     </div>
+    <!--    Table for the List of Events-->
     <div class="eventlist">
         <table class="table table-hover" id="eventtable" style="width:100%">
         </table>
     </div>
+
+
 </div>
+<script>
+    $(document).ready(function(){
+        $('.modal-overlay').hide();
+        $('.open-modal').css('cursor' , 'pointer').click(function(){
+            var file = $(this).attr('data');
+            $(".modal-content").load(file + ".html");
+            $('.modal-overlay').fadeIn();
+        });
+        $('.close-modal').css('cursor','pointer').click(function(){
+            $('.modal-overlay').fadeOut();
+        });
+    });
+</script>
 <script src="http://localhost:8080/kickInTeam26/js/list.js"></script>
 <script src="http://localhost:8080/kickInTeam26/js/requests.js"></script>
 </body>

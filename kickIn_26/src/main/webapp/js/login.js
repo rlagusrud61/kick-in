@@ -22,5 +22,8 @@ function login() {
     xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/authentication", true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send('{"email": "' + emailaddress + '", "password": "' + password + '"}');
+}
 
+function checkKeyPress() {
+	console.log(event.keyCode);
 }

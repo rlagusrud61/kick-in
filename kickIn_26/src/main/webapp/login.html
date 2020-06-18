@@ -21,6 +21,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.18.0/js/mdb.min.js"
             type="text/javascript"></script>
     <link href="http://localhost:8080/kickInTeam26/css/login.css" rel="stylesheet"> <!-- link to css file -->
+    <link href="http://localhost:8080/kickInTeam26/css/style.css" rel="stylesheet">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Log In</title>
 </head>
@@ -42,15 +43,15 @@
                         <form class="form-signin">
                             <div class="form-label-group">
                                 <label for="inputEmail">Email address</label>
-                                <input autofocus class="form-control active-green-box" id="inputEmail"
+                                <input autofocus class="form-control" id="inputEmail"
                                        placeholder="Email address"
                                        required type="email">
                             </div>
 
                             <div class="form-label-group">
-                                <label for="inputPassword">Password</label>
-                                <div class="active-green-box mb-4">
-                                    <input class="form-control" id="inputPassword" onkeyup = "checkKey()" placeholder="Password" required type="password">
+                                <label for="inputPassword" >Password</label>
+                                <div class="mb-4">
+                                    <input class="form-control" id="inputPassword" placeholder="Password" required type="password" onkeyup="checkKeyPress()">
                                 </div>
                             </div>
 
@@ -74,11 +75,6 @@
         </div>
     </div>
 </div>
-<script>
-function checkKey() {
-	console.log(event.keyCode);
-}
-</script>
 <script src="http://localhost:8080/kickInTeam26/js/login.js"></script>
 <script src="http://localhost:8080/kickInTeam26/js/requests.js"></script>
 </body>
