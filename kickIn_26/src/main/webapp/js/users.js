@@ -35,54 +35,50 @@ function XSSInputSanitation(id) {
 }
 
 function loadTable() {
-    let xhr, header, tr, th, i, table, users, row, name, email, password, clearanceLevel, action;
-    xhr = new XMLHttpRequest();
-    xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/users", true);
-    xhr.onreadystatechange = function () {
-        if ((xhr.readyState == 4) && (xhr.status == 200)) {
-            table = document.getElementById("usersTable");
-            users = JSON.parse(xhr.responseText);
-            console.log(users);
+    let header, tr, th, i, table, users, row, name, email, password, clearanceLevel, action;
+    console.log("hello");
+    getAllUsers(function() {
+    	console.log("hello");
+    	table = document.getElementById("usersTable");
+        users = JSON.parse(this.responseText);
+        console.log(users);
 
-            header = [];
-            header.push('Name');
-            header.push('E-Mail')
-            header.push('Password');
-            header.push('Clearance Level');
-            header.push('Action');
+        header = [];
+        header.push('Name');
+        header.push('E-Mail')
+        header.push('Password');
+        header.push('Clearance Level');
+        header.push('Action');
 
-            tr = table.insertRow(-1); // add a row to the table
+        tr = table.insertRow(-1); // add a row to the table
 
-            for (i = 0; i < header.length; i++) {
-                th = document.createElement("th"); // add a header to the table
-                th.innerHTML = header[i];
-                tr.appendChild(th);
-            }
-
-            for (i = 0; i < users.length; i++) {
-                row = table.insertRow(-1);
-                name = row.insertCell(0);
-                email = row.insertCell(1);
-                password = row.insertCell(2);
-                clearanceLevel = row.insertCell(3);
-                action = row.insertCell(4);
-                name.innerHTML = users[i].nickname;
-                email.innerHTML = users[i].email;
-                password.innerHTML = users[i].password;
-                clearanceLevel.innerHTML = users[i].clearanceLevel;
-                action.innerHTML = "<a href='javascript: window.deleteUser(" + users[i].userId + ")' " +
-                    "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
-            }
+        for (i = 0; i < header.length; i++) {
+            th = document.createElement("th"); // add a header to the table
+            th.innerHTML = header[i];
+            tr.appendChild(th);
         }
-    }
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send();
+
+        for (i = 0; i < users.length; i++) {
+            row = table.insertRow(-1);
+            name = row.insertCell(0);
+            email = row.insertCell(1);
+            password = row.insertCell(2);
+            clearanceLevel = row.insertCell(3);
+            action = row.insertCell(4);
+            name.innerHTML = users[i].nickname;
+            email.innerHTML = users[i].email;
+            password.innerHTML = users[i].password;
+            clearanceLevel.innerHTML = users[i].clearanceLevel;
+            action.innerHTML = "<a href='javascript: window.removeUser(" + users[i].userId + ")' " +
+                "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
+        }
+    })
 }
 
 window.onload = loadTable;
 
 function addUserPopup() {
-    let userName, email, password, level, levelDescription, clearanceLevel, userJSON, xhr;
+    let userName, email, password, level, levelDescription, clearanceLevel, userJSON;
 	userName = document.getElementById("userName").value;
     email = document.getElementById("email").value;
     password = document.getElementById("password").value;
@@ -108,29 +104,17 @@ function addUserPopup() {
         "clearanceLevel": clearanceLevel,
     };
     console.log(JSON.stringify(userJSON));
-    xhr = new XMLHttpRequest();
-    xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/users", true);
-    xhr.onreadystatechange = function () {
-        if ((xhr.readyState == 4) && (xhr.status = 201)) {
-            console.log(xhr.responseText);
-            location.reload();
-        }
-    }
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send(JSON.stringify(userJSON));
+    addUser(userJSON, function() {
+    	console.log(this.responseText);
+        location.reload();
+    })
 }
 
-function deleteUser(id) {
-    let xhr = new XMLHttpRequest();
-    xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/user/" + id, true);
-    xhr.onreadystatechange = function () {
-        if ((xhr.readyState == 4) && (xhr.status == 204)) {
-            console.log(xhr.responseText);
-            location.reload();
-        }
-    }
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send();
+function removeUser(id) {
+	deleteUser(id, function() {
+		console.log(this.responseText);
+        location.reload();
+	})
 }
 
 function logout() {
