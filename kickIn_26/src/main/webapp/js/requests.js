@@ -10,8 +10,8 @@
  *
  * @description This method takes the ID of the required event as a parameter. This ID is then
  * appended to the URL to request the service from the back-end. A GET request is sent to the RESTful
- * service provider with the given URL, where the content is in JSON format. The method then
- * calls the callback function on 'xhr' if the request was successful.
+ * service provider with the given URL. The method then calls the callback function on 'xhr' if the
+ * request was successful.
  */
 function getEvent(eventId, callback) {
 	let xhr = new XMLHttpRequest();
@@ -64,7 +64,7 @@ function updateEvent(event, callback) {
  *
  * @description This method takes the ID of the required event as a parameter. This ID is then
  * appended to the URL to request the deletion on the back-end. A DELETE request is sent to the
- * RESTful service provider with the given URL, where the content is in JSON format. The method then
+ * RESTful service provider with the given URL. The method then
  * calls the callback function on 'xhr' if the deletion was successful.
  */
 function deleteEvent(eventId, callback) {
@@ -85,9 +85,8 @@ function deleteEvent(eventId, callback) {
  *
  * @summary This method gets all the events stored in the database.
  *
- * @description A GET request is sent to the RESTful service provider with the given URL,
- * where the content is in JSON format. The method then calls the callback function on 'xhr'
- * if the request was successful.
+ * @description A GET request is sent to the RESTful service provider with the given URL. The method then calls the
+ * callback function on 'xhr' if the request was successful.
  *
  * @returns {json | Object | Array} - The response from the RESTful service provider which will be an
  * array of events. Each event will be a JSON object.
@@ -163,7 +162,7 @@ function deleteAllEvents(callback) {
  *
  * @description This method takes the ID of the required map as a parameter. This ID is then
  * appended to the URL to request the service from the back-end. A GET request is sent to the RESTful
- * service provider with the given URL, where the content is in JSON format. The method then calls the callback
+ * service provider with the given URL. The method then calls the callback
  * function on 'xhr' if the request was successful.
  *
  * @returns {json | Object} - The response from the RESTful service provider which will be a JSON object
@@ -220,8 +219,8 @@ function updateMap(map, callback) {
  *
  * @description This method takes the ID of the required map as a parameter. This ID is then
  * appended to the URL to request the deletion on the back-end. A DELETE request is sent to the
- * RESTful service provider with the given URL, where the content is in JSON format. The method then calls the
- * callback function on 'xhr' if the deletion was successful.
+ * RESTful service provider with the given URL. The method then calls the callback function on 'xhr' if the deletion
+ * was successful.
  */
 function deleteMap(mapId, callback) {
 	let xhr = new XMLHttpRequest();
@@ -241,9 +240,8 @@ function deleteMap(mapId, callback) {
  *
  * @summary This method gets all the maps stored in the database.
  *
- * @description A GET request is sent to the RESTful service provider with the given URL,
- * where the content is in JSON format. The method then calls the callback function on 'xhr'
- * if the request was successful.
+ * @description A GET request is sent to the RESTful service provider with the given URL. The method then calls the
+ * callback function on 'xhr' if the request was successful.
  *
  * @returns {json | Object | Array} - The response from the RESTful service provider which will be an
  * array of maps. Each map will be a JSON object.
@@ -320,7 +318,7 @@ function deleteAllMaps(callback) {
  *
  * @description  This method takes the ID of the required event as a parameter. This ID is then
  * appended to the URL to request the service from the back-end. A GET request is sent to the
- * RESTful service provider with the given URL, where the content is in JSON format. The method then calls the callback
+ * RESTful service provider with the given URL. The method then calls the callback
  * function on 'xhr' if the request was successful.
  *
  * @returns {json | Object | Array} - The response from the RESTful service provider which will be
@@ -348,7 +346,7 @@ function getAllMapsForEvent(eventId, callback) {
  *
  * @description This method takes the ID of the required map as a parameter. This ID is then
  * appended to the URL to request the service from the back-end. A GET request is sent to the RESTful service provider
- * with the given URL, where the content is in JSON format. The method then calls the callback function on 'xhr'
+ * with the given URL. The method then calls the callback function on 'xhr'
  * if the request was successful.
  *
  * @returns {json | Object | Array} - The response from the RESTful service provider which will be
@@ -402,8 +400,8 @@ function addEventMap(eventMap, callback) {
  *
  * @description This method takes the ID of the required event as a parameter. This ID is then
  * appended to the URL to request the deletion of the maps linked to it on the back-end. A DELETE
- * request is sent to the RESTful service provider with the given URL, where the content is in JSON
- * format. The method then calls the callback function on 'xhr' if the deletion was successful.
+ * request is sent to the RESTful service provider with the given URL. The method then calls the callback function on
+ * 'xhr' if the deletion was successful.
  */
 function clearMapsForEvent(eventId, callback) {
 	let xhr = new XMLHttpRequest();
@@ -452,7 +450,7 @@ function deleteEventMap(eventId, mapId, callback) {
  * @summary This method deletes all the links between maps and events from the database.
  *
  * @description A DELETE request is sent to the RESTful service provider with the given URL to delete
- * all the associations between maps and events, where the content is in JSON format. The method then calls the
+ * all the associations between maps and events. The method then calls the
  * callback function on 'xhr' if the deletion was successful.
  */
 function deleteAllRelations(callback) {
@@ -479,8 +477,8 @@ function deleteAllRelations(callback) {
  *
  * @description This method takes the ID of the required map object as a parameter. This ID is then
  * appended to the URL to request the service from the back-end. A GET request is sent to the
- * RESTful service provider with the given URL, where the content is in JSON format. The method then calls the
- * callback function on 'xhr' if the request was successful. A map object is basically an item that has already been
+ * RESTful service provider with the given URL. The method then calls the callback function on 'xhr' if the request was
+ * successful. A map object is basically an item that has already been
  * placed on the map.
  *
  * @returns {json | Object} - The response from the RESTful service provider which will be a JSON
@@ -536,7 +534,7 @@ function updateObject(mapObject, callback) {
  *
  * @description This method takes the ID of the required object as a parameter. This ID is then
  * appended to the URL to request the deletion on the back-end. A DELETE request is sent to the
- * RESTful service provider with the given URL, where the content is in JSON format. The method then calls the callback
+ * RESTful service provider with the given URL. The method then calls the callback
  * function on 'xhr' if the deletion was successful.
  */
 function deleteObject(objectId, callback) {
@@ -561,7 +559,7 @@ function deleteObject(objectId, callback) {
  *
  * @description This method takes the ID of the required map as a parameter. This ID is then
  * appended to the URL to request the service from the back-end. A GET request is sent to the
- * RESTful service provider with the given URL, where the content is in JSON format. The method then calls the callback
+ * RESTful service provider with the given URL. The method then calls the callback
  * function on 'xhr' if the request was successful.
  *
  * @returns {json | Object | Array} - The response from the RESTful service provider which will be
@@ -589,7 +587,7 @@ function getAllObjectsForMap(mapId, callback) {
  *
  * @description This method takes the ID of the required map as a parameter. This ID is then
  * appended to the URL to request the service from the back-end. A GET request is sent to the
- * RESTful service provider with the given URL, where the content is in JSON format. The method then calls the callback
+ * RESTful service provider with the given URL. The method then calls the callback
  * function on 'xhr' if the request was successful.
  *
  * @returns {json | Object | Array} - The response from the RESTful service provider which will be
@@ -693,7 +691,7 @@ function clearAllMaps(callback) {
  *
  * @description This method takes the ID of the required drawing as a parameter. This ID is then
  * appended to the URL to request the service from the back-end. A GET request is sent to the
- * RESTful service provider with the given URL, where the content is in JSON format. The method then calls the callback
+ * RESTful service provider with the given URL. The method then calls the callback
  * function on 'xhr' if the request was successful.
  *
  * @returns {json | Object} - The response from the RESTful service provider which will be a JSON
@@ -804,7 +802,7 @@ function updateMaterial(material, callback) {
  *
  * @description This method takes the ID of the required material as a parameter. This ID is then
  * appended to the URL to request the deletion on the back-end. A DELETE request is sent to the
- * RESTful service provider with the given URL, where the content is in JSON format. The method then calls the callback
+ * RESTful service provider with the given URL. The method then calls the callback
  * function on 'xhr' if the deletion was successful.
  */
 function deleteMaterial(materialId, callback) {
@@ -825,9 +823,8 @@ function deleteMaterial(materialId, callback) {
  *
  * @summary This method gets all the materials stored in the database.
  *
- * @description A GET request is sent to the RESTful service provider with the given URL,
- * where the content is in JSON format. The method then calls the callback function on 'xhr'
- * if the request was successful.
+ * @description A GET request is sent to the RESTful service provider with the given URL. The method then calls the
+ * callback function on 'xhr' if the request was successful.
  *
  * @returns {json | Object | Array} - The response from the RESTful service provider which will be an
  * array of materials. Each material will be a JSON object.
@@ -881,7 +878,7 @@ function addMaterial(material, callback) {
  *
  * @description This method takes the ID of the required resource as a parameter. This ID is then
  * appended to the URL to request the service from the back-end. A GET request is sent to the
- * RESTful service provider with the given URL, where the content is in JSON format. The method then calls the callback
+ * RESTful service provider with the given URL. The method then calls the callback
  * function on 'xhr' if the request was successful.
  *
  * @returns {json | Object} - The response from the RESTful service provider which will be a JSON
@@ -909,7 +906,7 @@ function getResource(resourceId, callback) {
  *
  * @description This method takes the ID of the required resource as a parameter. This ID is then
  * appended to the URL to request the deletion on the back-end. A DELETE request is sent to the
- * RESTful service provider with the given URL, where the content is in JSON format. The method then calls the callback
+ * RESTful service provider with the given URL. The method then calls the callback
  * function on 'xhr' if the deletion was successful.
  */
 function deleteResource(resourceId, callback) {
@@ -930,9 +927,8 @@ function deleteResource(resourceId, callback) {
  *
  * @summary This method gets all the resources stored in the database.
  *
- * @description A GET request is sent to the RESTful service provider with the given URL,
- * where the content is in JSON format. The method then calls the callback function on 'xhr'
- * if the request was successful.
+ * @description A GET request is sent to the RESTful service provider with the given URL. The method then calls the
+ * callback function on 'xhr' if the request was successful.
  *
  * @returns {json | Object | Array} - The response from the RESTful service provider which will be an
  * array of resources. Each resource will be a JSON object.
@@ -982,7 +978,7 @@ function deleteAllResources(callback) {
  *
  * @description This method takes the ID of the required user as a parameter. This ID is then
  * appended to the URL to request the service from the back-end. A GET request is sent to the RESTful
- * service provider with the given URL, where the content is in JSON format. The method then calls the callback
+ * service provider with the given URL. The method then calls the callback
  * function on 'xhr' if the request was successful.
  *
  * @returns {json | Object} - The response from the RESTful service provider which will be a JSON object
@@ -1039,7 +1035,7 @@ function updateUser(user, callback) {
  *
  * @description This method takes the ID of the required user as a parameter. This ID is then
  * appended to the URL to request the deletion on the back-end. A DELETE request is sent to the
- * RESTful service provider with the given URL, where the content is in JSON format. The method then
+ * RESTful service provider with the given URL. The method then
  * calls the callback function on 'xhr' if the deletion was successful.
  */
 function deleteUser(userId, callback) {
@@ -1060,9 +1056,8 @@ function deleteUser(userId, callback) {
  *
  * @summary This method gets all the users stored in the database.
  *
- * @description A GET request is sent to the RESTful service provider with the given URL,
- * where the content is in JSON format. The method then calls the callback function on 'xhr'
- * if the request was successful.
+ * @description A GET request is sent to the RESTful service provider with the given URL. The method then calls the
+ * callback function on 'xhr' if the request was successful.
  *
  * @returns {json | Object | Array} - The response from the RESTful service provider which will be an
  * array of users. Each user will be a JSON object.

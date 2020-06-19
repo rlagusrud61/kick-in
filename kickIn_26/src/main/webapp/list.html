@@ -141,10 +141,10 @@
             By
         </button>
         <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item" onclick="sortTableAscending()">A - Z</a>
-            <a class="dropdown-item" onclick="sortTableDescending()">Z - A</a>
-            <a class="dropdown-item" onclick="sortTableDescending()">Event Date (New - Old)</a>
-            <a class="dropdown-item" onclick="sortTableAscending()">Event Date (Old - New)</a>
+            <a class="dropdown-item" onclick="sortTableAscending('eventTable', 'event')">A - Z</a>
+            <a class="dropdown-item" onclick="sortTableDescending('eventTable', 'event')">Z - A</a>
+            <a class="dropdown-item" onclick="sortTableDescending('eventTable', 'date')">Event Date (New - Old)</a>
+            <a class="dropdown-item" onclick="sortTableAscending('eventTable', 'date')">Event Date (Old - New)</a>
         </div>
     </div>
     <!--    Table for the List of Events-->

@@ -26,7 +26,34 @@ modal = document.getElementById("popupMapDelete");
              modal.style.display = "none";
          }
      }
+//Modal for exporting the map
+let modal2, share, closeExport, closeExport2;
+//Get modal
+modal2 = document.getElementById("modalExport");
+//Button for exporting
+share = document.getElementById("share");
+//Closing popup
+closeExport = document.getElementById("close")[0];
+//Closing by pressing "No"
+closeExport2 = document.getElementById("no1");
 
+share.onclick = function() {
+    modal2.style.display = "block";
+}
+
+closeExport.onclick = function() {
+    modal2.style.display = "none";
+}
+
+closeExport2.onclick = function() {
+    modal2.style.display = "none";
+}
+
+window.onclick = function(event) {
+    if (event.target === modal2) {
+        modal2.style.display = "none";
+    }
+}
 
 //inits the map and properties.
  map = L.map('mapid', {
@@ -259,10 +286,12 @@ function filterOn() {
 //    xhr.send();
 //}
 
-function everything() {
+function loadNameDescriptionAndItems() {
     getMapNameAndDescription();
     listItems();
 }
+
+window.onload = loadNameDescriptionAndItems;
 
 function listItems() {
 
