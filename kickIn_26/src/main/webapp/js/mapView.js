@@ -82,19 +82,11 @@ let inFreeHand = false;
 
 let materialsList = null;
 
-let objReq = new XMLHttpRequest();
-objReq.onreadystatechange = function () {
-    console.log("something")
-    if (this.readyState === 4 && this.status === 200) {
-        materialsList = JSON.parse(objReq.responseText);
-        console.log(materialsList)
-    } else {
-        console.log("failure")
-    }
-}
-objReq.open("GET",
-    ("http://localhost:8080/kickInTeam26/rest/materials"));
-objReq.send();
+getAllMaterials(function() {
+	materialsList = JSON.parse(this.responseText);
+    console.log(materialsList);
+})
+
 
 // let img = L.distortableImageOverlay('..\\resources\\testImages\\example.jpg', {
 //     actions: [L.RotateAction, L.DragAction, L.ScaleAction, L.DeleteAction]
@@ -248,23 +240,23 @@ function filterOn() {
 
 }
 
-function getMap() {
-    let url, xhr;
-    url = window.location.href;
-    url = url.split("/");
-    url = url[10];
-    xhr = new XMLHttpRequest();
-    xhr.open('GET',
-        "http://localhost:8080/kickInTeam26/rest/map/"
-        + url, true);
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4) {
-            console.log(xhr.responseText);
-        }
-    }
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send();
-}
+//function getMap() {
+//    let url, xhr;
+//    url = window.location.href;
+//    url = url.split("/");
+//    url = url[10];
+//    xhr = new XMLHttpRequest();
+//    xhr.open('GET',
+//        "http://localhost:8080/kickInTeam26/rest/map/"
+//        + url, true);
+//    xhr.onreadystatechange = function () {
+//        if (xhr.readyState == 4) {
+//            console.log(xhr.responseText);
+//        }
+//    }
+//    xhr.setRequestHeader("Content-Type", "application/json");
+//    xhr.send();
+//}
 
 function everything() {
     getMapNameAndDescription();
@@ -273,95 +265,65 @@ function everything() {
 
 function listItems() {
 
-    let xhr, mapId, returnedItems, col, key, table, th, tr, i, j, tableCell;
-    xhr = new XMLHttpRequest();
+    let mapId, returnedItems, col, key, table, th, tr, i, j, tableCell;
     mapId = 1;
     returnedItems = '';
-    xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/objects/1/report",true);
+    generateReportForMap(mapId, function () {
+    	console.log(this.responseText);
 
-    xhr.onreadystatechange = function () {
+        returnedItems = JSON.parse(this.responseText);
 
-        if (xhr.readyState === 4 && xhr.status === 200) {
-
-            console.log(xhr.responseText);
-
-            returnedItems = JSON.parse(xhr.responseText);
-
-            col = [];
-            for (i = 0; i < returnedItems.length; i++) {
-                for (key in returnedItems[i]) {
-                    if (col.indexOf(key) === -1 && (key === 'name' || key === 'count')) {
-                        col.push(key);
-                    }
+        col = [];
+        for (i = 0; i < returnedItems.length; i++) {
+            for (key in returnedItems[i]) {
+                if (col.indexOf(key) === -1 && (key === 'name' || key === 'count')) {
+                    col.push(key);
                 }
             }
-
-            table = document.createElement("table"); // creates the table
-            table.setAttribute("id", "resources")
-            table.setAttribute("class", "table table-hover")
-            tr = table.insertRow(-1); // add a row to the table
-
-            for (i = 0; i < col.length; i++) {
-                th = document.createElement("th"); // add a header to the table
-                th.innerHTML = col[i];
-                tr.appendChild(th);
-            }
-
-            for (i = 0; i < returnedItems.length; i++) {
-
-                tr = table.insertRow(-1); // adds a new row
-                for (j = 0; j < col.length; j++) {
-                    tableCell = tr.insertCell(-1);
-                    tableCell.innerHTML = returnedItems[i][col[j]]; // adds the required data to the table
-                }
-            }
-            document.getElementById("listItems").appendChild(table);
         }
-    }
 
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send();
+        table = document.createElement("table"); // creates the table
+        table.setAttribute("id", "resources")
+        table.setAttribute("class", "table table-hover")
+        tr = table.insertRow(-1); // add a row to the table
 
+        for (i = 0; i < col.length; i++) {
+            th = document.createElement("th"); // add a header to the table
+            th.innerHTML = col[i];
+            tr.appendChild(th);
+        }
+
+        for (i = 0; i < returnedItems.length; i++) {
+
+            tr = table.insertRow(-1); // adds a new row
+            for (j = 0; j < col.length; j++) {
+                tableCell = tr.insertCell(-1);
+                tableCell.innerHTML = returnedItems[i][col[j]]; // adds the required data to the table
+            }
+        }
+        document.getElementById("listItems").appendChild(table);
+    })
 }
 
 function getMapNameAndDescription() {
-
-    let xhr = new XMLHttpRequest();
-
-    xhr.onreadystatechange = function () {
-
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            let jsonData = JSON.parse(xhr.responseText);
-            document.getElementById("mapName").innerHTML = jsonData.name;
-            document.getElementById("description").innerHTML = jsonData.description;
-            console.log(xhr.responseText);
-        }
-
-    }
-
-    xhr.open('GET',
-        "http://localhost:8080/kickInTeam26/rest/map/1",
-        true)
-    xhr.send();
-
+	let mapId = 1;
+	getMap(mapId, function() {
+		let jsonData = JSON.parse(this.responseText);
+        document.getElementById("mapName").innerHTML = jsonData.name;
+        document.getElementById("description").innerHTML = jsonData.description;
+        console.log(this.responseText);
+	})
 }
 
-function deleteMap() {
-    let url, xhr;
+function removeMap() {
+    let url, xhr, mapId;
+    mapId = 1;
     url = window.location.href;
     url = url.split("/");
     url = url[10];
-    xhr = new XMLHttpRequest();
-    xhr.open('DELETE',
-        "http://localhost:8080/kickInTeam26/rest/map/"
-        + url, true);
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4) {
-            console.log(xhr.responseText);
-        }
-    }
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send();
+    deleteMap(mapId, function() {
+    	console.log(xhr.responseText);
+    })
 }
 
 function logout() {

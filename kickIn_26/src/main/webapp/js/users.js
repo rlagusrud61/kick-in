@@ -126,7 +126,7 @@ function addUserPopup() {
     xhr.onreadystatechange = function () {
         if ((xhr.readyState == 4) && (xhr.status = 201)) {
             console.log(xhr.responseText);
-//            window.location.href = "http://localhost:8080/kickInTeam26/users.html";
+            location.reload();
         }
     }
     xhr.setRequestHeader("Content-Type", "application/json");
@@ -139,7 +139,7 @@ function deleteUser(id) {
     xhr.onreadystatechange = function () {
         if ((xhr.readyState == 4) && (xhr.status == 204)) {
             console.log(xhr.responseText);
-//            window.location.href = "http://localhost:8080/kickInTeam26/users.html";
+            location.reload();
         }
     }
     xhr.setRequestHeader("Content-Type", "application/json");
