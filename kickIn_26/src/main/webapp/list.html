@@ -129,7 +129,7 @@
     <div class="col-md-3">
         <form class="form-inline d-flex justify-content-center md-form active-green form-sm mt-0">
             <input aria-label="Search" class="form-control form-control-sm ml-3 w-75" id="searchTable"
-                   onkeyup="searchTables()"
+                   onkeyup="searchTables('eventTable', 'searchTable')"
                    placeholder="Search"
                    type="text">
         </form>
@@ -141,15 +141,15 @@
             By
         </button>
         <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item" onclick="sortTableAZ()">A - Z</a>
-            <a class="dropdown-item" onclick="sortTableZA()">Z - A</a>
-            <a class="dropdown-item" onclick="sortTableNewOld()">Event Date (New - Old)</a>
-            <a class="dropdown-item" onclick="sortTableOldNew()">Event Date (Old - New)</a>
+            <a class="dropdown-item" onclick="sortTableAscending()">A - Z</a>
+            <a class="dropdown-item" onclick="sortTableDescending()">Z - A</a>
+            <a class="dropdown-item" onclick="sortTableDescending()">Event Date (New - Old)</a>
+            <a class="dropdown-item" onclick="sortTableAscending()">Event Date (Old - New)</a>
         </div>
     </div>
     <!--    Table for the List of Events-->
     <div class="eventlist">
-        <table class="table table-hover" id="eventtable" style="width:100%">
+        <table class="table table-hover" id="eventTable" style="width:100%">
         </table>
     </div>
 
