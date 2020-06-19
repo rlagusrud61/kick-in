@@ -57,7 +57,7 @@ window.onclick = function (event) {
 function loadTable() {
     let header, tr, th, i, table, events, row, name, eventDate, creator, lastEditor, action;
     getAllEvents(function () {
-        table = document.getElementById("eventtable");
+        table = document.getElementById("eventTable");
         events = JSON.parse(this.responseText);
         console.log(events);
         header = [];
