@@ -20,9 +20,9 @@ public class UserResource {
     UserDao usersDao = new UserDao();
 
     @GET
-    @Secured(Roles.VISITOR)
+    @Secured(Roles.ADMIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getMapById(@PathParam("userId") long userId) throws NotFoundException, SQLException {
+    public Response getUserById(@PathParam("userId") long userId) throws NotFoundException, SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             String mapData = usersDao.getUser(conn, userId);
             return Utils.returnOkResponse(mapData);
@@ -30,10 +30,10 @@ public class UserResource {
     }
 
     @PUT
-    @Secured(Roles.EDITOR)
+    @Secured(Roles.ADMIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateMap(User userToUpdate) throws NotFoundException, SQLException {
+    public Response updateUser(User userToUpdate) throws NotFoundException, SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             usersDao.save(conn, userToUpdate);
             return Utils.returnNoContent();
@@ -41,9 +41,9 @@ public class UserResource {
     }
 
     @DELETE
-    @Secured(Roles.EDITOR)
+    @Secured(Roles.ADMIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteMap(@PathParam("userId") long userId) throws NotFoundException, SQLException {
+    public Response deleteUser(@PathParam("userId") long userId) throws NotFoundException, SQLException {
         try (Connection conn = CONSTANTS.getConnection()) {
             usersDao.delete(conn, new User(userId));
             return Utils.returnNoContent();

@@ -15,7 +15,7 @@ create table session
     tokenId bigserial,
     token   text unique not null,
     userid  bigint unique not null,
-    foreign key (userid) references users (userid),
+    foreign key (userid) references users (userid) ON DELETE CASCADE,
     primary key (tokenId)
 );
 CREATE TABLE Events

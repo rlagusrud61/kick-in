@@ -42,7 +42,7 @@ public class UserDao extends Dao implements DaoInterface<User> {
 
     @Override
     public void save(Connection conn, User user) throws NotFoundException, SQLException {
-        String sql = "UPDATE User SET email = ?, password = ?, nickname = ?, clearanceLevel = ? WHERE (userId = ?) ";
+        String sql = "UPDATE Users SET email = ?, password = ?, nickname = ?, clearanceLevel = ? WHERE (userId = ?) ";
         beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, user.getEmail());
@@ -59,6 +59,7 @@ public class UserDao extends Dao implements DaoInterface<User> {
                 throw new NotFoundException("Object could not be saved! (PrimaryKey not found)");
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             conn.rollback();
             throw new DatabaseException(e);
         }
@@ -66,7 +67,7 @@ public class UserDao extends Dao implements DaoInterface<User> {
 
     @Override
     public void delete(Connection conn, User user) throws NotFoundException, SQLException {
-        String sql = "DELETE FROM Users WHERE (userId = ? ) ";
+        String sql = "DELETE FROM Users WHERE (userId = ? )";
         beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, user.getUserId());
@@ -127,11 +128,9 @@ public class UserDao extends Dao implements DaoInterface<User> {
                 throw new NotFoundException("This user does not exist");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             conn.rollback();
             throw new DatabaseException(e);
         } catch (NotFoundException e) {
-            e.printStackTrace();
             throw new AuthenticationDeniedException("Sorry, your credentials do not Match, please contact your administrator if you have lost your Credentials.");
         }
     }
