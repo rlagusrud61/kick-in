@@ -6,7 +6,10 @@ public enum Roles {
     ADMIN;
 
     public String getString() {
-        return String.valueOf(this.ordinal());
+        return String.valueOf(getLevel());
+    }
+    public int getLevel() {
+        return this.ordinal();
     }
 
 }

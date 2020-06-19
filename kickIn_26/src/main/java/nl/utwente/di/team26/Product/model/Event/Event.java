@@ -35,7 +35,7 @@ public class Event implements Serializable {
 
     }
 
-    public Event(int eventId) {
+    public Event(long eventId) {
         this.eventId = eventId;
     }
 
@@ -46,7 +46,7 @@ public class Event implements Serializable {
         this.date = date;
     }
 
-    public Event(int eventId, String name, String description, String location, String date) {
+    public Event(long eventId, String name, String description, String location, String date) {
         this.eventId = eventId;
         this.name = name;
         this.description = description;
