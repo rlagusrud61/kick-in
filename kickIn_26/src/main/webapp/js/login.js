@@ -9,9 +9,10 @@ function login() {
 
     xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
-        console.log("Something")
+        console.log("Something");
+        console.log(xhr.status);
         if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
+            if (xhr.status === 204) {
                 console.log(xhr.responseText);
                 window.location.href = "http://localhost:8080/kickInTeam26/list.html";
             } else if (xhr.status === 401) {
@@ -28,7 +29,7 @@ function login() {
 function checkKeyPress() {
     let password;
     password = XSSInputSanitation('inputPassword');
-	if (event.keyCode == 13 && password !== "") {
+	if (event.keyCode === 13 && password !== "") {
 		login();
 	}
 }
