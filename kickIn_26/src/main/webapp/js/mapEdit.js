@@ -57,6 +57,15 @@ let jsonObj = {
     items: {}
 }
 
+/**
+ * @summary This method is used to display the all the items that can be added to the map, an input box
+ * for each item so that the quantity required can be added as well as a button to add the item to the map.
+ *
+ * @description All the items that can be added to the map are retrieved from the database and their names are displayed
+ * along with a number input box for each one so that the quantity can be entered as well as a button to add it to the
+ * map. A table is created and this information is displayed on the table, where there is a column for names, input boxes
+ * and buttons.
+ */
 function addItems() {
     let row, label, numInput, addButton, materialsList, table, i;
     materialsList = null;
@@ -111,13 +120,21 @@ function addItems2() {
     }
 }
 
+/**
+ * @param {number} inum - the number of the item that was placed on the map.
+ *
+ * @summary This method displays a list of the items added to the map and the quantity of each item on the map.
+ *
+ * @description The number of the item is taken as a parameter of the function so that the quantity of the item and the
+ * name of the item can be retrieved and displayed as a list that the user can refer to for a report.
+ */
 function displayItems(inum) {
     let itemnum, inputvalue, displayitems, htmltext, x;
     itemnum = jsonObj.items["item" + inum];
     inputvalue = document.getElementById("input" + inum).value
     inputvalue = Number(inputvalue);
     displayitems = document.getElementById("displayitems");
-    if (itemnum == null) {
+    if (itemnum === null) {
         itemnum = inputvalue;
     } else {
         itemnum = itemnum + inputvalue;
