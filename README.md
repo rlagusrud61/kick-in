@@ -52,8 +52,8 @@
 after the artifact has been deployed successfully).
 
 13. Use the following credentials to log in
- - email: admin@gmail.com
- - password: adminpass
+  - email: admin@gmail.com
+  - password: adminpass
 
 
 
