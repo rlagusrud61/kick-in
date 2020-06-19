@@ -113,7 +113,7 @@ public class UsersTest extends Tests{
 
     @Test
     public void saveUserVisitorEditorAdmin() throws SQLException, NotFoundException {
-        long eid = addTestUser();
+        long uid = addTestUser();
         String newUserPassword = "password-2";
         String newUserEmail = "testusernewemail@email.com";
         String newUserNickname = "TestUser-Edited";
@@ -121,11 +121,11 @@ public class UsersTest extends Tests{
         for (int i = 0; i < 3; i++) {
             Cookie loginCookie = getLoginCookie(i);
             HttpResponse<String> saveuser = Unirest
-                    .put(getURIString("user/"+eid))
+                    .put(getURIString("user/"+uid))
                     .header("Content-Type", "application/json")
                     .header("Cookie", loginCookie.toString())
                     .body("{" +
-                            "\"userId\":" + eid + ","+
+                            "\"userId\":" + uid + ","+
                             "\"email\": \"" + newUserEmail +"\"," +
                             "\"password\": \" "+newUserPassword+"\"," +
                             "\"nickname\": \"" + newUserNickname + "\"," +
@@ -134,11 +134,12 @@ public class UsersTest extends Tests{
                     .asString();
             assertEquals("Save as " +userNames[i]+":", (i == 0 || i == 1) ? HTTP_FORBIDDEN : HTTP_NO_CONTENT, saveuser.getStatus());
             if (i == 2) {
-                assertTrue("user should now be uptoDate: ", getTestUserById(eid).contains(newUserPassword));
-                assertTrue("user should now be uptoDate: ", getTestUserById(eid).contains(newUserEmail));
-                assertTrue("user should now be uptoDate: ", getTestUserById(eid).contains(newUserNickname));
+                assertTrue("user should now be uptoDate: ", getTestUserById(uid).contains(newUserPassword));
+                assertTrue("user should now be uptoDate: ", getTestUserById(uid).contains(newUserEmail));
+                assertTrue("user should now be uptoDate: ", getTestUserById(uid).contains(newUserNickname));
             }
         }
+        deleteTestUser(uid);
     }
 
     @After
