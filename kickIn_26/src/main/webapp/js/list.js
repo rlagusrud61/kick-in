@@ -1,61 +1,42 @@
-let modal, btn,span, trashBtn, deleteModal, close;
-
 // Get the modal
-modal = document.getElementById("addEvent");
-// Get the button that opens the modal
-btn = document.getElementById("addEventBtn");
-// Get the <span> element that closes the modal
-span = document.getElementsByClassName("close")[0];
+var modal = document.getElementById("addEvent");
+var btn = document.getElementById("addEventBtn");
+var span = document.getElementsByClassName("close")[0];
 
-// When the user clicks the button, open the modal
-btn.onclick = function () {
+btn.onclick = function(){
     modal.style.display = "block";
 }
-// When the user clicks on <span> (x), close the modal
-span.onclick = function (event) {
+
+span.onclick = function(event){
     if (event.target === modal) {
         modal.style.display = "none";
     }
 }
 
-// When the user clicks anywhere outside of the modal, close it
+
 window.onclick = function (event) {
-    if (event.target == modal) {
+    if (event.target === modal) {
         modal.style.display = "none";
     }
 }
 
-trashBtn = document.getElementById("yesDeleteButton");
-// Get the modal
-deleteModal = document.getElementById("eventDeleteModal");
-// Get the <span> element that closes the modal
-close = document.getElementsByClassName("close")[1];
-
-// When the user clicks the button, open the modal
-function confirmDelete(eventId) {
-    trashBtn.setAttribute("onclick", "removeEvent(" + eventId + ")");
-    deleteModal.style.display = "block";
-}
 
 
-// When the user clicks on <span> (x), close the modal
-close.onclick = function (event) {
-    if (event.target === deleteModal) {
-        deleteModal.style.display = "none";
-    }
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function (event) {
-    if (event.target === deleteModal) {
-        deleteModal.style.display = "none";
+function XSSInputSanitation(id) {
+    let element = document.getElementById(id).value;
+    if (element.indexOf("onload") !== -1 || element.indexOf("<script>") !== -1 ||
+        element.indexOf("onerror") !== -1 || element.indexOf("alert") !== -1) {
+        document.getElementById(id).value = "";
+        return "";
+    } else {
+        return element;
     }
 }
 
 function loadTable() {
     let header, tr, th, i, table, events, row, name, eventDate, creator, lastEditor, action;
-    getAllEvents(function() {
-    	table = document.getElementById("eventtable");
+    getAllEvents(function () {
+        table = document.getElementById("eventtable");
         events = JSON.parse(this.responseText);
         console.log(events);
         header = [];
@@ -71,7 +52,7 @@ function loadTable() {
             th.innerHTML = header[i];
             tr.appendChild(th);
         }
-        
+
         for (i = 0; i < events.length; i++) {
             row = table.insertRow(-1);
             name = row.insertCell(0);
@@ -93,7 +74,7 @@ function loadTable() {
     });
 }
 
-window.onload = loadTable;
+window.onload = loadTable();
 
 function addEventPopup() {
     let description, eventName, eventLoc, eventDate, dateControl, eventLocation, eventJSON;
@@ -108,14 +89,220 @@ function addEventPopup() {
         "description": description,
         "location": eventLocation,
     };
-    addEvent(eventJSON, function() {
-    	location.reload();
+    addEvent(eventJSON, function () {
+        location.reload();
     });
 }
 
 function removeEvent(id) {
-	deleteEvent(id, function() {
-		console.log(this.responseText);
+    deleteEvent(id, function () {
+        console.log(this.responseText);
         location.reload();
-	});
+    });
+}
+
+function logout() {
+    let xhr = new XMLHttpRequest();
+    xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/authentication", true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+            console.log(xhr.responseText);
+            window.location.href = "http://localhost:8080/kickInTeam26/login.html";
+        }
+    }
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send();
+}
+
+function searchTables() {
+    // Declare variables
+    let searchValue, filter, table, tr, td, i, txtValue;
+    searchValue = XSSInputSanitation('searchTable');
+    filter = searchValue.toUpperCase();
+    table = document.getElementById("eventtable");
+    tr = table.getElementsByTagName("tr");
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+}
+
+function sortTableAZ() {
+    let table, rows, switching, i, x, y, shouldSwitch;
+    table = document.getElementById("eventtable");
+    switching = true;
+    /* Make a loop that will continue until
+    no switching has been done: */
+    while (switching) {
+        // Start by saying: no switching is done:
+        switching = false;
+        rows = table.rows;
+        /* Loop through all table rows (except the
+        first, which contains table headers): */
+        for (i = 1; i < (rows.length - 1); i++) {
+            // Start by saying there should be no switching:
+            shouldSwitch = false;
+            /* Get the two elements you want to compare,
+            one from current row and one from the next: */
+            x = rows[i].getElementsByTagName("TD")[0];
+            y = rows[i + 1].getElementsByTagName("TD")[0];
+            // Check if the two rows should switch place:
+            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                // If so, mark as a switch and break the loop:
+                shouldSwitch = true;
+                break;
+            }
+        }
+        if (shouldSwitch) {
+            /* If a switch has been marked, make the switch
+            and mark that a switch has been done: */
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+        }
+    }
+}
+
+function sortTableZA() {
+    let table, rows, switching, i, x, y, shouldSwitch;
+    table = document.getElementById("eventtable");
+    switching = true;
+    /* Make a loop that will continue until
+    no switching has been done: */
+    while (switching) {
+        // Start by saying: no switching is done:
+        switching = false;
+        rows = table.rows;
+        /* Loop through all table rows (except the
+        first, which contains table headers): */
+        for (i = 1; i < (rows.length - 1); i++) {
+            // Start by saying there should be no switching:
+            shouldSwitch = false;
+            /* Get the two elements you want to compare,
+            one from current row and one from the next: */
+            x = rows[i].getElementsByTagName("TD")[0];
+            y = rows[i + 1].getElementsByTagName("TD")[0];
+            // Check if the two rows should switch place:
+            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                // If so, mark as a switch and break the loop:
+                shouldSwitch = true;
+                break;
+            }
+        }
+        if (shouldSwitch) {
+            /* If a switch has been marked, make the switch
+            and mark that a switch has been done: */
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+        }
+    }
+}
+
+function sortTableNewOld() {
+    let table, rows, switching, i, x, y, shouldSwitch;
+    table = document.getElementById("eventtable");
+    switching = true;
+    /* Make a loop that will continue until
+    no switching has been done: */
+    while (switching) {
+        // Start by saying: no switching is done:
+        switching = false;
+        rows = table.rows;
+        /* Loop through all table rows (except the
+        first, which contains table headers): */
+        for (i = 1; i < (rows.length - 1); i++) {
+            // Start by saying there should be no switching:
+            shouldSwitch = false;
+            /* Get the two elements you want to compare,
+            one from current row and one from the next: */
+            x = rows[i].getElementsByTagName("TD")[1];
+            y = rows[i + 1].getElementsByTagName("TD")[1];
+            // Check if the two rows should switch place:
+            if (x.innerHTML < y.innerHTML) {
+                // If so, mark as a switch and break the loop:
+                shouldSwitch = true;
+                break;
+            }
+        }
+        if (shouldSwitch) {
+            /* If a switch has been marked, make the switch
+            and mark that a switch has been done: */
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+        }
+    }
+}
+
+function sortTableOldNew() {
+    let table, rows, switching, i, x, y, shouldSwitch;
+    table = document.getElementById("eventtable");
+    switching = true;
+    /* Make a loop that will continue until
+    no switching has been done: */
+    while (switching) {
+        // Start by saying: no switching is done:
+        switching = false;
+        rows = table.rows;
+        /* Loop through all table rows (except the
+        first, which contains table headers): */
+        for (i = 1; i < (rows.length - 1); i++) {
+            // Start by saying there should be no switching:
+            shouldSwitch = false;
+            /* Get the two elements you want to compare,
+            one from current row and one from the next: */
+            x = rows[i].getElementsByTagName("TD")[1];
+            y = rows[i + 1].getElementsByTagName("TD")[1];
+            // Check if the two rows should switch place:
+            if (x.innerHTML > y.innerHTML) {
+                // If so, mark as a switch and break the loop:
+                shouldSwitch = true;
+                break;
+            }
+        }
+        if (shouldSwitch) {
+            /* If a switch has been marked, make the switch
+            and mark that a switch has been done: */
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+        }
+    }
+}
+
+var trashBtn = document.getElementById("yesDeleteButton");
+// Get the modal
+var deleteModal = document.getElementById("eventDeleteModal");
+// Get the <span> element that closes the modal
+var close = document.getElementsByClassName("close")[1];
+
+// When the user clicks the button, open the modal
+
+
+//Delete function for loadTable()
+function confirmDelete(eventId) {
+    trashBtn.setAttribute("onclick", "removeEvent(" + eventId + ")");
+    deleteModal.style.display = "block";
+}
+
+
+// When the user clicks on <span> (x), close the modal
+//Doesn't work
+close.onclick = function (event) {
+    if (event.target === deleteModal) {
+        deleteModal.style.display = "none";
+    }
+}
+
+// When the user clicks anywhere outside of the modal, close it
+// Works
+window.onclick = function (event) {
+    if (event.target === deleteModal) {
+        deleteModal.style.display = "none";
+    }
 }

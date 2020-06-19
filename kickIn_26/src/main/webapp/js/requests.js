@@ -693,52 +693,6 @@ function updateDrawing(drawing, callback) {
 }
 
 /**
- * @param {number} drawingId - The ID of the drawing to be deleted from the database.
- *
- * @summary This method deletes the required drawing from the database.
- *
- * @description This method takes the ID of the required drawing as a parameter. This ID is then
- * appended to the URL to request the deletion on the back-end. A DELETE request is sent to the
- * RESTful service provider with the given URL, where the content is in JSON format. The method
- * then returns the value from the back-end if the deletion was successful.
- *
- * @returns {string} - The response from the RESTful service provider.
- */
-function deleteDrawing(drawingId, callback) {
-	let xhr = new XMLHttpRequest();
-	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/drawing/" + drawingId, true);
-	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 204)) {
-			callback.apply(xhr);
-		}
-	}
-	xhr.setRequestHeader("Content-Type", "application/json");
-	xhr.send();
-}
-
-/**
- * @summary This method gets all the drawings stored in the database.
- *
- * @description A GET request is sent to the RESTful service provider with the given URL,
- * where the content is in JSON format. The method then returns the value from the back-end
- * if the request was successful.
- *
- * @returns {json | Object | Array} - The response from the RESTful service provider which will be an
- * array of drawings. Each drawing will be a JSON object.
- */
-function getAllDrawings(callback) {
-	let xhr = new XMLHttpRequest();
-	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/drawings", true);
-	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			callback.apply(xhr);
-		}
-	}
-	xhr.setRequestHeader("Content-Type", "application/json");
-	xhr.send();
-}
-
-/**
  * @param {json | Object} event - The drawing to be added to the database.
  *
  * @summary This method adds the drawing to the database.
@@ -765,31 +719,6 @@ function addDrawing(drawing, callback) {
 //Functions for materials
 
 /**
- * @param {number} materialId - The ID of the material required from the database.
- *
- * @summary This method gets the required material from the database.
- *
- * @description This method takes the ID of the required material as a parameter. This ID is then
- * appended to the URL to request the service from the back-end. A GET request is sent to the RESTful
- * service provider with the given URL, where the content is in JSON format. The method then returns
- * the value from the back-end if the request was successful.
- *
- * @returns {json | Object} - The response from the RESTful service provider which will be a JSON object
- * of the required material.
- */
-function getMaterial(materialId, callback) {
-	let xhr = new XMLHttpRequest();
-	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/material/" + materialId, true);
-	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			callback.apply(xhr);
-		}
-	}
-	xhr.setRequestHeader("Content-Type", "application/json");
-	xhr.send();
-}
-
-/**
  * @param {json | Object} mapObject - The material to be updated in the database.
  *
  * @summary This method updates the required material in the database.
@@ -806,7 +735,7 @@ function updateMaterial(material, callback) {
 	let xhr, materialId;
 	xhr = new XMLHttpRequest();
 	materialId = material.materialId;
-	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/material/" + materialId, true);
+	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/resources/material/" + materialId, true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);
@@ -830,7 +759,7 @@ function updateMaterial(material, callback) {
  */
 function deleteMaterial(materialId, callback) {
 	let xhr = new XMLHttpRequest();
-	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/material/" + materialId, true);
+	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/resources/material/" + materialId, true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);
@@ -852,7 +781,7 @@ function deleteMaterial(materialId, callback) {
  */
 function getAllMaterials(callback) {
 	let xhr = new XMLHttpRequest();
-	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/materials", true);
+	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/resources/material", true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
 			callback.apply(xhr);
@@ -876,7 +805,7 @@ function getAllMaterials(callback) {
  */
 function addMaterial(material, callback) {
 	let xhr = new XMLHttpRequest();
-	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/materials", true);
+	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/resources/material", true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 201)) {
 			callback.apply(xhr);
@@ -888,18 +817,9 @@ function addMaterial(material, callback) {
 
 //Functions for resources
 
-/**
- * @summary This method deletes all the resources stored in the database.
- *
- * @description A DELETE request is sent to the RESTful service provider with the given URL, where
- * the content is in JSON format. The method then returns the value from the back-end if the
- * deletion was successful.
- *
- * @returns {string} - The response from the RESTful service provider.
- */
-function deleteAllResources(callback) {
+function getResource(resourceId, callback) {
 	let xhr = new XMLHttpRequest();
-	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/resources", true);
+	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/resources/" + resourceId, true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);
@@ -932,3 +852,37 @@ function deleteResource(resourceId, callback) {
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.send();
 }
+
+function getAllResources(callback) {
+	let xhr = new XMLHttpRequest();
+	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/resources", true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 204)) {
+			callback.apply(xhr);
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();	
+}
+/**
+ * @summary This method deletes all the resources stored in the database.
+ *
+ * @description A DELETE request is sent to the RESTful service provider with the given URL, where
+ * the content is in JSON format. The method then returns the value from the back-end if the
+ * deletion was successful.
+ *
+ * @returns {string} - The response from the RESTful service provider.
+ */
+function deleteAllResources(callback) {
+	let xhr = new XMLHttpRequest();
+	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/resources", true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 204)) {
+			callback.apply(xhr);
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
+}
+
+

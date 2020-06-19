@@ -1,14 +1,11 @@
-let modal, trash, closeDelete, closeDelete2, map, tiles, printer, editToggle, imgGroup,
-    inFreeHand, materialsList, objReq ;
-
 // Get the modal
-modal = document.getElementById("popupMapDelete");
+var modal = document.getElementById("popupMapDelete");
 // Button for deletion
-trash = document.getElementById("deleteEvent");
+var trash = document.getElementById("deleteEvent");
 // Closing popup
-closeDelete = document.getElementsByClassName("close")[0];
+var closeDelete = document.getElementsByClassName("close")[0];
 //Closing by pressing "No"
-closeDelete2 = document.getElementById("no");
+var closeDelete2 = document.getElementById("no");
 
      trash.onclick = function() {
          modal.style.display = "block";
@@ -30,12 +27,12 @@ closeDelete2 = document.getElementById("no");
 
 
 //inits the map and properties.
-map = L.map('mapid', {
+let map = L.map('mapid', {
     center: [52.2413, -353.1531],
     zoom: 16,
     keyboard: false
 });
-tiles = L
+let tiles = L
     .tileLayer(
         'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         {
@@ -44,7 +41,7 @@ tiles = L
         });
 tiles.addTo(map);
 
-printer = L.easyPrint({
+var printer = L.easyPrint({
     tileLayer: tiles,
     sizeModes: ['Current', 'A4Landscape', 'A4Portrait'],
     filename: 'myMap',
@@ -52,7 +49,7 @@ printer = L.easyPrint({
     hideControlContainer: true
 }).addTo(map);
 
-editToggle = L.easyButton({
+let editToggle = L.easyButton({
     id: 'edit-mode-toggle',
     states: [{
         stateName: 'disable-editing',
@@ -79,25 +76,17 @@ editToggle = L.easyButton({
 editToggle.addTo(map);
 
 //the array in which all the images added are stored
-imgGroup = [];
+let imgGroup = [];
 //boolean to check weather free hand drawing is being done.
-inFreeHand = false;
+let inFreeHand = false;
 
-materialsList = null;
+let materialsList = null;
 
-objReq = new XMLHttpRequest();
-objReq.onreadystatechange = function () {
-    console.log("something")
-    if (this.readyState === 4 && this.status === 200) {
-        materialsList = JSON.parse(objReq.responseText);
-        console.log(materialsList)
-    } else {
-        console.log("failure")
-    }
-}
-objReq.open("GET",
-    ("http://localhost:8080/kickInTeam26/rest/materials"));
-objReq.send();
+getAllMaterials(function() {
+	materialsList = JSON.parse(this.responseText);
+    console.log(materialsList);
+})
+
 
 // let img = L.distortableImageOverlay('..\\resources\\testImages\\example.jpg', {
 //     actions: [L.RotateAction, L.DragAction, L.ScaleAction, L.DeleteAction]
@@ -121,8 +110,6 @@ function callEnterFreeHand() {
 
 //enter free hand drawing.
 function enterFreeDrawingMode() {
-    let divContainer, dimensionData, stage, layer, circle;
-
     inFreeHand = true;
     map.dragging.disable();
     map.touchZoom.disable();
@@ -141,21 +128,20 @@ function enterFreeDrawingMode() {
     }
     editToggle.disable();
 
-
-    divContainer = document.createElement('div');
+    let divContainer = document.createElement('div');
     divContainer.setAttribute('id', 'container');
     // document.getElementsByClassName('leaflet-pane leaflet-overlay-pane')[0].appendChild(divContainer);
     document.getElementById('mapContainer').appendChild(
         divContainer);
-     dimensionData = document.getElementById('mapContainer');
+    let dimensionData = document.getElementById('mapContainer');
 
-     stage = new Konva.Stage({
+    let stage = new Konva.Stage({
         container: 'container', // id of container <div>
         width: dimensionData.offsetWidth,
         height: dimensionData.offsetHeight,
     });
-     layer = new Konva.Layer();
-     circle = new Konva.Circle({
+    let layer = new Konva.Layer();
+    let circle = new Konva.Circle({
         x: (stage.width() / 2),
         y: (stage.height() / 2),
         radius: 70,
@@ -171,8 +157,7 @@ function enterFreeDrawingMode() {
 
 //exit free hand drawing.
 function exitFreeDraw() {
-    let data, needForAdd;
-    let imgFree, canvas, nw, ne, sw, se = null;
+    let data;
     try {
         data = trimCanvas(document
             .getElementsByTagName('canvas')[0]);
@@ -180,9 +165,10 @@ function exitFreeDraw() {
         data = null;
     }
 
-     needForAdd = true;
-     canvas = null;
-     imgFree = null;
+    let needForAdd = true;
+    let canvas = null;
+    let imgFree = null;
+    let nw, ne, sw, se = null;
 
     if (data !== null && (data[2] === 0 || data[3] === 0)) {
         needForAdd = false;
@@ -254,23 +240,23 @@ function filterOn() {
 
 }
 
-function getMap() {
-    let url, xhr;
-    url = window.location.href;
-    url = url.split("/");
-    url = url[10];
-    xhr = new XMLHttpRequest();
-    xhr.open('GET',
-        "http://localhost:8080/kickInTeam26/rest/map/"
-        + url, true);
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4) {
-            console.log(xhr.responseText);
-        }
-    }
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send();
-}
+//function getMap() {
+//    let url, xhr;
+//    url = window.location.href;
+//    url = url.split("/");
+//    url = url[10];
+//    xhr = new XMLHttpRequest();
+//    xhr.open('GET',
+//        "http://localhost:8080/kickInTeam26/rest/map/"
+//        + url, true);
+//    xhr.onreadystatechange = function () {
+//        if (xhr.readyState == 4) {
+//            console.log(xhr.responseText);
+//        }
+//    }
+//    xhr.setRequestHeader("Content-Type", "application/json");
+//    xhr.send();
+//}
 
 function everything() {
     getMapNameAndDescription();
@@ -279,92 +265,83 @@ function everything() {
 
 function listItems() {
 
-    let xhr, mapId, returnedItems, col, key, table, th, tr, i, j, tableCell;
-    xhr = new XMLHttpRequest();
+    let mapId, returnedItems, col, key, table, th, tr, i, j, tableCell;
+    mapId = 1;
     returnedItems = '';
-    xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/objects/1/report",true);
+    generateReportForMap(mapId, function () {
+    	console.log(this.responseText);
 
-    xhr.onreadystatechange = function () {
+        returnedItems = JSON.parse(this.responseText);
 
-        if (xhr.readyState === 4 && xhr.status === 200) {
-
-            console.log(xhr.responseText);
-
-            returnedItems = JSON.parse(xhr.responseText);
-
-            col = [];
-            for (i = 0; i < returnedItems.length; i++) {
-                for (key in returnedItems[i]) {
-                    if (col.indexOf(key) === -1 && (key === 'name' || key === 'count')) {
-                        col.push(key);
-                    }
+        col = [];
+        for (i = 0; i < returnedItems.length; i++) {
+            for (key in returnedItems[i]) {
+                if (col.indexOf(key) === -1 && (key === 'name' || key === 'count')) {
+                    col.push(key);
                 }
             }
-
-            table = document.createElement("table"); // creates the table
-            table.setAttribute("id", "resources")
-            table.setAttribute("class", "table table-hover")
-            tr = table.insertRow(-1); // add a row to the table
-
-            for (i = 0; i < col.length; i++) {
-                th = document.createElement("th"); // add a header to the table
-                th.innerHTML = col[i];
-                tr.appendChild(th);
-            }
-
-            for (i = 0; i < returnedItems.length; i++) {
-
-                tr = table.insertRow(-1); // adds a new row
-                for (j = 0; j < col.length; j++) {
-                    tableCell = tr.insertCell(-1);
-                    tableCell.innerHTML = returnedItems[i][col[j]]; // adds the required data to the table
-                }
-            }
-            document.getElementById("listItems").appendChild(table);
         }
-    }
 
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send();
+        table = document.createElement("table"); // creates the table
+        table.setAttribute("id", "resources")
+        table.setAttribute("class", "table table-hover")
+        tr = table.insertRow(-1); // add a row to the table
 
+        for (i = 0; i < col.length; i++) {
+            th = document.createElement("th"); // add a header to the table
+            th.innerHTML = col[i];
+            tr.appendChild(th);
+        }
+
+        for (i = 0; i < returnedItems.length; i++) {
+
+            tr = table.insertRow(-1); // adds a new row
+            for (j = 0; j < col.length; j++) {
+                tableCell = tr.insertCell(-1);
+                tableCell.innerHTML = returnedItems[i][col[j]]; // adds the required data to the table
+            }
+        }
+        document.getElementById("listItems").appendChild(table);
+    })
 }
 
 function getMapNameAndDescription() {
-
-    let xhr = new XMLHttpRequest();
-
-    xhr.onreadystatechange = function () {
-
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            let jsonData = JSON.parse(xhr.responseText);
-            document.getElementById("mapName").innerHTML = jsonData.name;
-            document.getElementById("description").innerHTML = jsonData.description;
-            console.log(xhr.responseText);
-        }
-
-    }
-
-    xhr.open('GET',
-        "http://localhost:8080/kickInTeam26/rest/map/1",
-        true)
-    xhr.send();
-
+	let mapId = 1;
+	getMap(mapId, function() {
+		let jsonData = JSON.parse(this.responseText);
+        document.getElementById("mapName").innerHTML = jsonData.name;
+        document.getElementById("description").innerHTML = jsonData.description;
+        console.log(this.responseText);
+	})
 }
 
-function deleteMap() {
-    let url, xhr;
+function removeMap() {
+    let url, xhr, mapId;
+    mapId = 1;
     url = window.location.href;
     url = url.split("/");
     url = url[10];
-    xhr = new XMLHttpRequest();
-    xhr.open('DELETE',
-        "http://localhost:8080/kickInTeam26/rest/map/"
-        + url, true);
+    deleteMap(mapId, function() {
+    	console.log(xhr.responseText);
+    })
+}
+
+function logout() {
+    let xhr = new XMLHttpRequest();
+    xhr.open(
+        'DELETE',
+        "http://localhost:8080/kickInTeam26/rest/authentication",
+        true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4) {
             console.log(xhr.responseText);
+            window.location.href = "http://localhost:8080/kickInTeam26/login.html";
         }
     }
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send();
+}
+
+function goBack() {
+    window.history.back();
 }
