@@ -28,10 +28,8 @@ public class MapsResource {
     @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllMaps() throws NotFoundException, SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            String allMaps = mapsDao.getAllMaps(conn);
-            return Utils.returnOkResponse(allMaps);
-        }
+        String allMaps = mapsDao.getAllMaps();
+        return Utils.returnOkResponse(allMaps);
     }
 
     @POST
@@ -42,24 +40,19 @@ public class MapsResource {
 
         long userId = Utils.getUserFromContext(securityContext);
 
-        try (Connection conn = CONSTANTS.getConnection()) {
+        mapToAdd.setCreatedBy(userId);
+        mapToAdd.setLastEditedBy(userId);
 
-            mapToAdd.setCreatedBy(userId);
-            mapToAdd.setLastEditedBy(userId);
-
-            long mapId = mapsDao.create(conn, mapToAdd);
-            return Utils.returnCreated(mapId);
-        }
+        long mapId = mapsDao.create(mapToAdd);
+        return Utils.returnCreated(mapId);
     }
 
     @DELETE
     @Secured(Roles.ADMIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteAllMaps() throws SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            mapsDao.deleteAll(conn);
-            return Utils.returnNoContent();
-        }
+    public Response deleteAllMaps() throws SQLException, NotFoundException {
+        mapsDao.deleteAll();
+        return Utils.returnNoContent();
     }
 
 }

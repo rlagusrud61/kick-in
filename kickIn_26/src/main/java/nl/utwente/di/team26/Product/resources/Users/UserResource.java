@@ -23,10 +23,9 @@ public class UserResource {
     @Secured(Roles.ADMIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserById(@PathParam("userId") long userId) throws NotFoundException, SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            String mapData = usersDao.getUser(conn, userId);
+
+            String mapData = usersDao.get(userId);
             return Utils.returnOkResponse(mapData);
-        }
     }
 
     @PUT
@@ -34,20 +33,18 @@ public class UserResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateUser(User userToUpdate) throws NotFoundException, SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            usersDao.save(conn, userToUpdate);
+
+            usersDao.save(userToUpdate);
             return Utils.returnNoContent();
-        }
     }
 
     @DELETE
     @Secured(Roles.ADMIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteUser(@PathParam("userId") long userId) throws NotFoundException, SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            usersDao.delete(conn, new User(userId));
+
+            usersDao.delete(new User(userId));
             return Utils.returnNoContent();
-        }
     }
 
 }

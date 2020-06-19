@@ -23,10 +23,9 @@ public class DrawingResource {
     @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllDrawings() throws NotFoundException, SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            String allDrawings = resourceDao.getAllDrawings(conn);
+
+            String allDrawings = resourceDao.getAllDrawings();
             return Utils.returnOkResponse(allDrawings);
-        }
     }
 
     @PUT
@@ -35,10 +34,9 @@ public class DrawingResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateMap(Drawing drawingToSave) throws NotFoundException, SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            resourceDao.save(conn, drawingToSave);
+
+            resourceDao.save(drawingToSave);
             return Utils.returnNoContent();
-        }
     }
 
     @POST
@@ -46,10 +44,9 @@ public class DrawingResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addNewDrawing(Drawing drawingToAdd) throws SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            long drawingId = resourceDao.create(conn, drawingToAdd);
+
+            long drawingId = resourceDao.create(drawingToAdd);
             return Utils.returnCreated(drawingId);
-        }
     }
 
 }

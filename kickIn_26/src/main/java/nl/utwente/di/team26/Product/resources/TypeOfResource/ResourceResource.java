@@ -27,20 +27,18 @@ public class ResourceResource {
     @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllResources(@PathParam("resourceId") long resourceId) throws NotFoundException, SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            String allMaps = resourceDao.getResource(conn, resourceId);
+
+            String allMaps = resourceDao.getResource(resourceId);
             return Utils.returnOkResponse(allMaps);
-        }
     }
 
     @DELETE
     @Secured(Roles.ADMIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteResource(@PathParam("resourceId") long resourceId) throws NotFoundException, SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            resourceDao.delete(conn, new TypeOfResource(resourceId));
+
+            resourceDao.delete(new TypeOfResource(resourceId));
             return Utils.returnNoContent();
-        }
     }
 
 }

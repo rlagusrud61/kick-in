@@ -28,10 +28,8 @@ public class EventsResource {
     @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllEvents() throws NotFoundException, SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            String allEvents = eventsDao.getAllEvents(conn);
-            return Utils.returnOkResponse(allEvents);
-        }
+        String allEvents = eventsDao.getAll();
+        return Utils.returnOkResponse(allEvents);
     }
 
     @POST
@@ -42,23 +40,19 @@ public class EventsResource {
         //get the userId stored into the security Context during authentication.
         long userId = Utils.getUserFromContext(securityContext);
 
-        try (Connection conn = CONSTANTS.getConnection()) {
-            eventToAdd.setCreatedBy(userId);
-            eventToAdd.setLastEditedBy(userId);
+        eventToAdd.setCreatedBy(userId);
+        eventToAdd.setLastEditedBy(userId);
 
-            long eventId = eventsDao.create(conn, eventToAdd);
-            return Utils.returnCreated(eventId);
-        }
+        long eventId = eventsDao.create(eventToAdd);
+        return Utils.returnCreated(eventId);
     }
 
     @DELETE
     @Secured({Roles.ADMIN})
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteAllEvents() throws SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            eventsDao.deleteAll(conn);
-            return Utils.returnNoContent();
-        }
+    public Response deleteAllEvents() throws SQLException, NotFoundException {
+        eventsDao.deleteAll();
+        return Utils.returnNoContent();
     }
 
 }

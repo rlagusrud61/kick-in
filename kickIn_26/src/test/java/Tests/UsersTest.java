@@ -101,11 +101,9 @@ public class UsersTest extends Tests{
                 .header("Cookie", loginCookie.toString())
                 .body(testUser)
                 .asString();
-        System.out.println(addUser.getBody());
         assertEquals("You can add user as Admin: ", HTTP_CREATED, addUser.getStatus());
 
         long uid = Long.parseLong(addUser.getBody());
-        System.out.println(uid);
         HttpResponse<String> deleteUser = Unirest
                 .delete(getURIString("user/" + uid))
                 .header("Cookie", loginCookie.toString())
@@ -134,7 +132,6 @@ public class UsersTest extends Tests{
                             "\"clearanceLevel\":" + newClearanceLevel +
                             "}")
                     .asString();
-            System.out.println(saveuser.getStatus() + " " + saveuser.getBody());
             assertEquals("Save as " +userNames[i]+":", (i == 0 || i == 1) ? HTTP_FORBIDDEN : HTTP_NO_CONTENT, saveuser.getStatus());
             if (i == 2) {
                 assertTrue("user should now be uptoDate: ", getTestUserById(eid).contains(newUserPassword));

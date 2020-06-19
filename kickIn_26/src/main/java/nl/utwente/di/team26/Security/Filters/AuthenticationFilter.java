@@ -147,15 +147,13 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         // Hit the the database or a service to find a user by its username and return it
         // Return the UserDao instance
         User user = null;
-        try(Connection conn = CONSTANTS.getConnection()) {
-            user = userDao.getUserInstance(conn, userId);
-        }
+        user = userDao.getUserInstance(userId);
         return user;
     }
 
     private void checkTokenExists(String token) throws SessionNotFoundException, SQLException {
-        try(Connection conn = CONSTANTS.getConnection()) {
-            sessionDao.checkExist(conn, token);
+        try {
+            sessionDao.checkExist(token);
         } catch (NotFoundException e) {
             throw new SessionNotFoundException("Session Not Found");
         }

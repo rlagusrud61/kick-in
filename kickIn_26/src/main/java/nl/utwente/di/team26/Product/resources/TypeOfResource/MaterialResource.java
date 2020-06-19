@@ -23,10 +23,9 @@ public class MaterialResource {
     @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllMaterials() throws NotFoundException, SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            String allMaterials = resourceDao.getAllMaterials(conn);
+
+            String allMaterials = resourceDao.getAllMaterials();
             return Utils.returnOkResponse(allMaterials);
-        }
     }
 
     @PUT
@@ -35,10 +34,9 @@ public class MaterialResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateMap(Material materialToSave) throws NotFoundException, SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            resourceDao.save(conn, materialToSave);
+
+            resourceDao.save(materialToSave);
             return Utils.returnNoContent();
-        }
     }
 
     @POST
@@ -46,10 +44,9 @@ public class MaterialResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addNewMaterial(Material materialToAdd) throws SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            long drawingId = resourceDao.create(conn, materialToAdd);
+
+            long drawingId = resourceDao.create(materialToAdd);
             return Utils.returnCreated(drawingId);
-        }
     }
 
 }

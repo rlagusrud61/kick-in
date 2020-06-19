@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exception.Exceptions.AuthenticationDeniedException;
+import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Authentication.SessionDao;
 import nl.utwente.di.team26.Product.dao.Authentication.UserDao;
 import nl.utwente.di.team26.Product.model.Authentication.Session;
@@ -61,11 +62,9 @@ public class AuthenticationEndpoint {
     @Secured
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteToken(@Context HttpHeaders headers) throws SQLException {
+    public Response deleteToken(@Context HttpHeaders headers) throws SQLException, NotFoundException {
         long userId = Utils.getUserFromContext(securityContext);
-        try(Connection conn = CONSTANTS.getConnection()) {
-            sessionDao.clearTokensForUser(conn, userId, true);
-        }
+        sessionDao.clearTokensForUser(userId);
         String cookie = createRemovalCookie();
         return Response.noContent().header("Set-Cookie", cookie).build();
     }
@@ -73,9 +72,7 @@ public class AuthenticationEndpoint {
     private User authenticateCredentials(Credentials credentials) throws AuthenticationDeniedException, SQLException {
         // Authenticate against a database, LDAP, file or whatever
         // Throw an Exception if the credentials are invalid
-        try (Connection conn = CONSTANTS.getConnection()) {
-            return userDao.authenticateUser(conn, credentials);
-        }
+        return userDao.authenticateUser(credentials);
     }
 
     private String createCookie(long userId) throws SQLException {
@@ -83,7 +80,7 @@ public class AuthenticationEndpoint {
         String token = createJWT(String.valueOf(userId), tokenId);
 
         try (Connection conn = CONSTANTS.getConnection()) {
-            sessionDao.create(conn, new Session(token, userId));
+            sessionDao.create(new Session(token, userId));
         }
         return String.format("%s=%s;Path=%s;Max-Age="+CONSTANTS.TTK+";HttpOnly", CONSTANTS.COOKIENAME, token, "/");
     }
@@ -94,9 +91,7 @@ public class AuthenticationEndpoint {
 
     private String getMaxId() throws SQLException {
         String maxIdSet;
-        try(Connection conn = CONSTANTS.getConnection()) {
-            maxIdSet = String.valueOf(sessionDao.maxId(conn));
-        }
+        maxIdSet = String.valueOf(sessionDao.maxId());
         return maxIdSet;
     }
 

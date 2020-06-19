@@ -25,20 +25,16 @@ public class ResourcesResource {
     @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllResources() throws NotFoundException, SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            String allMaps = resourceDao.getAllResources(conn);
-            return Utils.returnOkResponse(allMaps);
-        }
+        String allMaps = resourceDao.getAllResources();
+        return Utils.returnOkResponse(allMaps);
     }
 
     @DELETE
     @Secured(Roles.ADMIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteAllResources() throws SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            resourceDao.deleteAll(conn);
-            return Utils.returnNoContent();
-        }
+    public Response deleteAllResources() throws SQLException, NotFoundException {
+        resourceDao.deleteAll();
+        return Utils.returnNoContent();
     }
 
 }

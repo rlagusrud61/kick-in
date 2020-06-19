@@ -22,10 +22,8 @@ public class UsersResource {
     @Secured(Roles.EDITOR)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllUsers() throws NotFoundException, SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            String allUsers = usersDao.getAllUsers(conn);
-            return Utils.returnOkResponse(allUsers);
-        }
+        String allUsers = usersDao.getAll();
+        return Utils.returnOkResponse(allUsers);
     }
 
     @POST
@@ -33,21 +31,16 @@ public class UsersResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addNewUser(User userToAdd) throws SQLException {
-
-        try (Connection conn = CONSTANTS.getConnection()) {
-            long userId = usersDao.create(conn, userToAdd);
-            return Utils.returnCreated(userId);
-        }
+        long userId = usersDao.create(userToAdd);
+        return Utils.returnCreated(userId);
     }
 
     @DELETE
     @Secured(Roles.ADMIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteAllUsers() throws SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            usersDao.deleteAll(conn);
-            return Utils.returnNoContent();
-        }
+    public Response deleteAllUsers() throws SQLException, NotFoundException {
+        usersDao.deleteAll();
+        return Utils.returnNoContent();
     }
 
 }

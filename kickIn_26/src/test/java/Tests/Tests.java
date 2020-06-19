@@ -55,7 +55,7 @@ public class Tests {
         UserDao userDao = new UserDao();
         for (int i = 0; i < 3; i++) {
             try(Connection conn = CONSTANTS.getConnection()) {
-                userArrays[i] = userDao.create(conn, new User(String.format("%s@email.com", userNames[i]), defaultPassword, userNames[i], i));
+                userArrays[i] = userDao.create(new User(String.format("%s@email.com", userNames[i]), defaultPassword, userNames[i], i));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -66,7 +66,7 @@ public class Tests {
         UserDao userDao = new UserDao();
         try(Connection conn = CONSTANTS.getConnection()) {
             for (int i = 0; i < 3; i++) {
-                userDao.delete(conn, new User(userIds[i]));
+                userDao.delete(new User(userIds[i]));
             }
         } catch (SQLException | NotFoundException e) {
             e.printStackTrace();
@@ -74,60 +74,42 @@ public class Tests {
     }
 
     protected long addTestEvent() throws SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            testEventInstance.setLastEditedBy(userIds[2]);
-            testEventInstance.setCreatedBy(userIds[2]);
-            return eventsDao.create(conn, testEventInstance);
-        }
+        testEventInstance.setLastEditedBy(userIds[2]);
+        testEventInstance.setCreatedBy(userIds[2]);
+        return eventsDao.create(testEventInstance);
     }
     protected void deleteTestEvent(long eid) throws SQLException, NotFoundException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            eventsDao.delete(conn, new Event(eid));
-        }
+        eventsDao.delete(new Event(eid));
     }
     protected String getTestEventById(long eid) throws SQLException, NotFoundException {
-        try(Connection conn = CONSTANTS.getConnection()) {
-            return eventsDao.getEvent(conn, eid);
-        }
+        return eventsDao.get(eid);
     }
 
     protected long addTestUser() throws SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            return usersDao.create(conn, testUserInstance);
-        }
+        return usersDao.create(testUserInstance);
     }
     protected void deleteTestUser(long uid) throws SQLException, NotFoundException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            usersDao.delete(conn, new User(uid));
-        }
+        usersDao.delete(new User(uid));
     }
     protected String getTestUserById(long uid) throws SQLException, NotFoundException {
-        try(Connection conn = CONSTANTS.getConnection()) {
-            return usersDao.getUser(conn, uid);
-        }
+        return usersDao.get(uid);
     }
 
     protected long[] addTestMaps() throws SQLException {
         long[] mapIds = new long[2];
         for(int i = 0; i < 2; i++) {
-            try (Connection conn = CONSTANTS.getConnection()) {
-                testMapsInstance[i].setLastEditedBy(userIds[2]);
-                testMapsInstance[i].setCreatedBy(userIds[2]);
-                mapIds[i] = mapsDao.create(conn, testMapsInstance[i]);
-            }
+            testMapsInstance[i].setLastEditedBy(userIds[2]);
+            testMapsInstance[i].setCreatedBy(userIds[2]);
+            mapIds[i] = mapsDao.create(testMapsInstance[i]);
         }
         return mapIds;
     }
     protected void deleteTestMap(long[] mids) throws SQLException, NotFoundException {
         for (long mid : mids) {
-            try (Connection conn = CONSTANTS.getConnection()) {
-                mapsDao.delete(conn, new Map(mid));
-            }
+            mapsDao.delete(new Map(mid));
         }
     }
     protected String getTestMapById(long mid) throws SQLException, NotFoundException {
-        try(Connection conn = CONSTANTS.getConnection()) {
-            return mapsDao.getMap(conn, mid);
-        }
+        return mapsDao.getMap(mid);
     }
 }

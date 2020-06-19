@@ -40,7 +40,6 @@ public class EventsTest extends Tests{
         long eid = addTestEvent();
         for (int i = 0; i< 3; i++) {
             Cookie adminCookie = getLoginCookie(i);
-            System.out.println(adminCookie);
             HttpResponse<JsonNode> getAllEvents = Unirest
                     .get(getURIString("/events"))
                     .header("Cookie", adminCookie.toString())
@@ -124,7 +123,6 @@ public class EventsTest extends Tests{
                 .asString();
         assertEquals("Bad date format should not be accepted: ", HTTP_BAD_REQUEST, addEvent.getStatus());
         assertTrue("Error message should be about Date: ", addEvent.getBody().toLowerCase().contains("date"));
-        System.out.println(addEvent.getBody());
     }
 
     @Test
