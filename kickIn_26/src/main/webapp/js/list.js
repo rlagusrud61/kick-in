@@ -2,57 +2,66 @@ let modal, btn, span, trashBtn, deleteModal, close;
 
 // Get the modal
 modal = document.getElementById("addEvent");
-btn = document.getElementById("addEventBtn");
-span = document.getElementsByClassName("close")[0];
-
-btn.onclick = function(){
-    modal.style.display = "block";
-}
-
-span.onclick = function(event){
-    if (event.target === modal) {
-        modal.style.display = "none";
-    }
-}
-
-
-window.onclick = function (event) {
-    if (event.target === modal) {
-        modal.style.display = "none";
-    }
-}
-
-trashBtn = document.getElementById("yesDeleteButton");
-// Get the modal
 deleteModal = document.getElementById("eventDeleteModal");
-// Get the <span> element that closes the modal
-close = document.getElementsByClassName("close")[1];
+btn = document.getElementById("addEventBtn");
+trashBtn = document.getElementById("yesDeleteButton");
+span = document.getElementsByClassName("close close_multi")[0];
+span2 = document.getElementsByClassName("close close_multi")[1];
 
-// When the user clicks the button, open the modal
-
-
-//Delete function for loadTable()
 function confirmDelete(eventId) {
     trashBtn.setAttribute("onclick", "removeEvent(" + eventId + ")");
     deleteModal.style.display = "block";
 }
 
+btn.onclick = function(){
+    modal.style.display = "block";
+}
+
+span.onclick = function(event) {
+	modal.style.display = "none";
+}
+
+span2.onclick = function(event){
+    deleteModal.style.display = "none";
+        
+}
+
+window.onclick = function (event) {
+    if (event.target === modal) {
+        modal.style.display = "none";
+    } else if (event.target === deleteModal) {
+    	deleteModal.style.display = "none";
+    }
+}
+
+
+// Get the modal
+
+// Get the <span> element that closes the modal
+//close = document.getElementsByClassName("close")[1];
+
+// When the user clicks the button, open the modal
+
+
+//Delete function for loadTable()
+
+
 
 // When the user clicks on <span> (x), close the modal
 //Doesn't work
-close.onclick = function (event) {
-    if (event.target === deleteModal) {
-        deleteModal.style.display = "none";
-    }
-}
+//close.onclick = function (event) {
+//    if (event.target === deleteModal) {
+//        deleteModal.style.display = "none";
+//    }
+//}
 
 // When the user clicks anywhere outside of the modal, close it
 // Works
-window.onclick = function (event) {
-    if (event.target === deleteModal) {
-        deleteModal.style.display = "none";
-    }
-}
+//window.onclick = function (event) {
+//    if (event.target === deleteModal) {
+//        deleteModal.style.display = "none";
+//    }
+//}
 
 function loadTable() {
     let header, tr, th, i, table, events, row, name, eventDate, creator, lastEditor, action;
