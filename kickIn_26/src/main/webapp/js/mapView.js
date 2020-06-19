@@ -259,10 +259,12 @@ function filterOn() {
 //    xhr.send();
 //}
 
-function everything() {
+function loadNameDescriptionAndItems() {
     getMapNameAndDescription();
     listItems();
 }
+
+window.onload = loadNameDescriptionAndItems;
 
 function listItems() {
 

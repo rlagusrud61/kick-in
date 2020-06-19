@@ -39,10 +39,20 @@ window.onclick = function(event) {
     }
 }
 
+/**
+ * @summary This method is used to display the information on the event required.
+ *
+ * @description First, the ID of the event at hand is retrieved from the URL. This ID is then
+ * used to edit the event, display the information on this event, add a new map for this event
+ * and to get all the maps for this event. The information retrieved on the event is displayed where required
+ * and the information on all the maps for this event is displayed on a table.
+ */
 function displayEventInfo(){
-    let id, event, maps, table, header, th, tr, row, mapName, creator, lastEditor, action;
+    let id, event, maps, table, header, th, tr, row, i, mapName, creator, lastEditor, action;
+
     id = window.location.search.split("=")[1];
-    document.getElementById("editEvent").href = "http://localhost:8080/kickInTeam26/edit.html?id=" + id
+    document.getElementById("editEvent").href = "http://localhost:8080/kickInTeam26/edit.html?id=" + id;
+
     getEvent(id, function() {
         event = JSON.parse(this.responseText);
         document.getElementById("introtext").innerHTML = event.description;
@@ -53,9 +63,11 @@ function displayEventInfo(){
     })
 
     getAllMapsForEvent(id, function() {
+
         maps = JSON.parse(this.responseText);
         table = document.getElementById("mapTable");
         console.log(maps);
+
         header = [];
         header.push('Name');
         header.push('Creator');
@@ -88,10 +100,19 @@ function displayEventInfo(){
     })
 }
 
+/**
+ * @param {number} mapId - the ID of the map for which the trash glyphicon was clicked.
+ *
+ * @summary This method is used to delete the required map from the database.
+ *
+ * @description When the 'YES' button is clicked on in the map deletion confirmation popup, the delete map
+ * function is called with the ID of the map as a parameter so that it can be deleted from the database.
+ */
 function confirmDelete(mapId) {
 	deleteMap(mapId, function() {
 		console.log(this.responseText);
 		location.reload();
 	})
 }
+
 window.onload = displayEventInfo;

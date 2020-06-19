@@ -79,6 +79,8 @@ function addItems() {
     })
 }
 
+window.onload = addItems;
+
 //addItems2() defined for <template> implementation, still not done.
 function addItems2() {
     let materialsList, objReq;
