@@ -1,6 +1,12 @@
-function sortTableAscending() {
+/**
+ *
+ * @param {string} tableId - The ID of the table to be sorted.
+ *
+ * @summary This method
+ */
+function sortTableAscending(tableId) {
     let table, rows, switching, i, x, y, shouldSwitch;
-    table = document.getElementById("eventtable");
+    table = document.getElementById(tableId);
     switching = true;
     /* Make a loop that will continue until
     no switching has been done: */
@@ -33,7 +39,7 @@ function sortTableAscending() {
     }
 }
 
-function sortTableDescending() {
+function sortTableDescending(tableId) {
     let table, rows, switching, i, x, y, shouldSwitch;
     table = document.getElementById("eventtable");
     switching = true;
