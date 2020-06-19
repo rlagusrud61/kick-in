@@ -17,8 +17,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
-    <link href="http://localhost:8080/kickInTeam26/css/style.css" rel="stylesheet" type="text/css">
-    <link href="http://localhost:8080/kickInTeam26/css/users.css" rel="stylesheet"> <!-- link to css file -->
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link href="css/users.css" rel="stylesheet"> <!-- link to css file -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Users</title>
 </head>
@@ -126,7 +126,7 @@
     <div class="col-md-3">
         <form class="form-inline d-flex justify-content-center md-form active-green form-sm mt-0">
             <input aria-label="Search" class="form-control form-control-sm ml-3 w-75" id="searchTable"
-                   onkeyup="searchTables()"
+                   onkeyup="searchTables('usersTable', 'searchTable')"
                    placeholder="Search"
                    type="text">
         </form>
@@ -139,7 +139,7 @@
         </button>
         <div class="dropdown-menu dropdown-menu-right">
             <a class="dropdown-item" onclick="sortTableAZ()">A - Z</a>
-            <a class="dropdown-item" onclick="sortTableZA()">Z - A</a>
+            <a class="dropdown-item" onclick="sortTableDescending()">Z - A</a>
             <a class="dropdown-item" onclick="sortTableHighLow()">Clearance Level (High - Low)</a>
             <a class="dropdown-item" onclick="sortTableLowHigh()">Clearance Level (Low - High)</a>
         </div>
@@ -149,7 +149,8 @@
         </table>
     </div>
 </div>
-<script src="http://localhost:8080/kickInTeam26/js/requests.js"></script>
-<script src="http://localhost:8080/kickInTeam26/js/users.js"></script>
+<script src="js/requests.js"></script>
+<script src="js/users.js"></script>
+<script src="js/utils.js"></script>
 </body>
 </html>

@@ -18,8 +18,8 @@
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
     <script src="https://unpkg.com/konva@4.0.0/konva.min.js"></script>
     <script src="js/util/crop.js"></script>
-    <link href="http://localhost:8080/kickInTeam26/css/mapEdit.css" rel="stylesheet"> <!-- link to css file -->
-    <link href="http://localhost:8080/kickInTeam26/css/style.css" rel="stylesheet"> <!-- link to css file -->
+    <link href="css/mapEdit.css" rel="stylesheet"> <!-- link to css file -->
+    <link href="css/style.css" rel="stylesheet"> <!-- link to css file -->
 
 
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -56,31 +56,12 @@
 
                     <!-- Search Bar-->
                     <div class="md-form mt-0 col-md-8 active-green">
-                        <input aria-label="Search" class="form-control" id="searchItems" onkeyup="searchItems()"
+                        <input aria-label="Search" class="form-control" id="searchItems" onkeyup="searchItems('addItems','searchItems')"
                                placeholder="Search" type="text">
                     </div>
                     <!--List of Available Items Table-->
                     <div class="col-md-11">
                         <div id="itemlist"></div>
-<!--                        <table id="itemListTable">-->
-<!--                            <thead>-->
-<!--                            <tr>-->
-<!--                                <td>Item Name</td>-->
-<!--                                <td>Quantity</td>-->
-<!--                                <td>Add</td>-->
-<!--                            </tr>-->
-<!--                            </thead>-->
-<!--                            <tbody>-->
-<!--                            </tbody>-->
-<!--                        </table>-->
-
-<!--                        <template id="itemRow">-->
-<!--                            <tr>-->
-<!--                                <td></td>-->
-<!--                                <td></td>-->
-<!--                                <td></td>-->
-<!--                            </tr>-->
-<!--                        </template>-->
 
                     </div>
                 </div>
@@ -102,6 +83,7 @@
     </div>
 </div>
 </body>
-<script src="http://localhost:8080/kickInTeam26/js/mapEdit.js"></script>
-<script src="http://localhost:8080/kickInTeam26/js/requests.js"></script>
+<script src="js/mapEdit.js"></script>
+<script src="js/requests.js"></script>
+<script src="js/utils.js"></script>
 </html>

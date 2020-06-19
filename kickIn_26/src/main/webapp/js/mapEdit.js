@@ -131,46 +131,6 @@ function displayItems(inum) {
     console.log(jsonObj.items);
 }
 
-function XSSInputSanitation(id) {
-    let element = document.getElementById(id).value;
-    if (element.indexOf("onload") !== -1 || element.indexOf("<script>") !== -1 ||
-        element.indexOf("onerror") !== -1 || element.indexOf("alert") !== -1) {
-        document.getElementById(id).value = "";
-        return "";
-    } else {
-        return element;
-    }
-}
-
-function searchItems() {
-    // Declare variables
-    let searchValue, filter, table, tr, td, i, txtValue;
-    searchValue = XSSInputSanitation('searchItems');
-    if (searchValue !== "") {
-        filter = searchValue.toUpperCase();
-        table = document.getElementById("addItems");
-        tr = table.getElementsByTagName("tr");
-        // Loop through all table rows, and hide those who don't match the search query
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
-            if (td) {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
-    } else {
-        addItems()
-    }
-}
-
-function goBack() {
-    window.history.back();
-}
-
 // 	se = map.containerPointToLatLng([ data[0] + data[2],
 //     data[1] + data[3] ]);
 //     canvas = data[4];

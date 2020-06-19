@@ -1,12 +1,13 @@
 function login() {
 
-    let emailaddress = document.getElementById("inputEmail").value;
-    let password = document.getElementById("inputPassword").value;
+    let emailAddress, password, xhr;
+    emailAddress = document.getElementById("inputEmail").value;
+    password = document.getElementById("inputPassword").value;
 
-    console.log(emailaddress);
+    console.log(emailAddress);
     console.log(password);
 
-    let xhr = new XMLHttpRequest();
+    xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         console.log("Something")
         if (xhr.readyState === 4) {
@@ -21,7 +22,7 @@ function login() {
 
     xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/authentication", true);
     xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send('{"email": "' + emailaddress + '", "password": "' + password + '"}');
+    xhr.send('{"email": "' + emailAddress + '", "password": "' + password + '"}');
 }
 
 function checkKeyPress() {
