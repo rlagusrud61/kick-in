@@ -103,10 +103,11 @@ function displayEventInfo(){
 /**
  * @param {number} mapId - the ID of the map for which the trash glyphicon was clicked.
  *
- * @summary This method is used to delete the required map from the database.
+ * @summary This method is used to delete the required map from the database and reloads the page.
  *
- * @description When the 'YES' button is clicked on in the map deletion confirmation popup, the delete map
- * function is called with the ID of the map as a parameter so that it can be deleted from the database.
+ * @description When the 'YES' button is clicked in the map deletion confirmation popup, the delete map
+ * function is called with the ID of the map as a parameter so that it can be deleted from the database and the
+ * page is reloaded.
  */
 function confirmDelete(mapId) {
 	deleteMap(mapId, function() {

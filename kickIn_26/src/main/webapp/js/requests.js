@@ -10,8 +10,8 @@
  *
  * @description This method takes the ID of the required event as a parameter. This ID is then
  * appended to the URL to request the service from the back-end. A GET request is sent to the RESTful
- * service provider with the given URL. The method then
- * calls the callback function on 'xhr' if the request was successful.
+ * service provider with the given URL. The method then calls the callback function on 'xhr' if the
+ * request was successful.
  */
 function getEvent(eventId, callback) {
 	let xhr = new XMLHttpRequest();
