@@ -821,7 +821,7 @@ function getResource(resourceId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/resources/" + resourceId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 204)) {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
 			callback.apply(xhr);
 		}
 	}
@@ -857,7 +857,7 @@ function getAllResources(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/resources", true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 204)) {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
 			callback.apply(xhr);
 		}
 	}
@@ -885,4 +885,76 @@ function deleteAllResources(callback) {
 	xhr.send();
 }
 
+//Functions for users
+function getUser(userId, callback) {
+	let xhr = new XMLHttpRequest();
+	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/user/" + userId, true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			callback.apply(xhr);
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
+}
 
+function updateUser(user, callback) {
+	userId = user.userId;
+	let xhr = new XMLHttpRequest();
+	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/user/" + userId, true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 204)) {
+			callback.apply(xhr);
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send(JSON.stringify(user));
+}
+
+function deleteUser(userId, callback) {
+	let xhr = new XMLHttpRequest();
+	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/user/" + userId, true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 204)) {
+			callback.apply(xhr);
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
+}
+
+function getAllUsers(callback) {
+	let xhr = new XMLHttpRequest();
+	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/users", true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			callback.apply(xhr);
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
+}
+
+function addUser(user, callback) {
+	let xhr = new XMLHttpRequest();
+	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/users", true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 201)) {
+			callback.apply(xhr);
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send(JSON.stringify(user));
+}
+
+function deleteAllUsers(callback) {
+	let xhr = new XMLHttpRequest();
+	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/users", true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 204)) {
+			callback.apply(xhr);
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
+}

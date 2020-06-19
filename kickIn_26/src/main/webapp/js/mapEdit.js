@@ -58,32 +58,25 @@ let jsonObj = {
 }
 
 function addItems() {
-    let row, label, numInput, addButton, materialsList, objReq, table, i;
+    let row, label, numInput, addButton, materialsList, table, i;
     materialsList = null;
-    objReq = new XMLHttpRequest();
-    objReq.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            materialsList = JSON.parse(objReq.responseText);
-            console.log(materialsList);
-            table = document.createElement("table"); // creates the table
-            table.setAttribute("id", "addItems")
-            for (i = 0; i < materialsList.length; i++) {
-                row = table.insertRow(-1); // adds a new row
-                label = row.insertCell(0);
-                numInput = row.insertCell(1);
-                addButton = row.insertCell(2);
-                label.innerHTML = '<label>Item ' + materialsList[i].resourceId + '</label>';
-                numInput.innerHTML = '<input id ="input' + materialsList[i].resourceId + '" type = "number" name = "quantity"/>';
-                addButton.innerHTML = '<button onclick ="displayItems(' + materialsList[i].resourceId + ')" style="background-color: #58BD0F; ' +
-                    'border-color: #C1FF94;">+</button>';
-            }
-            document.getElementById("itemlist").appendChild(table);
-        } else {
-            console.log("failure")
+    getAllMaterials(function() {
+    	materialsList = JSON.parse(this.responseText);
+        console.log(materialsList);
+        table = document.createElement("table"); // creates the table
+        table.setAttribute("id", "addItems")
+        for (i = 0; i < materialsList.length; i++) {
+            row = table.insertRow(-1); // adds a new row
+            label = row.insertCell(0);
+            numInput = row.insertCell(1);
+            addButton = row.insertCell(2);
+            label.innerHTML = '<label>Item ' + materialsList[i].resourceId + '</label>';
+            numInput.innerHTML = '<input id ="input' + materialsList[i].resourceId + '" type = "number" name = "quantity"/>';
+            addButton.innerHTML = '<button onclick ="displayItems(' + materialsList[i].resourceId + ')" style="background-color: #58BD0F; ' +
+                'border-color: #C1FF94;">+</button>';
         }
-    }
-    objReq.open("GET", "http://localhost:8080/kickInTeam26/rest/resources/material", true);
-    objReq.send();
+        document.getElementById("itemlist").appendChild(table);
+    })
 }
 
 //addItems2() defined for <template> implementation, still not done.
