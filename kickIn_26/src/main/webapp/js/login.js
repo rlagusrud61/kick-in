@@ -26,7 +26,9 @@ function login() {
 }
 
 function checkKeyPress() {
-	if (event.keyCode == 13) {
+    let password;
+    password = XSSInputSanitation('inputPassword');
+	if (event.keyCode == 13 && password !== "") {
 		login();
 	}
 }

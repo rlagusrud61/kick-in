@@ -45,7 +45,7 @@
                                 <label for="inputEmail">Email address</label>
                                 <input autofocus class="form-control" id="inputEmail"
                                        placeholder="Email address"
-                                       required type="email">
+                                       required type="email" onkeyup="XSSInputSanitation('inputEmail')">
                             </div>
                             <div class="form-label-group">
                                 <label for="inputPassword" >Password</label>
@@ -76,5 +76,6 @@
 </div>
 <script src="js/login.js"></script>
 <script src="js/requests.js"></script>
+<script src="js/utils.js"></script>
 </body>
 </html>
