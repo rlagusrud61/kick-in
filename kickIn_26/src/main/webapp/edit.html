@@ -19,9 +19,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
-    <link href="http://localhost:8080/kickInTeam26/css/style.css" rel="stylesheet" type="text/css">
-
-    <link rel="stylesheet" href="http://localhost:8080/kickInTeam26/css/edit.css"> <!-- link to css file -->
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="css/edit.css"> <!-- link to css file -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Event</title>
 </head>
@@ -54,14 +53,14 @@
         <div class="form-group row">
             <label class="col-md-2 col-form-label" for="eventname">Name</label>
             <div class="col-md-3">
-                <input class="form-control" id="eventname" onkeyup="XSSInputSanitation('eventname')" placeholder="Name" type="text">
+                <input class="form-control" id="eventname" onkeyup="XSSInputSanitationNoReturn('eventname')" placeholder="Name" type="text">
             </div>
         </div>
 
         <div class="form-group row">
             <label class="col-md-2 col-form-label" for="eventdescription">Description</label>
             <div class="col-md-8">
-                <textarea class="form-control" id="eventdescription" onkeyup="XSSInputSanitation('eventdescription')" rows="5"></textarea>
+                <textarea class="form-control" id="eventdescription" onkeyup="XSSInputSanitationNoReturn('eventdescription')" rows="5"></textarea>
             </div>
         </div>
 
@@ -90,7 +89,8 @@
     <!-- End of Form -->
     <!-- End of container -->
 </div>
-<script src="http://localhost:8080/kickInTeam26/js/edit.js"></script>
-<script src="http://localhost:8080/kickInTeam26/js/requests.js"></script>
+<script src="js/edit.js"></script>
+<script src="js/requests.js"></script>
+<script src="js/utils.js"></script>
 </body>
 </html>

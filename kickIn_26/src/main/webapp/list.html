@@ -16,8 +16,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
-    <link href="http://localhost:8080/kickInTeam26/css/style.css" rel="stylesheet" type="text/css">
-    <link href="http://localhost:8080/kickInTeam26/css/list.css" rel="stylesheet"> <!-- link to css file -->
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link href="css/list.css" rel="stylesheet"> <!-- link to css file -->
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <!--    jQuery for fucking modals-->
     <script crossorigin="anonymous"
@@ -133,7 +133,7 @@
     <div class="col-md-3">
         <form class="form-inline d-flex justify-content-center md-form active-green form-sm mt-0">
             <input aria-label="Search" class="form-control form-control-sm ml-3 w-75" id="searchTable"
-                   onkeyup="searchTables()"
+                   onkeyup="searchTables('eventTable', 'searchTable')"
                    placeholder="Search"
                    type="text">
         </form>
@@ -145,34 +145,20 @@
             By
         </button>
         <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item" onclick="sortTableAZ()">A - Z</a>
-            <a class="dropdown-item" onclick="sortTableZA()">Z - A</a>
-            <a class="dropdown-item" onclick="sortTableNewOld()">Event Date (New - Old)</a>
-            <a class="dropdown-item" onclick="sortTableOldNew()">Event Date (Old - New)</a>
+            <a class="dropdown-item" onclick="sortTableAscending()">A - Z</a>
+            <a class="dropdown-item" onclick="sortTableDescending()">Z - A</a>
+            <a class="dropdown-item" onclick="sortTableDescending()">Event Date (New - Old)</a>
+            <a class="dropdown-item" onclick="sortTableAscending()">Event Date (Old - New)</a>
         </div>
     </div>
     <!--    Table for the List of Events-->
     <div class="eventlist">
-        <table class="table table-hover" id="eventtable" style="width:100%">
+        <table class="table table-hover" id="eventTable" style="width:100%">
         </table>
     </div>
-
-
 </div>
-<script>
-    $(document).ready(function(){
-        $('.modal-overlay').hide();
-        $('.open-modal').css('cursor' , 'pointer').click(function(){
-            var file = $(this).attr('data');
-            $(".modal-content").load(file + ".html");
-            $('.modal-overlay').fadeIn();
-        });
-        $('.close-modal').css('cursor','pointer').click(function(){
-            $('.modal-overlay').fadeOut();
-        });
-    });
-</script>
-<script src="http://localhost:8080/kickInTeam26/js/requests.js"></script>
-<script src="http://localhost:8080/kickInTeam26/js/list.js"></script>
+<script src="js/requests.js"></script>
+<script src="js/list.js"></script>
+<script src="js/utils.js"></script>
 </body>
 </html>

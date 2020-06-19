@@ -1,12 +1,3 @@
-function XSSInputSanitation(id) {
-    let element = document.getElementById(id).value;
-    if (element.indexOf("onload") !== -1 || element.indexOf("<script>") !== -1 ||
-        element.indexOf("onerror") !== -1 || element.indexOf("alert") !== -1) {
-        console.log("done")
-        document.getElementById(id).value = "";
-    }
-}
-
 //function updateEvent() {
 //    description = document.getElementById("eventdescription").value;
 //    eventId = window.location.search.split("=")[1];
@@ -33,19 +24,6 @@ function XSSInputSanitation(id) {
 //    xhr.send(JSON.stringify(eventjson));
 //}
 
-function logout() {
-    const xhr = new XMLHttpRequest();
-    xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/authentication", true);
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4) {
-            console.log(xhr.responseText);
-            window.location.href = "http://localhost:8080/kickInTeam26/login.html";
-        }
-    }
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send();
-}
-
 function upEvent() {
 	let eventDescription, eventId, eventName, eventLoc, eventLocation, eventDate, eventJSON
     eventDescription = document.getElementById("eventdescription").value;
@@ -64,8 +42,4 @@ function upEvent() {
     updateEvent(eventJSON, function() {
     	window.location.href = "http://localhost:8080/kickInTeam26/event.html?id=" + eventId;
     })
-}
-
-function goBack() {
-    window.history.back();
 }

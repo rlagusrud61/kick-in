@@ -1,11 +1,14 @@
+let modal, trash, closeDelete, closeDelete2, map, tiles, printer, editToggle, imgGroup,
+    inFreeHand, materialsList, objReq ;
+
 // Get the modal
-var modal = document.getElementById("popupMapDelete");
+modal = document.getElementById("popupMapDelete");
 // Button for deletion
-var trash = document.getElementById("deleteEvent");
+trash = document.getElementById("deleteEvent");
 // Closing popup
-var closeDelete = document.getElementsByClassName("close")[0];
+closeDelete = document.getElementsByClassName("close")[0];
 //Closing by pressing "No"
-var closeDelete2 = document.getElementById("no");
+closeDelete2 = document.getElementById("no");
 
      trash.onclick = function() {
          modal.style.display = "block";
@@ -27,12 +30,12 @@ var closeDelete2 = document.getElementById("no");
 
 
 //inits the map and properties.
-let map = L.map('mapid', {
+map = L.map('mapid', {
     center: [52.2413, -353.1531],
     zoom: 16,
     keyboard: false
 });
-let tiles = L
+tiles = L
     .tileLayer(
         'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         {
@@ -41,7 +44,7 @@ let tiles = L
         });
 tiles.addTo(map);
 
-var printer = L.easyPrint({
+printer = L.easyPrint({
     tileLayer: tiles,
     sizeModes: ['Current', 'A4Landscape', 'A4Portrait'],
     filename: 'myMap',
@@ -49,7 +52,7 @@ var printer = L.easyPrint({
     hideControlContainer: true
 }).addTo(map);
 
-let editToggle = L.easyButton({
+editToggle = L.easyButton({
     id: 'edit-mode-toggle',
     states: [{
         stateName: 'disable-editing',
@@ -76,13 +79,13 @@ let editToggle = L.easyButton({
 editToggle.addTo(map);
 
 //the array in which all the images added are stored
-let imgGroup = [];
+imgGroup = [];
 //boolean to check weather free hand drawing is being done.
-let inFreeHand = false;
+inFreeHand = false;
 
-let materialsList = null;
+materialsList = null;
 
-let objReq = new XMLHttpRequest();
+objReq = new XMLHttpRequest();
 objReq.onreadystatechange = function () {
     console.log("something")
     if (this.readyState === 4 && this.status === 200) {
@@ -118,6 +121,8 @@ function callEnterFreeHand() {
 
 //enter free hand drawing.
 function enterFreeDrawingMode() {
+    let divContainer, dimensionData, stage, layer, circle;
+
     inFreeHand = true;
     map.dragging.disable();
     map.touchZoom.disable();
@@ -136,20 +141,21 @@ function enterFreeDrawingMode() {
     }
     editToggle.disable();
 
-    let divContainer = document.createElement('div');
+
+    divContainer = document.createElement('div');
     divContainer.setAttribute('id', 'container');
     // document.getElementsByClassName('leaflet-pane leaflet-overlay-pane')[0].appendChild(divContainer);
     document.getElementById('mapContainer').appendChild(
         divContainer);
-    let dimensionData = document.getElementById('mapContainer');
+     dimensionData = document.getElementById('mapContainer');
 
-    let stage = new Konva.Stage({
+     stage = new Konva.Stage({
         container: 'container', // id of container <div>
         width: dimensionData.offsetWidth,
         height: dimensionData.offsetHeight,
     });
-    let layer = new Konva.Layer();
-    let circle = new Konva.Circle({
+     layer = new Konva.Layer();
+     circle = new Konva.Circle({
         x: (stage.width() / 2),
         y: (stage.height() / 2),
         radius: 70,
@@ -165,7 +171,8 @@ function enterFreeDrawingMode() {
 
 //exit free hand drawing.
 function exitFreeDraw() {
-    let data;
+    let data, needForAdd;
+    let imgFree, canvas, nw, ne, sw, se = null;
     try {
         data = trimCanvas(document
             .getElementsByTagName('canvas')[0]);
@@ -173,10 +180,9 @@ function exitFreeDraw() {
         data = null;
     }
 
-    let needForAdd = true;
-    let canvas = null;
-    let imgFree = null;
-    let nw, ne, sw, se = null;
+     needForAdd = true;
+     canvas = null;
+     imgFree = null;
 
     if (data !== null && (data[2] === 0 || data[3] === 0)) {
         needForAdd = false;
@@ -275,7 +281,6 @@ function listItems() {
 
     let xhr, mapId, returnedItems, col, key, table, th, tr, i, j, tableCell;
     xhr = new XMLHttpRequest();
-    mapId = 1;
     returnedItems = '';
     xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/objects/1/report",true);
 
@@ -362,24 +367,4 @@ function deleteMap() {
     }
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send();
-}
-
-function logout() {
-    let xhr = new XMLHttpRequest();
-    xhr.open(
-        'DELETE',
-        "http://localhost:8080/kickInTeam26/rest/authentication",
-        true);
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4) {
-            console.log(xhr.responseText);
-            window.location.href = "http://localhost:8080/kickInTeam26/login.html";
-        }
-    }
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send();
-}
-
-function goBack() {
-    window.history.back();
 }
