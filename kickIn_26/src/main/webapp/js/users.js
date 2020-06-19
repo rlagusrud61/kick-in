@@ -27,9 +27,7 @@ window.onclick = function (event) {
 
 function loadTable() {
     let header, tr, th, i, table, users, row, name, email, password, clearanceLevel, levelDescription, action;
-    console.log("hello");
     getAllUsers(function() {
-    	console.log("hello");
     	table = document.getElementById("usersTable");
         users = JSON.parse(this.responseText);
         console.log(users);
