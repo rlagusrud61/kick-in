@@ -1,27 +1,26 @@
 // Get the modal
 var modal = document.getElementById("addEvent");
-// Get the button that opens the modal
 var btn = document.getElementById("addEventBtn");
-// Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
 
-// When the user clicks the button, open the modal
-btn.onclick = function () {
+btn.onclick = function(){
     modal.style.display = "block";
 }
-// When the user clicks on <span> (x), close the modal
-span.onclick = function (event) {
+
+span.onclick = function(event){
     if (event.target === modal) {
         modal.style.display = "none";
     }
 }
 
-// When the user clicks anywhere outside of the modal, close it
+
 window.onclick = function (event) {
-    if (event.target == modal) {
+    if (event.target === modal) {
         modal.style.display = "none";
     }
 }
+
+
 
 function XSSInputSanitation(id) {
     let element = document.getElementById(id).value;
@@ -36,8 +35,8 @@ function XSSInputSanitation(id) {
 
 function loadTable() {
     let header, tr, th, i, table, events, row, name, eventDate, creator, lastEditor, action;
-    getAllEvents(function() {
-    	table = document.getElementById("eventtable");
+    getAllEvents(function () {
+        table = document.getElementById("eventtable");
         events = JSON.parse(this.responseText);
         console.log(events);
         header = [];
@@ -53,7 +52,7 @@ function loadTable() {
             th.innerHTML = header[i];
             tr.appendChild(th);
         }
-        
+
         for (i = 0; i < events.length; i++) {
             row = table.insertRow(-1);
             name = row.insertCell(0);
@@ -90,16 +89,16 @@ function addEventPopup() {
         "description": description,
         "location": eventLocation,
     };
-    addEvent(eventJSON, function() {
-    	location.reload();
+    addEvent(eventJSON, function () {
+        location.reload();
     });
 }
 
 function removeEvent(id) {
-	deleteEvent(id, function() {
-		console.log(this.responseText);
+    deleteEvent(id, function () {
+        console.log(this.responseText);
         location.reload();
-	});
+    });
 }
 
 function logout() {
@@ -285,7 +284,7 @@ var close = document.getElementsByClassName("close")[1];
 // When the user clicks the button, open the modal
 
 
-
+//Delete function for loadTable()
 function confirmDelete(eventId) {
     trashBtn.setAttribute("onclick", "removeEvent(" + eventId + ")");
     deleteModal.style.display = "block";
@@ -293,6 +292,7 @@ function confirmDelete(eventId) {
 
 
 // When the user clicks on <span> (x), close the modal
+//Doesn't work
 close.onclick = function (event) {
     if (event.target === deleteModal) {
         deleteModal.style.display = "none";
@@ -300,6 +300,7 @@ close.onclick = function (event) {
 }
 
 // When the user clicks anywhere outside of the modal, close it
+// Works
 window.onclick = function (event) {
     if (event.target === deleteModal) {
         deleteModal.style.display = "none";
