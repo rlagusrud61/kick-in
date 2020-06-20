@@ -28,7 +28,7 @@ function login() {
  * @summary This method allows the user to login by pressing the enter key when both the email address and password
  * have been entered.
  *
- * @desccription This method first checks the password input field for any signs of an XSS attack and sanitises the
+ * @description This method first checks the password input field for any signs of an XSS attack and sanitises the
  * input. After that, it checks if the user pressed the 'enter' key and that both the password and email input fields
  * are not empty. If this is true, the 'login' function is called.
  */
