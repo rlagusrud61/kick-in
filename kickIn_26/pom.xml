@@ -142,7 +142,13 @@
 			<scope>test</scope>
 		</dependency>
 
-
+		<!-- https://mvnrepository.com/artifact/com.konghq/unirest-java -->
+		<dependency>
+			<groupId>com.konghq</groupId>
+			<artifactId>unirest-java</artifactId>
+			<version>3.7.03</version>
+			<scope>provided</scope>
+		</dependency>
 
 
 	</dependencies>

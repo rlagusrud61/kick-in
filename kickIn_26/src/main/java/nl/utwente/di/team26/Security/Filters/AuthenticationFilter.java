@@ -1,6 +1,9 @@
 package nl.utwente.di.team26.Security.Filters;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Exception.Exceptions.SessionNotFoundException;
@@ -20,7 +23,6 @@ import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.security.Key;
 import java.security.Principal;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
 
@@ -147,15 +149,13 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         // Hit the the database or a service to find a user by its username and return it
         // Return the UserDao instance
         User user = null;
-        try(Connection conn = CONSTANTS.getConnection()) {
-            user = userDao.getUserInstance(conn, userId);
-        }
+        user = userDao.getUserInstance(userId);
         return user;
     }
 
     private void checkTokenExists(String token) throws SessionNotFoundException, SQLException {
-        try(Connection conn = CONSTANTS.getConnection()) {
-            sessionDao.checkExist(conn, token);
+        try {
+            sessionDao.checkExist(token);
         } catch (NotFoundException e) {
             throw new SessionNotFoundException("Session Not Found");
         }

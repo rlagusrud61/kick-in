@@ -15,7 +15,7 @@ create table session
     tokenId bigserial,
     token   text unique not null,
     userid  bigint unique not null,
-    foreign key (userid) references users (userid),
+    foreign key (userid) references users (userid) ON DELETE CASCADE,
     primary key (tokenId)
 );
 CREATE TABLE Events
@@ -5063,6 +5063,44 @@ begin
                             ) as userData
                  from users u
                  where u.userid = uid) users
+    );
+end;
+$$;
+
+create or replace function getAllSessions()
+    returns text
+    language plpgsql
+as
+$$
+begin
+    return (
+        select jsonb_agg(session.sessionData)
+        from (
+                 select jsonb_build_object(
+                                'tokenId', s.tokenId,
+                                'nickname', u.nickname
+                            ) as sessionData
+                 from users u, session s
+                 where s.userid = u.userid) session
+    );
+end;
+$$;
+create or replace function getSession(tid bigint)
+    returns text
+    language plpgsql
+as
+$$
+begin
+    return (
+        select session.sessionData::text
+        from (
+                 select jsonb_build_object(
+                                'userId', u.userid,
+                                'nickname', u.email
+                            ) as sessionData
+                 from users u, session s
+                 where s.userid = u.userid
+                   and s.tokenid = tid) session
     );
 end;
 $$;

@@ -1,7 +1,6 @@
 package nl.utwente.di.team26;
 
 import javax.ws.rs.InternalServerErrorException;
-import javax.ws.rs.core.SecurityContext;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

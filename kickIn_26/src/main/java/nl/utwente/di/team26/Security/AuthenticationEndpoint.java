@@ -5,21 +5,20 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exception.Exceptions.AuthenticationDeniedException;
+import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Authentication.SessionDao;
 import nl.utwente.di.team26.Product.dao.Authentication.UserDao;
-import nl.utwente.di.team26.Product.model.Authentication.Session;
-import nl.utwente.di.team26.Security.Filters.Secured;
 import nl.utwente.di.team26.Product.model.Authentication.Credentials;
+import nl.utwente.di.team26.Product.model.Authentication.Session;
 import nl.utwente.di.team26.Product.model.Authentication.User;
+import nl.utwente.di.team26.Security.Filters.Secured;
 import nl.utwente.di.team26.Utils;
 
 import javax.crypto.spec.SecretKeySpec;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.io.IOException;
 import java.security.Key;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -42,89 +41,50 @@ public class AuthenticationEndpoint {
     UserDao userDao = new UserDao();
     SessionDao sessionDao = new SessionDao();
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String echo(String something) {
-        return something;
-    }
-
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public void authenticateUser(Credentials credentials) throws IOException {
-        try {
-            User user = authenticateCredentials(credentials);
-
-            Cookie cookie = createCookie(user.getUserId());
-            cookie.setPath("/");
-            cookie.setHttpOnly(true);
-            response.addCookie(cookie);
-            response.sendRedirect(uriInfo.getAbsolutePathBuilder().replacePath("/kickInTeam26/list.html").toString());
-        } catch (AuthenticationDeniedException e) {
-            e.printStackTrace();
-            response.sendError(Response.Status.UNAUTHORIZED.getStatusCode(), e.getMessage());
-        } catch (SQLException e) {
-            e.printStackTrace();
-            response.sendError(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), e.getMessage());
-        }
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response authenticateUser(Credentials credentials) throws AuthenticationDeniedException, SQLException {
+        User user = authenticateCredentials(credentials);
+        String cookie = createCookie(user.getUserId());
+        return Response
+                .noContent()
+                .header("Set-Cookie", cookie).build();
     }
 
     @Secured
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
-    public void deleteToken(@Context HttpHeaders headers) throws IOException {
-
-        try {
-
-            long userId = Utils.getUserFromContext(securityContext);
-
-            try(Connection conn = CONSTANTS.getConnection()) {
-                sessionDao.clearTokensForUser(conn, userId, true);
-            }
-
-            Cookie cookie = createRemovalCookie();
-            response.addCookie(cookie);
-            response.sendRedirect(uriInfo.getAbsolutePathBuilder().replacePath("/kickInTeam26/login.html").toString());
-
-        } catch (Exception e) {
-            response.sendError(Response.Status.BAD_REQUEST.getStatusCode(),CONSTANTS.FAILURE + ": " + e.getMessage());
-        }
-
-
+    public Response deleteToken(@Context HttpHeaders headers) throws SQLException, NotFoundException {
+        long userId = Utils.getUserFromContext(securityContext);
+        sessionDao.clearTokensForUser(userId);
+        String cookie = createRemovalCookie();
+        return Response.noContent().header("Set-Cookie", cookie).build();
     }
 
     private User authenticateCredentials(Credentials credentials) throws AuthenticationDeniedException, SQLException {
         // Authenticate against a database, LDAP, file or whatever
         // Throw an Exception if the credentials are invalid
-        try (Connection conn = CONSTANTS.getConnection()) {
-            return userDao.authenticateUser(conn, credentials);
-        }
+        return userDao.authenticateUser(credentials);
     }
 
-    private Cookie createCookie(long userId) throws SQLException {
+    private String createCookie(long userId) throws SQLException {
         String tokenId = getMaxId() + 1;
         String token = createJWT(String.valueOf(userId), tokenId);
 
         try (Connection conn = CONSTANTS.getConnection()) {
-            sessionDao.create(conn, new Session(token, userId));
+            sessionDao.create(new Session(token, userId));
         }
-
-        return new Cookie(CONSTANTS.COOKIENAME, token);
+        return String.format("%s=%s;Path=%s;Max-Age="+CONSTANTS.TTK+";HttpOnly", CONSTANTS.COOKIENAME, token, "/");
     }
 
-    private Cookie createRemovalCookie() {
-        Cookie cookie = new Cookie(CONSTANTS.COOKIENAME, "");
-        cookie.setMaxAge(0);
-        cookie.setPath("/");
-        cookie.setComment("EXPIRING COOKIE at " + System.currentTimeMillis());
-        return cookie;
+    private String createRemovalCookie() {
+        return CONSTANTS.COOKIENAME +"=;Path=/;Expires=Thu, 01-Jan-1970 00:00:10 GMT;Max-Age=0";
     }
 
     private String getMaxId() throws SQLException {
         String maxIdSet;
-        try(Connection conn = CONSTANTS.getConnection()) {
-            maxIdSet = String.valueOf(sessionDao.maxId(conn));
-        }
+        maxIdSet = String.valueOf(sessionDao.maxId());
         return maxIdSet;
     }
 

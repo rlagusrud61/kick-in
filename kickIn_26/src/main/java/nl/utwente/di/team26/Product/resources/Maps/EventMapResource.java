@@ -1,6 +1,5 @@
 package nl.utwente.di.team26.Product.resources.Maps;
 
-import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Events.EventMapDao;
 import nl.utwente.di.team26.Product.model.Event.EventMap;
@@ -11,7 +10,6 @@ import nl.utwente.di.team26.Utils;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 @Path("/eventMap")
@@ -24,9 +22,7 @@ public class EventMapResource {
     @Path("event/{eventId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllMapsForEvent(@PathParam("eventId") long eventId) throws NotFoundException, SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            return Utils.returnOkResponse(eventMapDao.getAllMapsFor(conn, eventId));
-        }
+        return Utils.returnOkResponse(eventMapDao.getAllMapsFor(eventId));
     }
 
     @GET
@@ -34,9 +30,7 @@ public class EventMapResource {
     @Path("map/{mapId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllEventsForMap(@PathParam("mapId") long mapId) throws NotFoundException, SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            return Utils.returnOkResponse(eventMapDao.allEventsFor(conn, mapId));
-        }
+        return Utils.returnOkResponse(eventMapDao.allEventsFor(mapId));
     }
 
     @POST
@@ -44,10 +38,8 @@ public class EventMapResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addEventMap(EventMap eventMapToCreate) throws SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            eventMapDao.create(conn, eventMapToCreate);
-            return Utils.returnCreated();
-        }
+        eventMapDao.create(eventMapToCreate);
+        return Utils.returnCreated();
     }
 
     @DELETE
@@ -55,10 +47,8 @@ public class EventMapResource {
     @Path("event/{eventId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response clearEvent(@PathParam("eventId") long eventId) throws NotFoundException, SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            eventMapDao.deleteAllForEvent(conn, eventId);
-            return Utils.returnNoContent();
-        }
+        eventMapDao.deleteAllForEvent(eventId);
+        return Utils.returnNoContent();
     }
 
     @DELETE
@@ -66,20 +56,16 @@ public class EventMapResource {
     @Path("{eventId}/{mapId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteEventMap(@PathParam("eventId") long eventId, @PathParam("mapId") long mapId) throws NotFoundException, SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            eventMapDao.delete(conn, new EventMap(eventId, mapId));
-            return Utils.returnNoContent();
-        }
+        eventMapDao.delete(new EventMap(eventId, mapId));
+        return Utils.returnNoContent();
     }
 
     @DELETE
     @Secured(Roles.ADMIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteAllRelations() throws SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            eventMapDao.deleteAll(conn);
-            return Utils.returnNoContent();
-        }
+    public Response deleteAllRelations() throws SQLException, NotFoundException {
+        eventMapDao.deleteAll();
+        return Utils.returnNoContent();
     }
 
 }

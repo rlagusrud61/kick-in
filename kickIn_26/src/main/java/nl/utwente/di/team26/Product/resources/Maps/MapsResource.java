@@ -1,6 +1,5 @@
 package nl.utwente.di.team26.Product.resources.Maps;
 
-import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Maps.MapsDao;
 import nl.utwente.di.team26.Product.model.Map.Map;
@@ -10,7 +9,6 @@ import nl.utwente.di.team26.Utils;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 @Path("/maps")
@@ -28,10 +26,8 @@ public class MapsResource {
     @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllMaps() throws NotFoundException, SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            String allMaps = mapsDao.getAllMaps(conn);
-            return Utils.returnOkResponse(allMaps);
-        }
+        String allMaps = mapsDao.getAllMaps();
+        return Utils.returnOkResponse(allMaps);
     }
 
     @POST
@@ -42,24 +38,19 @@ public class MapsResource {
 
         long userId = Utils.getUserFromContext(securityContext);
 
-        try (Connection conn = CONSTANTS.getConnection()) {
+        mapToAdd.setCreatedBy(userId);
+        mapToAdd.setLastEditedBy(userId);
 
-            mapToAdd.setCreatedBy(userId);
-            mapToAdd.setLastEditedBy(userId);
-
-            long mapId = mapsDao.create(conn, mapToAdd);
-            return Utils.returnCreated(mapId);
-        }
+        long mapId = mapsDao.create(mapToAdd);
+        return Utils.returnCreated(mapId);
     }
 
     @DELETE
     @Secured(Roles.ADMIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteAllMaps() throws SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            mapsDao.deleteAll(conn);
-            return Utils.returnNoContent();
-        }
+    public Response deleteAllMaps() throws SQLException, NotFoundException {
+        mapsDao.deleteAll();
+        return Utils.returnNoContent();
     }
 
 }

@@ -14,6 +14,7 @@ public class CustomExceptionMapper implements ExceptionMapper<Throwable> {
 
     @Override
     public Response toResponse(Throwable e) {
+        e.printStackTrace();
         String errorString;
         Status errorCode;
         if (e instanceof AuthenticationDeniedException) {

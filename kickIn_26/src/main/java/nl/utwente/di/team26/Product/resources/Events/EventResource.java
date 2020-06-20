@@ -1,6 +1,5 @@
 package nl.utwente.di.team26.Product.resources.Events;
 
-import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Events.EventsDao;
 import nl.utwente.di.team26.Product.model.Event.Event;
@@ -13,7 +12,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 @Path("/event/{eventId}")
@@ -28,10 +26,8 @@ public class EventResource {
     @Secured({Roles.VISITOR})
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEventById(@PathParam("eventId") long eventId) throws SQLException, NotFoundException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            String eventData = eventsDao.getEvent(conn, eventId);
-            return Utils.returnOkResponse(eventData);
-        }
+        String eventData = eventsDao.get(eventId);
+        return Utils.returnOkResponse(eventData);
     }
 
     @PUT
@@ -39,23 +35,18 @@ public class EventResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateEvent(Event eventToUpdate) throws NotFoundException, SQLException {
-
         long userId = Utils.getUserFromContext(securityContext);
         eventToUpdate.setLastEditedBy(userId);
 
-        try (Connection conn = CONSTANTS.getConnection()) {
-            eventsDao.save(conn, eventToUpdate);
-            return Utils.returnNoContent();
-        }
+        eventsDao.save(eventToUpdate);
+        return Utils.returnNoContent();
     }
 
     @DELETE
     @Secured({Roles.EDITOR})
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteEvent(@PathParam("eventId") int eventToDelete) throws NotFoundException, SQLException {
-        try (Connection conn = CONSTANTS.getConnection()) {
-            eventsDao.delete(conn, new Event(eventToDelete));
-            return Utils.returnNoContent();
-        }
+        eventsDao.delete(new Event(eventToDelete));
+        return Utils.returnNoContent();
     }
 }
