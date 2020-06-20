@@ -1,6 +1,5 @@
 package nl.utwente.di.team26.Product.resources.Users;
 
-import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Authentication.UserDao;
 import nl.utwente.di.team26.Product.model.Authentication.User;
@@ -9,8 +8,8 @@ import nl.utwente.di.team26.Security.User.Roles;
 import nl.utwente.di.team26.Utils;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.*;
-import java.sql.Connection;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.sql.SQLException;
 
 @Path("/users")

@@ -13,7 +13,6 @@ import org.junit.Test;
 import java.sql.SQLException;
 
 import static java.net.HttpURLConnection.*;
-import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 

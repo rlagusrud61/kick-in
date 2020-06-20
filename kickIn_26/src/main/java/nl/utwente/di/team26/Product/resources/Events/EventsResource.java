@@ -1,6 +1,5 @@
 package nl.utwente.di.team26.Product.resources.Events;
 
-import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Events.EventsDao;
 import nl.utwente.di.team26.Product.model.Event.Event;
@@ -13,7 +12,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 @Path("/events")

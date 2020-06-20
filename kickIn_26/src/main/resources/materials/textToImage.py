@@ -1,6 +1,7 @@
-from PIL import Image, ImageDraw
 import base64
 import json
+from PIL import Image, ImageDraw
+
 
 def main():
     file = open("Active-material-types.csv", "r")

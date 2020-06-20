@@ -8,10 +8,10 @@ import nl.utwente.di.team26.Exception.Exceptions.AuthenticationDeniedException;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Authentication.SessionDao;
 import nl.utwente.di.team26.Product.dao.Authentication.UserDao;
-import nl.utwente.di.team26.Product.model.Authentication.Session;
-import nl.utwente.di.team26.Security.Filters.Secured;
 import nl.utwente.di.team26.Product.model.Authentication.Credentials;
+import nl.utwente.di.team26.Product.model.Authentication.Session;
 import nl.utwente.di.team26.Product.model.Authentication.User;
+import nl.utwente.di.team26.Security.Filters.Secured;
 import nl.utwente.di.team26.Utils;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -40,13 +40,6 @@ public class AuthenticationEndpoint {
 
     UserDao userDao = new UserDao();
     SessionDao sessionDao = new SessionDao();
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String echo(String something) {
-        return something;
-    }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

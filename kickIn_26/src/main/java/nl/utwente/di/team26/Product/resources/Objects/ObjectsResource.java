@@ -1,6 +1,5 @@
 package nl.utwente.di.team26.Product.resources.Objects;
 
-import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Maps.MapObjectsDao;
 import nl.utwente.di.team26.Product.dao.Maps.MapsDao;
@@ -14,7 +13,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 @Path("/objects")

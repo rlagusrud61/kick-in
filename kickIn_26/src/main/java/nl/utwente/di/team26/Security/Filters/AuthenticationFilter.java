@@ -1,6 +1,9 @@
 package nl.utwente.di.team26.Security.Filters;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Exception.Exceptions.SessionNotFoundException;
@@ -20,7 +23,6 @@ import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.security.Key;
 import java.security.Principal;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
 

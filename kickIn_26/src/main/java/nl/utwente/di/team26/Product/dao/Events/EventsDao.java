@@ -1,7 +1,6 @@
 package nl.utwente.di.team26.Product.dao.Events;
 
 import nl.utwente.di.team26.CONSTANTS;
-import nl.utwente.di.team26.Exception.Exceptions.DatabaseException;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Dao;
 import nl.utwente.di.team26.Product.dao.DaoInterface;
@@ -9,7 +8,6 @@ import nl.utwente.di.team26.Product.model.Event.Event;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class EventsDao extends Dao implements DaoInterface<Event> {

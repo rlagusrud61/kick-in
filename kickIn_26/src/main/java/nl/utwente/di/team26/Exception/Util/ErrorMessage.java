@@ -34,8 +34,4 @@ public class ErrorMessage {
         this.errorMessage = errorMessage;
     }
 
-    public void setAll(Status errorCode, String errorMessage) {
-        this.errorCode = errorCode;
-        this.errorMessage = errorMessage;
-    }
 }
