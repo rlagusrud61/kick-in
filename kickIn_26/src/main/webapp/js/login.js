@@ -9,8 +9,8 @@ function login() {
 
     xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
-        console.log("Something")
         if (xhr.readyState === 4) {
+        	console.log(xhr.readyState);
             if (xhr.status === 200) {
                 console.log(xhr.responseText);
                 window.location.href = "http://localhost:8080/kickInTeam26/list.html";

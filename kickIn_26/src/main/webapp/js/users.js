@@ -2,10 +2,13 @@ let modal, btn, span;
 
 // Get the modal
 modal = document.getElementById("myModal");
+userModal = document.getElementById("userViewModal");
 // Get the button that opens the modal
 btn = document.getElementById("myBtn");
 // Get the <span> element that closes the modal
 span = document.getElementsByClassName("close")[0];
+span2 = document.getElementsByClassName("close")[1];
+
 
 // When the user clicks the button, open the modal
 btn.onclick = function () {
@@ -13,15 +16,18 @@ btn.onclick = function () {
 }
 // When the user clicks on <span> (x), close the modal
 span.onclick = function (event) {
-    if (event.target === modal) {
-        modal.style.display = "none";
-    }
+    userModal.style.display = "none";
 }
 
+span2.onclick = function (event) {
+    modal.style.display = "none";
+}
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function (event) {
     if (event.target == modal) {
         modal.style.display = "none";
+    } else if (event.target === userViewModal) {
+    	userViewModal.style.display = "none";
     }
 }
 
@@ -35,9 +41,9 @@ function loadTable() {
         header = [];
         header.push('Name');
         header.push('E-Mail')
-        header.push('Password');
-        header.push('Clearance Level');
-        header.push('Action');
+//        header.push('Password');
+//        header.push('Clearance Level');
+//        header.push('Action');
 
         tr = table.insertRow(-1); // add a row to the table
 
@@ -48,36 +54,87 @@ function loadTable() {
         }
         for (i = 0; i < users.length; i++) {
             row = table.insertRow(-1);
-            name = row.insertCell(0);
+            nickname = row.insertCell(0);
             email = row.insertCell(1);
-            password = row.insertCell(2);
-            clearanceLevel = row.insertCell(3);
-            action = row.insertCell(4);
-            name.innerHTML = users[i].nickname;
+//            password = row.insertCell(2);
+//            clearanceLevel = row.insertCell(3);
+//            action = row.insertCell(2);
+            nickname.innerHTML = "<a href='javascript: window.viewUser(" + users[i].userId + ")'>" + users[i].userId + "</a>"
             email.innerHTML = users[i].email;
-            password.innerHTML = users[i].password;
-            switch(users[i].clearanceLevel) {
-                case 0:
-                    levelDescription = "Visitor";
-                    break;
-                case 1:
-                    levelDescription = "Editor";
-                    break;
-                case 2:
-                    levelDescription = "Admin";
-                    break;
-                default:
-                    levelDescription = "Unauthorised";
-            }
+//            password.innerHTML = users[i].password;
+//            switch(users[i].clearanceLevel) {
+//                case 0:
+//                    levelDescription = "Visitor";
+//                    break;
+//                case 1:
+//                    levelDescription = "Editor";
+//                    break;
+//                case 2:
+//                    levelDescription = "Admin";
+//                    break;
+//                default:
+//                    levelDescription = "Unauthorised";
+//            }
 
-            clearanceLevel.innerHTML = levelDescription;
-            action.innerHTML = "<a href='javascript: window.deleteUser(" + users[i].userId + ")' " +
-                "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
+//            clearanceLevel.innerHTML = levelDescription;
+//            action.innerHTML = "<a href='javascript: window.deleteUser(" + users[i].userId + ")' " +
+//                "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
         }
     })
 }
 
 window.onload = loadTable;
+function viewUser(userId) {
+	getUser(userId, function() {
+		userInfo = JSON.parse(this.responseText);
+		console.log(userInfo.email);
+		table = document.getElementById("userTable");
+		table.innerHTML = "";
+		header = [];
+        header.push('Name');
+        header.push('E-mail')
+        header.push('Password');
+        header.push('Clearance Level');
+        header.push('Delete');
+
+        tr = table.insertRow(-1); // add a row to the table
+        for (i = 0; i < header.length; i++) {
+            th = document.createElement("th"); // add a header to the table
+            th.innerHTML = header[i];
+            tr.appendChild(th);
+        }
+        
+        switch(userInfo.clearanceLevel) {
+        case 0:
+            levelDescription = "Visitor";
+            break;
+        case 1:
+            levelDescription = "Editor";
+            break;
+        case 2:
+            levelDescription = "Admin";
+            break;
+        default:
+            levelDescription = "Unauthorised";
+        }
+        
+        row = table.insertRow(-1);
+        nickname = row.insertCell(0);
+        email = row.insertCell(1);
+        password = row.insertCell(2);
+        clearanceLevel = row.insertCell(3);
+        action = row.insertCell(4);
+        
+        nickname.innerHTML = userInfo.nickname;
+        email.innerHTML = userInfo.email;
+        password.innerHTML = userInfo.password;
+        clearanceLevel.innerHTML = levelDescription;
+        action.innerHTML = "<a href='javascript: window.removeUser(" + userInfo.userId + ")' " +
+        "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
+        userModal.style.display = "block";
+        
+	})
+}
 
 function addUserPopup() {
     let userName, email, password, level, levelDescription, clearanceLevel, userJSON;
