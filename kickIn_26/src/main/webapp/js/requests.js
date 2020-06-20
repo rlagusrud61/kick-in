@@ -1120,3 +1120,17 @@ function deleteAllUsers(callback) {
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.send();
 }
+
+function loginUser(credentials, callback) {
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/authentication", true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 204) {
+                callback.apply(xhr);
+            }
+        }
+    }
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(JSON.stringify(credentials));
+}
