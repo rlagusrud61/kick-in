@@ -1,44 +1,3 @@
-let modal, modal1, btn, btn1, span;
-
-// Get the modal
-modal = document.getElementById("popupEventDelete");
-modal1 = document.getElementById("popupMapDelete");
-
-// Get the button that opens the modal
-btn = document.getElementById("deleteEvent");
-btn1 = document.getElementById("deleteMap");
-
-// Get the <span> element that closes the modal
-span = document.getElementsByClassName("close")[0];
-
-
-// When the user clicks the button, open the modal
-btn.onclick = function() {
-    modal.style.display = "block";
-}
-
-btn1.onclick = function() {
-    modal1.style.display = "block";
-}
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function(event) {
-    if (event.target === modal) {
-        modal.style.display = "none";
-    } else if (event.target === modal1) {
-        modal1.style.display = "none";
-    }
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target === modal) {
-        modal.style.display = "none";
-    } else if (event.target === modal1) {
-        modal1.style.display = "none";
-    }
-}
-
 /**
  * @summary This method is used to display the information on the event required.
  *
@@ -109,11 +68,16 @@ function displayEventInfo(){
  * function is called with the ID of the map as a parameter so that it can be deleted from the database and the
  * page is reloaded.
  */
+trashBtn = document.getElementById("yesDeleteButton");
+deleteMapModal = document.getElementById("modalMapDelete");
 function confirmDelete(mapId) {
 	deleteMap(mapId, function() {
 		console.log(this.responseText);
 		location.reload();
-	})
+	});
+
+    trashBtn.setAttribute("onclick", "removeEvent(" + eventId + ")");
+    deleteModal.style.display = "block";
 }
 
 window.onload = displayEventInfo;

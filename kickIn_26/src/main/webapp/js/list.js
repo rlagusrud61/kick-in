@@ -26,6 +26,12 @@ span2.onclick = function(event){
         
 }
 
+function removeEvent(id) {
+    deleteEvent(id, function () {
+        console.log(this.responseText);
+        location.reload();
+    });
+}
 window.onclick = function (event) {
     if (event.target === modal) {
         modal.style.display = "none";
@@ -120,13 +126,6 @@ function addEventPopup() {
         "location": eventLocation,
     };
     addEvent(eventJSON, function () {
-        location.reload();
-    });
-}
-
-function removeEvent(id) {
-    deleteEvent(id, function () {
-        console.log(this.responseText);
         location.reload();
     });
 }
