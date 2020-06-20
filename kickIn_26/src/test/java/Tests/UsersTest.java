@@ -5,6 +5,7 @@ import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
+import nl.utwente.di.team26.Product.model.Authentication.User;
 import nl.utwente.di.team26.Security.User.Roles;
 import org.junit.After;
 import org.junit.Before;
@@ -124,13 +125,7 @@ public class UsersTest extends Tests{
                     .put(getURIString("user/"+uid))
                     .header("Content-Type", "application/json")
                     .header("Cookie", loginCookie.toString())
-                    .body("{" +
-                            "\"userId\":" + uid + ","+
-                            "\"email\": \"" + newUserEmail +"\"," +
-                            "\"password\": \" "+newUserPassword+"\"," +
-                            "\"nickname\": \"" + newUserNickname + "\"," +
-                            "\"clearanceLevel\":" + newClearanceLevel +
-                            "}")
+                    .body(new User(uid, newUserEmail, newUserPassword, newUserNickname, newClearanceLevel))
                     .asString();
             assertEquals("Save as " +userNames[i]+":", (i == 0 || i == 1) ? HTTP_FORBIDDEN : HTTP_NO_CONTENT, saveuser.getStatus());
             if (i == 2) {

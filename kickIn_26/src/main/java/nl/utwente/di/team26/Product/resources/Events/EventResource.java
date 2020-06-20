@@ -26,9 +26,8 @@ public class EventResource {
     @Secured({Roles.VISITOR})
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEventById(@PathParam("eventId") long eventId) throws SQLException, NotFoundException {
-
-            String eventData = eventsDao.get(eventId);
-            return Utils.returnOkResponse(eventData);
+        String eventData = eventsDao.get(eventId);
+        return Utils.returnOkResponse(eventData);
     }
 
     @PUT
@@ -36,21 +35,18 @@ public class EventResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateEvent(Event eventToUpdate) throws NotFoundException, SQLException {
-
         long userId = Utils.getUserFromContext(securityContext);
         eventToUpdate.setLastEditedBy(userId);
 
-
-            eventsDao.save(eventToUpdate);
-            return Utils.returnNoContent();
+        eventsDao.save(eventToUpdate);
+        return Utils.returnNoContent();
     }
 
     @DELETE
     @Secured({Roles.EDITOR})
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteEvent(@PathParam("eventId") int eventToDelete) throws NotFoundException, SQLException {
-
-            eventsDao.delete(new Event(eventToDelete));
-            return Utils.returnNoContent();
+        eventsDao.delete(new Event(eventToDelete));
+        return Utils.returnNoContent();
     }
 }
