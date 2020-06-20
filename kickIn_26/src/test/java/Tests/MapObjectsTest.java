@@ -4,7 +4,7 @@ import kong.unirest.Cookie;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
-import nl.utwente.di.team26.Product.model.Event.EventMap;
+import nl.utwente.di.team26.Product.model.Map.MapObject;
 import nl.utwente.di.team26.Security.User.Roles;
 import org.junit.After;
 import org.junit.Before;
@@ -18,7 +18,7 @@ import static java.net.HttpURLConnection.*;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
-public class EventMapTests extends Tests {
+public class MapObjectsTest extends Tests {
 
     long eid;
     long[] mids;
@@ -31,132 +31,79 @@ public class EventMapTests extends Tests {
         addThreeUsers();
         eid = addTestEvent();
         mids = addTestMaps();
+        createRelations(eid, mids);
     }
 
     @Test
-    public void createARelation() throws NotFoundException, SQLException {
+    public void addObjectsToMap() throws NotFoundException, SQLException {
         for (Roles role : roles) {
             System.out.println("Test " + name.getMethodName() + " for role: " + role.toString());
             Cookie loginCookie = getLoginCookie(role.getLevel());
-            HttpResponse<String> response = Unirest
-                    .post(getURIString("eventMap"))
+            HttpResponse<String> addObject = Unirest
+                    .post(getURIString("objects"))
                     .header("Content-Type", "application/json")
                     .header("Cookie", loginCookie.toString())
-                    .body(new EventMap(eid, mids[0]))
+                    .body(new MapObject(mids[0], 23, "Corners"))
                     .asString();
-            switch (role) {
-                case VISITOR:
-                    assertEquals(response.getStatus(), HTTP_FORBIDDEN);
-                    break;
-                case EDITOR:
-                case ADMIN:
-                    assertEquals(response.getStatus(), HTTP_CREATED);
-                    deleteRelations(eid, new long[]{mids[0]});
-                    break;
-            }
-        }
-    }
-    @Test
-    public void deleteARelation() throws NotFoundException, SQLException {
-        for (Roles role : roles) {
-            createRelations(eid, new long[]{mids[0]});
-            System.out.println("Test " + name.getMethodName() + " for role: " + role.toString());
-            Cookie loginCookie = getLoginCookie(role.getLevel());
-            HttpResponse<String> response = Unirest
-                    .delete(getURIString("eventMap/"+eid+"/"+mids[0]))
+            HttpResponse<String> allObjOnMap = Unirest
+                    .get(getURIString("objects/"+mids[0]))
                     .header("Cookie", loginCookie.toString())
                     .asString();
             switch (role) {
                 case VISITOR:
-                    assertEquals(response.getStatus(), HTTP_FORBIDDEN);
-                    deleteRelations(eid, new long[]{mids[0]});
+                    assertEquals(HTTP_FORBIDDEN, addObject.getStatus());
                     break;
                 case EDITOR:
                 case ADMIN:
-                    assertEquals(response.getStatus(), HTTP_NO_CONTENT);
+                    assertEquals(HTTP_CREATED, addObject.getStatus());
+                    assertTrue(allObjOnMap.getBody().contains(String.valueOf(23)));
+                    clearMap(mids[0]);
                     break;
             }
         }
     }
     @Test
-    public void deleteAllRelations() throws NotFoundException, SQLException {
+    public void generateReports() throws NotFoundException, SQLException {
+        addObjectsToMap(mids[0]);
         for (Roles role : roles) {
-            createRelations(eid, mids);
             System.out.println("Test " + name.getMethodName() + " for role: " + role.toString());
             Cookie loginCookie = getLoginCookie(role.getLevel());
-            HttpResponse<String> response = Unirest
-                    .delete(getURIString("eventMap"))
+            HttpResponse<String> mapReport = Unirest
+                    .get(getURIString("objects/"+mids[0]+"/report"))
                     .header("Cookie", loginCookie.toString())
                     .asString();
-            switch (role) {
-                case VISITOR:
-                case EDITOR:
-                    assertEquals(response.getStatus(), HTTP_FORBIDDEN);
-                    deleteRelations(eid, mids);
-                    break;
-                case ADMIN:
-                    assertEquals(response.getStatus(), HTTP_NO_CONTENT);
-                    break;
-            }
-        }
-    }
-    @Test
-    public void generateMapListForEvent() throws SQLException, NotFoundException {
-        createRelations(eid, mids);
-        for (Roles role : roles) {
-            System.out.println("Test " + name.getMethodName() + " for role: " + role.toString());
-            Cookie loginCookie = getLoginCookie(role.getLevel());
-            HttpResponse<String> response = Unirest
-                    .get(getURIString("eventMap/event/"+eid))
+            HttpResponse<String> eventReport = Unirest
+                    .get(getURIString("event/"+eid))
                     .header("Cookie", loginCookie.toString())
                     .asString();
             switch (role) {
                 case VISITOR:
                 case EDITOR:
                 case ADMIN:
-                    assertEquals(response.getStatus(), HTTP_OK);
-                    assertTrue(response.getBody().contains(String.valueOf(mids[0])));
-                    assertTrue(response.getBody().contains(String.valueOf(mids[1])));
+                    assertEquals(HTTP_OK, mapReport.getStatus());
+                    assertTrue(mapReport.getBody().contains("fence"));
+                    assertTrue(eventReport.getBody().contains("fence"));
+                    assertTrue(eventReport.getBody().contains(mapReport.getBody()));
                     break;
             }
         }
-        deleteRelations(eid, mids);
+        clearMap(mids[0]);
     }
     @Test
-    public void generateEventListForMap() throws SQLException, NotFoundException {
-        createRelations(eid, mids);
+    public void deleteObjectFromMap() throws NotFoundException, SQLException {
         for (Roles role : roles) {
+            long oid = addObjectsToMap(mids[0]);
             System.out.println("Test " + name.getMethodName() + " for role: " + role.toString());
             Cookie loginCookie = getLoginCookie(role.getLevel());
             HttpResponse<String> response = Unirest
-                    .get(getURIString("eventMap/map/"+mids[0]))
+                    .delete(getURIString("object/"+oid))
                     .header("Cookie", loginCookie.toString())
-                    .asString();
-            switch (role) {
-                case VISITOR:
-                case EDITOR:
-                case ADMIN:
-                    assertEquals(response.getStatus(), HTTP_OK);
-                    assertTrue(response.getBody().contains(String.valueOf(eid)));
-                    break;
-            }
-        }
-        deleteRelations(eid, mids);
-    }
-    @Test
-    public void clearEvent() throws NotFoundException, SQLException {
-        for (Roles role : roles) {
-            createRelations(eid, mids);
-            System.out.println("Test " + name.getMethodName() + " for role: " + role.toString());
-            Cookie loginCookie = getLoginCookie(role.getLevel());
-            HttpResponse<String> response = Unirest
-                    .delete(getURIString("eventMap/event/"+eid))
-                    .header("Cookie", loginCookie.toString())
+                    .body(new MapObject(oid))
                     .asString();
             switch (role) {
                 case VISITOR:
                     assertEquals(HTTP_FORBIDDEN, response.getStatus());
-                    deleteRelations(eid, mids);
+                    clearMap(mids[0]);
                     break;
                 case EDITOR:
                 case ADMIN:
@@ -165,9 +112,58 @@ public class EventMapTests extends Tests {
             }
         }
     }
+    @Test
+    public void clearMap() throws NotFoundException, SQLException {
+        for (Roles role : roles) {
+            long oid = addObjectsToMap(mids[0]);
+            System.out.println("Test " + name.getMethodName() + " for role: " + role.toString());
+            Cookie loginCookie = getLoginCookie(role.getLevel());
+            HttpResponse<String> response = Unirest
+                    .delete(getURIString("objects/"+mids[0]))
+                    .header("Cookie", loginCookie.toString())
+                    .body(new MapObject(oid))
+                    .asString();
+            switch (role) {
+                case VISITOR:
+                    assertEquals(HTTP_FORBIDDEN, response.getStatus());
+                    clearMap(mids[0]);
+                    break;
+                case EDITOR:
+                case ADMIN:
+                    assertEquals(HTTP_NO_CONTENT, response.getStatus());
+                    break;
+            }
+        }
+    }
+    @Test
+    public void changeObjectOnMap() throws NotFoundException, SQLException {
+        for (Roles role : roles) {
+            long oid = addObjectsToMap(mids[0]);
+            System.out.println("Test " + name.getMethodName() + " for role: " + role.toString());
+            Cookie loginCookie = getLoginCookie(role.getLevel());
+            HttpResponse<String> response = Unirest
+                    .put(getURIString("object/"+oid))
+                    .header("Content-Type", "application/json")
+                    .header("Cookie", loginCookie.toString())
+                    .body(new MapObject(oid, mids[0], 23, "Corners-2"))
+                    .asString();
+            switch (role) {
+                case VISITOR:
+                    assertEquals(HTTP_FORBIDDEN, response.getStatus());
+                    break;
+                case EDITOR:
+                case ADMIN:
+                    assertEquals(HTTP_NO_CONTENT, response.getStatus());
+                    break;
+            }
+            clearMap(mids[0]);
+        }
+    }
+
 
     @After
     public void closeSession() throws NotFoundException, SQLException {
+        deleteRelations(eid, mids);
         deleteTestMap(mids);
         deleteTestEvent(eid);
         destroyUsers();

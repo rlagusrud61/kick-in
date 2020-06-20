@@ -69,12 +69,11 @@ public class LoginLogoutTest extends Tests {
         Cookie anyLoginCookie = getLoginCookie(0);
         String value = anyLoginCookie.toString().split(";")[0].split("=")[1];
         String invalidCookie = anyLoginCookie.toString().replace(value, someInvalidString);
-        System.out.println(invalidCookie);
         HttpResponse<String> response = Unirest
                 .delete(getURIString("authentication"))
                 .header("Cookie", invalidCookie)
                 .asString();
-        System.out.println(response.getStatus());
+        assertEquals("If you logout it should be default success: ", response.getStatus(), HTTP_NO_CONTENT);
     }
 
     @After
