@@ -3,17 +3,19 @@ let modal, btn, span;
 // Get the modal
 modal = document.getElementById("myModal");
 userModal = document.getElementById("userViewModal");
+
 // Get the button that opens the modal
 btn = document.getElementById("myBtn");
+
 // Get the <span> element that closes the modal
 span = document.getElementsByClassName("close")[0];
 span2 = document.getElementsByClassName("close")[1];
-
 
 // When the user clicks the button, open the modal
 btn.onclick = function () {
     modal.style.display = "block";
 }
+
 // When the user clicks on <span> (x), close the modal
 span.onclick = function (event) {
     userModal.style.display = "none";
@@ -22,6 +24,7 @@ span.onclick = function (event) {
 span2.onclick = function (event) {
     modal.style.display = "none";
 }
+
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function (event) {
     if (event.target == modal) {
@@ -31,8 +34,16 @@ window.onclick = function (event) {
     }
 }
 
+/**
+ * @summary This method is used to create a table that displays the information on the users.
+ *
+ * @description Once all the information on the users is retrieved using the 'getAllUsers' function, a table is created
+ * to display the information received. The table includes the columns 'Name', 'E-Mail' and 'Action' where 'Name' gives the nickname
+ * of the user, 'E-Mail' gives the email address of the user and 'Action' allows the user to get more detailed information on
+ * the required user.
+ */
 function loadTable() {
-    let header, tr, th, i, table, users, row, name, email, password, clearanceLevel, levelDescription, action;
+    let header, tr, th, i, table, users, row, name, email, action;
     getAllUsers(function() {
     	table = document.getElementById("usersTable");
         users = JSON.parse(this.responseText);
@@ -40,7 +51,8 @@ function loadTable() {
 
         header = [];
         header.push('Name');
-        header.push('E-Mail')
+        header.push('E-Mail');
+        header.push('Action');
 
         tr = table.insertRow(-1); // add a row to the table
 
@@ -51,17 +63,34 @@ function loadTable() {
         }
         for (i = 0; i < users.length; i++) {
             row = table.insertRow(-1);
-            nickname = row.insertCell(0);
+            name = row.insertCell(0);
             email = row.insertCell(1);
-            nickname.innerHTML = "<a href='javascript: window.viewUser(" + users[i].userId + ")'>" + users[i].nickname + "</a>"
+            action = row.insertCell(2);
+            name.innerHTML = users[i].nickname;
             email.innerHTML = users[i].email;
+            action.innerHTML= "<a href='javascript: window.viewUser(" + users[i].userId + ")' class='text-success'>" +
+                "<i class='glyphicon glyphicon-eye-open' style='font-size:20px;'></i></a>"
         }
     })
 }
 
 window.onload = loadTable;
+
+/**
+ * @param userId - The ID of the user whose information is required.
+ *
+ * @summary This method allows the admin to get the information on individual users.
+ *
+ * @description Once all the information on the required is retrieved using the 'getUser' function which takes the ID of
+ * the required user as a parameter, a table is created to display the information received and to delete and edit the
+ * user's credentials if required. The table includes the columns 'Name' , 'E-Mail', 'Password', 'Clearance Level' and
+ * 'Action' where 'Name' gives the nickname of the user, 'E-Mail' gives the email address of the user, 'Password' gives
+ * the password of the user, 'Clearance Level' gives the authorisation level of the user and 'Action' allows the
+ * credentials of the user to be edited and deleted.
+ */
 function viewUser(userId) {
 	getUser(userId, function() {
+	    let userInfo, table, header, i, th, tr, levelDescription, row, nickname, email, password, clearanceLevel, action;
 		userInfo = JSON.parse(this.responseText);
 		console.log(userInfo.email);
 		table = document.getElementById("userTable");
@@ -105,13 +134,21 @@ function viewUser(userId) {
         email.innerHTML = userInfo.email;
         password.innerHTML = userInfo.password;
         clearanceLevel.innerHTML = levelDescription;
-        action.innerHTML = "<a href='javascript: window.removeUser(" + userInfo.userId + ")' " +
-        "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
+        action.innerHTML = "<a href='javascript: window.removeUser(" + userInfo.userId + ")' class='text-success'>" +
+            "<i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
         userModal.style.display = "block";
         
 	})
 }
 
+/**
+ * @summary This method allows a new user to be added to the database.
+ *
+ * @description The name, email, password and clearance level description is retrieved from the popup. The clearance level
+ * is then converted from a description to a number in order to be stored in the database. Then, a JSON object is created
+ * from the information retrieved and the 'addUser' function called with this JSON object as a parameter. If the user was
+ * successfully added to the database, the page is reloaded.
+ */
 function addUserPopup() {
     let userName, email, password, level, levelDescription, clearanceLevel, userJSON;
 	userName = document.getElementById("userName").value;
@@ -145,131 +182,17 @@ function addUserPopup() {
     })
 }
 
+/**
+ * @param {number} id - The ID of the user to be deleted from the database.
+ *
+ * @summary This method is used to delete the required user from the database.
+ *
+ * @description The 'deleteUser' method is called which takes the ID of the user to be deleted as a parameter and reloads
+ * the page if the user was successfully deleted from the database.
+ */
 function removeUser(id) {
 	deleteUser(id, function() {
 		console.log(this.responseText);
         location.reload();
 	})
-}
-
-function sortTableHighLow() {
-    let table, rows, switching, i, x, y, shouldSwitch, levelX, levelY;
-    table = document.getElementById("usersTable");
-    switching = true;
-    /* Make a loop that will continue until
-    no switching has been done: */
-    while (switching) {
-        // Start by saying: no switching is done:
-        switching = false;
-        rows = table.rows;
-        /* Loop through all table rows (except the
-        first, which contains table headers): */
-        for (i = 1; i < (rows.length - 1); i++) {
-            // Start by saying there should be no switching:
-            shouldSwitch = false;
-            /* Get the two elements you want to compare,
-            one from current row and one from the next: */
-            x = rows[i].getElementsByTagName("TD")[3];
-            y = rows[i + 1].getElementsByTagName("TD")[3];
-            switch(x.innerHTML) {
-                case "Visitor":
-                    levelX = 0;
-                    break;
-                case "Editor":
-                    levelX = 1;
-                    break;
-                case "Admin":
-                    levelX = 2;
-                    break;
-                default:
-                    levelX = -1;
-            }
-            switch(y.innerHTML) {
-                case "Visitor":
-                    levelY = 0;
-                    break;
-                case "Editor":
-                    levelY = 1;
-                    break;
-                case "Admin":
-                    levelY = 2;
-                    break;
-                default:
-                    levelY = -1;
-            }
-            // Check if the two rows should switch place:
-            if (levelX < levelY) {
-                // If so, mark as a switch and break the loop:
-                shouldSwitch = true;
-                break;
-            }
-        }
-        if (shouldSwitch) {
-            /* If a switch has been marked, make the switch
-            and mark that a switch has been done: */
-            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-            switching = true;
-        }
-    }
-}
-
-function sortTableLowHigh() {
-    let table, rows, switching, i, x, y, shouldSwitch, levelX, levelY;
-    table = document.getElementById("usersTable");
-    switching = true;
-    /* Make a loop that will continue until
-    no switching has been done: */
-    while (switching) {
-        // Start by saying: no switching is done:
-        switching = false;
-        rows = table.rows;
-        /* Loop through all table rows (except the
-        first, which contains table headers): */
-        for (i = 1; i < (rows.length - 1); i++) {
-            // Start by saying there should be no switching:
-            shouldSwitch = false;
-            /* Get the two elements you want to compare,
-            one from current row and one from the next: */
-            x = rows[i].getElementsByTagName("TD")[3];
-            y = rows[i + 1].getElementsByTagName("TD")[3];
-            switch(x.innerHTML) {
-                case "Visitor":
-                    levelX = 0;
-                    break;
-                case "Editor":
-                    levelX = 1;
-                    break;
-                case "Admin":
-                    levelX = 2;
-                    break;
-                default:
-                    levelX = -1;
-            }
-            switch(y.innerHTML) {
-                case "Visitor":
-                    levelY = 0;
-                    break;
-                case "Editor":
-                    levelY = 1;
-                    break;
-                case "Admin":
-                    levelY = 2;
-                    break;
-                default:
-                    levelY = -1;
-            }
-            // Check if the two rows should switch place:
-            if (levelX > levelY) {
-                // If so, mark as a switch and break the loop:
-                shouldSwitch = true;
-                break;
-            }
-        }
-        if (shouldSwitch) {
-            /* If a switch has been marked, make the switch
-            and mark that a switch has been done: */
-            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-            switching = true;
-        }
-    }
 }

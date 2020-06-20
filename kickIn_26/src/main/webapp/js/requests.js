@@ -1121,6 +1121,18 @@ function deleteAllUsers(callback) {
 	xhr.send();
 }
 
+/**
+ * @param {json | Object} credentials - The credentials of the user that have to be checked on the database.
+ *
+ * @param callback - Once an response from the RESTful service provider has been
+ * received, this function is called to analyse the response.
+ *
+ * @summary This method is used to authenticate the user's credentials.
+ *
+ * @description A POST request is sent to the RESTful service provider with the given URL, where the content of the
+ * body is the JSON object that was taken as the parameter. The method then calls the callback function on 'xhr' if the
+ * authentication was successful.
+ */
 function loginUser(credentials, callback) {
     let xhr = new XMLHttpRequest();
     xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/authentication", true);

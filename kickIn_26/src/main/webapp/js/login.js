@@ -1,10 +1,9 @@
 /**
  * @summary This function is used to log into the website.
  *
- * @description First, the email address and password of the user are retrieved from the web page. A JSON object is
- * then created from the data that was retrieved. A POST request is sent to the RESTful service provider with the given
- * URL, where the content of the body is the JSON object that was created using the email address and the password.
- * The method then redirects the user to the 'list.html' page if the authentication was a success.
+ * @description First, the email address and password of the user are retrieved from the web page. This information is
+ * then used to create a JSON object which is taken as a parameter to the function 'loginUser' so that the credentials
+ * can be authenticated and the user redirected to the 'list.html' page if the authentication was a success.
  */
 function login() {
 
@@ -17,7 +16,6 @@ function login() {
         "email": emailAddress,
         "password": password
     };
-
     console.log(emailAddress);
     console.log(password);
     loginUser(credentialsJSON, function() {
@@ -30,7 +28,9 @@ function login() {
  * @summary This method allows the user to login by pressing the enter key when both the email address and password
  * have been entered.
  *
- * @desccription This method first checks the password input field for any signs of an XSS attack. After,
+ * @desccription This method first checks the password input field for any signs of an XSS attack and sanitises the
+ * input. After that, it checks if the user pressed the 'enter' key and that both the password and email input fields
+ * are not empty. If this is true, the 'login' function is called.
  */
 function checkKeyPress() {
     let password, emailAddress;
