@@ -41,9 +41,6 @@ function loadTable() {
         header = [];
         header.push('Name');
         header.push('E-Mail')
-//        header.push('Password');
-//        header.push('Clearance Level');
-//        header.push('Action');
 
         tr = table.insertRow(-1); // add a row to the table
 
@@ -56,29 +53,8 @@ function loadTable() {
             row = table.insertRow(-1);
             nickname = row.insertCell(0);
             email = row.insertCell(1);
-//            password = row.insertCell(2);
-//            clearanceLevel = row.insertCell(3);
-//            action = row.insertCell(2);
-            nickname.innerHTML = "<a href='javascript: window.viewUser(" + users[i].userId + ")'>" + users[i].userId + "</a>"
+            nickname.innerHTML = "<a href='javascript: window.viewUser(" + users[i].userId + ")'>" + users[i].nickname + "</a>"
             email.innerHTML = users[i].email;
-//            password.innerHTML = users[i].password;
-//            switch(users[i].clearanceLevel) {
-//                case 0:
-//                    levelDescription = "Visitor";
-//                    break;
-//                case 1:
-//                    levelDescription = "Editor";
-//                    break;
-//                case 2:
-//                    levelDescription = "Admin";
-//                    break;
-//                default:
-//                    levelDescription = "Unauthorised";
-//            }
-
-//            clearanceLevel.innerHTML = levelDescription;
-//            action.innerHTML = "<a href='javascript: window.deleteUser(" + users[i].userId + ")' " +
-//                "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
         }
     })
 }
