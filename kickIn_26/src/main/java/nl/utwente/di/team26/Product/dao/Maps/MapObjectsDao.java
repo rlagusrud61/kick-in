@@ -18,16 +18,16 @@ import java.sql.SQLException;
  */
 public class MapObjectsDao extends Dao implements DaoInterface<MapObject> {
 
-    public synchronized long create(MapObject valueObject) throws SQLException {
+    public synchronized long create(MapObject mapObject) throws SQLException {
         try(Connection conn = CONSTANTS.getConnection()) {
             String sql = "INSERT INTO MapObjects (mapId, resourceId, "
                     + "latLangs) VALUES (?, ?, ?) RETURNING objectId";
             beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-                stmt.setLong(1, valueObject.getMapId());
-                stmt.setLong(2, valueObject.getResourceId());
-                stmt.setString(3, valueObject.getLatLangs());
+                stmt.setLong(1, mapObject.getMapId());
+                stmt.setLong(2, mapObject.getResourceId());
+                stmt.setString(3, mapObject.getLatLangs());
                 return executeCreate(conn, stmt);
             }
         }
@@ -43,37 +43,37 @@ public class MapObjectsDao extends Dao implements DaoInterface<MapObject> {
         }
     }
 
-    public void save(MapObject valueObject) throws NotFoundException, SQLException {
+    public void save(MapObject mapObject) throws NotFoundException, SQLException {
         try(Connection conn = CONSTANTS.getConnection()) {
             String sql = "UPDATE MapObjects SET mapId = ?, resourceId = ?, latLangs = ? WHERE (objectId = ? ) ";
             beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-                stmt.setLong(1, valueObject.getMapId());
-                stmt.setLong(2, valueObject.getResourceId());
-                stmt.setString(3, valueObject.getLatLangs());
-                stmt.setLong(4, valueObject.getObjectId());
+                stmt.setLong(1, mapObject.getMapId());
+                stmt.setLong(2, mapObject.getResourceId());
+                stmt.setString(3, mapObject.getLatLangs());
+                stmt.setLong(4, mapObject.getObjectId());
                 databaseUpdate(conn, stmt);
             }
         }
     }
 
-    public void delete(MapObject valueObject) throws NotFoundException, SQLException {
+    public void delete(MapObject mapObject) throws NotFoundException, SQLException {
         try(Connection conn = CONSTANTS.getConnection()) {
             String sql = "DELETE FROM MapObjects WHERE (objectId = ? ) ";
             beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-                stmt.setLong(1, valueObject.getObjectId());
+                stmt.setLong(1, mapObject.getObjectId());
                 databaseUpdate(conn, stmt);
             }
         }
     }
 
-    public void deleteAllForMap(MapObject valueObject) throws NotFoundException, SQLException {
+    public void deleteAllForMap(MapObject mapObject) throws NotFoundException, SQLException {
         try(Connection conn = CONSTANTS.getConnection()) {
             String sql = "DELETE FROM MapObjects WHERE (mapId = ? )";
             beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-                stmt.setLong(1, valueObject.getObjectId());
+                stmt.setLong(1, mapObject.getMapId());
                 databaseUpdate(conn, stmt);
             }
         }

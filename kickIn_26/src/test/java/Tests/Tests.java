@@ -6,11 +6,16 @@ import kong.unirest.Unirest;
 import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Authentication.UserDao;
+import nl.utwente.di.team26.Product.dao.Events.EventMapDao;
 import nl.utwente.di.team26.Product.dao.Events.EventsDao;
+import nl.utwente.di.team26.Product.dao.Maps.MapObjectsDao;
 import nl.utwente.di.team26.Product.dao.Maps.MapsDao;
 import nl.utwente.di.team26.Product.model.Authentication.User;
 import nl.utwente.di.team26.Product.model.Event.Event;
+import nl.utwente.di.team26.Product.model.Event.EventMap;
 import nl.utwente.di.team26.Product.model.Map.Map;
+import nl.utwente.di.team26.Product.model.Map.MapObject;
+import nl.utwente.di.team26.Security.User.Roles;
 
 import javax.ws.rs.core.UriBuilder;
 import java.sql.Connection;
@@ -21,6 +26,10 @@ public class Tests {
     EventsDao eventsDao = new EventsDao();
     MapsDao mapsDao = new MapsDao();
     UserDao usersDao = new UserDao();
+    EventMapDao eventMapDao = new EventMapDao();
+    MapObjectsDao mapObjectsDao = new MapObjectsDao();
+
+    Roles[] roles = {Roles.ADMIN, Roles.EDITOR, Roles.VISITOR};
 
     protected final String testEvent = "{\"name\":\"TestEvent\",\"description\":\"TestEvent\",\"location\":\"On Campus\",\"date\":\"2020-01-01\"}";
     protected final String testEventInvalid = "{\"name\":\"TestEvent\",\"description\":\"TestEvent\",\"location\":\"On Campus\",\"date\":\"WrongDate\"}";
@@ -111,5 +120,25 @@ public class Tests {
     }
     protected String getTestMapById(long mid) throws SQLException, NotFoundException {
         return mapsDao.getMap(mid);
+    }
+
+    protected void createRelations(long eid, long[] mids) throws SQLException {
+        for (long mid : mids) {
+            eventMapDao.create(new EventMap(eid, mid));
+        }
+    }
+    protected void deleteRelations(long eid, long[] mids) throws NotFoundException, SQLException {
+        for (long mid : mids) {
+            eventMapDao.delete(new EventMap(eid, mid));
+        }
+    }
+
+    protected void clearMap(long mid) throws NotFoundException, SQLException {
+        MapObject mapObject = new MapObject();
+        mapObject.setMapId(mid);
+        mapObjectsDao.deleteAllForMap(mapObject);
+    }
+    protected long addObjectsToMap(long mid) throws SQLException {
+        return mapObjectsDao.create(new MapObject(mid, 23, "Corners"));
     }
 }
