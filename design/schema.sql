@@ -5066,3 +5066,41 @@ begin
     );
 end;
 $$;
+
+create or replace function getAllSessions()
+    returns text
+    language plpgsql
+as
+$$
+begin
+    return (
+        select jsonb_agg(session.sessionData)
+        from (
+                 select jsonb_build_object(
+                                'tokenId', s.tokenId,
+                                'nickname', u.nickname
+                            ) as sessionData
+                 from users u, session s
+                 where s.userid = u.userid) session
+    );
+end;
+$$;
+create or replace function getSession(tid bigint)
+    returns text
+    language plpgsql
+as
+$$
+begin
+    return (
+        select session.sessionData::text
+        from (
+                 select jsonb_build_object(
+                                'userId', u.userid,
+                                'nickname', u.email
+                            ) as sessionData
+                 from users u, session s
+                 where s.userid = u.userid
+                   and s.tokenid = tid) session
+    );
+end;
+$$;
