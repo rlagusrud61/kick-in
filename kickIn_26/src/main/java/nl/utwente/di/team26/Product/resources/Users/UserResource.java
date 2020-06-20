@@ -21,9 +21,8 @@ public class UserResource {
     @Secured(Roles.ADMIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserById(@PathParam("userId") long userId) throws NotFoundException, SQLException {
-
-            String mapData = usersDao.get(userId);
-            return Utils.returnOkResponse(mapData);
+        String mapData = usersDao.get(userId);
+        return Utils.returnOkResponse(mapData);
     }
 
     @PUT

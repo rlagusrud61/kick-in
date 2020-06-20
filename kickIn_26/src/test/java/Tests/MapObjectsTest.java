@@ -22,6 +22,7 @@ public class MapObjectsTest extends Tests {
 
     long eid;
     long[] mids;
+    long[] rids;
 
     @Rule
     public TestName name = new TestName();
@@ -32,6 +33,7 @@ public class MapObjectsTest extends Tests {
         eid = addTestEvent();
         mids = addTestMaps();
         createRelations(eid, mids);
+        rids = addResources();
     }
 
     @Test
@@ -163,6 +165,7 @@ public class MapObjectsTest extends Tests {
 
     @After
     public void closeSession() throws NotFoundException, SQLException {
+        deleteResources(rids);
         deleteRelations(eid, mids);
         deleteTestMap(mids);
         deleteTestEvent(eid);

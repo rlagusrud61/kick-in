@@ -26,9 +26,8 @@ public class MapResource {
     @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMapById(@PathParam("mapId") long mapId) throws NotFoundException, SQLException {
-
-            String mapData = mapsDao.getMap(mapId);
-            return Utils.returnOkResponse(mapData);
+        String mapData = mapsDao.getMap(mapId);
+        return Utils.returnOkResponse(mapData);
     }
 
     @PUT

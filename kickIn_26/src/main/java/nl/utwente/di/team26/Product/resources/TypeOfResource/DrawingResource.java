@@ -21,20 +21,18 @@ public class DrawingResource {
     @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllDrawings() throws NotFoundException, SQLException {
-
-            String allDrawings = resourceDao.getAllDrawings();
-            return Utils.returnOkResponse(allDrawings);
+        String allDrawings = resourceDao.getAllDrawings();
+        return Utils.returnOkResponse(allDrawings);
     }
 
     @PUT
     @Path("{drawingId}")
-    @Secured(Roles.EDITOR)
+    @Secured(Roles.ADMIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateMap(Drawing drawingToSave) throws NotFoundException, SQLException {
-
-            resourceDao.save(drawingToSave);
-            return Utils.returnNoContent();
+    public Response updateDrawing(Drawing drawingToSave) throws NotFoundException, SQLException {
+        resourceDao.save(drawingToSave);
+        return Utils.returnNoContent();
     }
 
     @POST
@@ -42,9 +40,8 @@ public class DrawingResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addNewDrawing(Drawing drawingToAdd) throws SQLException {
-
-            long drawingId = resourceDao.create(drawingToAdd);
-            return Utils.returnCreated(drawingId);
+        long drawingId = resourceDao.create(drawingToAdd);
+        return Utils.returnCreated(drawingId);
     }
 
 }

@@ -10,11 +10,15 @@ import nl.utwente.di.team26.Product.dao.Events.EventMapDao;
 import nl.utwente.di.team26.Product.dao.Events.EventsDao;
 import nl.utwente.di.team26.Product.dao.Maps.MapObjectsDao;
 import nl.utwente.di.team26.Product.dao.Maps.MapsDao;
+import nl.utwente.di.team26.Product.dao.Resources.ResourceDao;
 import nl.utwente.di.team26.Product.model.Authentication.User;
 import nl.utwente.di.team26.Product.model.Event.Event;
 import nl.utwente.di.team26.Product.model.Event.EventMap;
 import nl.utwente.di.team26.Product.model.Map.Map;
 import nl.utwente.di.team26.Product.model.Map.MapObject;
+import nl.utwente.di.team26.Product.model.TypeOfResource.Drawing;
+import nl.utwente.di.team26.Product.model.TypeOfResource.Material;
+import nl.utwente.di.team26.Product.model.TypeOfResource.TypeOfResource;
 import nl.utwente.di.team26.Security.User.Roles;
 
 import javax.ws.rs.core.UriBuilder;
@@ -28,6 +32,7 @@ public class Tests {
     UserDao usersDao = new UserDao();
     EventMapDao eventMapDao = new EventMapDao();
     MapObjectsDao mapObjectsDao = new MapObjectsDao();
+    ResourceDao resourceDao = new ResourceDao();
 
     Roles[] roles = {Roles.ADMIN, Roles.EDITOR, Roles.VISITOR};
 
@@ -141,4 +146,17 @@ public class Tests {
     protected long addObjectsToMap(long mid) throws SQLException {
         return mapObjectsDao.create(new MapObject(mid, 23, "Corners"));
     }
+
+    protected long[] addResources() throws SQLException {
+        long[] rids = new long[2];
+        rids[0] = resourceDao.create(new Material("TestMaterial", "TestMaterial", "someBase64image"));
+        rids[1] = resourceDao.create(new Drawing("TestDrawing", "TestDrawing", "someBase64image"));
+        return rids;
+    }
+    protected void deleteResources(long[] rids) throws NotFoundException, SQLException {
+        for (long rid : rids) {
+            resourceDao.delete(new TypeOfResource(rid));
+        }
+    }
+
 }

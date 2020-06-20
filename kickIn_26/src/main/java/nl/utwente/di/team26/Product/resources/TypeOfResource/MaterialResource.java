@@ -21,20 +21,18 @@ public class MaterialResource {
     @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllMaterials() throws NotFoundException, SQLException {
-
-            String allMaterials = resourceDao.getAllMaterials();
-            return Utils.returnOkResponse(allMaterials);
+        String allMaterials = resourceDao.getAllMaterials();
+        return Utils.returnOkResponse(allMaterials);
     }
 
     @PUT
     @Path("{materialId}")
-    @Secured(Roles.EDITOR)
+    @Secured(Roles.ADMIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateMap(Material materialToSave) throws NotFoundException, SQLException {
-
-            resourceDao.save(materialToSave);
-            return Utils.returnNoContent();
+    public Response updateMaterial(Material materialToSave) throws NotFoundException, SQLException {
+        resourceDao.save(materialToSave);
+        return Utils.returnNoContent();
     }
 
     @POST
@@ -42,9 +40,8 @@ public class MaterialResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addNewMaterial(Material materialToAdd) throws SQLException {
-
-            long drawingId = resourceDao.create(materialToAdd);
-            return Utils.returnCreated(drawingId);
+        long drawingId = resourceDao.create(materialToAdd);
+        return Utils.returnCreated(drawingId);
     }
 
 }
