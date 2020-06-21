@@ -76,7 +76,9 @@ function displayEventInfo(){
                 "style='font-size:20px;'></i></a><a href='http://localhost:8080/kickInTeam26/mapEdit.html?id=" +
                 maps[i].mapId + "' class='text-success'><i class='glyphicon glyphicon-pencil' " +
                 "style='font-size:20px;'></i></a><a href='javascript: window.confirmDelete(" + maps[i].mapId + ")'" +
-                "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
+                "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>" +
+                "<a href='javascript: window.openModalMapDataEdit(" + maps[i].mapId + ")' class='text-success'>" +
+                "<i class='glyphicon glyphicon-wrench' style='font-size:20px'></i></a>";
         }
     })
 }
@@ -99,6 +101,10 @@ function removeMap(mapId) {
     deleteMap(mapId, function() {
         location.reload();
     })
+}
+//Open popup for edit
+function openModalMapDataEdit(mapId){
+
 }
 
 window.onload = displayEventInfo();

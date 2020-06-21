@@ -3,34 +3,35 @@ let modal, btn, span, yesBtn, deleteModal, close;
 // Get the modal
 modal = document.getElementById("addEvent");
 deleteModal = document.getElementById("eventDeleteModal");
+// Get the button that trigger the modal
 btn = document.getElementById("addEventBtn");
 noBtn = document.getElementById("noBtn");
 yesBtn = document.getElementById("yesDeleteButton");
+// Get the button to close (x) the modal
 span = document.getElementsByClassName("close close_multi")[0];
 span2 = document.getElementsByClassName("close close_multi")[1];
 
-btn.onclick = function(){
+btn.onclick = function () {
     modal.style.display = "block";
-}
+};
 
 noBtn.onclick = function () {
-	deleteModal.style.display = "none";
-}
-
-span.onclick = function() {
-	modal.style.display = "none";
-}
-
-span2.onclick = function(){
     deleteModal.style.display = "none";
-        
-}
+};
+
+span.onclick = function () {
+    modal.style.display = "none";
+};
+span2.onclick = function () {
+    deleteModal.style.display = "none";
+
+};
 
 window.onclick = function (event) {
     if (event.target === modal) {
         modal.style.display = "none";
     } else if (event.target === deleteModal) {
-    	deleteModal.style.display = "none";
+        deleteModal.style.display = "none";
     }
 }
 
@@ -127,8 +128,8 @@ function confirmDelete(eventId) {
 }
 
 function removeEvent(eventId) {
-	deleteEvent(eventId, function() {
-		location.reload();
-	})
+    deleteEvent(eventId, function () {
+        location.reload();
+    })
 }
 
