@@ -22,7 +22,7 @@ function sortTableAscending(tableId, sortCriteria) {
             shouldSwitch = false;
             /* Get the two elements you want to compare,
             one from current row and one from the next: */
-            if (sortCriteria === "name" || sortCriteria === "event"){
+            if (sortCriteria === "name" || sortCriteria === "event" || sortCriteria === "map"){
                 console.log(sortCriteria);
                 x = rows[i].getElementsByTagName("TD")[0];
                 console.log("x" + x);
@@ -72,7 +72,7 @@ function sortTableDescending(tableId, sortCriteria) {
             shouldSwitch = false;
             /* Get the two elements you want to compare,
             one from current row and one from the next: */
-            if (sortCriteria === "name" || sortCriteria === "event"){
+            if (sortCriteria === "name" || sortCriteria === "event" || sortCriteria === "map"){
                 x = rows[i].getElementsByTagName("TD")[0];
                 y = rows[i + 1].getElementsByTagName("TD")[0];
             } else if (sortCriteria === "date"){
@@ -107,7 +107,7 @@ function logout() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4) {
             console.log(xhr.responseText);
-            window.location.href = "http://localhost:8080/kickInTeam26/login.html";
+            window.location.href = "login.html";
         }
     }
     xhr.setRequestHeader("Content-Type", "application/json");

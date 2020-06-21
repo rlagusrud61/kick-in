@@ -17,9 +17,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet" type="text/css">
-    <link href="css/list.css" rel="stylesheet"> <!-- link to css file -->
+    <link href="css/maps.css" rel="stylesheet"> <!-- link to css file -->
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>List Of Events</title>
+    <title>List Of Maps</title>
 </head>
 <style>
 
@@ -47,9 +47,9 @@
 <div class="jumbotron jumbotron-fluid">
     <div class="container" id="main">
         <div class="row">
-            <h1 class="col-8">List Of Events</h1>
+            <h1 class="col-8">List Of Maps</h1>
             <div class="col-4" style="display: flex; justify-content: flex-end;">
-                <button class="btn_multi myButton btn btn-success btn-circle btn-xl align-self-end open-modal" id="addEventBtn"
+                <button class="btn_multi myButton btn btn-success btn-circle btn-xl align-self-end open-modal" id="addMapBtn"
                         type="button"> +
                 </button>
             </div>
@@ -58,48 +58,30 @@
 
     <!-- Trigger/Open The Popup -->
     <!-- The Popup -->
-    <div class="modal modal_multi" id="addEvent">
+    <div class="modal modal_multi" id="addMap">
         <!-- Popup content -->
         <div class="modal-content">
             <span class="close close_multi">&times;</span>
-            <h2>Add a New Event</h2>
+            <h2>Add a New Map</h2>
             <div>
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label" for="eventName">Name</label>
+                    <label class="col-md-2 col-form-label" for="mapName">Name</label>
                     <div class="col-md-3">
-                        <input class="form-control" id="eventName" onkeyup="XSSInputSanitation('eventName')"
+                        <input class="form-control" id="mapName" onkeyup="XSSInputSanitation('mapName')"
                                placeholder="Name"
                                type="text">
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label" for="eventDescription">Description</label>
+                    <label class="col-md-2 col-form-label" for="mapDescription">Description</label>
                     <div class="col-md-8">
-                        <textarea class="form-control" id="eventDescription"
-                                  onkeyup="XSSInputSanitation('eventDescription')" rows="5"></textarea>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-2 col-form-label" for="eventDate">Date</label>
-                    <div class="col-md-3">
-                        <div class='input-group date' id='datetimepicker'>
-                            <input class="form-control" id="eventDate" type="date"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-2 col-form-label" for="eventLocation">Location</label>
-                    <div class="col-md-3">
-                        <select class="form-control" id="eventLocation">
-                            <option>University Campus</option>
-                            <option>Outside Campus (City)</option>
-                            <option>Both</option>
-                        </select>
+                        <textarea class="form-control" id="mapDescription"
+                                  onkeyup="XSSInputSanitation('mapDescription')" rows="5"></textarea>
                     </div>
                 </div>
                 <div class="bottomright" style="display: flex; justify-content: flex-end;">
-                    <button class="btn btn-success btn-circle btn-xl align-self-end" onclick="addEventPopup()">ADD
+                    <button class="btn btn-success btn-circle btn-xl align-self-end" onclick="addMapPopup()">ADD
                     </button>
                 </div>
             </div>
@@ -107,19 +89,19 @@
     </div>
 
     <!-- The Event Deletion Modal -->
-        <div class="modal modal_multi" id="eventDeleteModal">
-            <!-- Modal content -->
-            <div class="modal-content">
-                <span class="close close_multi">&times;</span>
-                <h2>Do you really want to delete this event?</h2>
-                <div class="bottomright" style="display: flex; justify-content: center;">
-                    <button class="btn btn-success btn-circle btn-xl align-self-center" id="yesDeleteButton"
-                            type="submit">YES
-                    </button>
-                    <button id = "noBtn" class="btn_multi btn btn-success btn-circle btn-xl align-self-center" type="button">NO</button>
-                </div>
+    <div class="modal modal_multi" id="mapDeleteModal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close close_multi">&times;</span>
+            <h2>Do you really want to delete this map?</h2>
+            <div class="bottomright" style="display: flex; justify-content: center;">
+                <button class="btn btn-success btn-circle btn-xl align-self-center" id="yesDeleteButton"
+                        type="submit">YES
+                </button>
+                <button id = "noBtn" class="btn_multi btn btn-success btn-circle btn-xl align-self-center" type="button">NO</button>
             </div>
         </div>
+    </div>
 
 </div>
 
@@ -128,7 +110,7 @@
     <div class="col-md-3">
         <form class="form-inline d-flex justify-content-center md-form active-green form-sm mt-0">
             <input aria-label="Search" class="form-control form-control-sm ml-3 w-75" id="searchTable"
-                   onkeyup="searchTables('eventTable', 'searchTable')"
+                   onkeyup="searchTables('mapTable', 'searchTable')"
                    placeholder="Search"
                    type="text">
         </form>
@@ -140,21 +122,19 @@
             By
         </button>
         <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item" onclick="sortTableAscending('eventTable', 'event')">A - Z</a>
-            <a class="dropdown-item" onclick="sortTableDescending('eventTable', 'event')">Z - A</a>
-            <a class="dropdown-item" onclick="sortTableDescending('eventTable', 'date')">Event Date (New - Old)</a>
-            <a class="dropdown-item" onclick="sortTableAscending('eventTable', 'date')">Event Date (Old - New)</a>
+            <a class="dropdown-item" onclick="sortTableAscending('mapTable', 'map')">A - Z</a>
+            <a class="dropdown-item" onclick="sortTableDescending('mapTable', 'map')">Z - A</a>
         </div>
     </div>
     <!--    Table for the List of Events-->
-    <div class="eventlist">
-        <table class="table table-hover" id="eventTable" style="width:100%">
+    <div class="mapList">
+        <table class="table table-hover" id="mapTable" style="width:100%">
         </table>
     </div>
 
 </div>
 <script src="js/requests.js"></script>
 <script src="js/utils.js"></script>
-<script src="js/list.js"></script>
+<script src="js/maps.js"></script>
 </body>
 </html>

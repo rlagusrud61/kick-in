@@ -12,7 +12,7 @@ function updateEventData() {
     eventId = window.location.search.split("=")[1];
     eventName = document.getElementById("eventName").value;
     eventLoc = document.getElementById("eventLocation");
-    eventLocation = eventLoc.options[eventLoc.selectedIndex].value
+    eventLocation = eventLoc.options[eventLoc.selectedIndex].value;
     eventDate = document.getElementById("eventDate").value;
     eventJSON = {
         "description": eventDescription,
@@ -22,6 +22,6 @@ function updateEventData() {
         "name": eventName
     };
     updateEvent(eventJSON, function() {
-    	window.location.href = "http://localhost:8080/kickInTeam26/event.html?id=" + eventId;
+    	window.location.href = "event.html?id=" + eventId;
     })
 }
