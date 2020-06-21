@@ -93,6 +93,7 @@ function displayEventInfo() {
 }
 
 yesBtn = document.getElementById("yesDeleteButton");
+editBtn = document.getElementById("editBtn");
 deleteMapModal = document.getElementById("modalMapDelete");
 selectMapModal = document.getElementById("mapSelectModal");
 
@@ -122,15 +123,17 @@ function removeMap(mapId) {
 
 //Open popup for edit
 function openModalMapDataEdit(mapId) {
-    yesBtn.setAttribute("onclick", "updateMapData(" + mapId + ")");
+    editBtn.setAttribute("onclick", "updateMapData(" + mapId + ")");
     modalMapInfoEdit.style.display = "block";
+    console.log("hellotherefriend");
 
 }
 
 function updateMapData(mapId) {
+	console.log("hello");
     let mapName, description, eventId, mapJSON;
     mapName = document.getElementById("mapName").value;
-    description = document.getElementById("description").value;
+    description = document.getElementById("mapDescription").value;
     mapJSON = {
         "name": mapName,
         "mapId": mapId,
