@@ -97,7 +97,7 @@ deleteMapModal = document.getElementById("modalMapDelete");
 selectMapModal = document.getElementById("mapSelectModal");
 
 function openCoolModal() {
-	selectMapModal.style.display = "block";
+    selectMapModal.style.display = "block";
 }
 
 /**
@@ -126,6 +126,7 @@ function openModalMapDataEdit(mapId) {
     modalMapInfoEdit.style.display = "block";
 
 }
+
 //Update the Information of the Map
 function updateMapData(mapId) {
     let mapName, mapDescription, eventId, mapJSON;
@@ -143,19 +144,24 @@ function updateMapData(mapId) {
     })
 }
 
-//function loadMuhMaps() {
-//	getAllMaps(function() {
-//		maps = JSON.parse(this.responseText);
-//        mapCheckList = document.getElementById("nicenicenicenice");
-//        mapCheckList.innerHTML = "";
-//        displayEventInfo();
-//        for (i = 0; i < maps.length; i++) {
-//        	mapCheckList.innerHTML += '<input class="form-check-input" type="checkbox" value="" id="defaultCheck1"><label class="form-check-label" for="defaultCheck1">Default checkbox</label>'
-//        }
-//        console.log(mapCheckList.innerHTML);
-//      
-//	})
-//}
-//window.onload = loadMuhMaps;
+function loadMuhMaps() {
+    getAllMaps(function () {
+        let maps, mapCheckList;
+        maps = JSON.parse(this.responseText);
+        mapCheckList = document.getElementById("mapCheckList");
+        mapCheckList.innerHTML = "";
+        displayEventInfo();
+        for (i = 0; i < maps.length; i++) {
+            mapCheckList.innerHTML += '<div class="custom-control custom-checkbox">' +
+                '  <input type="checkbox" class="custom-control-input" id="defaultChecked2" checked>' +
+                '  <label class="custom-control-label" for="defaultChecked2">Default checked</label>' +
+                '</div>'
+        }
+        console.log(mapCheckList.innerHTML);
+
+    })
+}
+
+window.onload = loadMuhMaps();
 window.onload = displayEventInfo;
 

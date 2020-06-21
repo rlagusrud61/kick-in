@@ -37,6 +37,23 @@
         background-color: #ffffff;
     }
 
+    input[type=checkbox] {
+        /* Double-sized Checkboxes */
+        -ms-transform: scale(2); /* IE */
+        -moz-transform: scale(2); /* FF */
+        -webkit-transform: scale(2); /* Safari and Chrome */
+        -o-transform: scale(2); /* Opera */
+        transform: scale(2);
+        padding-right: 10px;
+    }
+
+    /* Might want to wrap a span around your checkbox text */
+    .checkboxtext {
+        /* Checkbox text */
+        font-size: 110%;
+        display: inline;
+    }
+
 </style>
 
 <!-- Navigation Bar -->
@@ -55,7 +72,7 @@
             <h1 class="col-8">Event</h1>
             <div class="col-4" style="display: flex; justify-content: flex-end;">
                 <a id="addNewMap">
-                    <button class="myButton btn btn-success btn-circle btn-xl align-self-end" type="button"> +</button>
+                    <button class="myButton btn btn-success btn-circle btn-xl align-self-end" type="button"> + </button>
                 </a>
             </div>
         </div>
@@ -147,7 +164,7 @@
 		<span class="close close_multi">&times;</span>
 		<h2>Map checklist</h2>
 		<div class="mapChecklist" id="mapCheckList">
-			
+
 		</div>
 	</div>
 </div>
