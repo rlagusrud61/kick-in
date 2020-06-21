@@ -7,12 +7,12 @@
  * updated in the database. Once the information is updated, the user is redirected to the page of the specific event.
  */
 function updateEventData() {
-	let eventDescription, eventId, eventName, eventLoc, eventLocation, eventDate, eventJSON
+	let eventDescription, eventId, eventName, eventLoc, eventLocation, eventDate, eventJSON;
     eventDescription = document.getElementById("eventDescription").value;
     eventId = window.location.search.split("=")[1];
     eventName = document.getElementById("eventName").value;
     eventLoc = document.getElementById("eventLocation");
-    eventLocation = eventLoc.options[eventLoc.selectedIndex].value
+    eventLocation = eventLoc.options[eventLoc.selectedIndex].value;
     eventDate = document.getElementById("eventDate").value;
     eventJSON = {
         "description": eventDescription,

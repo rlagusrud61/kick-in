@@ -1,3 +1,34 @@
+let yesBtn, noBtn, deleteMapModal, span, editBtn, modalMapInfoEdit, span2;
+yesBtn = document.getElementById("yesDeleteButton");
+noBtn = document.getElementById("noBtn");
+editBtn = document.getElementById("editBtn");
+deleteMapModal = document.getElementById("modalMapDelete");
+modalMapInfoEdit = document.getElementById("modalMapInfoEdit");
+span = document.getElementsByClassName("close")[0];
+span2 = document.getElementsByClassName("close")[1];
+
+//Close the modal if user clicks on NO button
+noBtn.onclick = function () {
+    deleteMapModal.style.display = "none";
+};
+
+//Close the modal if user clicks on close (x) button
+span.onclick = function () {
+    deleteMapModal.style.display = "none";
+};
+span2.onclick = function () {
+    modalMapInfoEdit.style.display = "none";
+};
+
+//Close the modal if user clicks outside the modal window
+window.onclick = function (event) {
+    if (event.target === deleteMapModal) {
+        deleteMapModal.style.display = "none";
+    } else if (event.target === modalMapInfoEdit) {
+        modalMapInfoEdit.style.dislay = "none";
+    }
+};
+
 /**
  * @summary This method is used to display the information on the event required.
  *
@@ -6,13 +37,13 @@
  * and to get all the maps for this event. The information retrieved on the event is displayed where required
  * and the information on all the maps for this event is displayed on a table.
  */
-function displayEventInfo(){
+function displayEventInfo() {
     let id, event, maps, table, header, th, tr, row, i, mapName, creator, lastEditor, action;
 
     id = window.location.search.split("=")[1];
     document.getElementById("editEvent").href = "http://localhost:8080/kickInTeam26/edit.html?id=" + id;
 
-    getEvent(id, function() {
+    getEvent(id, function () {
         event = JSON.parse(this.responseText);
         document.getElementById("introtext").innerHTML = event.description;
         document.getElementById("eventlocation").innerHTML = event.location;
@@ -21,7 +52,7 @@ function displayEventInfo(){
         document.getElementById("addNewMap").href = "http://localhost:8080/kickInTeam26/newMap.html?id=" + event.eventId;
     })
 
-    getAllMapsForEvent(id, function() {
+    getAllMapsForEvent(id, function () {
 
         maps = JSON.parse(this.responseText);
         table = document.getElementById("mapTable");
@@ -54,11 +85,12 @@ function displayEventInfo(){
                 "style='font-size:20px;'></i></a><a href='http://localhost:8080/kickInTeam26/mapEdit.html?id=" +
                 maps[i].mapId + "' class='text-success'><i class='glyphicon glyphicon-pencil' " +
                 "style='font-size:20px;'></i></a><a href='javascript: window.confirmDelete(" + maps[i].mapId + ")'" +
-                "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
+                "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>" +
+                "<a href='javascript: window.openModalMapDataEdit(" + maps[i].mapId + ")' class='text-success'>" +
+                "<i class='glyphicon glyphicon-wrench' style='font-size:20px'></i></a>";
         }
     })
 }
-
 
 yesBtn = document.getElementById("yesDeleteButton");
 deleteMapModal = document.getElementById("modalMapDelete");
@@ -67,6 +99,7 @@ selectMapModal = document.getElementById("mapSelectModal");
 function openCoolModal() {
 	selectMapModal.style.display = "block";
 }
+
 /**
  * @param {number} mapId - the ID of the map for which the trash glyphicon was clicked.
  *
@@ -77,12 +110,36 @@ function openCoolModal() {
  * page is reloaded.
  */
 function confirmDelete(mapId) {
-	deleteMap(mapId, function() {
-		console.log(this.responseText);
-		location.reload();
-	});
-    yesBtn.setAttribute("onclick", "removeEvent(" + eventId + ")");
-    deleteModal.style.display = "block";
+    yesBtn.setAttribute("onclick", "removeMap(" + mapId + ")");
+    deleteMapModal.style.display = "block";
+}
+
+function removeMap(mapId) {
+    deleteMap(mapId, function () {
+        location.reload();
+    })
+}
+
+//Open popup for edit
+function openModalMapDataEdit(mapId) {
+    yesBtn.setAttribute("onclick", "updateMapData(" + mapId + ")");
+    modalMapInfoEdit.style.display = "block";
+
+}
+
+function updateMapData(mapId) {
+    let mapName, description, eventId, mapJSON;
+    mapName = document.getElementById("mapName").value;
+    description = document.getElementById("description").value;
+    mapJSON = {
+        "name": mapName,
+        "mapId": mapId,
+        "description": description
+    };
+    console.log(mapJSON);
+    updateMap(mapJSON, function () {
+        window.location.href = "http://localhost:8080/kickInTeam26/event.html?id=" + eventId;
+    })
 }
 
 //function loadMuhMaps() {
@@ -100,3 +157,4 @@ function confirmDelete(mapId) {
 //}
 //window.onload = loadMuhMaps;
 window.onload = displayEventInfo;
+
