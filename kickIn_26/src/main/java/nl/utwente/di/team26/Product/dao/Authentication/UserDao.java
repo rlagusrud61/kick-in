@@ -94,14 +94,13 @@ public class UserDao extends Dao implements DaoInterface<User> {
         }
     }
 
-    public User authenticateUser(Credentials credentials) throws AuthenticationDeniedException, SQLException {
+    public User getUserByEmail(Credentials credentials) throws AuthenticationDeniedException, SQLException {
         try(Connection conn = CONSTANTS.getConnection()) {
-            String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
+            String sql = "SELECT * FROM users WHERE email = ?;";
             beginTransaction(conn, Connection.TRANSACTION_SERIALIZABLE);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
                 stmt.setString(1, credentials.getEmail());
-                stmt.setString(2, credentials.getPassword());
                 ResultSet rs = stmt.executeQuery();
                 endTransaction(conn);
                 if (rs.next()) {
