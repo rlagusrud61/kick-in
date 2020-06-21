@@ -4,6 +4,7 @@ let modal, btn, span, trashBtn, deleteModal, close;
 modal = document.getElementById("addEvent");
 deleteModal = document.getElementById("eventDeleteModal");
 btn = document.getElementById("addEventBtn");
+noBtn = document.getElementById("noBtn");
 trashBtn = document.getElementById("yesDeleteButton");
 span = document.getElementsByClassName("close close_multi")[0];
 span2 = document.getElementsByClassName("close close_multi")[1];
@@ -15,6 +16,10 @@ function confirmDelete(eventId) {
 
 btn.onclick = function(){
     modal.style.display = "block";
+}
+
+noBtn.onclick = function () {
+	deleteModal.style.display = "none";
 }
 
 span.onclick = function(event) {
