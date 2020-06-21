@@ -1,3 +1,25 @@
+let yesBtn, noBtn, deleteMapModal, span;
+yesBtn = document.getElementById("yesDeleteButton");
+noBtn = document.getElementById("noBtn");
+deleteMapModal = document.getElementById("modalMapDelete");
+span = document.getElementsByClassName("close")[0];
+
+
+noBtn.onclick = function () {
+    deleteMapModal.style.display = "none";
+};
+
+span.onclick = function () {
+    deleteMapModal.style.display = "none";
+};
+
+
+window.onclick = function (event) {
+    if (event.target === deleteMapModal) {
+        deleteMapModal.style.display = "none";
+    }
+};
+
 /**
  * @summary This method is used to display the information on the event required.
  *
@@ -54,7 +76,9 @@ function displayEventInfo(){
                 "style='font-size:20px;'></i></a><a href='http://localhost:8080/kickInTeam26/mapEdit.html?id=" +
                 maps[i].mapId + "' class='text-success'><i class='glyphicon glyphicon-pencil' " +
                 "style='font-size:20px;'></i></a><a href='javascript: window.confirmDelete(" + maps[i].mapId + ")'" +
-                "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
+                "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>" +
+                "<a href='javascript: window.openModalMapDataEdit(" + maps[i].mapId + ")' class='text-success'>" +
+                "<i class='glyphicon glyphicon-wrench' style='font-size:20px'></i></a>";
         }
     })
 }
@@ -64,20 +88,23 @@ function displayEventInfo(){
  *
  * @summary This method is used to delete the required map from the database and reloads the page.
  *
- * @description When the 'YES' button is clicked in the map deletion confirmation popup, the delete map
+ * @description When the 'YES' button is clicked in the map deletion confirmation popup, the 'deleteMap'
  * function is called with the ID of the map as a parameter so that it can be deleted from the database and the
  * page is reloaded.
  */
-trashBtn = document.getElementById("yesDeleteButton");
-deleteMapModal = document.getElementById("modalMapDelete");
 function confirmDelete(mapId) {
-	deleteMap(mapId, function() {
-		console.log(this.responseText);
-		location.reload();
-	});
-
-    trashBtn.setAttribute("onclick", "removeEvent(" + eventId + ")");
-    deleteModal.style.display = "block";
+    yesBtn.setAttribute("onclick", "removeMap(" + mapId + ")");
+    deleteMapModal.style.display = "block";
 }
 
-window.onload = displayEventInfo;
+function removeMap(mapId) {
+    deleteMap(mapId, function() {
+        location.reload();
+    })
+}
+//Open popup for edit
+function openModalMapDataEdit(mapId){
+
+}
+
+window.onload = displayEventInfo();

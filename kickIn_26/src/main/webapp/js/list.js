@@ -1,74 +1,50 @@
-let modal, btn, span, trashBtn, deleteModal, close;
+let modal, btn, span, yesBtn, deleteModal, close;
 
 // Get the modal
 modal = document.getElementById("addEvent");
 deleteModal = document.getElementById("eventDeleteModal");
+// Get the button that trigger the modal
 btn = document.getElementById("addEventBtn");
-trashBtn = document.getElementById("yesDeleteButton");
+noBtn = document.getElementById("noBtn");
+yesBtn = document.getElementById("yesDeleteButton");
+// Get the button to close (x) the modal
 span = document.getElementsByClassName("close close_multi")[0];
 span2 = document.getElementsByClassName("close close_multi")[1];
 
-function confirmDelete(eventId) {
-    trashBtn.setAttribute("onclick", "removeEvent(" + eventId + ")");
-    deleteModal.style.display = "block";
-}
-
-btn.onclick = function(){
+btn.onclick = function () {
     modal.style.display = "block";
-}
+};
 
-span.onclick = function(event) {
-	modal.style.display = "none";
-}
-
-span2.onclick = function(event){
+noBtn.onclick = function () {
     deleteModal.style.display = "none";
-        
-}
+};
 
-function removeEvent(id) {
-    deleteEvent(id, function () {
-        console.log(this.responseText);
-        location.reload();
-    });
-}
+span.onclick = function () {
+    modal.style.display = "none";
+};
+span2.onclick = function () {
+    deleteModal.style.display = "none";
+
+};
+
 window.onclick = function (event) {
     if (event.target === modal) {
         modal.style.display = "none";
     } else if (event.target === deleteModal) {
-    	deleteModal.style.display = "none";
+        deleteModal.style.display = "none";
     }
 }
 
-
-// Get the modal
-
-// Get the <span> element that closes the modal
-//close = document.getElementsByClassName("close")[1];
-
-// When the user clicks the button, open the modal
-
-
-//Delete function for loadTable()
-
-
-
-// When the user clicks on <span> (x), close the modal
-//Doesn't work
-//close.onclick = function (event) {
-//    if (event.target === deleteModal) {
-//        deleteModal.style.display = "none";
-//    }
-//}
-
-// When the user clicks anywhere outside of the modal, close it
-// Works
-//window.onclick = function (event) {
-//    if (event.target === deleteModal) {
-//        deleteModal.style.display = "none";
-//    }
-//}
-
+/**
+ * @summary This method is used to create a table that displays the information on the events.
+ *
+ * @description Once all the information on the events is retrieved using the 'getAllEvents' function, a table is created
+ * to display the information received. The table includes the columns 'Name', 'Date Of Event', 'Creator', 'Last Edited By'
+ * and 'Action' where 'Name' gives the name of the event, 'Date Of Event' gives the date of the event, 'Creator' gives the
+ * name of the user that created the event, 'Last Edited By' gives name of the user that last edited the data on the the
+ * event and 'Action' allows the user to view the data on the event (including maps), edit the data on the event as well as
+ * delete the event.
+ */
 function loadTable() {
     let header, tr, th, i, table, events, row, name, eventDate, creator, lastEditor, action;
     getAllEvents(function () {
@@ -112,8 +88,15 @@ function loadTable() {
 
 window.onload = loadTable;
 
+/**
+ * @summary This method is used to add a new event to the database.
+ *
+ * @description The name, description, location and date of the event is retrieved from the popup. Then, a JSON object
+ * is created from the information retrieved and the 'addEvent' function is called with this JSON object as a parameter.
+ * If the event was successfully added to the database, the page is reloaded.
+ */
 function addEventPopup() {
-    let description, eventName, eventLoc, eventDate, dateControl, eventLocation, eventJSON;
+    let description, eventName, eventLoc, eventDate, eventLocation, eventJSON;
     description = document.getElementById("eventDescription").value;
     eventName = document.getElementById("eventName").value;
     eventLoc = document.getElementById("eventLocation");
@@ -129,3 +112,24 @@ function addEventPopup() {
         location.reload();
     });
 }
+
+/**
+ * @param {number} eventId - the ID of the event for which the trash glyphicon was clicked.
+ *
+ * @summary This method is used to delete the required event from the database and reloads the page.
+ *
+ * @description When the 'YES' button is clicked in the event deletion confirmation popup, the 'deleteEvent'
+ * function is called with the ID of the event as a parameter so that it can be deleted from the database and the
+ * page is reloaded.
+ */
+function confirmDelete(eventId) {
+    yesBtn.setAttribute("onclick", "removeEvent(" + eventId + ")");
+    deleteModal.style.display = "block";
+}
+
+function removeEvent(eventId) {
+    deleteEvent(eventId, function () {
+        location.reload();
+    })
+}
+
