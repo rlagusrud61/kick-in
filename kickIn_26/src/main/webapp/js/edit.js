@@ -12,7 +12,7 @@ function updateEventData() {
     eventId = window.location.search.split("=")[1];
     eventName = document.getElementById("eventName").value;
     eventLoc = document.getElementById("eventLocation");
-    eventLocation = eventLoc.options[eventLoc.selectedIndex].value
+    eventLocation = eventLoc.options[eventLoc.selectedIndex].value;
     eventDate = document.getElementById("eventDate").value;
     eventJSON = {
         "description": eventDescription,
