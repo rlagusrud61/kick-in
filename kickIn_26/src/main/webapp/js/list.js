@@ -116,17 +116,24 @@ function addEventPopup() {
 /**
  * @param {number} eventId - the ID of the event for which the trash glyphicon was clicked.
  *
- * @summary This method is used to delete the required event from the database and reloads the page.
- *
- * @description When the 'YES' button is clicked in the event deletion confirmation popup, the 'deleteEvent'
- * function is called with the ID of the event as a parameter so that it can be deleted from the database and the
- * page is reloaded.
+ * @summary This method is used to open the modal and set the ID of the event to be deleted when the 'YES' button is
+ * clicked in the event deletion confirmation popup.
  */
 function confirmDelete(eventId) {
     yesBtn.setAttribute("onclick", "removeEvent(" + eventId + ")");
     deleteModal.style.display = "block";
 }
 
+/**
+ * @param {number} eventId - the ID of the event that is to be deleted from the database.
+ *
+ * @summary This method is used to delete the required event from the database and reloads the page.
+ *
+ * @description When the 'YES' button is clicked in the event deletion confirmation popup, the 'removeEvent'
+ * function is called with the ID of the event as a parameter so that it can be deleted from the database.
+ * The ID of the event is taken as a parameter to the 'deleteEvent' function so that it can be deleted from
+ * the database. If the deletion is successful, the page is reloaded.
+ */
 function removeEvent(eventId) {
     deleteEvent(eventId, function () {
         location.reload();
