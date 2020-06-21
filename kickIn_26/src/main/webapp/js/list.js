@@ -126,4 +126,9 @@ function confirmDelete(eventId) {
     deleteModal.style.display = "block";
 }
 
+function removeEvent(eventId) {
+	deleteEvent(eventId, function() {
+		location.reload();
+	})
+}
 
