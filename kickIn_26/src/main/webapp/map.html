@@ -25,32 +25,47 @@
 </div>
 </body>
 <script>
-    let map = L.map('mapid', {
-        center: [52.2413, -353.1531],
-        zoom: 16,
-        keyboard: false
-    });
-    let tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    });
-    tiles.addTo(map);
-
+    let map;
+    function initMap() {
+        let newMap = L.map('mapid', {
+            center: [52.2413, -353.1531],
+            zoom: 16,
+            keyboard: false
+        });
+        let tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        });
+        tiles.addTo(newMap);
+        return newMap;
+    }
+    map = initMap();
     let mapId = 1;
 
     function addFenceToMap() {
         addResourceToMap(23);
     }
     function deleteObjectFromDatabase(object) {
-        deleteObject(object.objectId);
+        deleteObject(object.objectId, function () {
+            deletedObjects.delete(object);
+            imgGroup.forEach(putObjectToMap);
+            if (imgGroup.length === 0) {
+                newObjects.forEach(postObjectToMap);
+            }
+        });
     }
 
     function putObjectToMap(object) {
         let parsed = parseObject(object)
-        if (parsed !== mapObjects.get(object.objectId)) {
-            let putObject = parseObject(object);
+        if (parsed.latLangs !== mapObjects.get(object.objectId).latLangs) {
+            let putObject = parsed;
             putObject.objectId = object.objectId;
-            updateObject(parsed,  function () {});
+            updateObject(putObject,  function () {
+                newObjects.forEach(postObjectToMap);
+                if (newObjects.length === 0) {
+                    location.reload();
+                }
+            });
         }
     }
 
@@ -83,7 +98,7 @@
 
     //new objects added to the map.
     let newObjects = [];
-    let deletedObjects = [];
+    let deletedObjects = new Set();
 
     function bringAllResources() {
         getAllResources(function() {
@@ -98,9 +113,6 @@
     function bringAllObjectsForMap(mapId) {
         getAllObjectsForMap(mapId, function() {
             let response = JSON.parse(this.responseText);
-            imgGroup.forEach(function(image) {
-                image.editing._overlay.remove();
-            })
             mapObjects = new Map();
             response.forEach(function (object) {
                 mapObjects.set(object.objectId, object)
@@ -121,9 +133,14 @@
     function postObjectToMap(newObject) {
         let newObj = parseObject(newObject);
         addObjectToMap(newObj, function () {
-            let response = JSON.parse(this.responseText)
-            console.log(response);
-            bringAllObjectsForMap(mapId)
+            const index = newObjects.indexOf(newObject);
+            if (index !== -1) {
+                newObjects.splice(index, 1);
+            }
+            newObj.objectId = JSON.parse(this.responseText);
+            newObject.objectId = newObj.objectId;
+            mapObjects.set(newObject.objectId, newObj);
+            pushToMap(newObject, newObj);
         })
     }
 
@@ -140,14 +157,10 @@
         })
         return coords;
     }
-    function insertObjectIntoMap(object) {
-        let corners = parseLatLangs(object.latLangs);
-        let newImage = L.distortableImageOverlay(images.get(object.resourceId), {
-            corners: corners
-        })
-        newImage.objectId = object.objectId;
-        newImage.on('remove', function() {
-            deletedObjects.push(newImage.objectId);
+
+    function pushToMap(newImage, object) {
+        newImage.on('remove', function () {
+            deletedObjects.add(object);
             mapObjects.delete(newImage.objectId);
             const index = imgGroup.indexOf(newImage);
             if (index !== -1) {
@@ -156,6 +169,14 @@
         });
         imgGroup.push(newImage);
         newImage.addTo(map);
+    }
+    function insertObjectIntoMap(object) {
+        let corners = parseLatLangs(object.latLangs);
+        let newImage = L.distortableImageOverlay(images.get(object.resourceId), {
+            corners: corners
+        })
+        newImage.objectId = object.objectId;
+        pushToMap(newImage, object);
     }
 
 </script>
