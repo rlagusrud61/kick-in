@@ -74,9 +74,9 @@ function loadTable() {
             description.innerHTML = maps[i].description;
             creator.innerHTML = maps[i].createdBy;
             lastEditor.innerHTML = maps[i].lastEditedBy;
-            action.innerHTML = "<a href='http://localhost:8080/kickInTeam26/mapView.html?id=" +
+            action.innerHTML = "<a href='mapView.html?id=" +
                 maps[i].mapId + "' class='text-success'><i class='glyphicon glyphicon-eye-open' " +
-                "style='font-size:20px;'></i></a><a href='http://localhost:8080/kickInTeam26/mapEdit.html?id=" +
+                "style='font-size:20px;'></i></a><a href='mapEdit.html?id=" +
                 maps[i].mapId + "' class='text-success'><i class='glyphicon glyphicon-pencil' " +
                 "style='font-size:20px;'></i></a><a href='javascript: window.confirmDelete(" + maps[i].mapId + ")'" +
                 "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";

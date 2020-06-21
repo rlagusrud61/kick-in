@@ -367,6 +367,6 @@ function removeMap() {
     let mapId;
     mapId = window.location.search.split("=")[1];
     deleteMap(mapId, function () {
-        window.location.href = "http://localhost:8080/kickInTeam26/list.html";
+        window.location.href = "list.html";
     })
 }

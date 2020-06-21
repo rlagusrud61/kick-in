@@ -19,7 +19,7 @@ function login() {
     console.log(password);
     loginUser(credentialsJSON, function() {
     	console.log(this.responseText);
-    	window.location.href = "http://localhost:8080/kickInTeam26/list.html";
+    	window.location.href = "list.html";
     });
 }
 

@@ -107,7 +107,7 @@ function logout() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4) {
             console.log(xhr.responseText);
-            window.location.href = "http://localhost:8080/kickInTeam26/login.html";
+            window.location.href = "login.html";
         }
     }
     xhr.setRequestHeader("Content-Type", "application/json");
