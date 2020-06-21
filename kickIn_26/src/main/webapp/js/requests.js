@@ -935,7 +935,7 @@ function deleteResource(resourceId, callback) {
  */
 function getAllResources(callback) {
 	let xhr = new XMLHttpRequest();
-	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/resources", true);
+	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/resources", true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
 			callback.apply(xhr);

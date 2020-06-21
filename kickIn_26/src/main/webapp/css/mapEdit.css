@@ -146,6 +146,7 @@ h3{
     height: 200px;
     overflow: hidden;
     overflow-y: scroll;
+    background: black;
 }
 
 table{
