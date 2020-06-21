@@ -1,33 +1,34 @@
-let modal, trash, closeDelete, closeDelete2, map, tiles, printer, editToggle, imgGroup,
-    inFreeHand, materialsList;
+let modal, trash, closeDelete, closeDelete2, map, tiles, printer, editToggle, imgGroup, inFreeHand, materialsList,
+    modal2, share, closeExport, closeExport2;
+
 // Get the modal
 modal = document.getElementById("popupMapDelete");
 // Button for deletion
- trash = document.getElementById("deleteEvent");
+trash = document.getElementById("deleteEvent");
 // Closing popup
- closeDelete = document.getElementsByClassName("close")[0];
+closeDelete = document.getElementsByClassName("close")[0];
 //Closing by pressing "No"
- closeDelete2 = document.getElementById("no");
+closeDelete2 = document.getElementById("no");
 
-     trash.onclick = function() {
-         modal.style.display = "block";
-     }
+trash.onclick = function () {
+    modal.style.display = "block";
+}
 
-     closeDelete.onclick = function() {
+closeDelete.onclick = function () {
+    modal.style.display = "none";
+}
+
+closeDelete2.onclick = function () {
+    modal.style.display = "none";
+}
+
+window.onclick = function (event) {
+    if (event.target === modal) {
         modal.style.display = "none";
-     }
-
-     closeDelete2.onclick = function() {
-         modal.style.display = "none";
-     }
-
-     window.onclick = function(event) {
-         if (event.target === modal) {
-             modal.style.display = "none";
-         }
-     }
+    }
+}
 //Modal for exporting the map
-let modal2, share, closeExport, closeExport2;
+
 //Get modal
 modal2 = document.getElementById("modalExport");
 //Button for exporting
@@ -37,31 +38,31 @@ closeExport = document.getElementsByClassName("close")[0];
 //Closing by pressing "No"
 closeExport2 = document.getElementById("no1");
 
-share.onclick = function() {
+share.onclick = function () {
     modal2.style.display = "block";
 }
 
-closeExport.onclick = function() {
+closeExport.onclick = function () {
     modal2.style.display = "none";
 }
 
-closeExport2.onclick = function() {
+closeExport2.onclick = function () {
     modal2.style.display = "none";
 }
 
-window.onclick = function(event) {
+window.onclick = function (event) {
     if (event.target === modal2) {
         modal2.style.display = "none";
     }
 }
 
 //inits the map and properties.
- map = L.map('mapid', {
+map = L.map('mapid', {
     center: [52.2413, -353.1531],
     zoom: 16,
     keyboard: false
 });
- tiles = L
+tiles = L
     .tileLayer(
         'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         {
@@ -70,7 +71,7 @@ window.onclick = function(event) {
         });
 tiles.addTo(map);
 
- printer = L.easyPrint({
+printer = L.easyPrint({
     tileLayer: tiles,
     sizeModes: ['Current', 'A4Landscape', 'A4Portrait'],
     filename: 'myMap',
@@ -111,8 +112,8 @@ inFreeHand = false;
 
 materialsList = null;
 
-getAllMaterials(function() {
-	materialsList = JSON.parse(this.responseText);
+getAllMaterials(function () {
+    materialsList = JSON.parse(this.responseText);
     console.log(materialsList);
 })
 
@@ -128,7 +129,9 @@ getAllMaterials(function() {
 //     }
 // });
 
-//function to enter free hand, if already in free hand, we exit free hand drawing.
+/**
+ * @summary function to enter free hand, if already in free hand, we exit free hand drawing.
+ */
 function callEnterFreeHand() {
     if (!inFreeHand) {
         enterFreeDrawingMode();
@@ -137,8 +140,11 @@ function callEnterFreeHand() {
     }
 }
 
-//enter free hand drawing.
+/**
+ * @summary function to enter free hand drawing.
+ */
 function enterFreeDrawingMode() {
+    let divContainer, dimensionData, stage, layer, circle;
     inFreeHand = true;
     map.dragging.disable();
     map.touchZoom.disable();
@@ -156,22 +162,19 @@ function enterFreeDrawingMode() {
         });
     }
     editToggle.disable();
-
-    let divContainer, dimensionData, stage, layer, circle;
     divContainer = document.createElement('div');
     divContainer.setAttribute('id', 'container');
     // document.getElementsByClassName('leaflet-pane leaflet-overlay-pane')[0].appendChild(divContainer);
     document.getElementById('mapContainer').appendChild(
         divContainer);
-     dimensionData = document.getElementById('mapContainer');
-
-     stage = new Konva.Stage({
+    dimensionData = document.getElementById('mapContainer');
+    stage = new Konva.Stage({
         container: 'container', // id of container <div>
         width: dimensionData.offsetWidth,
         height: dimensionData.offsetHeight,
     });
     layer = new Konva.Layer();
-     circle = new Konva.Circle({
+    circle = new Konva.Circle({
         x: (stage.width() / 2),
         y: (stage.height() / 2),
         radius: 70,
@@ -185,7 +188,9 @@ function enterFreeDrawingMode() {
     layer.draw();
 }
 
-//exit free hand drawing.
+/**
+ * @summary function to exit free hand drawing.
+ */
 function exitFreeDraw() {
     let data, needForAdd;
     let canvas, imgFree, nw, ne, sw, se = null;
@@ -195,9 +200,7 @@ function exitFreeDraw() {
     } catch (err) {
         data = null;
     }
-
     needForAdd = true;
-
     if (data !== null && (data[2] === 0 || data[3] === 0)) {
         needForAdd = false;
     } else {
@@ -235,7 +238,6 @@ function exitFreeDraw() {
         });
     }
     editToggle.enable();
-
     if (needForAdd) {
         let freeDrawing = L.distortableImageOverlay(
             imgFree,
@@ -255,7 +257,9 @@ function exitFreeDraw() {
     inFreeHand = false;
 }
 
-//get the geoJSON data that can be used to reconstruct the map if needed.
+/**
+ * @summary function to get the geoJSON data that can be used to reconstruct the map if needed.
+ */
 function getGeoJSON() {
     imgGroup.forEach(function (image) {
         console.log('{corners: [' + image.getCorners()
@@ -263,29 +267,16 @@ function getGeoJSON() {
     })
 }
 
-//for filtering materials depending on entered text
+/**
+ * @summary function for filtering materials depending on entered text.
+ */
 function filterOn() {
 
 }
 
-//function getMap() {
-//    let url, xhr;
-//    url = window.location.href;
-//    url = url.split("/");
-//    url = url[10];
-//    xhr = new XMLHttpRequest();
-//    xhr.open('GET',
-//        "http://localhost:8080/kickInTeam26/rest/map/"
-//        + url, true);
-//    xhr.onreadystatechange = function () {
-//        if (xhr.readyState == 4) {
-//            console.log(xhr.responseText);
-//        }
-//    }
-//    xhr.setRequestHeader("Content-Type", "application/json");
-//    xhr.send();
-//}
-
+/**
+ * @summary This method is used to call on the two methods when the window is loaded.
+ */
 function loadNameDescriptionAndItems() {
     getMapNameAndDescription();
     listItems();
@@ -293,13 +284,22 @@ function loadNameDescriptionAndItems() {
 
 window.onload = loadNameDescriptionAndItems;
 
+/**
+ * @summary This method is used to display the list of all the items that have been placed on the map and their
+ * respective quantities in the map.
+ *
+ * @description First, the ID of the required map is extracted from the URL. Then, the 'generateReportForMap' method is
+ * called with the map ID as a parameter. If a successful result is received from the back-end, a table is built with
+ * the information received. This table has two columns 'Name' and 'Quantity', where the column 'Name' gives the name of
+ * the item that was placed on the map and the column 'Quantity' gives the count of each item that was placed on the map.
+ */
 function listItems() {
 
     let mapId, returnedItems, col, key, table, th, tr, i, j, tableCell;
-    mapId = 1;
+    mapId = window.location.search.split("=")[1];
     returnedItems = '';
     generateReportForMap(mapId, function () {
-    	console.log(this.responseText);
+        console.log(this.responseText);
 
         returnedItems = JSON.parse(this.responseText);
 
@@ -307,7 +307,11 @@ function listItems() {
         for (i = 0; i < returnedItems.length; i++) {
             for (key in returnedItems[i]) {
                 if (col.indexOf(key) === -1 && (key === 'name' || key === 'count')) {
-                    col.push(key);
+                    if (key === 'name'){
+                        col.push('Name');
+                    } else if (key === 'count'){
+                        col.push('Quantity');
+                    }
                 }
             }
         }
@@ -332,26 +336,37 @@ function listItems() {
             }
         }
         document.getElementById("listItems").appendChild(table);
-    })
+    });
 }
 
+/**
+ * @summary This method is used to get the name and description of the map required.
+ *
+ * @description After the ID of the required map is retrieved from the URL, the 'getMap' function is called with the ID
+ * as a parameter. If the map information is successfully retrieved from the back-end, the name and description of the
+ * map are displayed on the page where required.
+ */
 function getMapNameAndDescription() {
-	let mapId = 1;
-	getMap(mapId, function() {
-		let jsonData = JSON.parse(this.responseText);
+    let mapId, jsonData;
+    mapId = window.location.search.split("=")[1];
+    getMap(mapId, function () {
+        jsonData = JSON.parse(this.responseText);
         document.getElementById("mapName").innerHTML = jsonData.name;
         document.getElementById("description").innerHTML = jsonData.description;
         console.log(this.responseText);
-	})
+    })
 }
 
+/**
+ * @summary This method is used to delete the map from the database.
+ *
+ * @description After the ID of the map is retrieved from the URL, the 'deleteMap' function is called with the ID of the
+ * map to be deleted as a parameter. If the map was successfully deleted, the user is redirected to the 'list.html' page.
+ */
 function removeMap() {
-    let url, xhr, mapId;
-    mapId = 1;
-    url = window.location.href;
-    url = url.split("/");
-    url = url[10];
-    deleteMap(mapId, function() {
-    	console.log(xhr.responseText);
+    let mapId;
+    mapId = window.location.search.split("=")[1];
+    deleteMap(mapId, function () {
+        window.location.href = "http://localhost:8080/kickInTeam26/list.html";
     })
 }

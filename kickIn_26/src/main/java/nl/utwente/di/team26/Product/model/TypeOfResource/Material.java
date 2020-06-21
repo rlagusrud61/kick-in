@@ -28,13 +28,18 @@ public class Material extends TypeOfResource implements Serializable {
 
     }
 
-    public Material(long resourceId, String name, String description, String image) {
-        super(resourceId, name, description);
+    public Material(long materialId) {
+        super(materialId);
+    }
+
+    public Material(String name, String description, String image) {
+        super(name, description);
         this.image = image;
     }
 
-    public Material(long materialId) {
-        super(materialId);
+    public Material(long resourceId, String name, String description, String image) {
+        super(resourceId, name, description);
+        this.image = image;
     }
 
     public String getImage() {

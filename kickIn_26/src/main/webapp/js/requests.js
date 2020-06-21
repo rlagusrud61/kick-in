@@ -87,9 +87,6 @@ function deleteEvent(eventId, callback) {
  *
  * @description A GET request is sent to the RESTful service provider with the given URL. The method then calls the
  * callback function on 'xhr' if the request was successful.
- *
- * @returns {json | Object | Array} - The response from the RESTful service provider which will be an
- * array of events. Each event will be a JSON object.
  */
 function getAllEvents(callback) {
 	let xhr = new XMLHttpRequest();
@@ -164,9 +161,6 @@ function deleteAllEvents(callback) {
  * appended to the URL to request the service from the back-end. A GET request is sent to the RESTful
  * service provider with the given URL. The method then calls the callback
  * function on 'xhr' if the request was successful.
- *
- * @returns {json | Object} - The response from the RESTful service provider which will be a JSON object
- * of the required map.
  */
 function getMap(mapId, callback) {
 	let xhr = new XMLHttpRequest();
@@ -242,9 +236,6 @@ function deleteMap(mapId, callback) {
  *
  * @description A GET request is sent to the RESTful service provider with the given URL. The method then calls the
  * callback function on 'xhr' if the request was successful.
- *
- * @returns {json | Object | Array} - The response from the RESTful service provider which will be an
- * array of maps. Each map will be a JSON object.
  */
 function getAllMaps(callback) {
 
@@ -285,10 +276,10 @@ function addMap(map, callback) {
 }
 
 /**
- * @summary This method deletes all the map data stored in the database.
- *
  * @param {function} callback - Once an response from the RESTful service provider has been
  * received, this function is called to analyse the response.
+ *
+ * @summary This method deletes all the map data stored in the database.
  *
  * @description A DELETE request is sent to the RESTful service provider with the given URL, where
  * the content is in JSON format. The method then calls the callback function on 'xhr' if the
@@ -320,9 +311,6 @@ function deleteAllMaps(callback) {
  * appended to the URL to request the service from the back-end. A GET request is sent to the
  * RESTful service provider with the given URL. The method then calls the callback
  * function on 'xhr' if the request was successful.
- *
- * @returns {json | Object | Array} - The response from the RESTful service provider which will be
- * an array of the map data for the specific event. Each map data will be a JSON object.
  */
 function getAllMapsForEvent(eventId, callback) {
 	let xhr = new XMLHttpRequest();
@@ -348,9 +336,6 @@ function getAllMapsForEvent(eventId, callback) {
  * appended to the URL to request the service from the back-end. A GET request is sent to the RESTful service provider
  * with the given URL. The method then calls the callback function on 'xhr'
  * if the request was successful.
- *
- * @returns {json | Object | Array} - The response from the RESTful service provider which will be
- * an array of events associated with the specific map. Each event will be a JSON object.
  */
 function getAllEventsForMap(mapId, callback) {
 	let xhr = new XMLHttpRequest();
@@ -480,9 +465,6 @@ function deleteAllRelations(callback) {
  * RESTful service provider with the given URL. The method then calls the callback function on 'xhr' if the request was
  * successful. A map object is basically an item that has already been
  * placed on the map.
- *
- * @returns {json | Object} - The response from the RESTful service provider which will be a JSON
- * object of the required map object.
  */
 function getObject(objectId, callback) {
 	let xhr = new XMLHttpRequest();
@@ -561,9 +543,6 @@ function deleteObject(objectId, callback) {
  * appended to the URL to request the service from the back-end. A GET request is sent to the
  * RESTful service provider with the given URL. The method then calls the callback
  * function on 'xhr' if the request was successful.
- *
- * @returns {json | Object | Array} - The response from the RESTful service provider which will be
- * an array of objects associated with the specific map. Each object will be a JSON object.
  */
 function getAllObjectsForMap(mapId, callback) {
 	let xhr = new XMLHttpRequest();
@@ -589,10 +568,6 @@ function getAllObjectsForMap(mapId, callback) {
  * appended to the URL to request the service from the back-end. A GET request is sent to the
  * RESTful service provider with the given URL. The method then calls the callback
  * function on 'xhr' if the request was successful.
- *
- * @returns {json | Object | Array} - The response from the RESTful service provider which will be
- * an array of JSON objects, where each object consists of the name of the map object and its
- * quantity in the map. All the map objects are associated with the specific map.
  */
 function generateReportForMap(mapId, callback) {
 	let xhr = new XMLHttpRequest();
@@ -693,9 +668,6 @@ function clearAllMaps(callback) {
  * appended to the URL to request the service from the back-end. A GET request is sent to the
  * RESTful service provider with the given URL. The method then calls the callback
  * function on 'xhr' if the request was successful.
- *
- * @returns {json | Object} - The response from the RESTful service provider which will be a JSON
- * object of the required drawing.
  */
 function getDrawing(drawingId, callback) {
 	let xhr = new XMLHttpRequest();
@@ -825,9 +797,6 @@ function deleteMaterial(materialId, callback) {
  *
  * @description A GET request is sent to the RESTful service provider with the given URL. The method then calls the
  * callback function on 'xhr' if the request was successful.
- *
- * @returns {json | Object | Array} - The response from the RESTful service provider which will be an
- * array of materials. Each material will be a JSON object.
  */
 function getAllMaterials(callback) {
 	let xhr = new XMLHttpRequest();
@@ -880,9 +849,6 @@ function addMaterial(material, callback) {
  * appended to the URL to request the service from the back-end. A GET request is sent to the
  * RESTful service provider with the given URL. The method then calls the callback
  * function on 'xhr' if the request was successful.
- *
- * @returns {json | Object} - The response from the RESTful service provider which will be a JSON
- * object of the required resource.
  */
 function getResource(resourceId, callback) {
 	let xhr = new XMLHttpRequest();
@@ -929,9 +895,6 @@ function deleteResource(resourceId, callback) {
  *
  * @description A GET request is sent to the RESTful service provider with the given URL. The method then calls the
  * callback function on 'xhr' if the request was successful.
- *
- * @returns {json | Object | Array} - The response from the RESTful service provider which will be an
- * array of resources. Each resource will be a JSON object.
  */
 function getAllResources(callback) {
 	let xhr = new XMLHttpRequest();
@@ -980,9 +943,6 @@ function deleteAllResources(callback) {
  * appended to the URL to request the service from the back-end. A GET request is sent to the RESTful
  * service provider with the given URL. The method then calls the callback
  * function on 'xhr' if the request was successful.
- *
- * @returns {json | Object} - The response from the RESTful service provider which will be a JSON object
- * of the required user.
  */
 function getUser(userId, callback) {
 	let xhr = new XMLHttpRequest();
@@ -1058,9 +1018,6 @@ function deleteUser(userId, callback) {
  *
  * @description A GET request is sent to the RESTful service provider with the given URL. The method then calls the
  * callback function on 'xhr' if the request was successful.
- *
- * @returns {json | Object | Array} - The response from the RESTful service provider which will be an
- * array of users. Each user will be a JSON object.
  */
 function getAllUsers(callback) {
 	let xhr = new XMLHttpRequest();
@@ -1121,6 +1078,18 @@ function deleteAllUsers(callback) {
 	xhr.send();
 }
 
+/**
+ * @param {json | Object} credentials - The credentials of the user that have to be checked on the database.
+ *
+ * @param callback - Once an response from the RESTful service provider has been
+ * received, this function is called to analyse the response.
+ *
+ * @summary This method is used to authenticate the user's credentials.
+ *
+ * @description A POST request is sent to the RESTful service provider with the given URL, where the content of the
+ * body is the JSON object that was taken as the parameter. The method then calls the callback function on 'xhr' if the
+ * authentication was successful.
+ */
 function loginUser(credentials, callback) {
     let xhr = new XMLHttpRequest();
     xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/authentication", true);

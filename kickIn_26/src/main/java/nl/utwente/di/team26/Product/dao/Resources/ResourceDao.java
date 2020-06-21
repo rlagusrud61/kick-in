@@ -54,7 +54,7 @@ public class ResourceDao extends Dao implements DaoInterface<TypeOfResource> {
         try(Connection conn = CONSTANTS.getConnection()) {
             String sql =
                     "UPDATE TypeOfResource SET name = ?, description = ?  WHERE resourceId = ?; " +
-                            "UPDATE Material SET image = ? WHERE resourceId = ?;";
+                            "UPDATE Materials SET image = ? WHERE resourceId = ?;";
             beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, resource.getName());
@@ -116,7 +116,7 @@ public class ResourceDao extends Dao implements DaoInterface<TypeOfResource> {
             String sql =
                     "WITH draw AS (INSERT INTO TypeOfResource(name, description) VALUES (?, ?) RETURNING resourceId)" +
                             "INSERT INTO Drawing(resourceId, image)" +
-                            "select draw.resourceId, ? from draw;";
+                            "select draw.resourceId, ? from draw returning resourceId;";
             beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, drawingToAdd.getName());
@@ -132,7 +132,7 @@ public class ResourceDao extends Dao implements DaoInterface<TypeOfResource> {
             String sql =
                     "WITH newMaterial AS (INSERT INTO TypeOfResource(name, description) VALUES (?, ?) RETURNING resourceId)" +
                             "INSERT INTO Materials(resourceId, image)" +
-                            "select newMaterial.resourceId, ? from newMaterial;";
+                            "select newMaterial.resourceId, ? from newMaterial returning resourceId;";
             beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, materialToAdd.getName());

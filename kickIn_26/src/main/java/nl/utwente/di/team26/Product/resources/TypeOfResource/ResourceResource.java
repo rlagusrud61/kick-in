@@ -20,7 +20,7 @@ public class ResourceResource {
     @GET
     @Secured(Roles.VISITOR)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllResources(@PathParam("resourceId") long resourceId) throws NotFoundException, SQLException {
+    public Response getResourceById(@PathParam("resourceId") long resourceId) throws NotFoundException, SQLException {
 
             String allMaps = resourceDao.getResource(resourceId);
             return Utils.returnOkResponse(allMaps);

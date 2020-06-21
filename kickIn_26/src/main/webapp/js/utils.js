@@ -23,8 +23,11 @@ function sortTableAscending(tableId, sortCriteria) {
             /* Get the two elements you want to compare,
             one from current row and one from the next: */
             if (sortCriteria === "name" || sortCriteria === "event"){
+                console.log(sortCriteria);
                 x = rows[i].getElementsByTagName("TD")[0];
+                console.log("x" + x);
                 y = rows[i + 1].getElementsByTagName("TD")[0];
+                console.log("y" + y);
             } else if (sortCriteria === "date"){
                 x = rows[i].getElementsByTagName("TD")[1];
                 y = rows[i + 1].getElementsByTagName("TD")[1];
