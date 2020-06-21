@@ -62,7 +62,11 @@ function displayEventInfo(){
 
 yesBtn = document.getElementById("yesDeleteButton");
 deleteMapModal = document.getElementById("modalMapDelete");
+selectMapModal = document.getElementById("mapSelectModal");
 
+function openCoolModal() {
+	selectMapModal.style.display = "block";
+}
 /**
  * @param {number} mapId - the ID of the map for which the trash glyphicon was clicked.
  *
@@ -81,4 +85,18 @@ function confirmDelete(mapId) {
     deleteModal.style.display = "block";
 }
 
+//function loadMuhMaps() {
+//	getAllMaps(function() {
+//		maps = JSON.parse(this.responseText);
+//        mapCheckList = document.getElementById("nicenicenicenice");
+//        mapCheckList.innerHTML = "";
+//        displayEventInfo();
+//        for (i = 0; i < maps.length; i++) {
+//        	mapCheckList.innerHTML += '<input class="form-check-input" type="checkbox" value="" id="defaultCheck1"><label class="form-check-label" for="defaultCheck1">Default checkbox</label>'
+//        }
+//        console.log(mapCheckList.innerHTML);
+//      
+//	})
+//}
+//window.onload = loadMuhMaps;
 window.onload = displayEventInfo;
