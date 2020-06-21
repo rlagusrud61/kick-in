@@ -9,6 +9,7 @@ import nl.utwente.di.team26.Product.model.Map.MapObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 
 /**
@@ -68,6 +69,16 @@ public class MapObjectsDao extends Dao implements DaoInterface<MapObject> {
         }
     }
 
+    public void deleteSelected(Long[] arrayOfObjectsToDelete) throws SQLException {
+        for (Long oid : arrayOfObjectsToDelete) {
+            try {
+                delete(new MapObject(oid));
+            } catch (NotFoundException e) {
+                //It is ok if an object was not found, maybe already deleted.
+            }
+        }
+    }
+
     public void deleteAllForMap(MapObject mapObject) throws NotFoundException, SQLException {
         try(Connection conn = CONSTANTS.getConnection()) {
             String sql = "DELETE FROM MapObjects WHERE (mapId = ? )";
@@ -98,6 +109,22 @@ public class MapObjectsDao extends Dao implements DaoInterface<MapObject> {
                 stmt.setLong(1, mapId);
                 return getResultOfQuery(conn, stmt);
             }
+        }
+    }
+
+    public void putSelected(MapObject[] arrayOfObjectsToPut) throws SQLException {
+        for (MapObject mapObject : arrayOfObjectsToPut) {
+            try {
+                save(mapObject);
+            } catch (NotFoundException e) {
+                //It is ok if an object was not found, maybe already deleted.
+            }
+        }
+    }
+
+    public void createMany(MapObject[] newObjectToAdd) throws SQLException {
+        for (MapObject mapObject : newObjectToAdd) {
+            create(mapObject);
         }
     }
 }

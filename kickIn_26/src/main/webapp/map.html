@@ -21,7 +21,7 @@
 <div id="mapContainer">
     <div id="mapid"></div>
     <button onclick="addFenceToMap()">Add Fence</button>
-    <button onclick="saveObject()">Save Objects</button>
+    <button onclick="saveState()">Save Objects</button>
 </div>
 </body>
 <script>
@@ -45,34 +45,78 @@
     function addFenceToMap() {
         addResourceToMap(23);
     }
-    function deleteObjectFromDatabase(object) {
-        deleteObject(object.objectId, function () {
-            deletedObjects.delete(object);
-            imgGroup.forEach(putObjectToMap);
-            if (imgGroup.length === 0) {
-                newObjects.forEach(postObjectToMap);
-            }
-        });
-    }
 
-    function putObjectToMap(object) {
-        let parsed = parseObject(object)
-        if (parsed.latLangs !== mapObjects.get(object.objectId).latLangs) {
-            let putObject = parsed;
-            putObject.objectId = object.objectId;
-            updateObject(putObject,  function () {
-                newObjects.forEach(postObjectToMap);
-                if (newObjects.length === 0) {
-                    location.reload();
+    function massDelete(deleteObjectArray, callback) {
+        console.log("mass delete!")
+        let array = [];
+        deleteObjectArray.forEach(function (object) {
+            array.push(object.objectId);
+        })
+        if (array.length !== 0) {
+            deleteObjects(array, mapId, function() {
+                if (this.responseText) {
+                    let response = JSON.parse(this.responseText);
+                    console.log(response);
                 }
+                deletedObjects.clear();
+                callback(true);
+            })
+        } else {
+            callback(false);
+        }
+    }
+    function massUpdate(callback) {
+        console.log("mass put!")
+        let array = [];
+        imgGroup.forEach(function (object) {
+            let parsed = parseObject(object)
+            if (parsed.latLangs !== mapObjects.get(object.objectId).latLangs) {
+                let putObject = parsed;
+                putObject.objectId = object.objectId;
+                array.push(putObject);
+            }
+        })
+        if (array.length !== 0) {
+            putObjects(array, mapId, function() {
+                if (this.responseText) {
+                    let response = JSON.parse(this.responseText);
+                    console.log(response);
+                }
+                callback(true);
+            })
+        } else {
+            callback(false);
+        }
+    }
+    function massPost(callback) {
+        console.log("mass post!")
+        let array = [];
+        newObjects.forEach(function (object) {
+            array.push(parseObject(object))
+        });
+        if (array.length !== 0) {
+            addObjectsToMap(array, mapId, function () {
+                if (this.responseText) {
+                    let response = JSON.parse(this.responseText);
+                    console.log(response);
+                }
+                callback(true);
             });
+        } else {
+            callback(false);
         }
     }
 
-    function saveObject() {
-        deletedObjects.forEach(deleteObjectFromDatabase)
-        imgGroup.forEach(putObjectToMap);
-        newObjects.forEach(postObjectToMap);
+    function saveState() {
+        massDelete(deletedObjects, function (deleteDone) {
+            massUpdate(function (putDone) {
+                massPost(function (postDone) {
+                    if (postDone || putDone || deleteDone) {
+                        bringAllObjectsForMap(mapId);
+                    }
+                });
+            });
+        });
     }
     function addResourceToMap(iid) {
         let woof = L.distortableImageOverlay(images.get(iid)).addTo(map);
@@ -110,16 +154,43 @@
             bringAllObjectsForMap(mapId);
         })
     }
+    function clearMap() {
+        deletedObjects.clear();
+        mapObjects.clear();
+        const lengthImgGroup = imgGroup.length;
+        const newObjectsLength = newObjects.length;
+        for (let i = 0; i < lengthImgGroup; i++) {
+            imgGroup[0].editing._overlay.remove();
+        }
+
+        for (let i = 0; i < newObjectsLength; i++) {
+            newObjects[0].editing._overlay.remove();
+        }
+        imgGroup = [];
+        newObjects = [];
+    }
+    function disableEditingForAll() {
+        imgGroup.forEach(function (img) {
+            img.editing.enable();
+        });
+    }
+    function enableEditingForAll() {
+        imgGroup.forEach(function (img) {
+            img.editing.disable();
+        });
+    }
     function bringAllObjectsForMap(mapId) {
+        disableEditingForAll();
         getAllObjectsForMap(mapId, function() {
             let response = JSON.parse(this.responseText);
+            clearMap();
+            deletedObjects.clear();
             mapObjects = new Map();
             response.forEach(function (object) {
                 mapObjects.set(object.objectId, object)
             })
-            imgGroup = [];
-            newObjects = [];
             insertObjectsToMap();
+            enableEditingForAll();
         })
     }
 
@@ -129,19 +200,6 @@
             resourceId:newObject.resourceId,
             latLangs:JSON.stringify(newObject.getCorners())
         };
-    }
-    function postObjectToMap(newObject) {
-        let newObj = parseObject(newObject);
-        addObjectToMap(newObj, function () {
-            const index = newObjects.indexOf(newObject);
-            if (index !== -1) {
-                newObjects.splice(index, 1);
-            }
-            newObj.objectId = JSON.parse(this.responseText);
-            newObject.objectId = newObj.objectId;
-            mapObjects.set(newObject.objectId, newObj);
-            pushToMap(newObject, newObj);
-        })
     }
 
     bringAllResources();
@@ -176,6 +234,7 @@
             corners: corners
         })
         newImage.objectId = object.objectId;
+        newImage.resourceId = object.resourceId;
         pushToMap(newImage, object);
     }
 

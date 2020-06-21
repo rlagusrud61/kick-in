@@ -531,6 +531,30 @@ function deleteObject(objectId, callback) {
 	xhr.send();
 }
 
+function deleteObjects(deleteObjectArray, mapId, callback) {
+	let xhr = new XMLHttpRequest();
+	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/objects/selected/"+mapId, true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 204 || xhr.status === 418)) {
+			callback.apply(xhr);
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send(JSON.stringify(deleteObjectArray));
+}
+
+function putObjects(putObjectArray, mapId, callback) {
+	let xhr = new XMLHttpRequest();
+	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/objects/selected/"+mapId, true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 204 || xhr.status === 418)) {
+			callback.apply(xhr);
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send(JSON.stringify(putObjectArray));
+}
+
 /**
  * @param {number} mapId - The ID of the map for which the associated objects are required.
  *
@@ -582,8 +606,9 @@ function generateReportForMap(mapId, callback) {
 }
 
 /**
- * @param {json | Object} mapObject - The map object to be added to the database.
+ * @param {json | Object} mapObjectsArray - The map object to be added to the database.
  *
+ * @param mapId
  * @param {function} callback - Once an response from the RESTful service provider has been
  * received, this function is called to analyse the response.
  *
@@ -594,16 +619,16 @@ function generateReportForMap(mapId, callback) {
  * the body is the JSON object that was taken as the parameter. The method then calls the callback function on 'xhr'
  * if the addition was successful.
  */
-function addObjectToMap(mapObject, callback) {
+function addObjectsToMap(mapObjectsArray, mapId, callback) {
 	let xhr = new XMLHttpRequest();
-	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/objects", true);
+	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/objects/"+mapId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 201)) {
+		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
-	xhr.send(JSON.stringify(mapObject));
+	xhr.send(JSON.stringify(mapObjectsArray));
 }
 
 /**
