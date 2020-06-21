@@ -1,3 +1,25 @@
+let yesBtn, noBtn, deleteMapModal, span;
+yesBtn = document.getElementById("yesDeleteButton");
+noBtn = document.getElementById("noBtn");
+deleteMapModal = document.getElementById("modalMapDelete");
+span = document.getElementsByClassName("close")[0];
+
+
+noBtn.onclick = function () {
+    deleteMapModal.style.display = "none";
+};
+
+span.onclick = function () {
+    deleteMapModal.style.display = "none";
+};
+
+
+window.onclick = function (event) {
+    if (event.target === deleteMapModal) {
+        deleteMapModal.style.display = "none";
+    }
+};
+
 /**
  * @summary This method is used to display the information on the event required.
  *
@@ -59,10 +81,6 @@ function displayEventInfo(){
     })
 }
 
-
-yesBtn = document.getElementById("yesDeleteButton");
-deleteMapModal = document.getElementById("modalMapDelete");
-
 /**
  * @param {number} mapId - the ID of the map for which the trash glyphicon was clicked.
  *
@@ -73,12 +91,14 @@ deleteMapModal = document.getElementById("modalMapDelete");
  * page is reloaded.
  */
 function confirmDelete(mapId) {
-	deleteMap(mapId, function() {
-		console.log(this.responseText);
-		location.reload();
-	});
-    yesBtn.setAttribute("onclick", "removeEvent(" + eventId + ")");
-    deleteModal.style.display = "block";
+    yesBtn.setAttribute("onclick", "removeMap(" + mapId + ")");
+    deleteMapModal.style.display = "block";
 }
 
-window.onload = displayEventInfo;
+function removeMap(mapId) {
+    deleteMap(mapId, function() {
+        location.reload();
+    })
+}
+
+window.onload = displayEventInfo();

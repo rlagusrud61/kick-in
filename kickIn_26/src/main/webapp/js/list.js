@@ -17,11 +17,11 @@ noBtn.onclick = function () {
 	deleteModal.style.display = "none";
 }
 
-span.onclick = function(event) {
+span.onclick = function() {
 	modal.style.display = "none";
 }
 
-span2.onclick = function(event){
+span2.onclick = function(){
     deleteModal.style.display = "none";
         
 }
