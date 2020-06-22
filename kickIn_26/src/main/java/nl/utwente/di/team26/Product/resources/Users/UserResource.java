@@ -30,9 +30,9 @@ public class UserResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateUser(User userToUpdate) throws NotFoundException, SQLException {
-
-            usersDao.save(userToUpdate);
-            return Utils.returnNoContent();
+        userToUpdate.setPassword(Utils.hashPassword(userToUpdate.getPassword()));
+        usersDao.save(userToUpdate);
+        return Utils.returnNoContent();
     }
 
     @DELETE
