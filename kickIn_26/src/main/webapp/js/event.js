@@ -1,12 +1,17 @@
-let yesBtn, noBtn, deleteMapModal, span, editBtn, modalMapInfoEdit, span2;
+let yesBtn, noBtn, deleteMapModal, span, editBtn, modalMapInfoEdit, span2, span3, selectMapModal;
 yesBtn = document.getElementById("yesDeleteButton");
 noBtn = document.getElementById("noBtn");
 editBtn = document.getElementById("editBtn");
 deleteMapModal = document.getElementById("modalMapDelete");
 modalMapInfoEdit = document.getElementById("modalMapInfoEdit");
+selectMapModal = document.getElementById("mapSelectModal");
 span = document.getElementsByClassName("close")[0];
 span2 = document.getElementsByClassName("close")[1];
+span3 = document.getElementsByClassName("close")[2];
 
+function openCoolModal() {
+    selectMapModal.style.display = "block";
+}
 //Close the modal if user clicks on NO button
 noBtn.onclick = function () {
     deleteMapModal.style.display = "none";
@@ -19,13 +24,18 @@ span.onclick = function () {
 span2.onclick = function () {
     modalMapInfoEdit.style.display = "none";
 };
+span3.onclick = function () {
+    selectMapModal.style.display = "none";
+};
 
 //Close the modal if user clicks outside the modal window
 window.onclick = function (event) {
     if (event.target === deleteMapModal) {
         deleteMapModal.style.display = "none";
     } else if (event.target === modalMapInfoEdit) {
-        modalMapInfoEdit.style.dislay = "none";
+        modalMapInfoEdit.style.display = "none";
+    } else if (event.target === selectMapModal) {
+        selectMapModal.style.display = "none;"
     }
 };
 
@@ -92,13 +102,6 @@ function displayEventInfo() {
     })
 }
 
-yesBtn = document.getElementById("yesDeleteButton");
-deleteMapModal = document.getElementById("modalMapDelete");
-selectMapModal = document.getElementById("mapSelectModal");
-
-function openCoolModal() {
-    selectMapModal.style.display = "block";
-}
 
 /**
  * @param {number} mapId - the ID of the map for which the trash glyphicon was clicked.
@@ -144,7 +147,7 @@ function updateMapData(mapId) {
     })
 }
 
-function loadMuhMaps() {
+function loadMaps() {
     getAllMaps(function () {
         let maps, mapCheckList;
         maps = JSON.parse(this.responseText);
@@ -153,15 +156,13 @@ function loadMuhMaps() {
         displayEventInfo();
         for (i = 0; i < maps.length; i++) {
             mapCheckList.innerHTML += '<div class="custom-control custom-checkbox">' +
-                '  <input type="checkbox" class="custom-control-input" id="defaultChecked2" checked>' +
-                '  <label class="custom-control-label" for="defaultChecked2">Default checked</label>' +
-                '</div>'
+                '  <input type="checkbox" class="custom-control-input">' +
+                '  <span class="custom-control-label checkboxtext">' + maps[i].name + '</span></div>'
         }
         console.log(mapCheckList.innerHTML);
 
     })
 }
 
-window.onload = loadMuhMaps();
-window.onload = displayEventInfo;
+window.onload = loadMaps();
 
