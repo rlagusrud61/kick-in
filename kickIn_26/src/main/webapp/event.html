@@ -37,20 +37,17 @@
         background-color: #ffffff;
     }
 
-    input[type=checkbox] {
-        /* Double-sized Checkboxes */
-        -ms-transform: scale(2); /* IE */
-        -moz-transform: scale(2); /* FF */
-        -webkit-transform: scale(2); /* Safari and Chrome */
-        -o-transform: scale(2); /* Opera */
-        transform: scale(2);
-        padding-right: 10px;
+    input[type="checkbox"]{
+        width: 30px; /*Desired width*/
+        height: 30px; /*Desired height*/
+        cursor: pointer;
+        -webkit-appearance: none;
+        appearance: none;
     }
-
     /* Might want to wrap a span around your checkbox text */
     .checkboxtext {
         /* Checkbox text */
-        font-size: 110%;
+        font-size: 100%;
         display: inline;
     }
 
@@ -65,19 +62,18 @@
     <a id="logout" onclick="logout()">Logout</a>
 </div>
 
-<!-- Edit Your Event -->
+<!-- Event -->
 <div class="jumbotron jumbotron-fluid">
     <div class="container" id="main">
         <div class="row">
             <h1 class="col-8">Event</h1>
             <div class="col-4" style="display: flex; justify-content: flex-end;">
-                <a id="addNewMap">
-                    <button class="myButton btn btn-success btn-circle btn-xl align-self-end" type="button"> +</button>
-                </a>
+                    <button class="myButton btn btn-success btn-circle btn-xl align-self-end" type="button" id="addMap"> + </button>
             </div>
         </div>
     </div>
 </div>
+
 
 <!-- Container For Event Descriptions -->
 <div class="container">
@@ -85,11 +81,13 @@
         <div class="row">
             <div class="col-md-6 col-sm-7 col-lg-5 d-inline-flex">
                 <h1 class="text-left" id="eventname">Epic_Event_1</h1>
-                <a class="glyphicon glyphicon-pencil text-success" href="edit.html"
+                <a class="glyphicon glyphicon-pencil text-success"
                    id="editEvent"
-                   style="font-size:20px; padding-top: 7%; padding-left: 10px;"></a>
+                   style="font-size:20px; padding-top: 7%; padding-left: 5%;"></a>
                 <a class="glyphicon glyphicon-trash text-success" id="deleteEvent"
-                   style="font-size:20px; padding-top: 7%; padding-left: 10px;"></a>
+                   style="font-size:20px; padding-top: 7%; padding-left: 5%;"></a>
+                <a class="glyphicon glyphicon-th-list text-success" id="addMapsToEvent"
+                   style="font-size:20px; padding-top: 7%; padding-left: 5%;"></a>
             </div>
         </div>
         <div id="intro">
@@ -104,7 +102,7 @@
     </div>
 </div>
 
-<!-- Container for Map #1 (Stub) -->
+<!-- Container for Map #1 (Stub)-->
 <div class="container">
     <div class="shadow-lg p-3 mb-5 bg-white rounded">
         <div class="row" style="justify-content: center;">
@@ -145,7 +143,7 @@
         </div>
     </div>
 
-
+<!--List of the maps-->
     <div class="mapList">
         <table class="table table-hover" id="mapTable"></table>
     </div>
@@ -153,14 +151,34 @@
 </div>
 <div>
     <button onclick="getMaps()">MAPS</button>
-    <button onclick="openCoolModal()">WOAH</button>
 </div>
+
+
+
+<!-- Modal for Add Existing Map to Event / Create New Map-->
+<div class="modal" id="modalAddMap">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close" id="closeAddMap">&times;</span>
+        <h2>Add a New Map</h2>
+        <h4>Would you like to add an existing map from a different event or create a new map?</h4>
+        <div class="bottomright" style="display: flex; justify-content: center;">
+            <button class="btn btn-success align-self-center" id="existingMapBtn"
+                    type="submit">ADD AN EXISTING MAP</button>
+            <a id="addNewMap"><button class="btn btn-success align-self-center" type="button">CREATE A NEW MAP
+            </button></a>
+
+        </div>
+    </div>
+</div>
+
+
 <!-- Map selection modal -->
 <div class="modal" id="mapSelectModal">
         <!-- Modal content -->
         <div class="modal-content">
             <span class="close" id="closeMapSelect">&times;</span>
-            <h2>Map checklist</h2>
+            <h2>Add Existing Maps to Event</h2>
             <div class="modal-body">
                 <div class="mapChecklist" id="mapCheckList">
                 </div>

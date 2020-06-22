@@ -1,17 +1,31 @@
-let yesBtn, noBtn, deleteMapModal, span1, editBtn, modalMapInfoEdit, span2, span3, selectMapModal;
+let yesBtn, noBtn, deleteMapModal, span1, editBtn, modalMapInfoEdit, span2, span3, span4 , selectMapModal, listBtn , existingMapBtn , modalAddMap, addMapBtn;
 yesBtn = document.getElementById("yesDeleteButton");
 noBtn = document.getElementById("noBtn");
 editBtn = document.getElementById("editBtn");
+addMapBtn = document.getElementById("addMap");
+listBtn = document.getElementById("addMapsToEvent");
+existingMapBtn = document.getElementById("existingMapBtn");
 deleteMapModal = document.getElementById("modalMapDelete");
 modalMapInfoEdit = document.getElementById("modalMapInfoEdit");
+modalAddMap = document.getElementById("modalAddMap");
 selectMapModal = document.getElementById("mapSelectModal");
 span1 = document.getElementById("closeMapInfoEdit");
 span2 = document.getElementById("closeMapSelect");
 span3 = document.getElementById("closeMapDelete");
+span4 = document.getElementById("closeAddMap");
 
-function openCoolModal() {
-    selectMapModal.style.display = "block";
+
+addMapBtn.onclick = function() {
+    modalAddMap.style.display = "block";
 }
+
+existingMapBtn.onclick = function() {
+    modalAddMap.style.display = "none";
+    selectMapModal.style.display = "block";
+};
+listBtn.onclick = function () {
+    selectMapModal.style.display = "block";
+};
 //Close the modal if user clicks on NO button
 noBtn.onclick = function () {
     deleteMapModal.style.display = "none";
@@ -27,6 +41,9 @@ span2.onclick = function () {
 span3.onclick = function () {
     deleteMapModal.style.display = "none";
 };
+span4.onclick = function () {
+    modalAddMap.style.display = "none";
+};
 
 //Close the modal if user clicks outside the modal window
 window.onclick = function (event) {
@@ -36,6 +53,8 @@ window.onclick = function (event) {
         modalMapInfoEdit.style.display = "none";
     } else if (event.target === selectMapModal) {
         selectMapModal.style.display = "none";
+    } else if (event.target === modalAddMap) {
+        modalAddMap.style.display = "none";
     }
 };
 
@@ -156,7 +175,7 @@ function loadMaps() {
         displayEventInfo();
         for (let i = 0; i < maps.length; i++) {
             mapCheckList.innerHTML += '<div class="custom-control custom-checkbox">' +
-                '<input type="checkbox" class="custom-control-input" id="uncheckedbox'+i+'">' +
+                '<input type="checkbox" class="custom-control-input" id="uncheckedbox'+ i +'">' +
                 '<label class="custom-control-label checkboxtext" for="uncheckedbox'+i+'">' + maps[i].name + '</label></div>'
         }
         console.log(mapCheckList.innerHTML);
