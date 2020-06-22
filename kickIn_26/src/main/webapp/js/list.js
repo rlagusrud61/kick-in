@@ -78,7 +78,7 @@ function loadTable() {
             lastEditor.innerHTML = events[i].lastEditedBy;
             action.innerHTML = "<a href='event.html?id=" +
                 events[i].eventId + "' class='text-success'><i class='glyphicon glyphicon-eye-open' " +
-                "style='font-size:20px;'></i></a><a href='edit.html?id=" +
+                "style='font-size:20px;'></i></a><a href='editEvent.html?id=" +
                 events[i].eventId + "' class='text-success'><i class='glyphicon glyphicon-pencil' " +
                 "style='font-size:20px;'></i></a><a href='javascript: window.confirmDelete(" + events[i].eventId + ")'" +
                 "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
