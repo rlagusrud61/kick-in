@@ -39,9 +39,8 @@ public class UserResource {
     @Secured(Roles.ADMIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteUser(@PathParam("userId") long userId) throws NotFoundException, SQLException {
-
-            usersDao.delete(new User(userId));
-            return Utils.returnNoContent();
+        usersDao.delete(new User(userId));
+        return Utils.returnNoContent();
     }
 
 }
