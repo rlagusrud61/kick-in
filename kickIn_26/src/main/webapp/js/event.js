@@ -19,13 +19,13 @@ noBtn.onclick = function () {
 
 //Close the modal if user clicks on close (x) button
 span.onclick = function () {
-    deleteMapModal.style.display = "none";
-};
-span2.onclick = function () {
     modalMapInfoEdit.style.display = "none";
 };
-span3.onclick = function () {
+span2.onclick = function () {
     selectMapModal.style.display = "none";
+};
+span3.onclick = function () {
+    deleteMapModal.style.display = "none";
 };
 
 //Close the modal if user clicks outside the modal window
@@ -35,7 +35,7 @@ window.onclick = function (event) {
     } else if (event.target === modalMapInfoEdit) {
         modalMapInfoEdit.style.display = "none";
     } else if (event.target === selectMapModal) {
-        selectMapModal.style.display = "none;"
+        selectMapModal.style.display = "none";
     }
 };
 
@@ -154,10 +154,10 @@ function loadMaps() {
         mapCheckList = document.getElementById("mapCheckList");
         mapCheckList.innerHTML = "";
         displayEventInfo();
-        for (i = 0; i < maps.length; i++) {
+        for (let i = 0; i < maps.length; i++) {
             mapCheckList.innerHTML += '<div class="custom-control custom-checkbox">' +
-                '  <input type="checkbox" class="custom-control-input">' +
-                '  <span class="custom-control-label checkboxtext">' + maps[i].name + '</span></div>'
+                '<input type="checkbox" class="custom-control-input" id="uncheckedbox'+i+'">' +
+                '<label class="custom-control-label checkboxtext" for="uncheckedbox'+i+'">' + maps[i].name + '</label></div>'
         }
         console.log(mapCheckList.innerHTML);
 

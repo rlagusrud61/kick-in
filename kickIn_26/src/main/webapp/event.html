@@ -72,7 +72,7 @@
             <h1 class="col-8">Event</h1>
             <div class="col-4" style="display: flex; justify-content: flex-end;">
                 <a id="addNewMap">
-                    <button class="myButton btn btn-success btn-circle btn-xl align-self-end" type="button"> + </button>
+                    <button class="myButton btn btn-success btn-circle btn-xl align-self-end" type="button"> +</button>
                 </a>
             </div>
         </div>
@@ -159,20 +159,21 @@
 </div>
 <!-- Map selection modal -->
 <div class="modal" id="mapSelectModal">
-	<!-- Modal content -->
-	<div class="modal-content">
-		<span class="close">&times;</span>
-		<h2>Map checklist</h2>
-		<div class="mapChecklist" id="mapCheckList">
-
-		</div>
-	</div>
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Map checklist</h2>
+            <div class="modal-body">
+                <div class="mapChecklist" id="mapCheckList">
+                </div>
+            </div>
+        </div>
 </div>
 <!-- The Map Deletion Modal -->
 <div class="modal" id="modalMapDelete">
     <!-- Modal content -->
     <div class="modal-content">
-        <span class="close">&times;</span>
+        <span class="close" id="">&times;</span>
         <h2>Do you really want to delete this map?</h2>
         <div class="bottomright" style="display: flex; justify-content: center;">
             <button class="btn btn-success btn-circle btn-xl align-self-center" id="yesDeleteButton"
