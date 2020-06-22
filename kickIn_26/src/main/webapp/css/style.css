@@ -98,6 +98,12 @@ body{
   text-decoration: none;
   font-size: 30px;
 }
+#resources {
+  color: #58BD0F;
+  padding-left: 20px;
+  text-decoration: none;
+  font-size: 30px;
+}
 #logout {
   float: right;
   color: #58BD0F;

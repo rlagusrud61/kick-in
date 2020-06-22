@@ -22,7 +22,7 @@ function sortTableAscending(tableId, sortCriteria) {
             shouldSwitch = false;
             /* Get the two elements you want to compare,
             one from current row and one from the next: */
-            if (sortCriteria === "name" || sortCriteria === "event" || sortCriteria === "map"){
+            if (sortCriteria === "name" || sortCriteria === "event" || sortCriteria === "map" ||  sortCriteria === "resource" ){
                 console.log(sortCriteria);
                 x = rows[i].getElementsByTagName("TD")[0];
                 console.log("x" + x);
@@ -72,7 +72,7 @@ function sortTableDescending(tableId, sortCriteria) {
             shouldSwitch = false;
             /* Get the two elements you want to compare,
             one from current row and one from the next: */
-            if (sortCriteria === "name" || sortCriteria === "event" || sortCriteria === "map"){
+            if (sortCriteria === "name" || sortCriteria === "event" || sortCriteria === "map" || sortCriteria === "resource"){
                 x = rows[i].getElementsByTagName("TD")[0];
                 y = rows[i + 1].getElementsByTagName("TD")[0];
             } else if (sortCriteria === "date"){

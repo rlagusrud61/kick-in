@@ -114,7 +114,7 @@ function addEventPopup() {
 }
 
 /**
- * @param {number} eventId - the ID of the event for which the trash glyphicon was clicked.
+ * @param {number} eventId - the ID of the event for which the trash button was clicked.
  *
  * @summary This method is used to open the modal and set the ID of the event to be deleted when the 'YES' button is
  * clicked in the event deletion confirmation popup.

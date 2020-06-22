@@ -26,10 +26,10 @@ span2.onclick = function(){
 
 }
 
-window.onclick = function (map) {
-    if (map.target === modal) {
+window.onclick = function (event) {
+    if (event.target === modal) {
         modal.style.display = "none";
-    } else if (map.target === deleteModal) {
+    } else if (event.target === deleteModal) {
         deleteModal.style.display = "none";
     }
 }
