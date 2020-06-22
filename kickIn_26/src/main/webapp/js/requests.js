@@ -531,6 +531,22 @@ function deleteObject(objectId, callback) {
 	xhr.send();
 }
 
+/**
+ * @param {number | Array} objectId - An array of the IDs of the objects to be deleted from the database for a specific
+ * map.
+ *
+ * @param {number} mapId - The ID of the map for which map objects are to be deleted.
+ *
+ * @param {function} callback - Once an response from the RESTful service provider has been
+ * received, this function is called to analyse the response.
+ *
+ * @summary This method deletes the required objects from the database for a specific map.
+ *
+ * @description This method takes an array of the IDs of the required objects and the ID of the map which contains the
+ * objects as parameters. This ID is then appended to the URL to request the deletion on the back-end. A DELETE request
+ * is sent to the RESTful service provider with the given URL. The method then calls the callback function on 'xhr' if
+ * the deletion was successful.
+ */
 function deleteObjects(deleteObjectArray, mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/objects/selected/"+mapId, true);
@@ -543,7 +559,22 @@ function deleteObjects(deleteObjectArray, mapId, callback) {
 	xhr.send(JSON.stringify(deleteObjectArray));
 }
 
-function putObjects(putObjectArray, mapId, callback) {
+/**
+ * @param {json | Object | Array} mapObject - The map objects to be updated for a specific map.
+ *
+ * @param {number} mapId - The ID of the map for which the map objects are to be updated.
+ *
+ * @param {function} callback - Once an response from the RESTful service provider has been
+ * received, this function is called to analyse the response.
+ *
+ * @summary This method updates the required map objects for a specific map in the database.
+ *
+ * @description This method takes an array of JSON objects of the map objects and ID of the map in which changes are to
+ * be made as parameters. This ID is then appended to the URL to request the update on the back-end. A PUT request is
+ * sent to the RESTful service provider with the given URL, where the content of the body is the array of JSON objects
+ * that was taken as a parameter. The method then calls the callback function on 'xhr' if the update request was successful.
+ */
+function updateObjects(putObjectArray, mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/objects/selected/"+mapId, true);
 	xhr.onreadystatechange = function() {
@@ -606,17 +637,18 @@ function generateReportForMap(mapId, callback) {
 }
 
 /**
- * @param {json | Object} mapObjectsArray - The map object to be added to the database.
+ * @param {json | Object | Array} mapObjectsArray - The map objects to be added to the database for a specific map.
  *
- * @param mapId
+ * @param mapId - The ID of the map to which objects are to be added.
+ *
  * @param {function} callback - Once an response from the RESTful service provider has been
  * received, this function is called to analyse the response.
  *
- * @summary This method adds the map object to the database.
+ * @summary This method adds the map objects to the database for a specific map.
  *
- * @description This method takes the JSON object of the map object to be added as a parameter.
+ * @description This method takes the array of JSON objects of the map objects to be added as a parameter.
  * A POST request is sent to the RESTful service provider with the given URL, where the content of
- * the body is the JSON object that was taken as the parameter. The method then calls the callback function on 'xhr'
+ * the body is the array of JSON objects that was taken as a parameter. The method then calls the callback function on 'xhr'
  * if the addition was successful.
  */
 function addObjectsToMap(mapObjectsArray, mapId, callback) {

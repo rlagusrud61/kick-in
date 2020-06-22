@@ -82,14 +82,13 @@ window.onload = loadTable;
  *
  * @description Once all the information on the required is retrieved using the 'getUser' function which takes the ID of
  * the required user as a parameter, a table is created to display the information received and to delete and edit the
- * user's credentials if required. The table includes the columns 'Name' , 'E-Mail', 'Password', 'Clearance Level' and
- * 'Action' where 'Name' gives the nickname of the user, 'E-Mail' gives the email address of the user, 'Password' gives
- * the password of the user, 'Clearance Level' gives the authorisation level of the user and 'Action' allows the
- * credentials of the user to be edited and deleted.
+ * user's credentials if required. The table includes the columns 'Name' , 'E-Mail', 'Clearance Level' and
+ * 'Action' where 'Name' gives the nickname of the user, 'E-Mail' gives the email address of the user, 'Clearance Level'
+ * gives the authorisation level of the user and 'Action' allows the credentials of the user to be edited and deleted.
  */
 function viewUser(userId) {
 	getUser(userId, function() {
-	    let userInfo, table, header, i, th, tr, levelDescription, row, nickname, email, password, clearanceLevel, action;
+	    let userInfo, table, header, i, th, tr, levelDescription, row, nickname, email, clearanceLevel, action;
 		userInfo = JSON.parse(this.responseText);
 		console.log(userInfo.email);
 		table = document.getElementById("userTable");
@@ -97,7 +96,6 @@ function viewUser(userId) {
 		header = [];
         header.push('Name');
         header.push('E-mail')
-        header.push('Password');
         header.push('Clearance Level');
         header.push('Delete');
 
@@ -125,19 +123,17 @@ function viewUser(userId) {
         row = table.insertRow(-1);
         nickname = row.insertCell(0);
         email = row.insertCell(1);
-        password = row.insertCell(2);
-        clearanceLevel = row.insertCell(3);
-        action = row.insertCell(4);
+        clearanceLevel = row.insertCell(2);
+        action = row.insertCell(3);
         
         nickname.innerHTML = userInfo.nickname;
         email.innerHTML = userInfo.email;
-        password.innerHTML = userInfo.password;
         clearanceLevel.innerHTML = levelDescription;
         action.innerHTML = "<a href='javascript: window.removeUser(" + userInfo.userId + ")' class='text-success'>" +
             "<i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
         userModal.style.display = "block";
         
-	})
+	});
 }
 
 /**

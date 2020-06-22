@@ -77,7 +77,7 @@
             }
         })
         if (array.length !== 0) {
-            putObjects(array, mapId, function() {
+            updateObjects(array, mapId, function() {
                 if (this.responseText) {
                     let response = JSON.parse(this.responseText);
                     console.log(response);
