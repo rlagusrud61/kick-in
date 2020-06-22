@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.18.0/css/mdb.min.css" rel="stylesheet">
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="css/editUser.css"> <!-- link to css file -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User</title>
+</head>
+
+<body>
+<!-- Navigation Bar -->
+<div class="topnav">
+    <a href="list.html" id="home"><i class="glyphicon glyphicon-home"></i></a>
+    <a href="users.html" id="users"><i class="glyphicon glyphicon-user"></i></a>
+    <a href="maps.html" id="maps"><i class="glyphicon glyphicon-globe"></i></a>
+    <a href="resources.html" id="resources"><i class="glyphicon glyphicon-paperclip"></i></a>
+    <a id="arrow" onclick="goBack()"><i class="glyphicon glyphicon-arrow-left"></i></a>
+    <a id="logout" onclick="logout()">Logout</a>
+</div>
+
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container" id="main">
+        <div class="row">
+            <h1 class="col-8">Edit User</h1>
+            <div class="col-4" style="display: flex; justify-content: flex-end;">
+                <button class="myButton btn btn-success btn-circle btn-xl align-self-end" id="myBtn" type="button" onclick="updateUserData()"> EDIT
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container has-shadow" style="background-color: #ffffff;">
+    <form action="users.html" style="margin: 5% 5% 5% 5%">
+
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" for="userName">Name</label>
+            <div class="col-md-3">
+                <input class="form-control" id="userName" onkeyup="XSSInputSanitation('userName')"
+                       placeholder="Name"
+                       type="text">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" for="email">E-Mail</label>
+            <div class="col-md-3">
+                <input class="form-control" id="email" onkeyup="XSSInputSanitation('email')"
+                       placeholder="E-Mail"
+                       type="email">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" for="password">Password</label>
+            <div class="col-md-3">
+                <input class="form-control" id="password" onkeyup="XSSInputSanitation('password')"
+                       placeholder="Password"
+                       type="password">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" for="clearanceLevel">Clearance Level</label>
+            <div class="col-md-3">
+                <select class="form-control" id="clearanceLevel">
+                    <option>Visitor</option>
+                    <option>Editor</option>
+                    <option>Admin</option>
+                </select>
+            </div>
+        </div>
+
+    </form>
+    <!-- End of Form -->
+    <!-- End of container -->
+</div>
+<script src="js/requests.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/editUser.js"></script>
+</body>
+</html>

@@ -129,7 +129,8 @@ function viewUser(userId) {
         nickname.innerHTML = userInfo.nickname;
         email.innerHTML = userInfo.email;
         clearanceLevel.innerHTML = levelDescription;
-        action.innerHTML = "<a href='javascript: window.removeUser(" + userInfo.userId + ")' class='text-success'>" +
+        action.innerHTML = "<a href='editUser.html?id=" + userInfo.userId + "' class='text-success'><i class='glyphicon glyphicon-pencil' " +
+            "style='font-size:20px;'></i></a><a href='javascript: window.removeUser(" + userInfo.userId + ")' class='text-success'>" +
             "<i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
         userModal.style.display = "block";
         

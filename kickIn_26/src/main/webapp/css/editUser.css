@@ -1,0 +1,21 @@
+h1 {
+    margin: 0;
+    display: inline-block;
+}
+
+h2 {
+    text-align: center;
+    font-size: 50px;
+    padding-bottom: 5%;
+}
+
+.form-group {
+    padding-left: 10%;
+}
+
+body {
+    background-color: #f2f2f2;
+    font-size: 15px;
+    font-family: 'Quicksand';
+    color: #6B6B6B;
+}
