@@ -72,7 +72,7 @@
             <h1 class="col-8">Event</h1>
             <div class="col-4" style="display: flex; justify-content: flex-end;">
                 <a id="addNewMap">
-                    <button class="myButton btn btn-success btn-circle btn-xl align-self-end" type="button"> + </button>
+                    <button class="myButton btn btn-success btn-circle btn-xl align-self-end" type="button"> +</button>
                 </a>
             </div>
         </div>
@@ -85,13 +85,11 @@
         <div class="row">
             <div class="col-md-6 col-sm-7 col-lg-5 d-inline-flex">
                 <h1 class="text-left" id="eventname">Epic_Event_1</h1>
-                <a class="glyphicon glyphicon-share text-success"
-                   style="font-size:20px; padding-top: 7%;"></a>
                 <a class="glyphicon glyphicon-pencil text-success" href="edit.html"
                    id="editEvent"
-                   style="font-size:20px; padding-top: 7%;"></a>
+                   style="font-size:20px; padding-top: 7%; padding-left: 5%;"></a>
                 <a class="glyphicon glyphicon-trash text-success" id="deleteEvent"
-                   style="font-size:20px; padding-top: 7%;"></a>
+                   style="font-size:20px; padding-top: 7%; padding-left: 5%;"></a>
             </div>
         </div>
         <div id="intro">
@@ -125,11 +123,11 @@
                 <div class="row">
                     <h1 class="text-left">FirstMap </h1>
                     <a class="glyphicon glyphicon-eye-open text-success"
-                       href="mapView.html" style="font-size:20px; padding-top: 7%;"></a>
+                       href="mapView.html" style="font-size:20px; padding-top: 7%; padding-left: 5%;"></a>
                     <a class="glyphicon glyphicon-pencil text-success"
-                       href="mapEdit.html" style="font-size:20px; padding-top: 7%;"></a>
+                       href="mapEdit.html" style="font-size:20px; padding-top: 7%; padding-left: 5%;"></a>
                     <a class="glyphicon glyphicon-trash text-success" id="deleteMap"
-                       style="font-size:20px; padding-top: 7%;"></a>
+                       style="font-size:20px; padding-top: 7%; padding-left: 5%;"></a>
                 </div>
 
                 <div class="row">
@@ -158,21 +156,26 @@
     <button onclick="openCoolModal()">WOAH</button>
 </div>
 <!-- Map selection modal -->
-<div class="modal modal_multi" id="mapSelectModal">
-	<!-- Modal content -->
-	<div class="modal-content">
-		<span class="close close_multi">&times;</span>
-		<h2>Map checklist</h2>
-		<div class="mapChecklist" id="mapCheckList">
-
-		</div>
-	</div>
+<div class="modal" id="mapSelectModal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close" id="closeMapSelect">&times;</span>
+            <h2>Map checklist</h2>
+            <div class="modal-body">
+                <div class="mapChecklist" id="mapCheckList">
+                </div>
+            </div>
+            <div class="bottomright" style="display: flex; justify-content: flex-end;">
+                <button class="btn btn-success btn-circle btn-xl align-self-end" onclick="">ADD
+                </button>
+            </div>
+        </div>
 </div>
 <!-- The Map Deletion Modal -->
 <div class="modal" id="modalMapDelete">
     <!-- Modal content -->
     <div class="modal-content">
-        <span class="close">&times;</span>
+        <span class="close" id="closeMapDelete">&times;</span>
         <h2>Do you really want to delete this map?</h2>
         <div class="bottomright" style="display: flex; justify-content: center;">
             <button class="btn btn-success btn-circle btn-xl align-self-center" id="yesDeleteButton"
@@ -189,7 +192,7 @@
 <div class="modal" id="modalMapInfoEdit">
     <!-- Popup content -->
     <div class="modal-content">
-        <span class="close">&times;</span>
+        <span class="close" id="closeMapInfoEdit">&times;</span>
         <h2>Edit Map Information</h2>
         <div>
             <div class="form-group row">
