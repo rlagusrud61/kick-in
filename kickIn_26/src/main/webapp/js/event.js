@@ -1,13 +1,13 @@
-let yesBtn, noBtn, deleteMapModal, span, editBtn, modalMapInfoEdit, span2, span3, selectMapModal;
+let yesBtn, noBtn, deleteMapModal, span1, editBtn, modalMapInfoEdit, span2, span3, selectMapModal;
 yesBtn = document.getElementById("yesDeleteButton");
 noBtn = document.getElementById("noBtn");
 editBtn = document.getElementById("editBtn");
 deleteMapModal = document.getElementById("modalMapDelete");
 modalMapInfoEdit = document.getElementById("modalMapInfoEdit");
 selectMapModal = document.getElementById("mapSelectModal");
-span = document.getElementsByClassName("close")[0];
-span2 = document.getElementsByClassName("close")[1];
-span3 = document.getElementsByClassName("close")[2];
+span1 = document.getElementById("closeMapInfoEdit");
+span2 = document.getElementById("closeMapSelect");
+span3 = document.getElementById("closeMapDelete");
 
 function openCoolModal() {
     selectMapModal.style.display = "block";
@@ -18,7 +18,7 @@ noBtn.onclick = function () {
 };
 
 //Close the modal if user clicks on close (x) button
-span.onclick = function () {
+span1.onclick = function () {
     modalMapInfoEdit.style.display = "none";
 };
 span2.onclick = function () {
