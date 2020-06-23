@@ -121,17 +121,17 @@ function addItems2() {
 }
 
 /**
- * @param {number} inum - the number of the item that was placed on the map.
+ * @param {number} itemNumber - the number of the item that was placed on the map.
  *
  * @summary This method displays a list of the items added to the map and the quantity of each item on the map.
  *
  * @description The number of the item is taken as a parameter of the function so that the quantity of the item and the
  * name of the item can be retrieved and displayed as a list that the user can refer to for a report.
  */
-function displayItems(inum) {
+function displayItems(itemNumber) {
     let itemnum, inputvalue, displayitems, htmltext, x;
-    itemnum = jsonObj.items["item" + inum];
-    inputvalue = document.getElementById("input" + inum).value
+    itemnum = jsonObj.items["item" + itemNumber];
+    inputvalue = document.getElementById("input" + itemNumber).value
     inputvalue = Number(inputvalue);
     displayitems = document.getElementById("displayitems");
     if (itemnum === null) {
@@ -139,7 +139,7 @@ function displayItems(inum) {
     } else {
         itemnum = itemnum + inputvalue;
     }
-    jsonObj.items["item" + inum] = itemnum;
+    jsonObj.items["item" + itemNumber] = itemnum;
     htmltext = "";
     for (x in jsonObj.items) {
         htmltext += "<li>" + x + " : " + jsonObj.items[x] + "</li>";

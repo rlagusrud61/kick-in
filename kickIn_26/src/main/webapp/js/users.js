@@ -76,11 +76,11 @@ function loadTable() {
 window.onload = loadTable;
 
 /**
- * @param userId - The ID of the user whose information is required.
+ * @param {number} userId - The ID of the user whose information is required.
  *
  * @summary This method allows the admin to get the information on individual users.
  *
- * @description Once all the information on the required is retrieved using the 'getUser' function which takes the ID of
+ * @description Once all the information on the required user is retrieved using the 'getUser' function which takes the ID of
  * the required user as a parameter, a table is created to display the information received and to delete and edit the
  * user's credentials if required. The table includes the columns 'Name' , 'E-Mail', 'Clearance Level' and
  * 'Action' where 'Name' gives the nickname of the user, 'E-Mail' gives the email address of the user, 'Clearance Level'

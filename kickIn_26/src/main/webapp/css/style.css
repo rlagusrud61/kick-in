@@ -67,11 +67,6 @@ body{
   width: 100%;
 }
 
-.glyphicon-share .glyphicon-pencil .glyphicon-trash .glyphicon-user {
-  font-size:25px;
-  color: #ffffff;
-}
-
 #home {
   float: left;
   color: #58BD0F;
@@ -80,30 +75,14 @@ body{
   font-size: 30px;
   padding-left: 4%;
 }
-#arrow {
+
+#maps #resources #users #arrow{
   color: #58BD0F;
   padding-left: 20px;
   text-decoration: none;
   font-size: 30px;
 }
-#users {
-  color: #58BD0F;
-  padding-left: 20px;
-  text-decoration: none;
-  font-size: 30px;
-}
-#maps {
-  color: #58BD0F;
-  padding-left: 20px;
-  text-decoration: none;
-  font-size: 30px;
-}
-#resources {
-  color: #58BD0F;
-  padding-left: 20px;
-  text-decoration: none;
-  font-size: 30px;
-}
+
 #logout {
   float: right;
   color: #58BD0F;
