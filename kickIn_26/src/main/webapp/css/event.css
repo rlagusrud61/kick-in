@@ -29,3 +29,29 @@ body{
     height: 45vh;
     overflow-y: auto;
 }
+
+table th {
+    font-size: 1.8rem;
+}
+
+table td {
+    font-size: 1.5rem;
+}
+
+table {
+    background-color: #ffffff;
+}
+
+input[type="checkbox"]{
+    width: 30px; /*Desired width*/
+    height: 30px; /*Desired height*/
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+}
+/* Might want to wrap a span around your checkbox text */
+.checkboxtext {
+    /* Checkbox text */
+    font-size: 100%;
+    display: inline;
+}
