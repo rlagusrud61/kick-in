@@ -390,7 +390,7 @@ function addEventMap(eventMap, callback) {
  */
 function clearMapsForEvent(eventId, callback) {
 	let xhr = new XMLHttpRequest();
-	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/eventMap/" + eventId, true);
+	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/eventMap/event/" + eventId, true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);
