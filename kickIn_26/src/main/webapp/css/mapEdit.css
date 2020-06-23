@@ -3,7 +3,7 @@ body {
     margin: 0;
 }
 
-html, body, #mapid, #mapContainer {
+html, body, #mapContainer, #mapid {
     height: 100%;
     width: 100%;
 }

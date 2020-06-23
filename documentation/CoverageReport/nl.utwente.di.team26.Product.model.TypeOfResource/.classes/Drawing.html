@@ -1,0 +1,156 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Drawing</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">nl.utwente.di.team26.Product.model.TypeOfResource</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Drawing (nl.utwente.di.team26.Product.model.TypeOfResource)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Drawing</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    42.9%
+  </span>
+  <span class="absValue">
+    (3/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    29.4%
+  </span>
+  <span class="absValue">
+    (5/ 17)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package nl.utwente.di.team26.Product.model.TypeOfResource;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import javax.xml.bind.annotation.XmlRootElement;
+<i>4</i>&nbsp;import java.io.Serializable;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;/**
+<i>7</i>&nbsp; * DrawingResource Value Object.
+<i>8</i>&nbsp; * This class is value object representing database table DrawingResource
+<i>9</i>&nbsp; * This class is intented to be used together with associated Dao object.
+<i>10</i>&nbsp; */
+<i>11</i>&nbsp;@XmlRootElement
+<i>12</i>&nbsp;public class Drawing extends TypeOfResource implements Serializable {
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;    /**
+<i>15</i>&nbsp;     * Persistent Instance variables. This data is directly
+<i>16</i>&nbsp;     * mapped to the columns of database table.
+<i>17</i>&nbsp;     */
+<i>18</i>&nbsp;    private String image;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    /**
+<i>21</i>&nbsp;     * Constructors. DaoGen generates two constructors by default.
+<i>22</i>&nbsp;     * The first one takes no arguments and provides the most simple
+<i>23</i>&nbsp;     * way to create object instance. The another one takes one
+<i>24</i>&nbsp;     * argument, which is the primary key of the corresponding table.
+<i>25</i>&nbsp;     */
+<i>26</i>&nbsp;
+<b class="fc"><i>27</i>&nbsp;    public Drawing() {</b>
+<i>28</i>&nbsp;
+<b class="fc"><i>29</i>&nbsp;    }</b>
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    public Drawing(long resourceId) {
+<b class="nc"><i>32</i>&nbsp;        super(resourceId);</b>
+<b class="nc"><i>33</i>&nbsp;    }</b>
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    public Drawing(String name, String description, String image) {
+<b class="nc"><i>36</i>&nbsp;        super(name, description);</b>
+<b class="nc"><i>37</i>&nbsp;        this.image = image;</b>
+<b class="nc"><i>38</i>&nbsp;    }</b>
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;    public Drawing(long resourceId, String name, String description, String image) {
+<b class="nc"><i>41</i>&nbsp;        super(resourceId, name, description);</b>
+<b class="nc"><i>42</i>&nbsp;        this.image = image;</b>
+<b class="nc"><i>43</i>&nbsp;    }</b>
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;    /**
+<i>46</i>&nbsp;     * Get- and Set-methods for persistent variables. The default
+<i>47</i>&nbsp;     * behaviour does not make any checks against malformed data,
+<i>48</i>&nbsp;     * so these might require some manual additions.
+<i>49</i>&nbsp;     */
+<i>50</i>&nbsp;    public String getImage() {
+<b class="fc"><i>51</i>&nbsp;        return this.image;</b>
+<i>52</i>&nbsp;    }
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;    public void setImage(String imageIn) {
+<b class="fc"><i>55</i>&nbsp;        this.image = imageIn;</b>
+<b class="fc"><i>56</i>&nbsp;    }</b>
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;    /**
+<i>60</i>&nbsp;     * toString will return String object representing the state of this
+<i>61</i>&nbsp;     * valueObject. This is useful during application development, and
+<i>62</i>&nbsp;     * possibly when application is writing object states in textlog.
+<i>63</i>&nbsp;     */
+<i>64</i>&nbsp;    public String toString() {
+<b class="nc"><i>65</i>&nbsp;        return &quot;\nclass DrawingResource, mapping to table DrawingResource\n&quot; +</b>
+<i>66</i>&nbsp;                &quot;Persistent attributes: \n&quot; +
+<b class="nc"><i>67</i>&nbsp;                &quot;resourceId = &quot; + this.getResourceId() + &quot;\n&quot; +</b>
+<b class="nc"><i>68</i>&nbsp;                &quot;name = &quot; + this.getName() + &quot;\n&quot; +</b>
+<b class="nc"><i>69</i>&nbsp;                &quot;description = &quot; + this.getDescription() + &quot;\n&quot; +</b>
+<i>70</i>&nbsp;                &quot;image = &quot; + this.image + &quot;\n&quot;;
+<i>71</i>&nbsp;    }
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-23 15:28</div>
+</div>
+</body>
+</html>

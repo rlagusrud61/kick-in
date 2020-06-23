@@ -1,0 +1,150 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: EventMap</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">nl.utwente.di.team26.Product.model.Event</a> ]
+</div>
+
+<h1>Coverage Summary for Class: EventMap (nl.utwente.di.team26.Product.model.Event)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">EventMap</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85.7%
+  </span>
+  <span class="absValue">
+    (6/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92.3%
+  </span>
+  <span class="absValue">
+    (12/ 13)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package nl.utwente.di.team26.Product.model.Event;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import javax.xml.bind.annotation.XmlRootElement;
+<i>4</i>&nbsp;import java.io.Serializable;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;/**
+<i>7</i>&nbsp; * EventMap Value Object.
+<i>8</i>&nbsp; * This class is value object representing database table EventMap
+<i>9</i>&nbsp; * This class is intented to be used together with associated Dao object.
+<i>10</i>&nbsp; */
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;@XmlRootElement
+<i>13</i>&nbsp;public class EventMap implements Serializable {
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    /**
+<i>16</i>&nbsp;     * Persistent Instance variables. This data is directly
+<i>17</i>&nbsp;     * mapped to the columns of database table.
+<i>18</i>&nbsp;     */
+<i>19</i>&nbsp;    private long eventId;
+<i>20</i>&nbsp;    private long mapId;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    /**
+<i>23</i>&nbsp;     * Constructors. DaoGen generates two constructors by default.
+<i>24</i>&nbsp;     * The first one takes no arguments and provides the most simple
+<i>25</i>&nbsp;     * way to create object instance. The another one takes one
+<i>26</i>&nbsp;     * argument, which is the primary key of the corresponding table.
+<i>27</i>&nbsp;     */
+<i>28</i>&nbsp;
+<b class="fc"><i>29</i>&nbsp;    public EventMap () {</b>
+<i>30</i>&nbsp;
+<b class="fc"><i>31</i>&nbsp;    }</b>
+<i>32</i>&nbsp;
+<b class="fc"><i>33</i>&nbsp;    public EventMap (long eventIdIn, long mapIdIn) {</b>
+<b class="fc"><i>34</i>&nbsp;        this.eventId = eventIdIn;</b>
+<b class="fc"><i>35</i>&nbsp;        this.mapId = mapIdIn;</b>
+<b class="fc"><i>36</i>&nbsp;    }</b>
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    /**
+<i>40</i>&nbsp;     * Get- and Set-methods for persistent variables. The default
+<i>41</i>&nbsp;     * behaviour does not make any checks against malformed data,
+<i>42</i>&nbsp;     * so these might require some manual additions.
+<i>43</i>&nbsp;     */
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;    public long getEventId() {
+<b class="fc"><i>46</i>&nbsp;        return this.eventId;</b>
+<i>47</i>&nbsp;    }
+<i>48</i>&nbsp;    public void setEventId(long eventIdIn) {
+<b class="fc"><i>49</i>&nbsp;        this.eventId = eventIdIn;</b>
+<b class="fc"><i>50</i>&nbsp;    }</b>
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;    public long getMapId() {
+<b class="fc"><i>53</i>&nbsp;        return this.mapId;</b>
+<i>54</i>&nbsp;    }
+<i>55</i>&nbsp;    public void setMapId(long mapIdIn) {
+<b class="fc"><i>56</i>&nbsp;        this.mapId = mapIdIn;</b>
+<b class="fc"><i>57</i>&nbsp;    }</b>
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;    @Override
+<i>61</i>&nbsp;    public String toString() {
+<b class="nc"><i>62</i>&nbsp;        return &quot;EventMap{&quot; +</b>
+<i>63</i>&nbsp;                &quot;eventId=&quot; + eventId +
+<i>64</i>&nbsp;                &quot;, mapId=&quot; + mapId +
+<i>65</i>&nbsp;                &#39;}&#39;;
+<i>66</i>&nbsp;    }
+<i>67</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-23 15:28</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,172 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: EventsDao</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">nl.utwente.di.team26.Product.dao.Events</a> ]
+</div>
+
+<h1>Coverage Summary for Class: EventsDao (nl.utwente.di.team26.Product.dao.Events)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">EventsDao</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85.7%
+  </span>
+  <span class="absValue">
+    (6/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    86.4%
+  </span>
+  <span class="absValue">
+    (51/ 59)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package nl.utwente.di.team26.Product.dao.Events;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import nl.utwente.di.team26.Constants;
+<i>4</i>&nbsp;import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
+<i>5</i>&nbsp;import nl.utwente.di.team26.Product.dao.Dao;
+<i>6</i>&nbsp;import nl.utwente.di.team26.Product.dao.DaoInterface;
+<i>7</i>&nbsp;import nl.utwente.di.team26.Product.model.Event.Event;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;import java.sql.Connection;
+<i>10</i>&nbsp;import java.sql.PreparedStatement;
+<i>11</i>&nbsp;import java.sql.SQLException;
+<i>12</i>&nbsp;
+<b class="fc"><i>13</i>&nbsp;public class EventsDao extends Dao implements DaoInterface&lt;Event&gt; {</b>
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    public synchronized long create(Event valueObject) throws SQLException {
+<b class="fc"><i>16</i>&nbsp;        try(Connection conn = Constants.getConnection()) {</b>
+<b class="fc"><i>17</i>&nbsp;            String sql = &quot;INSERT INTO Events (name, description, location, date, createdBy, lastEditedBy) VALUES (?, ?, ?, ?::date, ?, ?) returning eventid&quot;;</b>
+<b class="fc"><i>18</i>&nbsp;            beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);</b>
+<b class="fc"><i>19</i>&nbsp;            try (PreparedStatement stmt = conn.prepareStatement(sql)) {</b>
+<i>20</i>&nbsp;
+<b class="fc"><i>21</i>&nbsp;                stmt.setString(1, valueObject.getName());</b>
+<b class="fc"><i>22</i>&nbsp;                stmt.setString(2, valueObject.getDescription());</b>
+<b class="fc"><i>23</i>&nbsp;                stmt.setString(3, valueObject.getLocation());</b>
+<b class="fc"><i>24</i>&nbsp;                stmt.setString(4, valueObject.getDate());</b>
+<b class="fc"><i>25</i>&nbsp;                stmt.setLong(5, valueObject.getCreatedBy());</b>
+<b class="fc"><i>26</i>&nbsp;                stmt.setLong(6, valueObject.getLastEditedBy());</b>
+<b class="fc"><i>27</i>&nbsp;                return executeCreate(conn, stmt);</b>
+<b class="fc"><i>28</i>&nbsp;            }</b>
+<b class="fc"><i>29</i>&nbsp;        }</b>
+<i>30</i>&nbsp;    }
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    public void save(Event valueObject) throws NotFoundException, SQLException {
+<b class="fc"><i>33</i>&nbsp;        try(Connection conn = Constants.getConnection()) {</b>
+<b class="fc"><i>34</i>&nbsp;            String sql = &quot;UPDATE Events SET name = ?, description = ?, location = ?, &quot;</b>
+<i>35</i>&nbsp;                    + &quot;lastEditedBy = ? WHERE (eventId = ? ) &quot;;
+<b class="fc"><i>36</i>&nbsp;            beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);</b>
+<b class="fc"><i>37</i>&nbsp;            try (PreparedStatement stmt = conn.prepareStatement(sql)) {</b>
+<b class="fc"><i>38</i>&nbsp;                stmt.setString(1, valueObject.getName());</b>
+<b class="fc"><i>39</i>&nbsp;                stmt.setString(2, valueObject.getDescription());</b>
+<b class="fc"><i>40</i>&nbsp;                stmt.setString(3, valueObject.getLocation());</b>
+<b class="fc"><i>41</i>&nbsp;                stmt.setLong(4, valueObject.getLastEditedBy());</b>
+<b class="fc"><i>42</i>&nbsp;                stmt.setLong(5, valueObject.getEventId());</b>
+<b class="fc"><i>43</i>&nbsp;                databaseUpdate(conn, stmt);</b>
+<b class="fc"><i>44</i>&nbsp;            }</b>
+<b class="fc"><i>45</i>&nbsp;        }</b>
+<b class="fc"><i>46</i>&nbsp;    }</b>
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;    public void delete(Event valueObject) throws NotFoundException, SQLException {
+<b class="fc"><i>49</i>&nbsp;        try(Connection conn = Constants.getConnection()) {</b>
+<b class="fc"><i>50</i>&nbsp;            String sql = &quot;DELETE FROM Events WHERE (eventId = ? ) &quot;;</b>
+<b class="fc"><i>51</i>&nbsp;            beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);</b>
+<b class="fc"><i>52</i>&nbsp;            try (PreparedStatement stmt = conn.prepareStatement(sql)) {</b>
+<b class="fc"><i>53</i>&nbsp;                stmt.setLong(1, valueObject.getEventId());</b>
+<b class="fc"><i>54</i>&nbsp;                databaseUpdate(conn, stmt);</b>
+<b class="fc"><i>55</i>&nbsp;            }</b>
+<b class="fc"><i>56</i>&nbsp;        }</b>
+<b class="fc"><i>57</i>&nbsp;    }</b>
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;    public void deleteAll() throws SQLException, NotFoundException {
+<b class="nc"><i>60</i>&nbsp;        try(Connection conn = Constants.getConnection()) {</b>
+<b class="nc"><i>61</i>&nbsp;            String sql = &quot;DELETE FROM Events&quot;;</b>
+<b class="nc"><i>62</i>&nbsp;            beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);</b>
+<b class="nc"><i>63</i>&nbsp;            try (PreparedStatement stmt = conn.prepareStatement(sql)) {</b>
+<b class="nc"><i>64</i>&nbsp;                databaseUpdate(conn, stmt);</b>
+<b class="nc"><i>65</i>&nbsp;            }</b>
+<b class="nc"><i>66</i>&nbsp;        }</b>
+<b class="nc"><i>67</i>&nbsp;    }</b>
+<i>68</i>&nbsp;
+<i>69</i>&nbsp;    public String getAll() throws SQLException, NotFoundException {
+<b class="fc"><i>70</i>&nbsp;        try(Connection conn = Constants.getConnection()) {</b>
+<b class="fc"><i>71</i>&nbsp;            String sql = &quot;SELECT getAllEvents();&quot;;</b>
+<b class="fc"><i>72</i>&nbsp;            beginTransaction(conn, Connection.TRANSACTION_SERIALIZABLE);</b>
+<b class="fc"><i>73</i>&nbsp;            try (PreparedStatement stmt = conn.prepareStatement(sql)) {</b>
+<b class="fc"><i>74</i>&nbsp;                return getResultOfQuery(conn, stmt);</b>
+<b class="fc"><i>75</i>&nbsp;            }</b>
+<b class="fc"><i>76</i>&nbsp;        }</b>
+<i>77</i>&nbsp;    }
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;    public String get(long eventId) throws NotFoundException, SQLException {
+<b class="fc"><i>80</i>&nbsp;        try(Connection conn = Constants.getConnection()) {</b>
+<b class="fc"><i>81</i>&nbsp;            String sql = &quot;SELECT getEvent(?);&quot;;</b>
+<b class="fc"><i>82</i>&nbsp;            beginTransaction(conn, Connection.TRANSACTION_SERIALIZABLE);</b>
+<b class="fc"><i>83</i>&nbsp;            try (PreparedStatement stmt = conn.prepareStatement(sql)) {</b>
+<b class="fc"><i>84</i>&nbsp;                stmt.setLong(1, eventId);</b>
+<b class="fc"><i>85</i>&nbsp;                return getResultOfQuery(conn, stmt);</b>
+<b class="fc"><i>86</i>&nbsp;            }</b>
+<b class="fc"><i>87</i>&nbsp;        }</b>
+<i>88</i>&nbsp;    }
+<i>89</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-23 15:28</div>
+</div>
+</body>
+</html>
