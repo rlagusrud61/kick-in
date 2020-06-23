@@ -84,7 +84,7 @@ function displayEventInfo() {
                 maps[i].mapId + "' class='text-success'><i class='glyphicon glyphicon-eye-open' " +
                 "style='font-size:20px;'></i></a><a href='http://localhost:8080/kickInTeam26/mapEdit.html?id=" +
                 maps[i].mapId + "' class='text-success'><i class='glyphicon glyphicon-pencil' " +
-                "style='font-size:20px;'></i></a><a href='javascript: window.confirmDelete(" + maps[i].mapId + ")'" +
+                "style='font-size:20px;'></i></a><a href='javascript: window.openModalMapDelete(" + maps[i].mapId + ")'" +
                 "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>" +
                 "<a href='javascript: window.openModalMapDataEdit(" + maps[i].mapId + ")' class='text-success'>" +
                 "<i class='glyphicon glyphicon-wrench' style='font-size:20px'></i></a>";
@@ -110,7 +110,7 @@ function openCoolModal() {
  * function is called with the ID of the map as a parameter so that it can be deleted from the database and the
  * page is reloaded.
  */
-function confirmDelete(mapId) {
+function openModalMapDelete(mapId) {
     yesBtn.setAttribute("onclick", "removeMap(" + mapId + ")");
     deleteMapModal.style.display = "block";
 }
@@ -128,16 +128,16 @@ function openModalMapDataEdit(mapId) {
     console.log("hellotherefriend");
 
 }
-
+//Update the Information of the Map
 function updateMapData(mapId) {
-	console.log("hello");
-    let mapName, description, eventId, mapJSON;
+    let mapName, mapDescription, eventId, mapJSON;
     mapName = document.getElementById("mapName").value;
-    description = document.getElementById("mapDescription").value;
+    mapDescription = document.getElementById("mapDescription").value;
+    eventId = window.location.search.split("=")[1];
     mapJSON = {
         "name": mapName,
         "mapId": mapId,
-        "description": description
+        "description": mapDescription
     };
     console.log(mapJSON);
     updateMap(mapJSON, function () {
