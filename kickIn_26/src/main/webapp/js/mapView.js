@@ -34,7 +34,7 @@ modal2 = document.getElementById("modalExport");
 //Button for exporting
 share = document.getElementById("share");
 //Closing popup
-closeExport = document.getElementsByClassName("close")[0];
+closeExport = document.getElementsByClassName("close")[1];
 //Closing by pressing "No"
 closeExport2 = document.getElementById("no1");
 
