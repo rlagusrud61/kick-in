@@ -109,6 +109,9 @@ function viewResource(resourceId) {
     imageModal.style.display = "block";
 }
 
+/**
+ * @summary This method clears the form for adding a new resource to the database.
+ */
 function clearForm() {
     document.getElementById("resourceDescription").value = "";
     document.getElementById("resourceName").value = "";
@@ -120,10 +123,12 @@ function clearForm() {
 /**
  * @summary This method is used to add a new resource to the database.
  *
- * @description The name, description and image of the resource is retrieved from the popup. Then, a JSON object
- * is created from the information retrieved and either the 'addMaterial' or 'addResource' function is called depending
- * on the type of the resource with this JSON object as a parameter. If the resource was successfully added to the database,
- * the page is reloaded.
+ * @description The name, description and image of the resource is retrieved from the popup. The image is first converted to base64 if
+ * the file size is less than 1MB and if it is in PNG format. If the file is not in PNG format or if it is greater than 1MB in size,
+ * an alert message is displayed to the user and the form is cleared. If the file is less than 1MB in size and is in PNG format,
+ * a JSON object is created from the information retrieved and either the 'addMaterial' or 'addResource' function is called
+ * depending on the type of the resource with this JSON object as a parameter. If the resource was successfully added to
+ * the database, the page is reloaded.
  */
 async function addResourcePopup() {
     let description, resourceImage, resourceName, resourceType, resourceJSON, material, drawing, file, fileSize;
@@ -171,6 +176,14 @@ async function addResourcePopup() {
     }
 }
 
+/**
+ *
+ * @param {Blob} file - The image to be converted to base64.
+ *
+ * @summary This method is used to convert the file taken as a parameter into base64.
+ *
+ * @returns {Promise<unknown>} - The image in base64.
+ */
 const toBase64 = file => new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
