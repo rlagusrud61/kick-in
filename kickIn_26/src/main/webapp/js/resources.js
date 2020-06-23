@@ -1,7 +1,8 @@
-let modal, btn, span, yesBtn, deleteModal, close;
+let modal, imageModal, btn, span, yesBtn, deleteModal, close;
 
 // Get the modal
 modal = document.getElementById("addResource");
+imageModal = document.getElementById("imageModal");
 deleteModal = document.getElementById("resourceDeleteModal");
 // Get the button that trigger the modal
 btn = document.getElementById("addResourceBtn");
@@ -10,6 +11,7 @@ yesBtn = document.getElementById("yesDeleteButton");
 // Get the button to close (x) the modal
 span = document.getElementsByClassName("close close_multi")[0];
 span2 = document.getElementsByClassName("close close_multi")[1];
+span3 = document.getElementsByClassName("close close_multi")[2];
 
 btn.onclick = function () {
     modal.style.display = "block";
@@ -22,8 +24,14 @@ noBtn.onclick = function () {
 span.onclick = function () {
     modal.style.display = "none";
 };
+
 span2.onclick = function () {
     deleteModal.style.display = "none";
+
+};
+
+span3.onclick = function () {
+    imageModal.style.display = "none";
 
 };
 
@@ -32,6 +40,8 @@ window.onclick = function (event) {
         modal.style.display = "none";
     } else if (event.target === deleteModal) {
         deleteModal.style.display = "none";
+    } else if (event.target === imageModal){
+        imageModal.style.display = "none";
     }
 }
 
@@ -69,13 +79,26 @@ function loadTable() {
             action = row.insertCell(2);
             name.innerHTML = resources[i].name;
             description.innerHTML = resources[i].description;
-            action.innerHTML = "<a href='javascript: window.confirmDelete(" + resources[i].resourceId + ")'" +
-                "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
+            action.innerHTML = "<a href='javascript: window.viewResource(" + resources[i].resourceId + ")' class='text-success'>" +
+                "<i class='glyphicon glyphicon-eye-open' style='font-size:20px;'></i></a><a href='javascript: window.confirmDelete(" +
+                resources[i].resourceId + ")'" + "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
         }
     });
 }
 
 window.onload = loadTable;
+
+function viewResource(resourceId) {
+    let resourcePicture = document.getElementById("resourcePicture");
+    getResource(resourceId, function () {
+        let resource = JSON.parse(this.responseText);
+        console.log(resource);
+        console.log(resource.image);
+        resourcePicture.setAttribute("src", resource.image);
+        console.log("hello");
+        imageModal.style.display = "block";
+    });
+}
 
 /**
  * @summary This method is used to add a new resource to the database.
