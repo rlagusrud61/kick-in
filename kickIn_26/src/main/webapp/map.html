@@ -25,7 +25,6 @@
 </div>
 </body>
 <script>
-    let map;
     function initMap() {
         let newMap = L.map('mapid', {
             center: [52.2413, -353.1531],
@@ -39,15 +38,10 @@
         tiles.addTo(newMap);
         return newMap;
     }
-    map = initMap();
-    let mapId = 1;
-
     function addFenceToMap() {
         addResourceToMap(23);
     }
-
     function massDelete(deleteObjectArray, callback) {
-        console.log("mass delete!")
         let array = [];
         deleteObjectArray.forEach(function (object) {
             array.push(object.objectId);
@@ -66,7 +60,6 @@
         }
     }
     function massUpdate(callback) {
-        console.log("mass put!")
         let array = [];
         imgGroup.forEach(function (object) {
             let parsed = parseObject(object)
@@ -89,7 +82,6 @@
         }
     }
     function massPost(callback) {
-        console.log("mass post!")
         let array = [];
         newObjects.forEach(function (object) {
             array.push(parseObject(object))
@@ -106,14 +98,11 @@
             callback(false);
         }
     }
-
     function saveState() {
         massDelete(deletedObjects, function (deleteDone) {
             massUpdate(function (putDone) {
                 massPost(function (postDone) {
-                    if (postDone || putDone || deleteDone) {
-                        bringAllObjectsForMap(mapId);
-                    }
+                    bringAllObjectsForMap(mapId);
                 });
             });
         });
@@ -129,21 +118,6 @@
         woof.resourceId = iid;
         newObjects.push(woof);
     }
-
-    //all available resources
-    let resources = new Map();
-    //their images
-    let images = new Map();
-    //stuff on the map
-    let mapObjects = new Map();
-
-    //the image group for the library
-    let imgGroup = [];
-
-    //new objects added to the map.
-    let newObjects = [];
-    let deletedObjects = new Set();
-
     function bringAllResources() {
         getAllResources(function() {
             let response = JSON.parse(this.responseText);
@@ -193,7 +167,6 @@
             enableEditingForAll();
         })
     }
-
     function parseObject(newObject) {
         return {
             mapId:mapId,
@@ -201,9 +174,6 @@
             latLangs:JSON.stringify(newObject.getCorners())
         };
     }
-
-    bringAllResources();
-
     function insertObjectsToMap() {
         mapObjects.forEach(insertObjectIntoMap)
     }
@@ -215,7 +185,6 @@
         })
         return coords;
     }
-
     function pushToMap(newImage, object) {
         newImage.on('remove', function () {
             deletedObjects.add(object);
@@ -237,6 +206,22 @@
         newImage.resourceId = object.resourceId;
         pushToMap(newImage, object);
     }
+
+    let map = initMap();
+    let mapId = 1;
+    //all available resources
+    let resources = new Map();
+    //their images
+    let images = new Map();
+    //stuff on the map
+    let mapObjects = new Map();
+    //the image group for the library
+    let imgGroup = [];
+    //new objects added to the map.
+    let newObjects = [];
+    let deletedObjects = new Set();
+
+    bringAllResources();
 
 </script>
 </html>
