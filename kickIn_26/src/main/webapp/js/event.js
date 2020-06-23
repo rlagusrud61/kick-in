@@ -121,7 +121,6 @@ function displayEventInfo() {
     })
 }
 
-
 /**
  * @param {number} mapId - the ID of the map for which the trash glyphicon was clicked.
  *
@@ -146,6 +145,7 @@ function removeMap(mapId) {
 function openModalMapDataEdit(mapId) {
     editBtn.setAttribute("onclick", "updateMapData(" + mapId + ")");
     modalMapInfoEdit.style.display = "block";
+    console.log("hellotherefriend");
 
 }
 
@@ -165,21 +165,48 @@ function updateMapData(mapId) {
         window.location.href = "event.html?id=" + eventId;
     })
 }
+var mapsize;
 
+function checkMaps() {
+	eventId = window.location.search.split("=")[1];
+	checkboxes = document.getElementsByName("nicecheckbox");
+	clearMapsForEvent(eventId, function() {
+		for (i = 0; i < checkboxes.length; i++) {
+			if (checkboxes[i].checked) {
+				mapId = parseInt(checkboxes[i].id.split("_")[1]);
+				eventMapJSON = {
+						"eventId": eventId,
+						"mapId": mapId
+				}
+				addEventMap(eventMapJSON, function() {
+					location.reload();
+				})
+			}
+		}
+	})	
+}
 function loadMaps() {
+	eventId = window.location.search.split("=")[1];
     getAllMaps(function () {
         let maps, mapCheckList;
-        maps = JSON.parse(this.responseText);
+        allMaps = JSON.parse(this.responseText);
         mapCheckList = document.getElementById("mapCheckList");
         mapCheckList.innerHTML = "";
         displayEventInfo();
-        for (let i = 0; i < maps.length; i++) {
+        mapsize = allMaps.length;
+        for (let i = 0; i < allMaps.length; i++) {
             mapCheckList.innerHTML += '<div class="custom-control custom-checkbox">' +
-                '<input type="checkbox" class="custom-control-input" id="uncheckedbox'+ i +'">' +
-                '<label class="custom-control-label checkboxtext" for="uncheckedbox'+i+'">' + maps[i].name + '</label></div>'
+                '<input name = "nicecheckbox" type="checkbox" class="custom-control-input" id="mapBox_'+ allMaps[i].mapId +'">' +
+                '<label class="custom-control-label checkboxtext" for="mapBox_'+ allMaps[i].mapId +'">' + allMaps[i].name + '</label></div>'
         }
-        console.log(mapCheckList.innerHTML);
-
+        getAllMapsForEvent(eventId, function() {
+        	tiedMaps = JSON.parse(this.responseText);
+        	for (i = 0; i < tiedMaps.length; i++) {
+        		mapBox = document.getElementById("mapBox_" + tiedMaps[i].mapId);
+        		mapBox.checked = true;
+        	}
+        
+        })
     })
 }
 

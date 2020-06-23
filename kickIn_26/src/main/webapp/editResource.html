@@ -20,9 +20,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="css/editUser.css"> <!-- link to css file -->
+    <link rel="stylesheet" href="css/editResource.css"> <!-- link to css file -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit User</title>
+    <title>Edit Resource</title>
 </head>
 
 <body>
@@ -40,9 +40,10 @@
 <div class="jumbotron jumbotron-fluid">
     <div class="container" id="main">
         <div class="row">
-            <h1 class="col-8">Edit User</h1>
+            <h1 class="col-8">Edit Resource</h1>
             <div class="col-4" style="display: flex; justify-content: flex-end;">
-                <button class="myButton btn btn-success btn-circle btn-xl align-self-end" id="myBtn" type="button" onclick="updateUserData()"> EDIT
+                <button class="myButton btn btn-success btn-circle btn-xl align-self-end" id="myBtn" type="button"
+                        onclick="updateResourceData()"> EDIT
                 </button>
             </div>
         </div>
@@ -51,41 +52,29 @@
 
 
 <div class="container has-shadow" style="background-color: #ffffff;">
-    <form action="users.html" style="margin: 5% 5% 5% 5%">
+    <form action="resources.html" style="margin: 5% 5% 5% 5%">
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" for="resourceName">Name</label>
+            <div class="col-md-3">
+                <input class="form-control" id="resourceName" onkeyup="XSSInputSanitation('resourceName')"
+                       placeholder="Name" type="text">
+            </div>
+        </div>
 
         <div class="form-group row">
-            <label class="col-md-2 col-form-label" for="userName">Name</label>
+            <label class="col-md-2 col-form-label" for="resourceDescription">Description</label>
+            <div class="col-md-8">
+                <textarea class="form-control" id="resourceDescription"
+                          onkeyup="XSSInputSanitation('resourceDescription')" rows="5"></textarea>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" for="resourceImage">Image</label>
             <div class="col-md-3">
-                <input class="form-control" id="userName" onkeyup="XSSInputSanitation('userName')"
+                <input class="form-control" id="resourceImage" onkeyup="XSSInputSanitation('resourceImage')"
                        placeholder="Name"
-                       type="text">
-            </div>
-        </div>
-        <div class="form-group row">
-            <label class="col-md-2 col-form-label" for="email">E-Mail</label>
-            <div class="col-md-3">
-                <input class="form-control" id="email" onkeyup="XSSInputSanitation('email')"
-                       placeholder="E-Mail"
-                       type="email">
-            </div>
-        </div>
-        <div class="form-group row">
-            <label class="col-md-2 col-form-label" for="password">Password</label>
-            <div class="col-md-3">
-                <input class="form-control" id="password" onkeyup="XSSInputSanitation('password')"
-                       placeholder="Password"
-                       type="password">
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="col-md-2 col-form-label" for="clearanceLevel">Clearance Level</label>
-            <div class="col-md-3">
-                <select class="form-control" id="clearanceLevel">
-                    <option>Visitor</option>
-                    <option>Editor</option>
-                    <option>Admin</option>
-                </select>
+                       type="file" accept="image/*">
             </div>
         </div>
 
@@ -95,6 +84,6 @@
 </div>
 <script src="js/requests.js"></script>
 <script src="js/utils.js"></script>
-<script src="js/editUser.js"></script>
+<script src="js/editResource.js"></script>
 </body>
 </html>

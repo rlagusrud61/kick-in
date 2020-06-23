@@ -373,27 +373,20 @@ function removeMap() {
     })
 }
 
-// /**
-//  *  This part of the code is used for taking screenshots of the map
-//  *
-//  *  Exporting in png format
-//  */
-//
-// document.querySelector('yes1').addEventListener('click', function() {
-//     html2canvas(document.querySelector('capture'), {
-//         onrendered: function(canvas) {
-//             document.body.appendChild(canvas);
-//             console.log('it works, kinda');
-//             return Canvas2Image.saveAsPNG(canvas);
-//         }
-//     });
-// });
-//
-// /**function getScreen() {
-//     html2canvas(document.body, {
-//         dpi:192,
-//         onrendered: function (canvas) {
-//             console.log(canvas);
-//         }
-//     });
-// }*/
+/**
+ *
+ *  This part of the code is used for taking screenshots of the map
+ *
+ *  Exporting in png format
+ */
+
+
+document.getElementById("ss").addEventListener('click', function()
+{
+    html2canvas(document.getElementsByClassName("specific")[0]).then(function (canvas) {
+
+            //document.body.appendChild(canvas);
+
+            return Canvas2Image.saveAsPNG(canvas);
+    });
+});
