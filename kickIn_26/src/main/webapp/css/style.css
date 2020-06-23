@@ -61,6 +61,7 @@ body{
   text-decoration: none;
   cursor: pointer;
 }
+
 .topnav {
   background-image:linear-gradient(to right, #D4FC79, #A3EB98);
   overflow: hidden;
@@ -76,7 +77,10 @@ body{
   padding-left: 4%;
 }
 
-#maps #resources #users #arrow{
+#maps,
+#resources,
+#users,
+#arrow {
   color: #58BD0F;
   padding-left: 20px;
   text-decoration: none;
