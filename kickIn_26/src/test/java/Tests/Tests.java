@@ -3,7 +3,7 @@ package Tests;
 import kong.unirest.Cookie;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
-import nl.utwente.di.team26.CONSTANTS;
+import nl.utwente.di.team26.Constants;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Authentication.UserDao;
 import nl.utwente.di.team26.Product.dao.Events.EventMapDao;
@@ -56,7 +56,7 @@ public class Tests {
                 .header("Content-Type", "application/json")
                 .body("{\"email\":\"" + email + "\",\"password\":\""+ defaultPassword +"\"}")
                 .asString();
-        return login.getCookies().getNamed(CONSTANTS.COOKIENAME);
+        return login.getCookies().getNamed(Constants.COOKIENAME);
     }
 
     protected String getURIString(String path) {
@@ -68,7 +68,7 @@ public class Tests {
 
         UserDao userDao = new UserDao();
         for (int i = 0; i < 3; i++) {
-            try(Connection conn = CONSTANTS.getConnection()) {
+            try(Connection conn = Constants.getConnection()) {
                 userArrays[i] = userDao.create(new User(String.format("%s@email.com", userNames[i]), defaultPassword, userNames[i], i));
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -78,7 +78,7 @@ public class Tests {
     }
     protected void destroyUsers() {
         UserDao userDao = new UserDao();
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             for (int i = 0; i < 3; i++) {
                 userDao.delete(new User(userIds[i]));
             }

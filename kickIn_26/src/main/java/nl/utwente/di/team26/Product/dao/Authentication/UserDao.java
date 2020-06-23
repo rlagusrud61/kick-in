@@ -1,6 +1,6 @@
 package nl.utwente.di.team26.Product.dao.Authentication;
 
-import nl.utwente.di.team26.CONSTANTS;
+import nl.utwente.di.team26.Constants;
 import nl.utwente.di.team26.Exception.Exceptions.AuthenticationDeniedException;
 import nl.utwente.di.team26.Exception.Exceptions.DatabaseException;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
@@ -18,7 +18,7 @@ public class UserDao extends Dao implements DaoInterface<User> {
 
     @Override
     public long create(User valueObject) throws SQLException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "INSERT INTO users (email, password, nickname, "
                     + "clearanceLevel) VALUES (?, ?, ?, ?) RETURNING userId";
             beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
@@ -35,7 +35,7 @@ public class UserDao extends Dao implements DaoInterface<User> {
 
     @Override
     public void save(User user) throws NotFoundException, SQLException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "UPDATE Users SET email = ?, password = ?, nickname = ?, clearanceLevel = ? WHERE (userId = ?) ";
             beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -52,7 +52,7 @@ public class UserDao extends Dao implements DaoInterface<User> {
 
     @Override
     public void delete(User user) throws NotFoundException, SQLException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "DELETE FROM Users WHERE (userId = ? )";
             beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -64,7 +64,7 @@ public class UserDao extends Dao implements DaoInterface<User> {
 
     @Override
     public void deleteAll() throws SQLException, NotFoundException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "DELETE FROM Users";
             beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -74,7 +74,7 @@ public class UserDao extends Dao implements DaoInterface<User> {
     }
 
     public String getAll() throws NotFoundException, SQLException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "SELECT getAllUsers();";
             beginTransaction(conn, Connection.TRANSACTION_SERIALIZABLE);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -84,7 +84,7 @@ public class UserDao extends Dao implements DaoInterface<User> {
     }
 
     public String get(long userId) throws SQLException, NotFoundException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "SELECT getUser(?)";
             beginTransaction(conn, Connection.TRANSACTION_SERIALIZABLE);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -95,7 +95,7 @@ public class UserDao extends Dao implements DaoInterface<User> {
     }
 
     public User getUserByEmail(Credentials credentials) throws AuthenticationDeniedException, SQLException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "SELECT * FROM users WHERE email = ?;";
             beginTransaction(conn, Connection.TRANSACTION_SERIALIZABLE);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -118,7 +118,7 @@ public class UserDao extends Dao implements DaoInterface<User> {
     }
 
     public User getUserInstance(long userId) throws SQLException, NotFoundException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "SELECT * FROM users WHERE userId = ?";
             beginTransaction(conn, Connection.TRANSACTION_SERIALIZABLE);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {

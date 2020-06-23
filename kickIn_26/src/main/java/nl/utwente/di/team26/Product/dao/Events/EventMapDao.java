@@ -1,6 +1,6 @@
 package nl.utwente.di.team26.Product.dao.Events;
 
-import nl.utwente.di.team26.CONSTANTS;
+import nl.utwente.di.team26.Constants;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Dao;
 import nl.utwente.di.team26.Product.dao.DaoInterface;
@@ -21,7 +21,7 @@ public class EventMapDao extends Dao implements DaoInterface<EventMap> {
 
     @Override
     public synchronized long create(EventMap valueObject) throws SQLException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "INSERT INTO EventMap (eventId, mapId) VALUES (?, ?) returning eventId";
             beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -38,7 +38,7 @@ public class EventMapDao extends Dao implements DaoInterface<EventMap> {
     }
 
     public void delete(EventMap valueObject) throws NotFoundException, SQLException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "DELETE FROM EventMap WHERE (eventId = ? AND mapId = ? ) ";
             beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
             //only read data already committed, do not want to delete data that doesn't even exist.
@@ -51,7 +51,7 @@ public class EventMapDao extends Dao implements DaoInterface<EventMap> {
     }
 
     public void deleteAll() throws SQLException, NotFoundException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
             String sql = "DELETE FROM EventMap";
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -61,7 +61,7 @@ public class EventMapDao extends Dao implements DaoInterface<EventMap> {
     }
 
     public void deleteAllForEvent(long eventId) throws SQLException, NotFoundException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "DELETE FROM EventMap WHERE (eventId = ?) ";
             beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -72,7 +72,7 @@ public class EventMapDao extends Dao implements DaoInterface<EventMap> {
     }
 
     public String getAllMapsFor(long eventId) throws NotFoundException, SQLException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "select getAllMapsForEvent(?);";
             beginTransaction(conn, Connection.TRANSACTION_SERIALIZABLE);
             //all get requests will have to be serializable, due to phantoms.
@@ -84,7 +84,7 @@ public class EventMapDao extends Dao implements DaoInterface<EventMap> {
     }
 
     public String allEventsFor(long mapId) throws SQLException, NotFoundException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "select getAllEventsForMap(?);";
             beginTransaction(conn, Connection.TRANSACTION_SERIALIZABLE);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
