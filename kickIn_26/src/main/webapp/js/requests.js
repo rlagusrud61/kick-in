@@ -390,7 +390,7 @@ function addEventMap(eventMap, callback) {
  */
 function clearMapsForEvent(eventId, callback) {
 	let xhr = new XMLHttpRequest();
-	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/eventMap/" + eventId, true);
+	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/eventMap/event/" + eventId, true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);
@@ -532,9 +532,9 @@ function deleteObject(objectId, callback) {
 }
 
 /**
- * @param {number | Array} objectId - An array of the IDs of the objects to be deleted from the database for a specific
  * map.
  *
+ * @param deleteObjectArray the objectIds of the objects to be deleted.
  * @param {number} mapId - The ID of the map for which map objects are to be deleted.
  *
  * @param {function} callback - Once an response from the RESTful service provider has been
@@ -556,6 +556,7 @@ function deleteObjects(deleteObjectArray, mapId, callback) {
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
+	console.log(JSON.stringify(deleteObjectArray))
 	xhr.send(JSON.stringify(deleteObjectArray));
 }
 
@@ -639,7 +640,7 @@ function generateReportForMap(mapId, callback) {
 /**
  * @param {json | Object | Array} mapObjectsArray - The map objects to be added to the database for a specific map.
  *
- * @param mapId - The ID of the map to which objects are to be added.
+ * @param {number} mapId - The ID of the map to which objects are to be added.
  *
  * @param {function} callback - Once an response from the RESTful service provider has been
  * received, this function is called to analyse the response.
@@ -756,7 +757,7 @@ function updateDrawing(drawing, callback) {
  */
 function addDrawing(drawing, callback) {
 	let xhr = new XMLHttpRequest();
-	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest//resources/drawing", true);
+	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/resources/drawing", true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 201)) {
 			callback.apply(xhr);
@@ -1109,21 +1110,21 @@ function deleteAllUsers(callback) {
 /**
  * @param {json | Object} credentials - The credentials of the user that have to be checked on the database.
  *
- * @param callback - Once an response from the RESTful service provider has been
+ * @param {function} callback - Once an response from the RESTful service provider has been
  * received, this function is called to analyse the response.
  *
  * @summary This method is used to authenticate the user's credentials.
  *
  * @description A POST request is sent to the RESTful service provider with the given URL, where the content of the
  * body is the JSON object that was taken as the parameter. The method then calls the callback function on 'xhr' if the
- * authentication was successful.
+ * authentication was successful or if wrong credentials were entered.
  */
 function loginUser(credentials, callback) {
     let xhr = new XMLHttpRequest();
     xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/authentication", true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
-            if (xhr.status === 204) {
+            if (xhr.status === 204 || xhr.status === 403) {
                 callback.apply(xhr);
             }
         }

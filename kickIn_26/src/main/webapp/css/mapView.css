@@ -25,3 +25,16 @@ table  thead tr th{
     margin-top: 29px; 
     padding: 0px 7px 0px 7px;
 }
+
+
+table th {
+    font-size: 1.8rem;
+}
+
+table td {
+    font-size: 1.5rem;
+}
+
+table {
+    background-color: #ffffff;
+}

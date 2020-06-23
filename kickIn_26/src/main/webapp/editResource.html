@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
 
+    <meta charset="utf-8">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <!-- Latest compiled and minified CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
@@ -10,23 +12,21 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
     <!-- Material Design Bootstrap -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.18.0/css/mdb.min.css" rel="stylesheet">
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
-    <script src="https://unpkg.com/konva@4.0.0/konva.min.js"></script>
-    <script src="js/util/crop.js"></script>
-    <link href="css/mapEdit.css" rel="stylesheet"> <!-- link to css file -->
-    <link href="css/style.css" rel="stylesheet"> <!-- link to css file -->
-
-
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-    <title>Map Edit</title>
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="css/editResource.css"> <!-- link to css file -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Resource</title>
 </head>
+
 <body>
+<!-- Navigation Bar -->
 <div class="topnav">
     <a href="list.html" id="home"><i class="glyphicon glyphicon-home"></i></a>
     <a href="users.html" id="users"><i class="glyphicon glyphicon-user"></i></a>
@@ -36,56 +36,54 @@
     <a id="logout" onclick="logout()">Logout</a>
 </div>
 
+
 <div class="jumbotron jumbotron-fluid">
     <div class="container" id="main">
         <div class="row">
-            <h1 class="col-8">Edit Your Map</h1>
+            <h1 class="col-8">Edit Resource</h1>
             <div class="col-4" style="display: flex; justify-content: flex-end;">
-                <button class="myButton btn btn-success btn-circle btn-xl align-self-end" id="myBtn" type="button"> +
+                <button class="myButton btn btn-success btn-circle btn-xl align-self-end" id="myBtn" type="button"
+                        onclick="updateResourceData()"> EDIT
                 </button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-3 col-md-3">
-            <div class="shadow-lg p-3 mb-5 bg-white rounded">
-                <h3>Available Items</h3>
-                <br>
-                <div class="row">
 
-                    <!-- Search Bar-->
-                    <div class="md-form mt-0 col-md-8 active-green">
-                        <input aria-label="Search" class="form-control" id="searchItems" onkeyup="searchTables('addItems','searchItems')"
-                               placeholder="Search" type="text">
-                    </div>
-                    <!--List of Available Items Table-->
-                    <div class="col-md-11">
-                        <div id="itemlist"></div>
+<div class="container has-shadow" style="background-color: #ffffff;">
+    <form action="resources.html" style="margin: 5% 5% 5% 5%">
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" for="resourceName">Name</label>
+            <div class="col-md-3">
+                <input class="form-control" id="resourceName" onkeyup="XSSInputSanitation('resourceName')"
+                       placeholder="Name" type="text">
+            </div>
+        </div>
 
-                    </div>
-                </div>
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" for="resourceDescription">Description</label>
+            <div class="col-md-8">
+                <textarea class="form-control" id="resourceDescription"
+                          onkeyup="XSSInputSanitation('resourceDescription')" rows="5"></textarea>
             </div>
         </div>
-        <div class="col-sm-6 col-md-6">
-            <div id="mapContainer">
-                <div id="mapid"></div>
-            </div>
-            <button onclick="getGeoJSON()" type="button">getGeoJSON</button>
-        </div>
-        <div class="col-sm-3 col-md-3">
-            <div class="shadow-lg p-3 mb-5 bg-white rounded">
-                <h3>Items Added</h3>
-                <br>
-                <div id="displayitems">Your list is currently empty.</div>
+
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" for="resourceImage">Image</label>
+            <div class="col-md-3">
+                <input class="form-control" id="resourceImage" onkeyup="XSSInputSanitation('resourceImage')"
+                       placeholder="Name"
+                       type="file" accept="image/*">
             </div>
         </div>
-    </div>
+
+    </form>
+    <!-- End of Form -->
+    <!-- End of container -->
 </div>
-</body>
 <script src="js/requests.js"></script>
 <script src="js/utils.js"></script>
-<script src="js/mapEdit.js"></script>
+<script src="js/editResource.js"></script>
+</body>
 </html>

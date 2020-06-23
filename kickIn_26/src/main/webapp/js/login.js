@@ -3,7 +3,8 @@
  *
  * @description First, the email address and password of the user are retrieved from the web page. This information is
  * then used to create a JSON object which is taken as a parameter to the function 'loginUser' so that the credentials
- * can be authenticated and the user redirected to the 'list.html' page if the authentication was a success.
+ * can be authenticated and the user redirected to the 'list.html' page if the authentication was a success. If the authentication
+ * is unsuccessful, the password and email fields are emptied and an error message is displayed.
  */
 function login() {
     let emailAddress, password, credentialsJSON;
@@ -18,8 +19,15 @@ function login() {
     console.log(emailAddress);
     console.log(password);
     loginUser(credentialsJSON, function() {
-    	console.log(this.responseText);
-    	window.location.href = "list.html";
+        if (this.status === 204){
+            console.log(this.responseText);
+            window.location.href = "list.html";
+        } else if (this.status === 403){
+            console.log("Incorrect credentials");
+            document.getElementById("inputEmail").value = "";
+            document.getElementById("inputPassword").value = "";
+            document.getElementById("incorrectCredentials").innerHTML = "The credentials entered were incorrect. Try again."
+        }
     });
 }
 

@@ -34,7 +34,7 @@ modal2 = document.getElementById("modalExport");
 //Button for exporting
 share = document.getElementById("share");
 //Closing popup
-closeExport = document.getElementsByClassName("close")[0];
+closeExport = document.getElementsByClassName("close")[1];
 //Closing by pressing "No"
 closeExport2 = document.getElementById("no1");
 
@@ -373,27 +373,21 @@ function removeMap() {
     })
 }
 
-// /**
-//  *  This part of the code is used for taking screenshots of the map
-//  *
-//  *  Exporting in png format
-//  */
-//
-// document.querySelector('yes1').addEventListener('click', function() {
-//     html2canvas(document.querySelector('capture'), {
-//         onrendered: function(canvas) {
-//             document.body.appendChild(canvas);
-//             console.log('it works, kinda');
-//             return Canvas2Image.saveAsPNG(canvas);
-//         }
-//     });
-// });
-//
-// /**function getScreen() {
-//     html2canvas(document.body, {
-//         dpi:192,
-//         onrendered: function (canvas) {
-//             console.log(canvas);
-//         }
-//     });
-// }*/
+/**
+ *
+ *  This part of the code is used for taking screenshots of the map
+ *
+ *  Exporting in png format
+ */
+
+
+document.getElementById("yes1").addEventListener('click', function()
+{
+    html2canvas(document.getElementsByClassName("specific")[0]).then(function (canvas) {
+
+            //document.body.appendChild(canvas);
+            modal2.style.display = "none";
+
+            return Canvas2Image.saveAsPNG(canvas);
+    });
+});

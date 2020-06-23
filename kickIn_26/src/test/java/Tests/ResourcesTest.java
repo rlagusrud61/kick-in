@@ -127,6 +127,7 @@ public class ResourcesTest extends Tests {
                     break;
                 case ADMIN:
                     assertEquals(HTTP_NO_CONTENT, response.getStatus());
+                    deleteResources(new long[]{rids[1]});
                     break;
             }
         }
