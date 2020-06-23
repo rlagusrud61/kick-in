@@ -30,3 +30,26 @@ function displayItems(inum) {
     displayitems.innerHTML = htmltext;
     console.log(jsonObj.items);
 }
+
+function addItems() {
+    let row, label, numInput, addButton, materialsList, table, i;
+    materialsList = null;
+    getAllMaterials(function() {
+        materialsList = JSON.parse(this.responseText);
+        console.log(materialsList);
+        table = document.createElement("table"); // creates the table
+        table.setAttribute("id", "addItems");
+        for (i = 0; i < materialsList.length; i++) {
+            row = table.insertRow(-1); // adds a new row
+            label = row.insertCell(0);
+            numInput = row.insertCell(1);
+            addButton = row.insertCell(2);
+            label.innerHTML = '<label>' + materialsList[i].name + '</label>';
+            numInput.innerHTML = '<input id ="input' + materialsList[i].resourceId + '" type = "number" name = "quantity"/>';
+            addButton.innerHTML = '<button onclick ="displayItems(' + materialsList[i].resourceId + ')" style="background-color: #58BD0F; ' +
+                'border-color: #C1FF94;">+</button>';
+        }
+        document.getElementById("itemlist").appendChild(table);
+    })
+}
+window.onload = addItems;
