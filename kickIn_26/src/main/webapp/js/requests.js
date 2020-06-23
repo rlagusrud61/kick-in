@@ -756,7 +756,7 @@ function updateDrawing(drawing, callback) {
  */
 function addDrawing(drawing, callback) {
 	let xhr = new XMLHttpRequest();
-	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest//resources/drawing", true);
+	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/resources/drawing", true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 201)) {
 			callback.apply(xhr);

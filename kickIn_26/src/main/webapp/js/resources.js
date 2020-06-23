@@ -88,14 +88,20 @@ function loadTable() {
 
 window.onload = loadTable;
 
+/**
+ * @param {number} resourceId - The ID of the resource for which the image is required.
+ *
+ * @summary This method allows the user to view the image of the required resource.
+ *
+ * @description Once all the information on the required resource is retrieved using the 'getResource' function which takes the ID of
+ * the required resource as a parameter, the image of the resource is displayed in the popup.
+ */
 function viewResource(resourceId) {
-    let resourcePicture = document.getElementById("resourcePicture");
+    let resourcePicture, resource;
+    resourcePicture = document.getElementById("resourcePicture");
     getResource(resourceId, function () {
-        let resource = JSON.parse(this.responseText);
-        console.log(resource);
-        console.log(resource.image);
+        resource = JSON.parse(this.responseText);
         resourcePicture.setAttribute("src", resource.image);
-        console.log("hello");
         imageModal.style.display = "block";
     });
 }
@@ -114,7 +120,7 @@ function addResourcePopup() {
     resourceName = document.getElementById("resourceName").value;
     material = document.getElementById("material");
     drawing = document.getElementById("drawing");
-    resourceImage = document.getElementById("resourceImage").value;
+    resourceImage = document.getElementById("resourceImage");
     console.log("x" + resourceImage);
     if (material.checked){
         resourceType = material.value;
@@ -124,11 +130,15 @@ function addResourcePopup() {
         console.log("drawing");
     }
     console.log("type: " + resourceType);
+    var fileInput = document.getElementById("resourceImage");
+    var reader = new FileReader();
+    reader.readAsDataURL(fileInput.files[0]);
     resourceJSON = {
         "name": resourceName,
         "description": description,
-        "image": resourceImage,
+        "image": reader.result,
     };
+    console.log(reader.result);
     if (resourceType === "drawing"){
         addDrawing(resourceJSON, function () {
             location.reload();
