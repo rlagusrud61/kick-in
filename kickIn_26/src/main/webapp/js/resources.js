@@ -105,7 +105,7 @@ function viewResource(resourceId) {
     let resourcePicture;
     resourcePicture = document.getElementById("resourcePicture");
     resourcePicture.setAttribute("src", resources.get(resourceId).image);
-    resourcePicture.setAttribute("width", "100%");
+    // resourcePicture.setAttribute("width", "100%");
     imageModal.style.display = "block";
 }
 
