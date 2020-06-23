@@ -3,21 +3,32 @@ let modal, btn, span;
 // Get the modal
 modal = document.getElementById("myModal");
 userModal = document.getElementById("userViewModal");
-
+deleteModal = document.getElementById("userDeleteModal");
 // Get the button that opens the modal
 btn = document.getElementById("myBtn");
+noBtn = document.getElementById("noBtn");
+yesBtn = document.getElementById("yesDeleteButton");
 // Get the <span> element that closes the modal
 span = document.getElementsByClassName("close")[0];
-span2 = document.getElementsByClassName("close")[1];
+span1 = document.getElementsByClassName("close")[1];
+span2 = document.getElementsByClassName("close")[2];
 
 // When the user clicks the button, open the modal
 btn.onclick = function () {
     modal.style.display = "block";
 }
 
+noBtn.onclick = function () {
+	userModal.style.display = "none";
+}
+
 // When the user clicks on <span> (x), close the modal
 span.onclick = function (event) {
     userModal.style.display = "none";
+}
+
+span1.onclick = function (event) {
+	deleteModal.style.display = "none";
 }
 
 span2.onclick = function (event) {
@@ -30,6 +41,8 @@ window.onclick = function (event) {
         modal.style.display = "none";
     } else if (event.target === userViewModal) {
     	userViewModal.style.display = "none";
+    } else if (event.target === userDeleteModal) {
+    	userDeleteModal.style.display = "none";
     }
 }
 
@@ -130,7 +143,7 @@ function viewUser(userId) {
         email.innerHTML = userInfo.email;
         clearanceLevel.innerHTML = levelDescription;
         action.innerHTML = "<a href='editUser.html?id=" + userInfo.userId + "' class='text-success'><i class='glyphicon glyphicon-pencil' " +
-            "style='font-size:20px;'></i></a><a href='javascript: window.removeUser(" + userInfo.userId + ")' class='text-success'>" +
+            "style='font-size:20px;'></i></a><a href='javascript: window.openDeleteUserModal(" + userInfo.userId + ")' class='text-success'>" +
             "<i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
         userModal.style.display = "block";
         
@@ -186,9 +199,11 @@ function addUserPopup() {
  * @description The 'deleteUser' method is called which takes the ID of the user to be deleted as a parameter and reloads
  * the page if the user was successfully deleted from the database.
  */
-function removeUser(id) {
-	deleteUser(id, function() {
-		console.log(this.responseText);
-        location.reload();
-	})
+function openDeleteUserModal(id) {
+	deleteModal.style.display = "block";
+	yesBtn.onclick = function () {
+		deleteUser(id, function() {
+			location.reload();
+		})
+	}
 }
