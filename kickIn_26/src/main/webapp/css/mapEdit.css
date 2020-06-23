@@ -3,9 +3,10 @@ body {
     margin: 0;
 }
 
-html, body, #mapContainer, #mapid {
+html, body, #mapContainer, #mapid, #content {
     height: 100%;
     width: 100%;
+    overflow: hidden;
 }
 
 
@@ -140,10 +141,9 @@ h3{
 }
 
 #itemlist {
-    height: 200px;
+    height: 300px;
     overflow: hidden;
     overflow-y: scroll;
-    background: black;
 }
 
 table{

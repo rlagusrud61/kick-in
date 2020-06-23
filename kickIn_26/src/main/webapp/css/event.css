@@ -29,3 +29,8 @@ body{
     height: 45vh;
     overflow-y: auto;
 }
+
+.btn.btn-lg{
+    padding: 1.5rem 3rem;
+    font-size: 1.5rem;
+}

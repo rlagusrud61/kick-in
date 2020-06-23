@@ -3,36 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <title>MapEdit</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="https://www.w3schools.com/w3css/4/w3.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.18.0/css/mdb.min.css" rel="stylesheet">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" rel="stylesheet"/>
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/vendor.css">
+    <link href="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/vendor.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/vendor.js"></script>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/leaflet.distortableimage.css">
+    <link href="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/leaflet.distortableimage.css"
+          rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/leaflet.distortableimage.js"></script>
     <script src='https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/leaflet.distortableimage.js.map'></script>
 
-    <link rel="stylesheet" href="css/mapEdit.css">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/mapEdit.css" rel="stylesheet">
+    <link href="css/map.css" rel="stylesheet">
+
     <script src="js/requests.js"></script>
     <script src="js/utils.js"></script>
+    <script src="js/map.js"></script>
 
 </head>
+
 <body>
 
-<!-- Sidebar -->
-<div class="w3-sidebar w3-white w3-bar-block" style="width:20%">
-    <h3 class="w3-bar-item">Menu</h3>
-    <button class="w3-bar-item w3-button" onclick="addFenceToMap()">Add Fence</button>
-    <button class="w3-bar-item w3-button" onclick="saveState()">Save Objects</button>
+<!-- Top Nav -->
+<div class="topnav">
+    <a href="list.html" id="home"><i class="glyphicon glyphicon-home"></i></a>
+    <a href="users.html" id="users"><i class="glyphicon glyphicon-user"></i></a>
+    <a href="maps.html" id="maps"><i class="glyphicon glyphicon-globe"></i></a>
+    <a href="resources.html" id="resources"><i class="glyphicon glyphicon-paperclip"></i></a>
+    <a id="arrow" onclick="goBack()"><i class="glyphicon glyphicon-arrow-left"></i></a>
+    <a id="logout" onclick="logout()">Logout</a>
 </div>
 
-<div id="mapContainer" style="margin-left:20%">
-    <div id="mapid"></div>
+<div id="content">
+
+    <!-- Sidebar -->
+    <div class="w3-sidebar w3-white w3-bar-block" style="width:20%">
+        <h3 class="w3-bar-item">Menu</h3>
+        <button class="w3-bar-item w3-button" onclick="addFenceToMap()">Add Fence</button>
+        <button class="w3-bar-item w3-button" onclick="saveState()">Save Objects</button>
+        <button class="w3-bar-item w3-button" onclick="openAccordion('availableItemsTab')">Available Items</button>
+        <!--Available Items Tab-->
+        <div class="w3-container w3-hide" id="availableItemsTab">
+            <br>
+            <!-- Search Bar-->
+            <div class="md-form mt-0 col-md-8 active-green">
+                <input aria-label="Search" class="form-control" id="searchItems"
+                       onkeyup="searchTables('addItems','searchItems')"
+                       placeholder="Search" type="text">
+            </div>
+            <!--List of Available Items Table-->
+            <div class="col-md-11">
+                <div id="itemlist"></div>
+            </div>
+        </div>
+
+
+        <button class="w3-bar-item w3-button" onclick="openAccordion('addedItemsTab')">Added Items</button>
+
+
+        <!--Added Items Tab-->
+        <div class="w3-container w3-hide" id="addedItemsTab">
+            <br>
+            <div id="displayitems">Your list is currently empty.</div>
+        </div>
+    </div>
+
+
+    <div id="mapContainer" style="margin-left:20%">
+        <div id="mapid">
+        </div>
+    </div>
 </div>
+
 </body>
 <script>
     function initMap() {
@@ -48,16 +105,18 @@
         tiles.addTo(newMap);
         return newMap;
     }
+
     function addFenceToMap() {
         addResourceToMap(23);
     }
+
     function massDelete(deleteObjectArray, callback) {
         let array = [];
         deleteObjectArray.forEach(function (object) {
             array.push(object.objectId);
         })
         if (array.length !== 0) {
-            deleteObjects(array, mapId, function() {
+            deleteObjects(array, mapId, function () {
                 if (this.responseText) {
                     let response = JSON.parse(this.responseText);
                     console.log(response);
@@ -69,6 +128,7 @@
             callback(false);
         }
     }
+
     function massUpdate(callback) {
         let array = [];
         imgGroup.forEach(function (object) {
@@ -80,7 +140,7 @@
             }
         })
         if (array.length !== 0) {
-            updateObjects(array, mapId, function() {
+            updateObjects(array, mapId, function () {
                 if (this.responseText) {
                     let response = JSON.parse(this.responseText);
                     console.log(response);
@@ -91,6 +151,7 @@
             callback(false);
         }
     }
+
     function massPost(callback) {
         let array = [];
         newObjects.forEach(function (object) {
@@ -108,6 +169,7 @@
             callback(false);
         }
     }
+
     function saveState() {
         massDelete(deletedObjects, function (deleteDone) {
             massUpdate(function (putDone) {
@@ -117,9 +179,10 @@
             });
         });
     }
+
     function addResourceToMap(iid) {
         let woof = L.distortableImageOverlay(images.get(iid)).addTo(map);
-        woof.on('remove', function() {
+        woof.on('remove', function () {
             const index = newObjects.indexOf(woof);
             if (index !== -1) {
                 newObjects.splice(index, 1);
@@ -128,16 +191,18 @@
         woof.resourceId = iid;
         newObjects.push(woof);
     }
+
     function bringAllResources() {
-        getAllResources(function() {
+        getAllResources(function () {
             let response = JSON.parse(this.responseText);
-            response.forEach(function(resource) {
+            response.forEach(function (resource) {
                 images.set(resource.resourceId, resource.image);
                 resources.set(resource.resourceId, resource.name)
             })
             bringAllObjectsForMap(mapId);
         })
     }
+
     function clearMap() {
         deletedObjects.clear();
         mapObjects.clear();
@@ -153,19 +218,22 @@
         imgGroup = [];
         newObjects = [];
     }
+
     function disableEditingForAll() {
         imgGroup.forEach(function (img) {
             img.editing.enable();
         });
     }
+
     function enableEditingForAll() {
         imgGroup.forEach(function (img) {
             img.editing.disable();
         });
     }
+
     function bringAllObjectsForMap(mapId) {
         disableEditingForAll();
-        getAllObjectsForMap(mapId, function() {
+        getAllObjectsForMap(mapId, function () {
             let response = JSON.parse(this.responseText);
             clearMap();
             deletedObjects.clear();
@@ -177,16 +245,19 @@
             enableEditingForAll();
         })
     }
+
     function parseObject(newObject) {
         return {
-            mapId:mapId,
-            resourceId:newObject.resourceId,
-            latLangs:JSON.stringify(newObject.getCorners())
+            mapId: mapId,
+            resourceId: newObject.resourceId,
+            latLangs: JSON.stringify(newObject.getCorners())
         };
     }
+
     function insertObjectsToMap() {
         mapObjects.forEach(insertObjectIntoMap)
     }
+
     function parseLatLangs(stringyLatLangs) {
         let latLangArray = JSON.parse(stringyLatLangs);
         let coords = [];
@@ -195,6 +266,7 @@
         })
         return coords;
     }
+
     function pushToMap(newImage, object) {
         newImage.on('remove', function () {
             deletedObjects.add(object);
@@ -207,6 +279,7 @@
         imgGroup.push(newImage);
         newImage.addTo(map);
     }
+
     function insertObjectIntoMap(object) {
         let corners = parseLatLangs(object.latLangs);
         let newImage = L.distortableImageOverlay(images.get(object.resourceId), {
