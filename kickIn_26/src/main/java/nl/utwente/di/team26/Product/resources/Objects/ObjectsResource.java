@@ -35,6 +35,15 @@ public class ObjectsResource {
         return Utils.returnOkResponse(allObjectsOnMap);
     }
 
+    @DELETE
+    @Secured(Roles.EDITOR)
+    @Path("{mapId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response clearMap(@PathParam("mapId") long mapId) throws NotFoundException, SQLException {
+        mapObjectsDao.deleteAllForMap(mapId);
+        return Utils.returnNoContent();
+    }
+
     @GET
     @Secured(Roles.VISITOR)
     @Path("{mapId}/report")
@@ -42,17 +51,6 @@ public class ObjectsResource {
     public Response generateReportForMap(@PathParam("mapId") long mapId) throws NotFoundException, SQLException {
         String allObjectsOnMap = mapObjectsDao.generateReport(mapId);
         return Utils.returnOkResponse(allObjectsOnMap);
-    }
-
-    @DELETE
-    @Secured(Roles.EDITOR)
-    @Path("{mapId}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response clearMap(@PathParam("mapId") long mapId) throws NotFoundException, SQLException {
-        long userId = Utils.getUserFromContext(securityContext);
-        mapsDao.saveLastEditedBy(mapId, userId);
-        mapObjectsDao.deleteAllForMap(new MapObject(0, mapId, 0, null));
-        return Utils.returnNoContent();
     }
 
     @POST
