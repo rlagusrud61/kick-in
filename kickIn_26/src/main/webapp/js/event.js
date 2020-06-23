@@ -70,7 +70,7 @@ function displayEventInfo() {
     let id, event, maps, table, header, th, tr, row, i, mapName, creator, lastEditor, action;
 
     id = window.location.search.split("=")[1];
-    document.getElementById("editEvent").href = "http://localhost:8080/kickInTeam26/edit.html?id=" + id;
+    document.getElementById("editEvent").href = "http://localhost:8080/kickInTeam26/editEvent.html?id=" + id;
 
     getEvent(id, function () {
         event = JSON.parse(this.responseText);
