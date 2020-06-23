@@ -1,3 +1,7 @@
+let jsonObj = {
+    items: {}
+}
+
 function openAccordion(id) {
     let  availableItems = document.getElementById(id);
     if (availableItems.className.indexOf("w3-show") === -1) {
@@ -9,6 +13,7 @@ function openAccordion(id) {
     }
 }
 
+//TODO make code more readable
 function displayItems(inum) {
     let itemnum, inputvalue, displayitems, htmltext, x;
     itemnum = jsonObj.items["item" + inum];
