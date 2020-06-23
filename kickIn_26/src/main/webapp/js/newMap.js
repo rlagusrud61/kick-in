@@ -26,7 +26,7 @@ function addNewMap() {
     			"mapId": mapId
     	}
     	addEventMap(eventMapJSON, function (){
-    		window.location.href = "http://localhost:8080/kickInTeam26/event.html?id=" + eventId;
+    		window.location.href = "event.html?id=" + eventId;
     	})
     })
 }

@@ -297,7 +297,6 @@ function listItems() {
 
     let mapId, returnedItems, col, key, table, th, tr, i, j, tableCell;
     mapId = window.location.search.split("=")[1];
-    returnedItems = '';
     generateReportForMap(mapId, function () {
         console.log(this.responseText);
 
@@ -310,7 +309,7 @@ function listItems() {
                     if (key === 'name'){
                         col.push('Name');
                     } else if (key === 'count'){
-                        col.push('Quantity');
+                        col.push('Count');
                     }
                 }
             }
@@ -327,12 +326,15 @@ function listItems() {
             tr.appendChild(th);
         }
 
+        console.log(returnedItems.length);
+        console.log(col.length);
         for (i = 0; i < returnedItems.length; i++) {
 
             tr = table.insertRow(-1); // adds a new row
             for (j = 0; j < col.length; j++) {
                 tableCell = tr.insertCell(-1);
-                tableCell.innerHTML = returnedItems[i][col[j]]; // adds the required data to the table
+                console.log("data: " + returnedItems[i][col[j]])
+                tableCell.innerHTML = returnedItems[i][col[j].toLowerCase()]; // adds the required data to the table
             }
         }
         document.getElementById("listItems").appendChild(table);
@@ -367,6 +369,31 @@ function removeMap() {
     let mapId;
     mapId = window.location.search.split("=")[1];
     deleteMap(mapId, function () {
-        window.location.href = "http://localhost:8080/kickInTeam26/list.html";
+        window.location.href = "list.html";
     })
 }
+
+// /**
+//  *  This part of the code is used for taking screenshots of the map
+//  *
+//  *  Exporting in png format
+//  */
+//
+// document.querySelector('yes1').addEventListener('click', function() {
+//     html2canvas(document.querySelector('capture'), {
+//         onrendered: function(canvas) {
+//             document.body.appendChild(canvas);
+//             console.log('it works, kinda');
+//             return Canvas2Image.saveAsPNG(canvas);
+//         }
+//     });
+// });
+//
+// /**function getScreen() {
+//     html2canvas(document.body, {
+//         dpi:192,
+//         onrendered: function (canvas) {
+//             console.log(canvas);
+//         }
+//     });
+// }*/

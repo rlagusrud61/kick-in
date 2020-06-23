@@ -532,6 +532,61 @@ function deleteObject(objectId, callback) {
 }
 
 /**
+ * @param {number | Array} objectId - An array of the IDs of the objects to be deleted from the database for a specific
+ * map.
+ *
+ * @param {number} mapId - The ID of the map for which map objects are to be deleted.
+ *
+ * @param {function} callback - Once an response from the RESTful service provider has been
+ * received, this function is called to analyse the response.
+ *
+ * @summary This method deletes the required objects from the database for a specific map.
+ *
+ * @description This method takes an array of the IDs of the required objects and the ID of the map which contains the
+ * objects as parameters. This ID is then appended to the URL to request the deletion on the back-end. A DELETE request
+ * is sent to the RESTful service provider with the given URL. The method then calls the callback function on 'xhr' if
+ * the deletion was successful.
+ */
+function deleteObjects(deleteObjectArray, mapId, callback) {
+	let xhr = new XMLHttpRequest();
+	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/objects/selected/"+mapId, true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 204 || xhr.status === 418)) {
+			callback.apply(xhr);
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send(JSON.stringify(deleteObjectArray));
+}
+
+/**
+ * @param {json | Object | Array} mapObject - The map objects to be updated for a specific map.
+ *
+ * @param {number} mapId - The ID of the map for which the map objects are to be updated.
+ *
+ * @param {function} callback - Once an response from the RESTful service provider has been
+ * received, this function is called to analyse the response.
+ *
+ * @summary This method updates the required map objects for a specific map in the database.
+ *
+ * @description This method takes an array of JSON objects of the map objects and ID of the map in which changes are to
+ * be made as parameters. This ID is then appended to the URL to request the update on the back-end. A PUT request is
+ * sent to the RESTful service provider with the given URL, where the content of the body is the array of JSON objects
+ * that was taken as a parameter. The method then calls the callback function on 'xhr' if the update request was successful.
+ */
+function updateObjects(putObjectArray, mapId, callback) {
+	let xhr = new XMLHttpRequest();
+	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/objects/selected/"+mapId, true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 204 || xhr.status === 418)) {
+			callback.apply(xhr);
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send(JSON.stringify(putObjectArray));
+}
+
+/**
  * @param {number} mapId - The ID of the map for which the associated objects are required.
  *
  * @param {function} callback - Once an response from the RESTful service provider has been
@@ -582,28 +637,30 @@ function generateReportForMap(mapId, callback) {
 }
 
 /**
- * @param {json | Object} mapObject - The map object to be added to the database.
+ * @param {json | Object | Array} mapObjectsArray - The map objects to be added to the database for a specific map.
+ *
+ * @param mapId - The ID of the map to which objects are to be added.
  *
  * @param {function} callback - Once an response from the RESTful service provider has been
  * received, this function is called to analyse the response.
  *
- * @summary This method adds the map object to the database.
+ * @summary This method adds the map objects to the database for a specific map.
  *
- * @description This method takes the JSON object of the map object to be added as a parameter.
+ * @description This method takes the array of JSON objects of the map objects to be added as a parameter.
  * A POST request is sent to the RESTful service provider with the given URL, where the content of
- * the body is the JSON object that was taken as the parameter. The method then calls the callback function on 'xhr'
+ * the body is the array of JSON objects that was taken as a parameter. The method then calls the callback function on 'xhr'
  * if the addition was successful.
  */
-function addObjectToMap(mapObject, callback) {
+function addObjectsToMap(mapObjectsArray, mapId, callback) {
 	let xhr = new XMLHttpRequest();
-	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/objects", true);
+	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/objects/"+mapId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 201)) {
+		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
-	xhr.send(JSON.stringify(mapObject));
+	xhr.send(JSON.stringify(mapObjectsArray));
 }
 
 /**
@@ -657,31 +714,6 @@ function clearAllMaps(callback) {
 //Functions for drawings
 
 /**
- * @param {number} drawingId - The ID of the drawing required from the database.
- *
- * @param {function} callback - Once an response from the RESTful service provider has been
- * received, this function is called to analyse the response.
- *
- * @summary This method gets the required drawing from the database.
- *
- * @description This method takes the ID of the required drawing as a parameter. This ID is then
- * appended to the URL to request the service from the back-end. A GET request is sent to the
- * RESTful service provider with the given URL. The method then calls the callback
- * function on 'xhr' if the request was successful.
- */
-function getDrawing(drawingId, callback) {
-	let xhr = new XMLHttpRequest();
-	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/drawing/" + drawingId, true);
-	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			callback.apply(xhr);
-		}
-	}
-	xhr.setRequestHeader("Content-Type", "application/json");
-	xhr.send();
-}
-
-/**
  * @param {json | Object} drawing - The drawing to be updated in the database.
  *
  * @param {function} callback - Once an response from the RESTful service provider has been
@@ -699,7 +731,7 @@ function updateDrawing(drawing, callback) {
 	let xhr, drawingId;
 	xhr = new XMLHttpRequest();
 	drawingId = drawing.drawingId;
-	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/drawing/" + drawingId, true);
+	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/resources/drawing/" + drawingId, true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);
@@ -710,7 +742,7 @@ function updateDrawing(drawing, callback) {
 }
 
 /**
- * @param {json | Object} event - The drawing to be added to the database.
+ * @param {json | Object} drawing - The drawing to be added to the database.
  *
  * @param {function} callback - Once an response from the RESTful service provider has been
  * received, this function is called to analyse the response.
@@ -724,7 +756,7 @@ function updateDrawing(drawing, callback) {
  */
 function addDrawing(drawing, callback) {
 	let xhr = new XMLHttpRequest();
-	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/drawings", true);
+	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest//resources/drawing", true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 201)) {
 			callback.apply(xhr);
@@ -734,10 +766,31 @@ function addDrawing(drawing, callback) {
 	xhr.send(JSON.stringify(drawing));
 }
 
+/**
+ * @param {function} callback - Once an response from the RESTful service provider has been
+ * received, this function is called to analyse the response.
+ *
+ * @summary This method gets all the drawings stored in the database.
+ *
+ * @description A GET request is sent to the RESTful service provider with the given URL. The method then calls the
+ * callback function on 'xhr' if the request was successful.
+ */
+function getAllDrawings(callback) {
+	let xhr = new XMLHttpRequest();
+	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/resources/drawing", true);
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState === 4) && (xhr.status === 200)) {
+			callback.apply(xhr);
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
+}
+
 //Functions for materials
 
 /**
- * @param {json | Object} mapObject - The material to be updated in the database.
+ * @param {json | Object} material - The material to be updated in the database.
  *
  * @param {function} callback - Once an response from the RESTful service provider has been
  * received, this function is called to analyse the response.
@@ -762,31 +815,6 @@ function updateMaterial(material, callback) {
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.send(JSON.stringify(material));
-}
-
-/**
- * @param {number} materialId - The ID of the material to be deleted from the database.
- *
- * @param {function} callback - Once an response from the RESTful service provider has been
- * received, this function is called to analyse the response.
- *
- * @summary This method deletes the required material from the database.
- *
- * @description This method takes the ID of the required material as a parameter. This ID is then
- * appended to the URL to request the deletion on the back-end. A DELETE request is sent to the
- * RESTful service provider with the given URL. The method then calls the callback
- * function on 'xhr' if the deletion was successful.
- */
-function deleteMaterial(materialId, callback) {
-	let xhr = new XMLHttpRequest();
-	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/resources/material/" + materialId, true);
-	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 204)) {
-			callback.apply(xhr);
-		}
-	}
-	xhr.setRequestHeader("Content-Type", "application/json");
-	xhr.send();
 }
 
 /**
@@ -852,7 +880,7 @@ function addMaterial(material, callback) {
  */
 function getResource(resourceId, callback) {
 	let xhr = new XMLHttpRequest();
-	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/resources/" + resourceId, true);
+	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/resource/" + resourceId, true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 200)) {
 			callback.apply(xhr);
@@ -877,7 +905,7 @@ function getResource(resourceId, callback) {
  */
 function deleteResource(resourceId, callback) {
 	let xhr = new XMLHttpRequest();
-	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/resources/" + resourceId, true);
+	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/resource/" + resourceId, true);
 	xhr.onreadystatechange = function() {
 		if ((xhr.readyState === 4) && (xhr.status === 204)) {
 			callback.apply(xhr);

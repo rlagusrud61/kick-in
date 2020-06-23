@@ -4,7 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import nl.utwente.di.team26.CONSTANTS;
+import nl.utwente.di.team26.Constants;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Exception.Exceptions.SessionNotFoundException;
 import nl.utwente.di.team26.Exception.Exceptions.TokenInvalidException;
@@ -49,7 +49,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
             sendCause(requestContext, "You currently are not part of a Session, please Login before continuing");
         } else {
             // Extract the token from the Cookie
-            String token = cookieJar.get(CONSTANTS.COOKIENAME).getValue();
+            String token = cookieJar.get(Constants.COOKIENAME).getValue();
 
             try {
                 // Validate the token
@@ -89,7 +89,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
                 @Override
                 public String getAuthenticationScheme() {
-                    return CONSTANTS.AUTH_SCHEME;
+                    return Constants.AUTH_SCHEME;
                 }
             });
         }
@@ -101,7 +101,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         // Check if the Authorization header is valid
         // It must not be null and must be prefixed with "Bearer" plus a whitespace
         // The authentication scheme comparison must be case-insensitive
-        return cookieJar.containsKey(CONSTANTS.COOKIENAME);
+        return cookieJar.containsKey(Constants.COOKIENAME);
     }
 
     private void sendCause(ContainerRequestContext requestContext, String msg) {
@@ -136,7 +136,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     public static Claims decodeJWT(String jwt) {
         //This line will throw an exception if it is not a signed JWS (as expected)
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-        Key signingKey = new SecretKeySpec(CONSTANTS.SECRET.getBytes(), signatureAlgorithm.getJcaName());
+        Key signingKey = new SecretKeySpec(Constants.SECRET.getBytes(), signatureAlgorithm.getJcaName());
 
         return Jwts.parserBuilder()
                 .setSigningKey(signingKey)

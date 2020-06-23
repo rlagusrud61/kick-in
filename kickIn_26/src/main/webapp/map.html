@@ -21,43 +21,102 @@
 <div id="mapContainer">
     <div id="mapid"></div>
     <button onclick="addFenceToMap()">Add Fence</button>
-    <button onclick="saveObject()">Save Objects</button>
+    <button onclick="saveState()">Save Objects</button>
 </div>
 </body>
 <script>
-    let map = L.map('mapid', {
-        center: [52.2413, -353.1531],
-        zoom: 16,
-        keyboard: false
-    });
-    let tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    });
-    tiles.addTo(map);
-
+    let map;
+    function initMap() {
+        let newMap = L.map('mapid', {
+            center: [52.2413, -353.1531],
+            zoom: 16,
+            keyboard: false
+        });
+        let tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        });
+        tiles.addTo(newMap);
+        return newMap;
+    }
+    map = initMap();
     let mapId = 1;
 
     function addFenceToMap() {
         addResourceToMap(23);
     }
-    function deleteObjectFromDatabase(object) {
-        deleteObject(object.objectId);
-    }
 
-    function putObjectToMap(object) {
-        let parsed = parseObject(object)
-        if (parsed !== mapObjects.get(object.objectId)) {
-            let putObject = parseObject(object);
-            putObject.objectId = object.objectId;
-            updateObject(parsed,  function () {});
+    function massDelete(deleteObjectArray, callback) {
+        console.log("mass delete!")
+        let array = [];
+        deleteObjectArray.forEach(function (object) {
+            array.push(object.objectId);
+        })
+        if (array.length !== 0) {
+            deleteObjects(array, mapId, function() {
+                if (this.responseText) {
+                    let response = JSON.parse(this.responseText);
+                    console.log(response);
+                }
+                deletedObjects.clear();
+                callback(true);
+            })
+        } else {
+            callback(false);
+        }
+    }
+    function massUpdate(callback) {
+        console.log("mass put!")
+        let array = [];
+        imgGroup.forEach(function (object) {
+            let parsed = parseObject(object)
+            if (parsed.latLangs !== mapObjects.get(object.objectId).latLangs) {
+                let putObject = parsed;
+                putObject.objectId = object.objectId;
+                array.push(putObject);
+            }
+        })
+        if (array.length !== 0) {
+            updateObjects(array, mapId, function() {
+                if (this.responseText) {
+                    let response = JSON.parse(this.responseText);
+                    console.log(response);
+                }
+                callback(true);
+            })
+        } else {
+            callback(false);
+        }
+    }
+    function massPost(callback) {
+        console.log("mass post!")
+        let array = [];
+        newObjects.forEach(function (object) {
+            array.push(parseObject(object))
+        });
+        if (array.length !== 0) {
+            addObjectsToMap(array, mapId, function () {
+                if (this.responseText) {
+                    let response = JSON.parse(this.responseText);
+                    console.log(response);
+                }
+                callback(true);
+            });
+        } else {
+            callback(false);
         }
     }
 
-    function saveObject() {
-        deletedObjects.forEach(deleteObjectFromDatabase)
-        imgGroup.forEach(putObjectToMap);
-        newObjects.forEach(postObjectToMap);
+    function saveState() {
+        massDelete(deletedObjects, function (deleteDone) {
+            massUpdate(function (putDone) {
+                massPost(function (postDone) {
+                    if (postDone || putDone || deleteDone) {
+                        bringAllObjectsForMap(mapId);
+                    }
+                });
+            });
+        });
     }
     function addResourceToMap(iid) {
         let woof = L.distortableImageOverlay(images.get(iid)).addTo(map);
@@ -83,7 +142,7 @@
 
     //new objects added to the map.
     let newObjects = [];
-    let deletedObjects = [];
+    let deletedObjects = new Set();
 
     function bringAllResources() {
         getAllResources(function() {
@@ -95,19 +154,43 @@
             bringAllObjectsForMap(mapId);
         })
     }
+    function clearMap() {
+        deletedObjects.clear();
+        mapObjects.clear();
+        const lengthImgGroup = imgGroup.length;
+        const newObjectsLength = newObjects.length;
+        for (let i = 0; i < lengthImgGroup; i++) {
+            imgGroup[0].editing._overlay.remove();
+        }
+
+        for (let i = 0; i < newObjectsLength; i++) {
+            newObjects[0].editing._overlay.remove();
+        }
+        imgGroup = [];
+        newObjects = [];
+    }
+    function disableEditingForAll() {
+        imgGroup.forEach(function (img) {
+            img.editing.enable();
+        });
+    }
+    function enableEditingForAll() {
+        imgGroup.forEach(function (img) {
+            img.editing.disable();
+        });
+    }
     function bringAllObjectsForMap(mapId) {
+        disableEditingForAll();
         getAllObjectsForMap(mapId, function() {
             let response = JSON.parse(this.responseText);
-            imgGroup.forEach(function(image) {
-                image.editing._overlay.remove();
-            })
+            clearMap();
+            deletedObjects.clear();
             mapObjects = new Map();
             response.forEach(function (object) {
                 mapObjects.set(object.objectId, object)
             })
-            imgGroup = [];
-            newObjects = [];
             insertObjectsToMap();
+            enableEditingForAll();
         })
     }
 
@@ -117,14 +200,6 @@
             resourceId:newObject.resourceId,
             latLangs:JSON.stringify(newObject.getCorners())
         };
-    }
-    function postObjectToMap(newObject) {
-        let newObj = parseObject(newObject);
-        addObjectToMap(newObj, function () {
-            let response = JSON.parse(this.responseText)
-            console.log(response);
-            bringAllObjectsForMap(mapId)
-        })
     }
 
     bringAllResources();
@@ -140,14 +215,10 @@
         })
         return coords;
     }
-    function insertObjectIntoMap(object) {
-        let corners = parseLatLangs(object.latLangs);
-        let newImage = L.distortableImageOverlay(images.get(object.resourceId), {
-            corners: corners
-        })
-        newImage.objectId = object.objectId;
-        newImage.on('remove', function() {
-            deletedObjects.push(newImage.objectId);
+
+    function pushToMap(newImage, object) {
+        newImage.on('remove', function () {
+            deletedObjects.add(object);
             mapObjects.delete(newImage.objectId);
             const index = imgGroup.indexOf(newImage);
             if (index !== -1) {
@@ -156,6 +227,15 @@
         });
         imgGroup.push(newImage);
         newImage.addTo(map);
+    }
+    function insertObjectIntoMap(object) {
+        let corners = parseLatLangs(object.latLangs);
+        let newImage = L.distortableImageOverlay(images.get(object.resourceId), {
+            corners: corners
+        })
+        newImage.objectId = object.objectId;
+        newImage.resourceId = object.resourceId;
+        pushToMap(newImage, object);
     }
 
 </script>

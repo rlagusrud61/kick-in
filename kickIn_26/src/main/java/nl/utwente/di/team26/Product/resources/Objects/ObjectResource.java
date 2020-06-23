@@ -22,17 +22,15 @@ public class ObjectResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateObject(MapObject objectToUpdate) throws NotFoundException, SQLException {
-
-            mapObjectsDao.save(objectToUpdate);
-            return Utils.returnNoContent();
+        mapObjectsDao.save(objectToUpdate);
+        return Utils.returnNoContent();
     }
 
     @DELETE
     @Secured(Roles.EDITOR)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteObject(@PathParam("objectId") long objectToDelete) throws NotFoundException, SQLException {
-
-            mapObjectsDao.delete(new MapObject(objectToDelete));
-            return Utils.returnNoContent();
+        mapObjectsDao.delete(new MapObject(objectToDelete));
+        return Utils.returnNoContent();
     }
 }

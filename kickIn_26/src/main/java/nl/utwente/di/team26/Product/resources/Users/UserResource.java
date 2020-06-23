@@ -30,18 +30,17 @@ public class UserResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateUser(User userToUpdate) throws NotFoundException, SQLException {
-
-            usersDao.save(userToUpdate);
-            return Utils.returnNoContent();
+        userToUpdate.setPassword(Utils.hashPassword(userToUpdate.getPassword()));
+        usersDao.save(userToUpdate);
+        return Utils.returnNoContent();
     }
 
     @DELETE
     @Secured(Roles.ADMIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteUser(@PathParam("userId") long userId) throws NotFoundException, SQLException {
-
-            usersDao.delete(new User(userId));
-            return Utils.returnNoContent();
+        usersDao.delete(new User(userId));
+        return Utils.returnNoContent();
     }
 
 }

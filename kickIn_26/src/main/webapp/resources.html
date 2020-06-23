@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet" type="text/css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <!-- Latest compiled and minified CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
@@ -18,11 +17,12 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet" type="text/css">
-    <link href="css/users.css" rel="stylesheet"> <!-- link to css file -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Users</title>
+    <link href="css/list.css" rel="stylesheet"> <!-- link to css file -->
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>List Of Resources</title>
 </head>
 <style>
+
     table th {
         font-size: 1.8rem;
     }
@@ -34,18 +34,9 @@
     table {
         background-color: #ffffff;
     }
+
 </style>
 <body>
-<div class="modal modal_multi" id="userViewModal">
-            <!-- Modal content -->
-            <div class="modal-content">
-                <span class="close close_multi">&times;</span>
-                <h2>Information On User</h2>
-			<div class="User info" style="display: flex; justify-content: center;">
-				<table class="table table-hover" id="userTable" style="width:100%"></table>
-		</div>
-	</div>
-</div>
 <div class="topnav">
     <a href="list.html" id="home"><i class="glyphicon glyphicon-home"></i></a>
     <a href="users.html" id="users"><i class="glyphicon glyphicon-user"></i></a>
@@ -57,88 +48,91 @@
 <div class="jumbotron jumbotron-fluid">
     <div class="container" id="main">
         <div class="row">
-            <h1 class="col-8">Users</h1>
+            <h1 class="col-8">List Of Resources</h1>
             <div class="col-4" style="display: flex; justify-content: flex-end;">
-                <button class="myButton btn btn-success btn-circle btn-xl align-self-end" id="myBtn" type="button"> +
+                <button class="btn_multi myButton btn btn-success btn-circle btn-xl align-self-end open-modal" id="addResourceBtn"
+                        type="button"> +
                 </button>
             </div>
         </div>
     </div>
+
     <!-- Trigger/Open The Popup -->
     <!-- The Popup -->
-    <div class="modal" id="myModal">
+    <div class="modal modal_multi" id="addResource">
         <!-- Popup content -->
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Add a New User</h2>
+            <span class="close close_multi">&times;</span>
+            <h2>Add a New Resource</h2>
             <div>
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label" for="userName">Name</label>
+                    <label class="col-md-2 col-form-label" for="resourceName">Name</label>
                     <div class="col-md-3">
-                        <input class="form-control" id="userName" onkeyup="XSSInputSanitation('userName')"
+                        <input class="form-control" id="resourceName" onkeyup="XSSInputSanitation('resourceName')"
                                placeholder="Name"
                                type="text">
                     </div>
                 </div>
+
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label" for="email">E-Mail</label>
-                    <div class="col-md-3">
-                        <input class="form-control" id="email" onkeyup="XSSInputSanitation('email')"
-                               placeholder="E-Mail"
-                               type="email">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-2 col-form-label" for="password">Password</label>
-                    <div class="col-md-3">
-                        <input class="form-control" id="password" onkeyup="XSSInputSanitation('password')"
-                               placeholder="Password"
-                               type="password">
+                    <label class="col-md-2 col-form-label" for="resourceDescription">Description</label>
+                    <div class="col-md-8">
+                        <textarea class="form-control" id="resourceDescription"
+                                  onkeyup="XSSInputSanitation('resourceDescription')" rows="5"></textarea>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label" for="clearanceLevel">Clearance Level</label>
-                    <div class="col-md-3">
-                        <select class="form-control" id="clearanceLevel">
-                            <option>Visitor</option>
-                            <option>Editor</option>
-                            <option>Admin</option>
-                        </select>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="material" value="material" name="resourceType">
+                        <label class="custom-control-label" for="material">Material</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" class="custom-control-input" id="drawing" value="drawing" name="resourceType">
+                        <label class="custom-control-label" for="drawing">Drawing</label>
                     </div>
                 </div>
 
-            </div>
-            <div class="bottomright" style="display: flex; justify-content: flex-end;">
-                <button class="btn btn-success btn-circle btn-xl align-self-end" onclick="addUserPopup()">ADD</button>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label" for="resourceImage">Image</label>
+                    <div class="col-md-3">
+                        <input class="form-control" id="resourceImage" onkeyup="XSSInputSanitation('resourceImage')"
+                               placeholder="Name"
+                               type="file" accept="image/*">
+                    </div>
+                </div>
+
+                <div class="bottomright" style="display: flex; justify-content: flex-end;">
+                    <button class="btn btn-success btn-circle btn-xl align-self-end" onclick="addResourcePopup()">ADD
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-
-<!-- The Event Deletion Popup -->
-<div id="userDeleteModal" class="modal">
-
-    <!-- Popup content -->
-    <div class="modal-content">
-        <span class="closeDelete">&times;</span>
-        <h2>Do you really want to delete this user?</h2>
-        <div class="bottomright" style="display: flex; justify-content: center;">
-            <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">YES</button>
-            <button type="submit" class="btn btn-success btn-circle btn-xl align-self-center">NO</button>
+    <!-- The Resource Deletion Modal -->
+    <div class="modal modal_multi" id="resourceDeleteModal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close close_multi">&times;</span>
+            <h2>Do you really want to delete this resource?</h2>
+            <div class="bottomright" style="display: flex; justify-content: center;">
+                <button class="btn btn-success btn-circle btn-xl align-self-center" id="yesDeleteButton"
+                        type="submit">YES
+                </button>
+                <button id = "noBtn" class="btn_multi btn btn-success btn-circle btn-xl align-self-center" type="button">NO</button>
+            </div>
         </div>
     </div>
-</div>
-
 
 </div>
+
 <div class="container">
     <!-- Search Bar -->
     <div class="col-md-3">
         <form class="form-inline d-flex justify-content-center md-form active-green form-sm mt-0">
             <input aria-label="Search" class="form-control form-control-sm ml-3 w-75" id="searchTable"
-                   onkeyup="searchTables('usersTable', 'searchTable')"
+                   onkeyup="searchTables('resourceTable', 'searchTable')"
                    placeholder="Search"
                    type="text">
         </form>
@@ -150,17 +144,19 @@
             By
         </button>
         <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item" onclick="sortTableAscending('usersTable', 'name')">A - Z</a>
-            <a class="dropdown-item" onclick="sortTableDescending('usersTable', 'name')">Z - A</a>
+            <a class="dropdown-item" onclick="sortTableAscending('resourceTable', 'resource')">A - Z</a>
+            <a class="dropdown-item" onclick="sortTableDescending('resourceTable', 'resource')">Z - A</a>
         </div>
     </div>
-    <div class="userlist">
-        <table class="table table-hover" id="usersTable" style="width:100%">
+    <!--    Table for the List of Resources-->
+    <div class="resourcelist">
+        <table class="table table-hover" id="resourceTable" style="width:100%">
         </table>
     </div>
+
 </div>
 <script src="js/requests.js"></script>
 <script src="js/utils.js"></script>
-<script src="js/users.js"></script>
+<script src="js/resources.js"></script>
 </body>
 </html>

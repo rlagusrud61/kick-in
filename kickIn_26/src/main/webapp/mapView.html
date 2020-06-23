@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="http://localhost:8080/kickInTeam26/css/style.css">
 
     <script
             src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -55,16 +54,34 @@
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <script src="https://unpkg.com/konva@4.0.0/konva.min.js"></script>
-    <link rel="stylesheet" href="css/mapEdit.css">
     <script src="js/util/crop.js"></script>
     <link rel="stylesheet" href="css/mapView.css"> <!-- link to css file-->
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src=https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Map View</title>
 </head>
+<style>
+
+    table th {
+        font-size: 1.8rem;
+    }
+
+    table td {
+        font-size: 1.5rem;
+    }
+
+    table {
+        background-color: #ffffff;
+    }
+
+</style>
 <body>
 <div class="topnav">
-    <a id="home" href="http://localhost:8080/kickInTeam26/list.html"><i class="glyphicon glyphicon-home"></i></a>
-    <a href="http://localhost:8080/kickInTeam26/users.html" id="users"><i class="glyphicon glyphicon-user"></i></a>
+    <a id="home" href="list.html"><i class="glyphicon glyphicon-home"></i></a>
+    <a href="users.html" id="users"><i class="glyphicon glyphicon-user"></i></a>
+    <a href="maps.html" id="maps"><i class="glyphicon glyphicon-globe"></i></a>
+    <a href="resources.html" id="resources"><i class="glyphicon glyphicon-paperclip"></i></a>
     <a id="arrow" onclick="goBack()"><i class="glyphicon glyphicon-arrow-left"></i></a>
     <a id="logout" onclick="logout()">Logout</a>
 </div>
@@ -78,11 +95,11 @@
 </div>
 
 <div class="container" style="background-color: #ffffff">
-    <div class="card-body">
+    <div class="card-body" id="capture">
         <div class="row">
         <h1 id="mapName" class="text-left" style="padding-left: 13px;">Map_Name</h1>
         <a class="glyphicon glyphicon-share text-success align-mapname" id="share" ></a>
-        <a href="http://localhost:8080/kickInTeam26/mapEdit.html" class="glyphicon glyphicon-pencil text-success align-mapname"></a>
+        <a href="mapEdit.html" class="glyphicon glyphicon-pencil text-success align-mapname"></a>
         <a href="#" class="glyphicon glyphicon-trash text-success align-mapname" id="deleteEvent"></a>
         </div>
         <p id="description" class="text-left">Paragraphs are the building
@@ -116,6 +133,7 @@
     </div>
 
 
+
 </div>
 </div>
 <!-- The Map Deletion Popup -->
@@ -144,9 +162,11 @@
     </div>
 </div>
 
-</div>
 <script src="js/requests.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/mapView.js"></script>
+<script>
+
+</script>
 </body>
 </html>
