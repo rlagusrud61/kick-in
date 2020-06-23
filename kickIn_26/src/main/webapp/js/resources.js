@@ -153,11 +153,12 @@ async function addResourcePopup() {
         alert("File Size Exceeds 1MB- Icons should not be that big.");
         clearForm();
         return;
-    } else if (file.name.match(/.(png)$/i)) {
-        alert('This file format is not yet supported.');
-        clearForm();
-        return;
     }
+    // } else if (file.name.match(/.(png)$/i)) {
+    //     alert('This file format is not yet supported.');
+    //     clearForm();
+    //     return;
+    // }
 
     let image =  await toBase64(file);
     resourceJSON = {
