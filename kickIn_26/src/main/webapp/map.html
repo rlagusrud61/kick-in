@@ -56,7 +56,7 @@
         <h3 class="w3-bar-item">Menu</h3>
         <button class="w3-bar-item w3-button" onclick="addFenceToMap()">Add Fence</button>
         <button class="w3-bar-item w3-button" onclick="saveState()">Save Objects</button>
-        <button class="w3-bar-item w3-button" onclick="openAccordion('availableItemsTab')">Available Items</button>
+        <button class="w3-bar-item w3-button" onclick="openAccordion('availableItemsTab')">Available Resources</button>
         <!--Available Items Tab-->
         <div class="w3-container w3-hide" id="availableItemsTab">
             <br>
@@ -109,7 +109,6 @@
     function addFenceToMap() {
         addResourceToMap(23);
     }
-
     function massDelete(deleteObjectArray, callback) {
         let array = [];
         deleteObjectArray.forEach(function (object) {
@@ -122,13 +121,12 @@
                     console.log(response);
                 }
                 deletedObjects.clear();
-                callback(true);
+                callback();
             })
         } else {
-            callback(false);
+            callback();
         }
     }
-
     function massUpdate(callback) {
         let array = [];
         imgGroup.forEach(function (object) {
@@ -145,13 +143,12 @@
                     let response = JSON.parse(this.responseText);
                     console.log(response);
                 }
-                callback(true);
+                callback();
             })
         } else {
-            callback(false);
+            callback();
         }
     }
-
     function massPost(callback) {
         let array = [];
         newObjects.forEach(function (object) {
@@ -163,23 +160,21 @@
                     let response = JSON.parse(this.responseText);
                     console.log(response);
                 }
-                callback(true);
+                callback();
             });
         } else {
-            callback(false);
+            callback();
         }
     }
-
     function saveState() {
-        massDelete(deletedObjects, function (deleteDone) {
-            massUpdate(function (putDone) {
-                massPost(function (postDone) {
+        massDelete(deletedObjects, function () {
+            massUpdate(function () {
+                massPost(function () {
                     bringAllObjectsForMap(mapId);
                 });
             });
         });
     }
-
     function addResourceToMap(iid) {
         let woof = L.distortableImageOverlay(images.get(iid)).addTo(map);
         woof.on('remove', function () {
@@ -191,7 +186,6 @@
         woof.resourceId = iid;
         newObjects.push(woof);
     }
-
     function bringAllResources() {
         getAllResources(function () {
             let response = JSON.parse(this.responseText);
@@ -199,10 +193,10 @@
                 images.set(resource.resourceId, resource.image);
                 resources.set(resource.resourceId, resource.name)
             })
+            addItems();
             bringAllObjectsForMap(mapId);
         })
     }
-
     function clearMap() {
         deletedObjects.clear();
         mapObjects.clear();
@@ -218,19 +212,16 @@
         imgGroup = [];
         newObjects = [];
     }
-
     function disableEditingForAll() {
         imgGroup.forEach(function (img) {
             img.editing.enable();
         });
     }
-
     function enableEditingForAll() {
         imgGroup.forEach(function (img) {
             img.editing.disable();
         });
     }
-
     function bringAllObjectsForMap(mapId) {
         disableEditingForAll();
         getAllObjectsForMap(mapId, function () {
@@ -242,10 +233,10 @@
                 mapObjects.set(object.objectId, object)
             })
             insertObjectsToMap();
+            updateLocalReport();
             enableEditingForAll();
         })
     }
-
     function parseObject(newObject) {
         return {
             mapId: mapId,
@@ -253,11 +244,9 @@
             latLangs: JSON.stringify(newObject.getCorners())
         };
     }
-
     function insertObjectsToMap() {
         mapObjects.forEach(insertObjectIntoMap)
     }
-
     function parseLatLangs(stringyLatLangs) {
         let latLangArray = JSON.parse(stringyLatLangs);
         let coords = [];
@@ -266,7 +255,6 @@
         })
         return coords;
     }
-
     function pushToMap(newImage, object) {
         newImage.on('remove', function () {
             deletedObjects.add(object);
@@ -279,7 +267,6 @@
         imgGroup.push(newImage);
         newImage.addTo(map);
     }
-
     function insertObjectIntoMap(object) {
         let corners = parseLatLangs(object.latLangs);
         let newImage = L.distortableImageOverlay(images.get(object.resourceId), {
