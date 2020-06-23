@@ -639,7 +639,7 @@ function generateReportForMap(mapId, callback) {
 /**
  * @param {json | Object | Array} mapObjectsArray - The map objects to be added to the database for a specific map.
  *
- * @param mapId - The ID of the map to which objects are to be added.
+ * @param {number} mapId - The ID of the map to which objects are to be added.
  *
  * @param {function} callback - Once an response from the RESTful service provider has been
  * received, this function is called to analyse the response.
@@ -1109,7 +1109,7 @@ function deleteAllUsers(callback) {
 /**
  * @param {json | Object} credentials - The credentials of the user that have to be checked on the database.
  *
- * @param callback - Once an response from the RESTful service provider has been
+ * @param {function} callback - Once an response from the RESTful service provider has been
  * received, this function is called to analyse the response.
  *
  * @summary This method is used to authenticate the user's credentials.
