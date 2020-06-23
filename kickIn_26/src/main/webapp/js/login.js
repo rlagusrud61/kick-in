@@ -3,7 +3,8 @@
  *
  * @description First, the email address and password of the user are retrieved from the web page. This information is
  * then used to create a JSON object which is taken as a parameter to the function 'loginUser' so that the credentials
- * can be authenticated and the user redirected to the 'list.html' page if the authentication was a success.
+ * can be authenticated and the user redirected to the 'list.html' page if the authentication was a success. If the authentication
+ * is unsuccessful, the password and email fields are emptied and an error message is displayed.
  */
 function login() {
     let emailAddress, password, credentialsJSON;
