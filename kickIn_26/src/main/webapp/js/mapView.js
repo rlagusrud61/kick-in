@@ -381,7 +381,7 @@ function removeMap() {
  */
 
 
-document.getElementById("ss").addEventListener('click', function()
+document.getElementById("yes1").addEventListener('click', function()
 {
     html2canvas(document.getElementsByClassName("specific")[0]).then(function (canvas) {
 
