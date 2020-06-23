@@ -18,8 +18,15 @@ function login() {
     console.log(emailAddress);
     console.log(password);
     loginUser(credentialsJSON, function() {
-    	console.log(this.responseText);
-    	window.location.href = "list.html";
+        if (this.status === 204){
+            console.log(this.responseText);
+            window.location.href = "list.html";
+        } else if (this.status === 403){
+            console.log("Incorrect credentials");
+            document.getElementById("inputEmail").value = "";
+            document.getElementById("inputPassword").value = "";
+            document.getElementById("incorrectCredentials").innerHTML = "The credentials entered were incorrect. Try again."
+        }
     });
 }
 

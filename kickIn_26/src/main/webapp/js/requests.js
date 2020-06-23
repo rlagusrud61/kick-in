@@ -1116,14 +1116,14 @@ function deleteAllUsers(callback) {
  *
  * @description A POST request is sent to the RESTful service provider with the given URL, where the content of the
  * body is the JSON object that was taken as the parameter. The method then calls the callback function on 'xhr' if the
- * authentication was successful.
+ * authentication was successful or if wrong credentials were entered.
  */
 function loginUser(credentials, callback) {
     let xhr = new XMLHttpRequest();
     xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/authentication", true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
-            if (xhr.status === 204) {
+            if (xhr.status === 204 || xhr.status === 403) {
                 callback.apply(xhr);
             }
         }
