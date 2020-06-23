@@ -41,9 +41,13 @@ table {
     background-color: #ffffff;
 }
 
-img{
+img {
     display: block;
     margin-left: auto;
     margin-right: auto;
     object-fit: contain;
+}
+
+#imageContainer {
+    overflow: auto;
 }
