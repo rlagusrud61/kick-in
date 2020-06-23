@@ -3,6 +3,7 @@ package Tests;
 import kong.unirest.Cookie;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
+import kong.unirest.json.JSONObject;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.model.Map.MapObject;
 import nl.utwente.di.team26.Security.User.Roles;
@@ -42,10 +43,10 @@ public class MapObjectsTest extends Tests {
             System.out.println("Test " + name.getMethodName() + " for role: " + role.toString());
             Cookie loginCookie = getLoginCookie(role.getLevel());
             HttpResponse<String> addObject = Unirest
-                    .post(getURIString("objects"))
+                    .post(getURIString("objects/"+mids[0]))
                     .header("Content-Type", "application/json")
                     .header("Cookie", loginCookie.toString())
-                    .body(new MapObject(mids[0], 23, "Corners"))
+                    .body(new MapObject[]{new MapObject(mids[0], 23, "Corners")})
                     .asString();
             HttpResponse<String> allObjOnMap = Unirest
                     .get(getURIString("objects/"+mids[0]))
@@ -57,7 +58,7 @@ public class MapObjectsTest extends Tests {
                     break;
                 case EDITOR:
                 case ADMIN:
-                    assertEquals(HTTP_CREATED, addObject.getStatus());
+                    assertEquals(HTTP_NO_CONTENT, addObject.getStatus());
                     assertTrue(allObjOnMap.getBody().contains(String.valueOf(23)));
                     clearMap(mids[0]);
                     break;
@@ -98,9 +99,10 @@ public class MapObjectsTest extends Tests {
             System.out.println("Test " + name.getMethodName() + " for role: " + role.toString());
             Cookie loginCookie = getLoginCookie(role.getLevel());
             HttpResponse<String> response = Unirest
-                    .delete(getURIString("object/"+oid))
+                    .delete(getURIString("objects/selected/"+mids[0]))
+                    .header("Content-Type", "application/json")
                     .header("Cookie", loginCookie.toString())
-                    .body(new MapObject(oid))
+                    .body(new long[]{oid})
                     .asString();
             switch (role) {
                 case VISITOR:
@@ -144,10 +146,10 @@ public class MapObjectsTest extends Tests {
             System.out.println("Test " + name.getMethodName() + " for role: " + role.toString());
             Cookie loginCookie = getLoginCookie(role.getLevel());
             HttpResponse<String> response = Unirest
-                    .put(getURIString("object/"+oid))
+                    .put(getURIString("objects/selected/"+mids[0]))
                     .header("Content-Type", "application/json")
                     .header("Cookie", loginCookie.toString())
-                    .body(new MapObject(oid, mids[0], 23, "Corners-2"))
+                    .body(new MapObject[]{new MapObject(oid, mids[0], 23, "Corners-2")})
                     .asString();
             switch (role) {
                 case VISITOR:

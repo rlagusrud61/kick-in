@@ -11,6 +11,7 @@ import nl.utwente.di.team26.Product.dao.Events.EventsDao;
 import nl.utwente.di.team26.Product.dao.Maps.MapObjectsDao;
 import nl.utwente.di.team26.Product.dao.Maps.MapsDao;
 import nl.utwente.di.team26.Product.dao.Resources.ResourceDao;
+import nl.utwente.di.team26.Product.model.Authentication.Credentials;
 import nl.utwente.di.team26.Product.model.Authentication.User;
 import nl.utwente.di.team26.Product.model.Event.Event;
 import nl.utwente.di.team26.Product.model.Event.EventMap;
@@ -20,10 +21,12 @@ import nl.utwente.di.team26.Product.model.TypeOfResource.Drawing;
 import nl.utwente.di.team26.Product.model.TypeOfResource.Material;
 import nl.utwente.di.team26.Product.model.TypeOfResource.TypeOfResource;
 import nl.utwente.di.team26.Security.User.Roles;
+import nl.utwente.di.team26.Utils;
 
 import javax.ws.rs.core.UriBuilder;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 public class Tests {
 
@@ -36,8 +39,6 @@ public class Tests {
 
     Roles[] roles = {Roles.ADMIN, Roles.EDITOR, Roles.VISITOR};
 
-    protected final String testEvent = "{\"name\":\"TestEvent\",\"description\":\"TestEvent\",\"location\":\"On Campus\",\"date\":\"2020-01-01\"}";
-    protected final String testEventInvalid = "{\"name\":\"TestEvent\",\"description\":\"TestEvent\",\"location\":\"On Campus\",\"date\":\"WrongDate\"}";
     protected final Event testEventInstance = new Event("TestEvent", "TestEvent", "On Campus", "2020-02-01");
 
     protected final String[] testMaps = {"{\"name\":\"TestMap1\",\"description\":\"TestMap1\"}","{\"name\":\"TestMap2\",\"description\":\"TestMap2\"}"};
@@ -54,7 +55,7 @@ public class Tests {
         String email = userNames[level] + "@email.com";
         HttpResponse<String> login = Unirest.post(getURIString("/authentication"))
                 .header("Content-Type", "application/json")
-                .body("{\"email\":\"" + email + "\",\"password\":\""+ defaultPassword +"\"}")
+                .body(new Credentials(email, defaultPassword))
                 .asString();
         return login.getCookies().getNamed(Constants.COOKIENAME);
     }
@@ -68,8 +69,8 @@ public class Tests {
 
         UserDao userDao = new UserDao();
         for (int i = 0; i < 3; i++) {
-            try(Connection conn = Constants.getConnection()) {
-                userArrays[i] = userDao.create(new User(String.format("%s@email.com", userNames[i]), defaultPassword, userNames[i], i));
+            try {
+                userArrays[i] = userDao.create(new User(String.format("%s@email.com", userNames[i]), Utils.hashPassword(defaultPassword), userNames[i], i));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -139,9 +140,7 @@ public class Tests {
     }
 
     protected void clearMap(long mid) throws NotFoundException, SQLException {
-        MapObject mapObject = new MapObject();
-        mapObject.setMapId(mid);
-        mapObjectsDao.deleteAllForMap(mapObject);
+        mapObjectsDao.deleteAllForMap(mid);
     }
     protected long addObjectsToMap(long mid) throws SQLException {
         return mapObjectsDao.create(new MapObject(mid, 23, "Corners"));
@@ -158,5 +157,4 @@ public class Tests {
             resourceDao.delete(new TypeOfResource(rid));
         }
     }
-
 }

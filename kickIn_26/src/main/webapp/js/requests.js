@@ -532,9 +532,9 @@ function deleteObject(objectId, callback) {
 }
 
 /**
- * @param {number | Array} objectId - An array of the IDs of the objects to be deleted from the database for a specific
  * map.
  *
+ * @param deleteObjectArray the objectIds of the objects to be deleted.
  * @param {number} mapId - The ID of the map for which map objects are to be deleted.
  *
  * @param {function} callback - Once an response from the RESTful service provider has been
@@ -556,6 +556,7 @@ function deleteObjects(deleteObjectArray, mapId, callback) {
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
+	console.log(JSON.stringify(deleteObjectArray))
 	xhr.send(JSON.stringify(deleteObjectArray));
 }
 

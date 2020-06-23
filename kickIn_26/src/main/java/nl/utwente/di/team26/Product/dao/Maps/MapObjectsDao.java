@@ -79,12 +79,12 @@ public class MapObjectsDao extends Dao implements DaoInterface<MapObject> {
         }
     }
 
-    public void deleteAllForMap(MapObject mapObject) throws NotFoundException, SQLException {
+    public void deleteAllForMap(long mapId) throws NotFoundException, SQLException {
         try(Connection conn = Constants.getConnection()) {
             String sql = "DELETE FROM MapObjects WHERE (mapId = ? )";
             beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-                stmt.setLong(1, mapObject.getMapId());
+                stmt.setLong(1, mapId);
                 databaseUpdate(conn, stmt);
             }
         }

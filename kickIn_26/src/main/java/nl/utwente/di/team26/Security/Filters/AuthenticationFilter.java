@@ -50,7 +50,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         } else {
             // Extract the token from the Cookie
             String token = cookieJar.get(Constants.COOKIENAME).getValue();
-
+            System.out.println(cookieJar.get(Constants.COOKIENAME).toString());
             try {
                 // Validate the token
                 authenticatedUserId = validateToken(token);
