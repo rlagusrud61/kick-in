@@ -1,6 +1,6 @@
 package nl.utwente.di.team26.Product.dao.Authentication;
 
-import nl.utwente.di.team26.CONSTANTS;
+import nl.utwente.di.team26.Constants;
 import nl.utwente.di.team26.Exception.Exceptions.DatabaseException;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Dao;
@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class SessionDao extends Dao implements DaoInterface<Session> {
 
     public long create(Session session) throws SQLException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "INSERT INTO session (token, userId) VALUES (?, ?) returning tokenId";
             beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -30,7 +30,7 @@ public class SessionDao extends Dao implements DaoInterface<Session> {
         //no used.
     }
     public void delete(Session session) throws NotFoundException, SQLException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "DELETE FROM session WHERE (tokenId = ? ) ";
             beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -40,7 +40,7 @@ public class SessionDao extends Dao implements DaoInterface<Session> {
         }
     }
     public void deleteAll() throws SQLException, NotFoundException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "DELETE FROM session";
             beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -49,7 +49,7 @@ public class SessionDao extends Dao implements DaoInterface<Session> {
         }
     }
     public String get(long oid) throws NotFoundException, SQLException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "SELECT getSession(?);";
             beginTransaction(conn, Connection.TRANSACTION_SERIALIZABLE);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -59,7 +59,7 @@ public class SessionDao extends Dao implements DaoInterface<Session> {
         }
     }
     public String getAll() throws NotFoundException, SQLException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "SELECT getAllSessions();";
             beginTransaction(conn, Connection.TRANSACTION_SERIALIZABLE);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -76,14 +76,14 @@ public class SessionDao extends Dao implements DaoInterface<Session> {
         }
     }
     public void clearTokensForUser(long userId) throws SQLException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             beginTransaction(conn, Connection.TRANSACTION_SERIALIZABLE);
             clearTokensForUser(conn, userId);
             endTransaction(conn);
         }
     }
     public void checkExist(String token) throws NotFoundException, SQLException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "SELECT * FROM session where token = ?";
             beginTransaction(conn, Connection.TRANSACTION_SERIALIZABLE);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -99,7 +99,7 @@ public class SessionDao extends Dao implements DaoInterface<Session> {
         }
     }
     public long maxId() throws SQLException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "SELECT max(tokenid) FROM session";
             beginTransaction(conn, Connection.TRANSACTION_SERIALIZABLE);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {

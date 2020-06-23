@@ -1,6 +1,6 @@
 package nl.utwente.di.team26.Product.dao.Resources;
 
-import nl.utwente.di.team26.CONSTANTS;
+import nl.utwente.di.team26.Constants;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Dao;
 import nl.utwente.di.team26.Product.dao.DaoInterface;
@@ -33,7 +33,7 @@ public class ResourceDao extends Dao implements DaoInterface<TypeOfResource> {
     }
 
     private void saveDrawing(Drawing resource) throws SQLException, NotFoundException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql =
                     "UPDATE TypeOfResource SET name = ?, description = ?  WHERE resourceId = ?; " +
                             "UPDATE Drawing SET image = ? WHERE resourceId = ?;";
@@ -51,7 +51,7 @@ public class ResourceDao extends Dao implements DaoInterface<TypeOfResource> {
     }
 
     private void saveMaterial(Material resource) throws SQLException, NotFoundException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql =
                     "UPDATE TypeOfResource SET name = ?, description = ?  WHERE resourceId = ?; " +
                             "UPDATE Materials SET image = ? WHERE resourceId = ?;";
@@ -70,7 +70,7 @@ public class ResourceDao extends Dao implements DaoInterface<TypeOfResource> {
 
     @Override
     public void delete(TypeOfResource resourceToDelete) throws SQLException, NotFoundException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "DELETE FROM TypeOfResource WHERE (resourceId = ?)";
             beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -81,7 +81,7 @@ public class ResourceDao extends Dao implements DaoInterface<TypeOfResource> {
     }
 
     public void deleteAll() throws SQLException, NotFoundException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "DELETE FROM TypeOfResource";
             beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -91,7 +91,7 @@ public class ResourceDao extends Dao implements DaoInterface<TypeOfResource> {
     }
 
     public String getAllResources() throws NotFoundException, SQLException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "SELECT getAllResources()";
             beginTransaction(conn, Connection.TRANSACTION_SERIALIZABLE);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -101,7 +101,7 @@ public class ResourceDao extends Dao implements DaoInterface<TypeOfResource> {
     }
 
     public String getResource(long resourceId) throws NotFoundException, SQLException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "SELECT getResource(?)";
             beginTransaction(conn, Connection.TRANSACTION_SERIALIZABLE);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -112,7 +112,7 @@ public class ResourceDao extends Dao implements DaoInterface<TypeOfResource> {
     }
 
     private long createDrawing(Drawing drawingToAdd) throws SQLException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql =
                     "WITH draw AS (INSERT INTO TypeOfResource(name, description) VALUES (?, ?) RETURNING resourceId)" +
                             "INSERT INTO Drawing(resourceId, image)" +
@@ -128,7 +128,7 @@ public class ResourceDao extends Dao implements DaoInterface<TypeOfResource> {
     }
 
     private long createMaterial(Material materialToAdd) throws SQLException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql =
                     "WITH newMaterial AS (INSERT INTO TypeOfResource(name, description) VALUES (?, ?) RETURNING resourceId)" +
                             "INSERT INTO Materials(resourceId, image)" +
@@ -144,7 +144,7 @@ public class ResourceDao extends Dao implements DaoInterface<TypeOfResource> {
     }
 
     public String getAllMaterials() throws NotFoundException, SQLException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "SELECT getAllMaterials()";
             beginTransaction(conn, Connection.TRANSACTION_SERIALIZABLE);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -154,7 +154,7 @@ public class ResourceDao extends Dao implements DaoInterface<TypeOfResource> {
     }
 
     public String getAllDrawings() throws NotFoundException, SQLException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "SELECT getAllDrawings()";
             beginTransaction(conn, Connection.TRANSACTION_SERIALIZABLE);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {

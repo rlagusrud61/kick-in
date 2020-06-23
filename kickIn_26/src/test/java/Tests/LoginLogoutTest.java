@@ -3,7 +3,7 @@ package Tests;
 import kong.unirest.Cookie;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
-import nl.utwente.di.team26.CONSTANTS;
+import nl.utwente.di.team26.Constants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +27,7 @@ public class LoginLogoutTest extends Tests {
                 .asString();
         assertEquals("After login we should be : ", HTTP_NO_CONTENT, response.getStatus());
         //a go around way of making sure a cookie exists.
-        assertTrue(response.getCookies().getNamed(CONSTANTS.COOKIENAME).isHttpOnly());
+        assertTrue(response.getCookies().getNamed(Constants.COOKIENAME).isHttpOnly());
     }
 
     @Test
@@ -38,7 +38,7 @@ public class LoginLogoutTest extends Tests {
                 .header("Cookie", anyLoginCookie.toString())
                 .asString();
         assertEquals("Status is no content: ", HTTP_NO_CONTENT, response.getStatus());
-        assertTrue("The max age of the Cookie should now be 0:", response.getCookies().getNamed(CONSTANTS.COOKIENAME).toString().contains("Max-Age=0"));
+        assertTrue("The max age of the Cookie should now be 0:", response.getCookies().getNamed(Constants.COOKIENAME).toString().contains("Max-Age=0"));
     }
 
     @Test
@@ -51,7 +51,7 @@ public class LoginLogoutTest extends Tests {
                 .asString();
         assertEquals("After login we should be : ", HTTP_FORBIDDEN, response.getStatus());
         //a go around way of making sure a cookie exists.
-        assertNull(response.getCookies().getNamed(CONSTANTS.COOKIENAME));
+        assertNull(response.getCookies().getNamed(Constants.COOKIENAME));
     }
 
     @Test

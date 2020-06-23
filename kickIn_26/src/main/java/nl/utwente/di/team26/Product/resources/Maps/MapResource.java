@@ -37,18 +37,16 @@ public class MapResource {
     public Response updateMap(Map mapToUpdate) throws NotFoundException, SQLException {
         long userId = Utils.getUserFromContext(securityContext);
         mapToUpdate.setLastEditedBy(userId);
-
-            mapsDao.save(mapToUpdate);
-            return Utils.returnNoContent();
+        mapsDao.save(mapToUpdate);
+        return Utils.returnNoContent();
     }
 
     @DELETE
     @Secured(Roles.EDITOR)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteMap(@PathParam("mapId") long mapToDelete) throws NotFoundException, SQLException {
-
-            mapsDao.delete(new Map(mapToDelete));
-            return Utils.returnNoContent();
+        mapsDao.delete(new Map(mapToDelete));
+        return Utils.returnNoContent();
     }
 
 }

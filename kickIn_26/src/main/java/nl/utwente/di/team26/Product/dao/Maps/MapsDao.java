@@ -1,6 +1,6 @@
 package nl.utwente.di.team26.Product.dao.Maps;
 
-import nl.utwente.di.team26.CONSTANTS;
+import nl.utwente.di.team26.Constants;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Dao;
 import nl.utwente.di.team26.Product.dao.DaoInterface;
@@ -14,7 +14,7 @@ public class MapsDao extends Dao implements DaoInterface<Map> {
 
     @Override
     public synchronized long create(Map valueObject) throws SQLException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "INSERT INTO Maps (name, description, "
                     + "createdBy, lastEditedBy) VALUES (?, ?, ?, ?) returning mapId";
             beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
@@ -31,7 +31,7 @@ public class MapsDao extends Dao implements DaoInterface<Map> {
 
     @Override
     public void save(Map valueObject) throws NotFoundException, SQLException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "UPDATE Maps SET name = ?, description = ?, "
                     + "lastEditedBy = ? WHERE (mapId = ? ) ";
             beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
@@ -49,7 +49,7 @@ public class MapsDao extends Dao implements DaoInterface<Map> {
 
     @Override
     public void delete(Map valueObject) throws NotFoundException, SQLException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "DELETE FROM Maps WHERE (mapId = ? ) ";
             beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -61,7 +61,7 @@ public class MapsDao extends Dao implements DaoInterface<Map> {
 
     @Override
     public void deleteAll() throws SQLException, NotFoundException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "DELETE FROM Maps";
             beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -71,7 +71,7 @@ public class MapsDao extends Dao implements DaoInterface<Map> {
     }
 
     public String getAllMaps() throws NotFoundException, SQLException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "SELECT getAllMaps();";
             beginTransaction(conn, Connection.TRANSACTION_SERIALIZABLE);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -81,7 +81,7 @@ public class MapsDao extends Dao implements DaoInterface<Map> {
     }
 
     public String getMap(long mapId) throws SQLException, NotFoundException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "SELECT getMap(?)";
             beginTransaction(conn, Connection.TRANSACTION_SERIALIZABLE);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -92,9 +92,9 @@ public class MapsDao extends Dao implements DaoInterface<Map> {
     }
 
     public void saveLastEditedBy(long mapId, long userId) throws SQLException, NotFoundException {
-        try(Connection conn = CONSTANTS.getConnection()) {
+        try(Connection conn = Constants.getConnection()) {
             String sql = "UPDATE Maps SET lastEditedBy = ? WHERE (mapId = ?) ";
-            beginTransaction(conn, Connection.TRANSACTION_SERIALIZABLE);
+            beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setLong(1, userId);
                 stmt.setLong(2, mapId);

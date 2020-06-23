@@ -5,7 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class CONSTANTS {
+public class Constants {
 
     public static final String loginUrl = "jdbc:postgresql://bronto.ewi.utwente.nl:5432/dab_di19202b_27";
     public static final String loginUser = "dab_di19202b_27";

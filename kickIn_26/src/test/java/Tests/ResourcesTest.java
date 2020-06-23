@@ -3,7 +3,6 @@ package Tests;
 import kong.unirest.Cookie;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
-import nl.utwente.di.team26.CONSTANTS;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.model.TypeOfResource.Drawing;
 import nl.utwente.di.team26.Product.model.TypeOfResource.Material;
@@ -14,9 +13,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Savepoint;
 
 import static java.net.HttpURLConnection.*;
 import static junit.framework.Assert.assertEquals;
@@ -59,7 +56,7 @@ public class ResourcesTest extends Tests {
 
 //    @Test
 //    public void deleteAllResources() throws NotFoundException, SQLException {
-//        Connection conn = CONSTANTS.getConnection();
+//        Connection conn = Constants.getConnection();
 //        conn.setAutoCommit(false);
 //        Savepoint sp = conn.setSavepoint("BeforeNuke");
 //        for (Roles role : roles) {

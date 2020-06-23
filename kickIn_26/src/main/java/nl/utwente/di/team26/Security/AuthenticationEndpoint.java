@@ -3,7 +3,7 @@ package nl.utwente.di.team26.Security;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import nl.utwente.di.team26.CONSTANTS;
+import nl.utwente.di.team26.Constants;
 import nl.utwente.di.team26.Exception.Exceptions.AuthenticationDeniedException;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Authentication.SessionDao;
@@ -77,14 +77,14 @@ public class AuthenticationEndpoint {
         String tokenId = getMaxId() + 1;
         String token = createJWT(String.valueOf(userId), tokenId);
 
-        try (Connection conn = CONSTANTS.getConnection()) {
+        try (Connection conn = Constants.getConnection()) {
             sessionDao.create(new Session(token, userId));
         }
-        return String.format("%s=%s;Path=%s;Max-Age="+CONSTANTS.TTK+";HttpOnly", CONSTANTS.COOKIENAME, token, "/");
+        return String.format("%s=%s;Path=%s;Max-Age="+ Constants.TTK+";HttpOnly", Constants.COOKIENAME, token, "/");
     }
 
     private String createRemovalCookie() {
-        return CONSTANTS.COOKIENAME +"=;Path=/;Expires=Thu, 01-Jan-1970 00:00:10 GMT;Max-Age=0";
+        return Constants.COOKIENAME +"=;Path=/;Expires=Thu, 01-Jan-1970 00:00:10 GMT;Max-Age=0";
     }
 
     private String getMaxId() throws SQLException {
@@ -97,17 +97,17 @@ public class AuthenticationEndpoint {
 
         //The JWT signature algorithm we will be using to sign the token
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-        Key signingKey = new SecretKeySpec(CONSTANTS.SECRET.getBytes(), signatureAlgorithm.getJcaName());
+        Key signingKey = new SecretKeySpec(Constants.SECRET.getBytes(), signatureAlgorithm.getJcaName());
 
         long nowMillis = System.currentTimeMillis();
-        long expMillis = nowMillis + CONSTANTS.TTK;
+        long expMillis = nowMillis + Constants.TTK;
         Date now = new Date(nowMillis);
         Date exp = new Date(expMillis);
 
         //Let's set the JWT Claims
         JwtBuilder builder = Jwts.builder()
                 .setId(count)
-                .setIssuer(CONSTANTS.ISSUER)
+                .setIssuer(Constants.ISSUER)
                 .setSubject(subject)
                 .setIssuedAt(now)
                 .setExpiration(exp)
