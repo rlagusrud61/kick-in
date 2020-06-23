@@ -73,7 +73,7 @@ function addItems() {
     	materialsList = JSON.parse(this.responseText);
         console.log(materialsList);
         table = document.createElement("table"); // creates the table
-        table.setAttribute("id", "addItems")
+        table.setAttribute("id", "addItems");
         for (i = 0; i < materialsList.length; i++) {
             row = table.insertRow(-1); // adds a new row
             label = row.insertCell(0);

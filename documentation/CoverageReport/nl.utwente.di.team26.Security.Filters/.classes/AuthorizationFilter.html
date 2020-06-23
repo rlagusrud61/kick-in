@@ -1,0 +1,177 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: AuthorizationFilter</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">nl.utwente.di.team26.Security.Filters</a> ]
+</div>
+
+<h1>Coverage Summary for Class: AuthorizationFilter (nl.utwente.di.team26.Security.Filters)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AuthorizationFilter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    96.2%
+  </span>
+  <span class="absValue">
+    (25/ 26)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package nl.utwente.di.team26.Security.Filters;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import nl.utwente.di.team26.Product.dao.Authentication.UserDao;
+<i>4</i>&nbsp;import nl.utwente.di.team26.Security.User.Roles;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import javax.annotation.Priority;
+<i>7</i>&nbsp;import javax.ws.rs.NotAuthorizedException;
+<i>8</i>&nbsp;import javax.ws.rs.Priorities;
+<i>9</i>&nbsp;import javax.ws.rs.container.ContainerRequestContext;
+<i>10</i>&nbsp;import javax.ws.rs.container.ContainerRequestFilter;
+<i>11</i>&nbsp;import javax.ws.rs.container.ResourceInfo;
+<i>12</i>&nbsp;import javax.ws.rs.core.Context;
+<i>13</i>&nbsp;import javax.ws.rs.core.Response;
+<i>14</i>&nbsp;import javax.ws.rs.core.SecurityContext;
+<i>15</i>&nbsp;import javax.ws.rs.ext.Provider;
+<i>16</i>&nbsp;import java.io.IOException;
+<i>17</i>&nbsp;import java.lang.reflect.AnnotatedElement;
+<i>18</i>&nbsp;import java.lang.reflect.Method;
+<i>19</i>&nbsp;import java.util.ArrayList;
+<i>20</i>&nbsp;import java.util.Arrays;
+<i>21</i>&nbsp;import java.util.List;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;@Secured
+<i>24</i>&nbsp;@Provider
+<i>25</i>&nbsp;@Priority(Priorities.AUTHORIZATION)
+<b class="fc"><i>26</i>&nbsp;public class AuthorizationFilter implements ContainerRequestFilter {</b>
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    @Context
+<i>29</i>&nbsp;    private ResourceInfo resourceInfo;
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    @Context
+<i>32</i>&nbsp;    private SecurityContext securityContext;
+<i>33</i>&nbsp;
+<b class="fc"><i>34</i>&nbsp;    UserDao userDao = new UserDao();</b>
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;    @Override
+<i>37</i>&nbsp;    public void filter(ContainerRequestContext requestContext) throws IOException {
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;        // Get the resource class which matches with the requested URL
+<i>40</i>&nbsp;        // Extract the roles declared by it
+<b class="fc"><i>41</i>&nbsp;        Class&lt;?&gt; resourceClass = resourceInfo.getResourceClass();</b>
+<b class="fc"><i>42</i>&nbsp;        List&lt;Roles&gt; classRoles = extractRoles(resourceClass);</b>
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;        // Get the resource method which matches with the requested URL
+<i>45</i>&nbsp;        // Extract the roles declared by it
+<b class="fc"><i>46</i>&nbsp;        Method resourceMethod = resourceInfo.getResourceMethod();</b>
+<b class="fc"><i>47</i>&nbsp;        List&lt;Roles&gt; methodRoles = extractRoles(resourceMethod);</b>
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;        try {
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;            // Check if the user is allowed to execute the method
+<i>52</i>&nbsp;            // The method annotations override the class annotations
+<b class="fc"><i>53</i>&nbsp;            if (methodRoles.isEmpty()) {</b>
+<b class="fc"><i>54</i>&nbsp;                checkPermissions(classRoles);</b>
+<i>55</i>&nbsp;            } else {
+<b class="fc"><i>56</i>&nbsp;                checkPermissions(methodRoles);</b>
+<i>57</i>&nbsp;            }
+<i>58</i>&nbsp;
+<b class="fc"><i>59</i>&nbsp;        } catch (NotAuthorizedException e) {</b>
+<b class="fc"><i>60</i>&nbsp;            requestContext.abortWith(</b>
+<b class="fc"><i>61</i>&nbsp;                    Response.status(Response.Status.FORBIDDEN).build());</b>
+<b class="fc"><i>62</i>&nbsp;        }</b>
+<b class="fc"><i>63</i>&nbsp;    }</b>
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;    // Extract the roles from the annotated element
+<i>66</i>&nbsp;    private List&lt;Roles&gt; extractRoles(AnnotatedElement annotatedElement) {
+<b class="fc"><i>67</i>&nbsp;        if (annotatedElement == null) {</b>
+<b class="nc"><i>68</i>&nbsp;            return new ArrayList&lt;&gt;();</b>
+<i>69</i>&nbsp;        } else {
+<b class="fc"><i>70</i>&nbsp;            Secured secured = annotatedElement.getAnnotation(Secured.class);</b>
+<b class="fc"><i>71</i>&nbsp;            if (secured == null) {</b>
+<b class="fc"><i>72</i>&nbsp;                return new ArrayList&lt;&gt;();</b>
+<i>73</i>&nbsp;            } else {
+<b class="fc"><i>74</i>&nbsp;                Roles[] allowedRoles = secured.value();</b>
+<b class="fc"><i>75</i>&nbsp;                return Arrays.asList(allowedRoles);</b>
+<i>76</i>&nbsp;            }
+<i>77</i>&nbsp;        }
+<i>78</i>&nbsp;    }
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;    private void checkPermissions(List&lt;Roles&gt; allowedRoles) throws NotAuthorizedException {
+<i>81</i>&nbsp;        // Check if the user contains one of the allowed roles
+<i>82</i>&nbsp;        // Throw an Exception if the user has not permission to execute the method
+<i>83</i>&nbsp;
+<b class="fc"><i>84</i>&nbsp;        if (allowedRoles.isEmpty()) {</b>
+<b class="fc"><i>85</i>&nbsp;            return;</b>
+<i>86</i>&nbsp;        }
+<i>87</i>&nbsp;
+<b class="fc"><i>88</i>&nbsp;        if (!securityContext.isUserInRole(allowedRoles.get(0).getString())) {</b>
+<b class="fc"><i>89</i>&nbsp;            throw new NotAuthorizedException(&quot;You shall not pass!&quot;);</b>
+<i>90</i>&nbsp;        }
+<i>91</i>&nbsp;
+<b class="fc"><i>92</i>&nbsp;    }</b>
+<i>93</i>&nbsp;
+<i>94</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-23 15:28</div>
+</div>
+</body>
+</html>

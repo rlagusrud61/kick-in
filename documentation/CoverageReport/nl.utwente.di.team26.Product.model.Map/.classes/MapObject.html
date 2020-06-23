@@ -1,0 +1,186 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: MapObject</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">nl.utwente.di.team26.Product.model.Map</a> ]
+</div>
+
+<h1>Coverage Summary for Class: MapObject (nl.utwente.di.team26.Product.model.Map)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MapObject</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    76.9%
+  </span>
+  <span class="absValue">
+    (10/ 13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    58.6%
+  </span>
+  <span class="absValue">
+    (17/ 29)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package nl.utwente.di.team26.Product.model.Map;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import javax.xml.bind.annotation.XmlRootElement;
+<i>4</i>&nbsp;import java.io.Serializable;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;/**
+<i>7</i>&nbsp; * MapObject Value Object.
+<i>8</i>&nbsp; * This class is value object representing database table MapObject
+<i>9</i>&nbsp; * This class is intended to be used together with associated Dao object.
+<i>10</i>&nbsp; */
+<i>11</i>&nbsp;@XmlRootElement
+<i>12</i>&nbsp;public class MapObject implements Serializable {
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;    /**
+<i>15</i>&nbsp;     * Persistent Instance variables. This data is directly
+<i>16</i>&nbsp;     * mapped to the columns of database table.
+<i>17</i>&nbsp;     */
+<i>18</i>&nbsp;    private long objectId;
+<i>19</i>&nbsp;    private long mapId;
+<i>20</i>&nbsp;    private long resourceId;
+<i>21</i>&nbsp;    private String latLangs;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    /**
+<i>24</i>&nbsp;     * Constructors. DaoGen generates two constructors by default.
+<i>25</i>&nbsp;     * The first one takes no arguments and provides the most simple
+<i>26</i>&nbsp;     * way to create object instance. The another one takes one
+<i>27</i>&nbsp;     * argument, which is the primary key of the corresponding table.
+<i>28</i>&nbsp;     */
+<i>29</i>&nbsp;
+<b class="fc"><i>30</i>&nbsp;    public MapObject() {</b>
+<i>31</i>&nbsp;
+<b class="fc"><i>32</i>&nbsp;    }</b>
+<i>33</i>&nbsp;
+<b class="fc"><i>34</i>&nbsp;    public MapObject(long objectIdIn) {</b>
+<b class="fc"><i>35</i>&nbsp;        this.objectId = objectIdIn;</b>
+<b class="fc"><i>36</i>&nbsp;    }</b>
+<i>37</i>&nbsp;
+<b class="nc"><i>38</i>&nbsp;    public MapObject(long mapId, long resourceId, String latLangs) {</b>
+<b class="nc"><i>39</i>&nbsp;        this.mapId = mapId;</b>
+<b class="nc"><i>40</i>&nbsp;        this.resourceId = resourceId;</b>
+<b class="nc"><i>41</i>&nbsp;        this.latLangs = latLangs;</b>
+<b class="nc"><i>42</i>&nbsp;    }</b>
+<i>43</i>&nbsp;
+<b class="nc"><i>44</i>&nbsp;    public MapObject(long objectId, long mapId, long resourceId, String latLangs) {</b>
+<b class="nc"><i>45</i>&nbsp;        this.objectId = objectId;</b>
+<b class="nc"><i>46</i>&nbsp;        this.mapId = mapId;</b>
+<b class="nc"><i>47</i>&nbsp;        this.resourceId = resourceId;</b>
+<b class="nc"><i>48</i>&nbsp;        this.latLangs = latLangs;</b>
+<b class="nc"><i>49</i>&nbsp;    }</b>
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;    /**
+<i>52</i>&nbsp;     * Get- and Set-methods for persistent variables. The default
+<i>53</i>&nbsp;     * behaviour does not make any checks against malformed data,
+<i>54</i>&nbsp;     * so these might require some manual additions.
+<i>55</i>&nbsp;     */
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;    public long getObjectId() {
+<b class="fc"><i>58</i>&nbsp;        return this.objectId;</b>
+<i>59</i>&nbsp;    }
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;    public void setObjectId(long objectIdIn) {
+<b class="fc"><i>62</i>&nbsp;        this.objectId = objectIdIn;</b>
+<b class="fc"><i>63</i>&nbsp;    }</b>
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;    public long getMapId() {
+<b class="fc"><i>66</i>&nbsp;        return this.mapId;</b>
+<i>67</i>&nbsp;    }
+<i>68</i>&nbsp;
+<i>69</i>&nbsp;    public void setMapId(long mapIdIn) {
+<b class="fc"><i>70</i>&nbsp;        this.mapId = mapIdIn;</b>
+<b class="fc"><i>71</i>&nbsp;    }</b>
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;    public long getResourceId() {
+<b class="fc"><i>74</i>&nbsp;        return this.resourceId;</b>
+<i>75</i>&nbsp;    }
+<i>76</i>&nbsp;
+<i>77</i>&nbsp;    public void setResourceId(long resourceIdIn) {
+<b class="fc"><i>78</i>&nbsp;        this.resourceId = resourceIdIn;</b>
+<b class="fc"><i>79</i>&nbsp;    }</b>
+<i>80</i>&nbsp;
+<i>81</i>&nbsp;    public String getLatLangs() {
+<b class="fc"><i>82</i>&nbsp;        return this.latLangs;</b>
+<i>83</i>&nbsp;    }
+<i>84</i>&nbsp;
+<i>85</i>&nbsp;    public void setLatLangs(String latLangsIn) {
+<b class="fc"><i>86</i>&nbsp;        this.latLangs = latLangsIn;</b>
+<b class="fc"><i>87</i>&nbsp;    }</b>
+<i>88</i>&nbsp;
+<i>89</i>&nbsp;    /**
+<i>90</i>&nbsp;     * toString will return String object representing the state of this
+<i>91</i>&nbsp;     * valueObject. This is useful during application development, and
+<i>92</i>&nbsp;     * possibly when application is writing object states in textlog.
+<i>93</i>&nbsp;     */
+<i>94</i>&nbsp;    public String toString() {
+<b class="nc"><i>95</i>&nbsp;        return &quot;\nclass MapObject, mapping to table MapObject\n&quot; +</b>
+<i>96</i>&nbsp;                &quot;Persistent attributes: \n&quot; +
+<i>97</i>&nbsp;                &quot;objectId = &quot; + this.objectId + &quot;\n&quot; +
+<i>98</i>&nbsp;                &quot;mapId = &quot; + this.mapId + &quot;\n&quot; +
+<i>99</i>&nbsp;                &quot;resourceId = &quot; + this.resourceId + &quot;\n&quot; +
+<i>100</i>&nbsp;                &quot;latLangs = &quot; + this.latLangs + &quot;\n&quot;;
+<i>101</i>&nbsp;    }
+<i>102</i>&nbsp;
+<i>103</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-23 15:28</div>
+</div>
+</body>
+</html>
