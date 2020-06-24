@@ -52,16 +52,10 @@
 
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <script src="https://unpkg.com/konva@4.0.0/konva.min.js"></script>
-    <script src="js/util/crop.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@1.6.0/Control.FullScreen.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.6.0/Control.FullScreen.css" />
     <link rel="stylesheet" href="css/mapView.css"> <!-- link to css file-->
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"
-            integrity="sha256-DupmmuWppxPjtcG83ndhh/32A9xDMRFYkGOVzvpfSIk=" crossorigin="anonymous"></script>
-    <script src=https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas2image@1.0.5/canvas2image.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Map View</title>
 </head>
@@ -80,17 +74,12 @@
             <h1 class="col-4">Map</h1>
         </div>
     </div>
-
 </div>
 
 <div class="container" style="background-color: #ffffff; height: 100%; width: 100%">
-    <div id="mapContainer" style="height: 100%; width: 100%;">
-        <div id="mapid" style="width: 100%; height: 500px"></div>
-    </div>
     <div class="card-body">
         <div class="row">
             <h1 id="mapName" class="text-left" style="padding-left: 13px;">Map_Name</h1>
-<!--            <a class="glyphicon glyphicon-share text-success align-mapname" id="share" ></a>-->
             <a id = "mapEditBtn" class="glyphicon glyphicon-pencil text-success align-mapname" ></a>
             <a href="#" class="glyphicon glyphicon-trash text-success align-mapname" id="deleteEvent"></a>
         </div>
@@ -98,8 +87,12 @@
             <p id="description" class="text-left"></p>
         </div>
     </div>
-
-
+    <div id="mapContainer" style="height: 100%; width: 100%;">
+        <div id="mapid" style="width: 100%; height: 100vh"></div>
+        <div id="listItems" style="width: 25%">
+            <h2>List of Items</h2>
+        </div>
+    </div>
 </div>
 </div>
 <!-- The Map Deletion Popup -->
@@ -129,7 +122,6 @@
 <div class="footer">
     <p>End Of Map View Page</p>
 </div>
-<script src = "js/util/leafletUtil.js"></script>
 <script src="js/requests.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/mapView.js"></script>
