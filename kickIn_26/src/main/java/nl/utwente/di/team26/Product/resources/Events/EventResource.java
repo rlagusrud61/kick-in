@@ -37,7 +37,6 @@ public class EventResource {
     public Response updateEvent(Event eventToUpdate) throws NotFoundException, SQLException {
         long userId = Utils.getUserFromContext(securityContext);
         eventToUpdate.setLastEditedBy(userId);
-
         eventsDao.save(eventToUpdate);
         return Utils.returnNoContent();
     }
