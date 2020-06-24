@@ -349,8 +349,10 @@ function listItems() {
  * map are displayed on the page where required.
  */
 function getMapNameAndDescription() {
-    let mapId, jsonData;
+    let mapId, jsonData, mapEditBtn;
     mapId = window.location.search.split("=")[1];
+    mapEditBtn = document.getElementById("mapEditBtn");
+    mapEditBtn.href = "mapEdit.html?mapId=" + mapId;
     getMap(mapId, function () {
         jsonData = JSON.parse(this.responseText);
         document.getElementById("mapName").innerHTML = jsonData.name;
