@@ -71,7 +71,5 @@ const toBase64 = file => new Promise((resolve, reject) => {
  * @summary This method clears the form for adding a new resource to the database.
  */
 function clearForm() {
-    document.getElementById("resourceDescription").value = "";
-    document.getElementById("resourceName").value = "";
     document.getElementById("resourceImage").value = '';
 }
