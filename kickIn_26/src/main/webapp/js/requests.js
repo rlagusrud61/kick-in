@@ -877,7 +877,6 @@ function deleteObjects(deleteObjectArray, mapId, callback) {
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
-	console.log(JSON.stringify(deleteObjectArray))
 	xhr.send(JSON.stringify(deleteObjectArray));
 }
 
@@ -1142,7 +1141,7 @@ function clearAllMaps(callback) {
 function updateDrawing(drawing, callback) {
 	let xhr, drawingId;
 	xhr = new XMLHttpRequest();
-	drawingId = drawing.drawingId;
+	drawingId = drawing.resourceId;
 	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/resources/drawing/" + drawingId, true);
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4) {
@@ -1263,7 +1262,7 @@ function getAllDrawings(callback) {
 function updateMaterial(material, callback) {
 	let xhr, materialId;
 	xhr = new XMLHttpRequest();
-	materialId = material.materialId;
+	materialId = material.resourceId;
 	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/resources/material/" + materialId, true);
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4) {

@@ -18,7 +18,6 @@ function addNewMap() {
     		"name" : mapName,
     		"description" : description
     }
-    console.log(mapJSON)
     addMap(mapJSON, function() {
     	mapId = parseInt(this.responseText);
     	eventMapJSON = {

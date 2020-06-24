@@ -64,7 +64,7 @@ function loadTable() {
         response.forEach(function (resource) {
             resources.set(resource.resourceId, resource)
         });
-        console.log(response);
+
         header = [];
         header.push('Name');
         header.push('Description');
@@ -85,7 +85,9 @@ function loadTable() {
             name.innerHTML = response[i].name;
             description.innerHTML = response[i].description;
             action.innerHTML = "<a href='javascript: window.viewResource(" + response[i].resourceId + ")' class='text-success'>" +
-                "<i class='glyphicon glyphicon-eye-open' style='font-size:20px;'></i></a><a href='javascript: window.confirmDelete(" +
+                "<i class='glyphicon glyphicon-eye-open' style='font-size:20px;'></i></a><a href='editResource.html?id=" +
+                response[i].resourceId + "' class='text-success'><i class='glyphicon glyphicon-pencil' " +
+                "style='font-size:20px;'></i></a><a href='javascript: window.confirmDelete(" +
                 response[i].resourceId + ")'" + "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
         }
     });
@@ -110,17 +112,6 @@ function viewResource(resourceId) {
 }
 
 /**
- * @summary This method clears the form for adding a new resource to the database.
- */
-function clearForm() {
-    document.getElementById("resourceDescription").value = "";
-    document.getElementById("resourceName").value = "";
-    document.getElementById("material").checked = false;
-    document.getElementById("drawing").checked = false;
-    document.getElementById("resourceImage").value = '';
-}
-
-/**
  * @summary This method is used to add a new resource to the database.
  *
  * @description The name, description and image of the resource is retrieved from the popup. The image is first converted to base64 if
@@ -131,21 +122,16 @@ function clearForm() {
  * the database, the page is reloaded.
  */
 async function addResourcePopup() {
-    let description, resourceImage, resourceName, resourceType, resourceJSON, material, drawing, file, fileSize;
+    let description, resourceName, resourceType, resourceJSON, material, drawing, file, fileSize, image;
     description = document.getElementById("resourceDescription").value;
     resourceName = document.getElementById("resourceName").value;
     material = document.getElementById("material");
     drawing = document.getElementById("drawing");
-    resourceImage = document.getElementById("resourceImage");
-    console.log("x" + resourceImage);
     if (material.checked){
         resourceType = material.value;
-        console.log("material");
     } else if (drawing.checked){
         resourceType = drawing.value;
-        console.log("drawing");
     }
-    console.log("type: " + resourceType);
 
     file = document.querySelector('#resourceImage').files[0];
     fileSize = file.size / 1024 / 1024;
@@ -153,14 +139,13 @@ async function addResourcePopup() {
         alert("File Size Exceeds 1MB- Icons should not be that big.");
         clearForm();
         return;
+    } else if (file.name.split(".")[1] !== "png") {
+        alert("Only png is supported due to smaller size.")
+        clearForm();
+        return;
     }
-    // } else if (file.name.match(/.(png)$/i)) {
-    //     alert('This file format is not yet supported.');
-    //     clearForm();
-    //     return;
-    // }
 
-    let image =  await toBase64(file);
+    image =  await toBase64(file);
     resourceJSON = {
         "name": resourceName,
         "description": description,
@@ -176,21 +161,6 @@ async function addResourcePopup() {
         });
     }
 }
-
-/**
- *
- * @param {Blob} file - The image to be converted to base64.
- *
- * @summary This method is used to convert the file taken as a parameter into base64.
- *
- * @returns {Promise<unknown>} - The image in base64.
- */
-const toBase64 = file => new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
-});
 
 /**
  * @param {number} resourceId - the ID of the resource for which the trash button was clicked.
@@ -219,3 +189,24 @@ function removeResource(resourceId) {
     })
 }
 
+/**
+ *
+ * @param {Blob} file - The image to be converted to base64.
+ *
+ * @summary This method is used to convert the file taken as a parameter into base64.
+ *
+ * @returns {Promise<unknown>} - The image in base64.
+ */
+const toBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+});
+
+/**
+ * @summary This method clears the form for adding a new resource to the database.
+ */
+function clearForm() {
+    document.getElementById("resourceImage").value = '';
+}

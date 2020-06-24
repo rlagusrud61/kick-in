@@ -71,7 +71,6 @@ function addItems() {
     materialsList = null;
     getAllMaterials(function() {
     	materialsList = JSON.parse(this.responseText);
-        console.log(materialsList);
         table = document.createElement("table"); // creates the table
         table.setAttribute("id", "addItems");
         for (i = 0; i < materialsList.length; i++) {
@@ -143,11 +142,8 @@ function displayItems(itemNumber) {
     htmltext = "";
     for (x in jsonObj.items) {
         htmltext += "<li>" + x + " : " + jsonObj.items[x] + "</li>";
-        console.log(x);
-        console.log(jsonObj.items[x]);
     }
     displayitems.innerHTML = htmltext;
-    console.log(jsonObj.items);
 }
 
 // 	se = map.containerPointToLatLng([ data[0] + data[2],
