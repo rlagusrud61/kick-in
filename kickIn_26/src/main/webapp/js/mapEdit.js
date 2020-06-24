@@ -154,8 +154,8 @@ function massPost(callback) {
 
 function saveState() {
     massDelete(deletedObjects, function () {
-        massUpdate(function () {
-            massPost(function () {
+        massPost(function () {
+            massUpdate(function () {
                 bringAllObjectsForMap(mapId);
             });
         });
@@ -273,4 +273,3 @@ function insertObjectIntoMap(object) {
     newImage.resourceId = object.resourceId;
     pushToMap(newImage, object);
 }
-

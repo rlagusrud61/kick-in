@@ -1,6 +1,7 @@
-let modal, trash, closeDelete, closeDelete2, map, tiles, printer, editToggle, imgGroup, inFreeHand, materialsList,
-    modal2, share, closeExport, closeExport2;
+let mapId, modal, trash, closeDelete, closeDelete2, map, printer, imgGroup,
+    modal2, printPlugin;
 
+mapId = window.location.search.split("=")[1];
 // Get the modal
 modal = document.getElementById("popupMapDelete");
 // Button for deletion
@@ -9,277 +10,115 @@ trash = document.getElementById("deleteEvent");
 closeDelete = document.getElementsByClassName("close")[0];
 //Closing by pressing "No"
 closeDelete2 = document.getElementById("no");
-
 trash.onclick = function () {
     modal.style.display = "block";
 }
-
 closeDelete.onclick = function () {
     modal.style.display = "none";
 }
-
 closeDelete2.onclick = function () {
     modal.style.display = "none";
 }
-
 window.onclick = function (event) {
     if (event.target === modal) {
         modal.style.display = "none";
     }
 }
-//Modal for exporting the map
-
-//Get modal
-modal2 = document.getElementById("modalExport");
-//Button for exporting
-share = document.getElementById("share");
-//Closing popup
-closeExport = document.getElementsByClassName("close")[1];
-//Closing by pressing "No"
-closeExport2 = document.getElementById("no1");
-
-share.onclick = function () {
-    modal2.style.display = "block";
-}
-
-closeExport.onclick = function () {
-    modal2.style.display = "none";
-}
-
-closeExport2.onclick = function () {
-    modal2.style.display = "none";
-}
-
 window.onclick = function (event) {
     if (event.target === modal2) {
         modal2.style.display = "none";
     }
 }
 
+function initMap() {
+    let newMap = L.map('mapid', {
+        center: [52.2413, -353.1531],
+        zoom: 16,
+        keyboard: false,
+        fullscreenControl: true,
+        fullscreenControlOptions: {
+            position: 'topleft'
+        }
+    });
+    let tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    });
+    tiles.addTo(newMap);
+    L.easyPrint({
+        sizeModes: ['A4Landscape']
+    }).addTo(newMap);
+    return newMap;
+}
+function parseLatLangs(stringyLatLangs) {
+    let latLangArray = JSON.parse(stringyLatLangs);
+    let coords = [];
+    latLangArray.forEach(function (point) {
+        coords.push(L.latLng(point.lat, point.lng))
+    })
+    return coords;
+}
+
 //inits the map and properties.
-map = L.map('mapid', {
-    center: [52.2413, -353.1531],
-    zoom: 16,
-    keyboard: false
-});
-tiles = L
-    .tileLayer(
-        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        {
-            maxZoom: 19,
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        });
-tiles.addTo(map);
-
-printer = L.easyPrint({
-    tileLayer: tiles,
-    sizeModes: ['Current', 'A4Landscape', 'A4Portrait'],
-    filename: 'myMap',
-    exportOnly: true,
-    hideControlContainer: true
-}).addTo(map);
-
-editToggle = L.easyButton({
-    id: 'edit-mode-toggle',
-    states: [{
-        stateName: 'disable-editing',
-        icon: 'fa-edit',
-        title: 'Disable Editing',
-        onClick: function (control) {
-            imgGroup.forEach(function (img) {
-                img.editing.disable();
-            });
-            control.state('enable-editing');
-        }
-    }, {
-        stateName: 'enable-editing',
-        icon: 'fa-window-close',
-        title: 'Enable Editing',
-        onClick: function (control) {
-            imgGroup.forEach(function (img) {
-                img.editing.enable();
-            });
-            control.state('disable-editing');
-        }
-    }]
-});
-editToggle.addTo(map);
-
-//the array in which all the images added are stored
+map = initMap();
 imgGroup = [];
-//boolean to check weather free hand drawing is being done.
-inFreeHand = false;
+//all available resources
+resources = new Map();
+//their images
+images = new Map();
+mapObjects = new Map();
 
-materialsList = null;
-
-getAllMaterials(function () {
-    materialsList = JSON.parse(this.responseText);
-})
-
-
-// let img = L.distortableImageOverlay('..\\resources\\testImages\\example.jpg', {
-//     actions: [L.RotateAction, L.DragAction, L.ScaleAction, L.DeleteAction]
-// }).addTo(map);
-// imgGroup.push(img);
-// img.on('remove', function() {
-//     const index = imgGroup.indexOf(img);
-//     if (index !== -1) {
-//         imgGroup.splice(index, 1);
-//     }
-// });
-
-/**
- * @summary function to enter free hand, if already in free hand, we exit free hand drawing.
- */
-function callEnterFreeHand() {
-    if (!inFreeHand) {
-        enterFreeDrawingMode();
-    } else {
-        exitFreeDraw();
-    }
-}
-
-/**
- * @summary function to enter free hand drawing.
- */
-function enterFreeDrawingMode() {
-    let divContainer, dimensionData, stage, layer, circle;
-    inFreeHand = true;
-    map.dragging.disable();
-    map.touchZoom.disable();
-    map.doubleClickZoom.disable();
-    map.scrollWheelZoom.disable();
-    map.boxZoom.disable();
-    map.keyboard.disable();
-    map.zoomControl.disable();
-    if (map.tap)
-        map.tap.disable();
-    document.getElementById('mapid').style.cursor = 'crosshair';
-    if (editToggle.state() === 'disable-editing') {
-        imgGroup.forEach(function (img) {
-            img.editing.disable();
-        });
-    }
-    editToggle.disable();
-    divContainer = document.createElement('div');
-    divContainer.setAttribute('id', 'container');
-    // document.getElementsByClassName('leaflet-pane leaflet-overlay-pane')[0].appendChild(divContainer);
-    document.getElementById('mapContainer').appendChild(
-        divContainer);
-    dimensionData = document.getElementById('mapContainer');
-    stage = new Konva.Stage({
-        container: 'container', // id of container <div>
-        width: dimensionData.offsetWidth,
-        height: dimensionData.offsetHeight,
-    });
-    layer = new Konva.Layer();
-    circle = new Konva.Circle({
-        x: (stage.width() / 2),
-        y: (stage.height() / 2),
-        radius: 70,
-        fill: 'red',
-        stroke: 'black',
-        strokeWidth: 4,
-        draggable: true,
-    });
-    layer.add(circle);
-    stage.add(layer);
-    layer.draw();
-}
-
-/**
- * @summary function to exit free hand drawing.
- */
-function exitFreeDraw() {
-    let data, needForAdd;
-    let canvas, imgFree, nw, ne, sw, se = null;
-    try {
-        data = trimCanvas(document
-            .getElementsByTagName('canvas')[0]);
-    } catch (err) {
-        data = null;
-    }
-    needForAdd = true;
-    if (data !== null && (data[2] === 0 || data[3] === 0)) {
-        needForAdd = false;
-    } else {
-        if (data !== null) {
-            nw = map
-                .containerPointToLatLng([data[0], data[1]]);
-            ne = map.containerPointToLatLng([
-                data[0] + data[2], data[1]]);
-            sw = map.containerPointToLatLng([data[0],
-                data[1] + data[3]]);
-            se = map.containerPointToLatLng([
-                data[0] + data[2], data[1] + data[3]]);
-            canvas = data[4];
-            imgFree = canvas.toDataURL("image/png");
-        } else {
-            needForAdd = false;
-        }
-    }
-
-    document.getElementById('container').remove();
-    map.dragging.enable();
-    map.touchZoom.enable();
-    map.doubleClickZoom.enable();
-    map.scrollWheelZoom.enable();
-    map.boxZoom.enable();
-    map.keyboard.enable();
-    map.zoomControl.enable()
-    if (map.tap)
-        map.tap.enable();
-    document.getElementById('mapid').style.cursor = 'grab';
-
-    if (editToggle.state() === 'disable-editing') {
-        imgGroup.forEach(function (img) {
-            img.editing.enable();
-        });
-    }
-    editToggle.enable();
-    if (needForAdd) {
-        let freeDrawing = L.distortableImageOverlay(
-            imgFree,
-            {
-                corners: [nw, ne, sw, se],
-                actions: [L.LockAction, L.UnlockAction,
-                    L.OpacityAction, L.DeleteAction],
-            }).addTo(map);
-        imgGroup.push(freeDrawing);
-        freeDrawing.on('remove', function () {
-            const index = imgGroup.indexOf(freeDrawing);
-            if (index !== -1) {
-                imgGroup.splice(index, 1);
-            }
-        });
-    }
-    inFreeHand = false;
-}
-
-/**
- * @summary function to get the geoJSON data that can be used to reconstruct the map if needed.
- */
-function getGeoJSON() {
-    imgGroup.forEach(function (image) {
+function bringAllObjectsForMap(mapId) {
+    getAllObjectsForMap(mapId, function () {
+        let response = JSON.parse(this.responseText);
+        response.forEach(function (object) {
+            mapObjects.set(object.objectId, object)
+        })
+        insertObjectsToMap();
     })
 }
-
-/**
- * @summary function for filtering materials depending on entered text.
- */
-function filterOn() {
-
+function insertObjectsToMap() {
+    mapObjects.forEach(insertObjectIntoMap)
+}
+function insertObjectIntoMap(object) {
+    let corners = parseLatLangs(object.latLangs);
+    let newImage = L.distortableImageOverlay(images.get(object.resourceId), {
+        editable: false,
+        actions: [],
+        corners: corners
+    })
+    newImage.objectId = object.objectId;
+    newImage.resourceId = object.resourceId;
+    imgGroup.push(newImage);
+    newImage.addTo(map);
+}
+function bringAllResources() {
+    getAllResources(function () {
+        let response = JSON.parse(this.responseText);
+        response.forEach(function (resource) {
+            images.set(resource.resourceId, resource.image);
+            resources.set(resource.resourceId, resource.name)
+        })
+        bringAllObjectsForMap(mapId);
+    })
 }
 
 /**
  * @summary This method is used to call on the two methods when the window is loaded.
  */
-function loadNameDescriptionAndItems() {
-    getMapNameAndDescription();
-    listItems();
+function initPage() {
+    getMap(mapId, function () {
+        bringAllResources();
+        let mapEditBtn = document.getElementById("mapEditBtn");
+        mapEditBtn.href = "mapEdit.html?mapId=" + mapId;
+        let mapData = JSON.parse(this.responseText);
+        document.getElementById("mapName").innerHTML = mapData.name;
+        document.getElementById("description").innerHTML = mapData.description;
+        listItems(mapData.report);
+    })
 }
 
-window.onload = loadNameDescriptionAndItems;
+window.onload = initPage;
 
 /**
  * @summary This method is used to display the list of all the items that have been placed on the map and their
@@ -290,67 +129,29 @@ window.onload = loadNameDescriptionAndItems;
  * the information received. This table has two columns 'Name' and 'Quantity', where the column 'Name' gives the name of
  * the item that was placed on the map and the column 'Quantity' gives the count of each item that was placed on the map.
  */
-function listItems() {
+function listItems(report) {
+    let returnedItems, col, key, table, th, tr, i, j, tableCell;
+    returnedItems = report;
+    col = ["Name", "Count"];
+    table = document.createElement("table"); // creates the table
+    table.setAttribute("id", "resources")
+    table.setAttribute("class", "table table-hover")
+    tr = table.insertRow(-1); // add a row to the table
 
-    let mapId, returnedItems, col, key, table, th, tr, i, j, tableCell;
-    mapId = window.location.search.split("=")[1];
-    generateReportForMap(mapId, function () {
+    for (i = 0; i < col.length; i++) {
+        th = document.createElement("th"); // add a header to the table
+        th.innerHTML = col[i];
+        tr.appendChild(th);
+    }
 
-        returnedItems = JSON.parse(this.responseText);
-
-        col = [];
-        for (i = 0; i < returnedItems.length; i++) {
-            for (key in returnedItems[i]) {
-                if (col.indexOf(key) === -1 && (key === 'name' || key === 'count')) {
-                    if (key === 'name'){
-                        col.push('Name');
-                    } else if (key === 'count'){
-                        col.push('Count');
-                    }
-                }
-            }
+    for (i = 0; i < returnedItems.length; i++) {
+        tr = table.insertRow(-1); // adds a new row
+        for (j = 0; j < col.length; j++) {
+            tableCell = tr.insertCell(-1);
+            tableCell.innerHTML = returnedItems[i][col[j].toLowerCase()]; // adds the required data to the table
         }
-
-        table = document.createElement("table"); // creates the table
-        table.setAttribute("id", "resources")
-        table.setAttribute("class", "table table-hover")
-        tr = table.insertRow(-1); // add a row to the table
-
-        for (i = 0; i < col.length; i++) {
-            th = document.createElement("th"); // add a header to the table
-            th.innerHTML = col[i];
-            tr.appendChild(th);
-        }
-
-        for (i = 0; i < returnedItems.length; i++) {
-
-            tr = table.insertRow(-1); // adds a new row
-            for (j = 0; j < col.length; j++) {
-                tableCell = tr.insertCell(-1);
-                tableCell.innerHTML = returnedItems[i][col[j].toLowerCase()]; // adds the required data to the table
-            }
-        }
-        document.getElementById("listItems").appendChild(table);
-    });
-}
-
-/**
- * @summary This method is used to get the name and description of the map required.
- *
- * @description After the ID of the required map is retrieved from the URL, the 'getMap' function is called with the ID
- * as a parameter. If the map information is successfully retrieved from the back-end, the name and description of the
- * map are displayed on the page where required.
- */
-function getMapNameAndDescription() {
-    let mapId, jsonData, mapEditBtn;
-    mapId = window.location.search.split("=")[1];
-    mapEditBtn = document.getElementById("mapEditBtn");
-    mapEditBtn.href = "mapEdit.html?mapId=" + mapId;
-    getMap(mapId, function () {
-        jsonData = JSON.parse(this.responseText);
-        document.getElementById("mapName").innerHTML = jsonData.name;
-        document.getElementById("description").innerHTML = jsonData.description;
-    })
+    }
+    document.getElementById("listItems").appendChild(table);
 }
 
 /**
@@ -366,22 +167,3 @@ function removeMap() {
         window.location.href = "list.html";
     })
 }
-
-/**
- *
- *  This part of the code is used for taking screenshots of the map
- *
- *  Exporting in png format
- */
-
-
-document.getElementById("yes1").addEventListener('click', function()
-{
-    html2canvas(document.getElementsByClassName("specific")[0]).then(function (canvas) {
-
-            //document.body.appendChild(canvas);
-            modal2.style.display = "none";
-
-            return Canvas2Image.saveAsPNG(canvas);
-    });
-});
