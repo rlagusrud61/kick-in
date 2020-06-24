@@ -18,7 +18,8 @@ deletedObjects = new Set();
 bringAllResources();
 
 function openAccordion(id) {
-    let  availableItems = document.getElementById(id);
+    let availableItems;
+     availableItems = document.getElementById(id);
     if (availableItems.className.indexOf("w3-show") === -1) {
         availableItems.className += " w3-show";
         availableItems.previousElementSibling.className += " w3-green";
@@ -42,8 +43,9 @@ function updateLocalReport() {
 }
 
 function addResourcesToMap(rid) {
-    let numberToAdd = document.getElementById("input"+rid).value;
-    for (let i = 0; i < numberToAdd;i++) {
+    let numberToAdd, i;
+    numberToAdd = document.getElementById("input"+rid).value;
+    for ( i = 0; i < numberToAdd;i++) {
         addResourceToMap(rid)
     }
 }
@@ -75,12 +77,13 @@ function addItems() {
 }
 
 function initMap() {
-    let newMap = L.map('mapid', {
+    let newMap, tiles;
+     newMap = L.map('mapid', {
         center: [52.2413, -353.1531],
         zoom: 16,
         keyboard: false
     });
-    let tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+     tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     });
@@ -93,14 +96,15 @@ function addFenceToMap() {
 }
 
 function massDelete(deleteObjectArray, callback) {
-    let array = [];
+    let array, response;
+     array = [];
     deleteObjectArray.forEach(function (object) {
         array.push(object.objectId);
     })
     if (array.length !== 0) {
         deleteObjects(array, mapId, function () {
             if (this.responseText) {
-                let response = JSON.parse(this.responseText);
+                response = JSON.parse(this.responseText);
                 console.log(response);
             }
             deletedObjects.clear();
@@ -112,11 +116,12 @@ function massDelete(deleteObjectArray, callback) {
 }
 
 function massUpdate(callback) {
-    let array = [];
+    let array, parsed, putObject, response;
+     array = [];
     imgGroup.forEach(function (object) {
-        let parsed = parseObject(object)
+         parsed = parseObject(object)
         if (parsed.latLangs !== mapObjects.get(object.objectId).latLangs) {
-            let putObject = parsed;
+             putObject = parsed;
             putObject.objectId = object.objectId;
             array.push(putObject);
         }
@@ -124,7 +129,7 @@ function massUpdate(callback) {
     if (array.length !== 0) {
         updateObjects(array, mapId, function () {
             if (this.responseText) {
-                let response = JSON.parse(this.responseText);
+                 response = JSON.parse(this.responseText);
                 console.log(response);
             }
             callback();
@@ -135,14 +140,15 @@ function massUpdate(callback) {
 }
 
 function massPost(callback) {
-    let array = [];
+    let array, response;
+     array = [];
     newObjects.forEach(function (object) {
         array.push(parseObject(object))
     });
     if (array.length !== 0) {
         addObjectsToMap(array, mapId, function () {
             if (this.responseText) {
-                let response = JSON.parse(this.responseText);
+                 response = JSON.parse(this.responseText);
                 console.log(response);
             }
             callback();
@@ -163,7 +169,8 @@ function saveState() {
 }
 
 function addResourceToMap(iid) {
-    let woof = L.distortableImageOverlay(images.get(iid)).addTo(map);
+    let woof;
+    woof = L.distortableImageOverlay(images.get(iid)).addTo(map);
     woof.on('remove', function () {
         const index = newObjects.indexOf(woof);
         if (index !== -1) {
@@ -175,8 +182,9 @@ function addResourceToMap(iid) {
 }
 
 function bringAllResources() {
+    let response;
     getAllResources(function () {
-        let response = JSON.parse(this.responseText);
+         response = JSON.parse(this.responseText);
         response.forEach(function (resource) {
             images.set(resource.resourceId, resource.image);
             resources.set(resource.resourceId, resource.name)
@@ -187,15 +195,16 @@ function bringAllResources() {
 }
 
 function clearMap() {
-    deletedObjects.clear();
-    mapObjects.clear();
+    let i;
     const lengthImgGroup = imgGroup.length;
     const newObjectsLength = newObjects.length;
-    for (let i = 0; i < lengthImgGroup; i++) {
+    deletedObjects.clear();
+    mapObjects.clear();
+    for ( i = 0; i < lengthImgGroup; i++) {
         imgGroup[0].editing._overlay.remove();
     }
 
-    for (let i = 0; i < newObjectsLength; i++) {
+    for ( i = 0; i < newObjectsLength; i++) {
         newObjects[0].editing._overlay.remove();
     }
     imgGroup = [];
@@ -215,9 +224,10 @@ function enableEditingForAll() {
 }
 
 function bringAllObjectsForMap(mapId) {
+    let response;
     disableEditingForAll();
     getAllObjectsForMap(mapId, function () {
-        let response = JSON.parse(this.responseText);
+        response = JSON.parse(this.responseText);
         clearMap();
         deletedObjects.clear();
         mapObjects = new Map();
@@ -243,8 +253,9 @@ function insertObjectsToMap() {
 }
 
 function parseLatLangs(stringyLatLangs) {
-    let latLangArray = JSON.parse(stringyLatLangs);
-    let coords = [];
+    let latLangArray, coords;
+     latLangArray = JSON.parse(stringyLatLangs);
+     coords = [];
     latLangArray.forEach(function (point) {
         coords.push(L.latLng(point.lat, point.lng))
     })
@@ -265,8 +276,9 @@ function pushToMap(newImage, object) {
 }
 
 function insertObjectIntoMap(object) {
-    let corners = parseLatLangs(object.latLangs);
-    let newImage = L.distortableImageOverlay(images.get(object.resourceId), {
+    let corners, newImage;
+     corners = parseLatLangs(object.latLangs);
+     newImage = L.distortableImageOverlay(images.get(object.resourceId), {
         corners: corners
     })
     newImage.objectId = object.objectId;

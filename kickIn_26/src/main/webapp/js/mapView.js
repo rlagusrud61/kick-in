@@ -1,5 +1,5 @@
 let mapId, modal, trash, closeDelete, closeDelete2, map, printer, imgGroup,
-    modal2, printPlugin;
+    modal2;
 
 mapId = window.location.search.split("=")[1];
 // Get the modal
@@ -31,7 +31,8 @@ window.onclick = function (event) {
 }
 
 function initMap() {
-    let newMap = L.map('mapid', {
+    let newMap, tiles;
+     newMap = L.map('mapid', {
         center: [52.2413, -353.1531],
         zoom: 16,
         keyboard: false,
@@ -40,7 +41,7 @@ function initMap() {
             position: 'topleft'
         }
     });
-    let tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+     tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     });
@@ -50,9 +51,11 @@ function initMap() {
     }).addTo(newMap);
     return newMap;
 }
+
 function parseLatLangs(stringyLatLangs) {
-    let latLangArray = JSON.parse(stringyLatLangs);
-    let coords = [];
+    let latLangArray, coords;
+     latLangArray = JSON.parse(stringyLatLangs);
+     coords = [];
     latLangArray.forEach(function (point) {
         coords.push(L.latLng(point.lat, point.lng))
     })
@@ -69,8 +72,9 @@ images = new Map();
 mapObjects = new Map();
 
 function bringAllObjectsForMap(mapId) {
+    let response;
     getAllObjectsForMap(mapId, function () {
-        let response = JSON.parse(this.responseText);
+        response = JSON.parse(this.responseText);
         response.forEach(function (object) {
             mapObjects.set(object.objectId, object)
         })
@@ -81,8 +85,9 @@ function insertObjectsToMap() {
     mapObjects.forEach(insertObjectIntoMap)
 }
 function insertObjectIntoMap(object) {
-    let corners = parseLatLangs(object.latLangs);
-    let newImage = L.distortableImageOverlay(images.get(object.resourceId), {
+    let corners, newImage;
+    corners = parseLatLangs(object.latLangs);
+    newImage = L.distortableImageOverlay(images.get(object.resourceId), {
         editable: false,
         actions: [],
         corners: corners
@@ -93,8 +98,9 @@ function insertObjectIntoMap(object) {
     newImage.addTo(map);
 }
 function bringAllResources() {
+    let response;
     getAllResources(function () {
-        let response = JSON.parse(this.responseText);
+        response = JSON.parse(this.responseText);
         response.forEach(function (resource) {
             images.set(resource.resourceId, resource.image);
             resources.set(resource.resourceId, resource.name)
@@ -107,11 +113,12 @@ function bringAllResources() {
  * @summary This method is used to call on the two methods when the window is loaded.
  */
 function initPage() {
+    let mapEditBtn, mapData;
     getMap(mapId, function () {
         bringAllResources();
-        let mapEditBtn = document.getElementById("mapEditBtn");
+         mapEditBtn = document.getElementById("mapEditBtn");
         mapEditBtn.href = "mapEdit.html?mapId=" + mapId;
-        let mapData = JSON.parse(this.responseText);
+         mapData = JSON.parse(this.responseText);
         document.getElementById("mapName").innerHTML = mapData.name;
         document.getElementById("description").innerHTML = mapData.description;
         listItems(mapData.report);
