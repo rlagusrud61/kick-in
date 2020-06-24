@@ -55,9 +55,8 @@ window.onclick = function (event) {
  * gives the name of the resource, 'Description' gives the description of the resource and 'Action' allows the user to
  * edit the data on the resource as well as delete the resource.
  */
-//TODO edit resource
 function loadTable() {
-    let header, tr, th, i, table, response, row, name, description, action;
+    let header, tr, th, i, table, response, row, name, description, type, action;
     getAllResources(function () {
         table = document.getElementById("resourceTable");
         response = JSON.parse(this.responseText);
@@ -68,6 +67,7 @@ function loadTable() {
         header = [];
         header.push('Name');
         header.push('Description');
+        header.push('Type');
         header.push('Action');
 
         tr = table.insertRow(-1); // add a row to the table
@@ -81,14 +81,16 @@ function loadTable() {
             row = table.insertRow(-1);
             name = row.insertCell(0);
             description = row.insertCell(1);
-            action = row.insertCell(2);
+            type = row.insertCell(2);
+            action = row.insertCell(3);
             name.innerHTML = response[i].name;
             description.innerHTML = response[i].description;
+            type.innerHTML = response[i].type;
             action.innerHTML = "<a href='javascript: window.viewResource(" + response[i].resourceId + ")' class='text-success'>" +
-                "<i class='glyphicon glyphicon-eye-open' style='font-size:20px;'></i></a><a href='editResource.html?id=" +
+                "<i class='glyphicon glyphicon-eye-open' style='font-size:15px;'></i></a><a href='editResource.html?id=" +
                 response[i].resourceId + "' class='text-success'><i class='glyphicon glyphicon-pencil' " +
-                "style='font-size:20px;'></i></a><a href='javascript: window.confirmDelete(" +
-                response[i].resourceId + ")'" + "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
+                "style='font-size:15px;'></i></a><a href='javascript: window.confirmDelete(" +
+                response[i].resourceId + ")'" + "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:15px;'></i></a>";
         }
     });
 }
@@ -107,7 +109,6 @@ function viewResource(resourceId) {
     let resourcePicture;
     resourcePicture = document.getElementById("resourcePicture");
     resourcePicture.setAttribute("src", resources.get(resourceId).image);
-    // resourcePicture.setAttribute("width", "100%");
     imageModal.style.display = "block";
 }
 
