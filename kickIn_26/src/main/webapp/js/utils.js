@@ -23,11 +23,8 @@ function sortTableAscending(tableId, sortCriteria) {
             /* Get the two elements you want to compare,
             one from current row and one from the next: */
             if (sortCriteria === "name" || sortCriteria === "event" || sortCriteria === "map" ||  sortCriteria === "resource" ){
-                console.log(sortCriteria);
                 x = rows[i].getElementsByTagName("TD")[0];
-                console.log("x" + x);
                 y = rows[i + 1].getElementsByTagName("TD")[0];
-                console.log("y" + y);
             } else if (sortCriteria === "date"){
                 x = rows[i].getElementsByTagName("TD")[1];
                 y = rows[i + 1].getElementsByTagName("TD")[1];
@@ -106,7 +103,6 @@ function logout() {
     xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/authentication", true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4) {
-            console.log(xhr.responseText);
             window.location.href = "login.html";
         }
     }

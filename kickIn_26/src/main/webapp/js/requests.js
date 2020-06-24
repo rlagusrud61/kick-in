@@ -556,7 +556,6 @@ function deleteObjects(deleteObjectArray, mapId, callback) {
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
-	console.log(JSON.stringify(deleteObjectArray))
 	xhr.send(JSON.stringify(deleteObjectArray));
 }
 

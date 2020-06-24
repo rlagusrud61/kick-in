@@ -59,7 +59,6 @@ function loadTable() {
     getAllUsers(function() {
     	table = document.getElementById("usersTable");
         users = JSON.parse(this.responseText);
-        console.log(users);
 
         header = [];
         header.push('Name');
@@ -103,7 +102,6 @@ function viewUser(userId) {
 	getUser(userId, function() {
 	    let userInfo, table, header, i, th, tr, levelDescription, row, nickname, email, clearanceLevel, action;
 		userInfo = JSON.parse(this.responseText);
-		console.log(userInfo.email);
 		table = document.getElementById("userTable");
 		table.innerHTML = "";
 		header = [];
@@ -184,9 +182,7 @@ function addUserPopup() {
         "password": password,
         "clearanceLevel": clearanceLevel,
     };
-    console.log(JSON.stringify(userJSON));
     addUser(userJSON, function() {
-    	console.log(this.responseText);
         location.reload();
     })
 }

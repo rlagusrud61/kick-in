@@ -64,7 +64,7 @@ function loadTable() {
         response.forEach(function (resource) {
             resources.set(resource.resourceId, resource)
         });
-        console.log(response);
+
         header = [];
         header.push('Name');
         header.push('Description');
@@ -129,12 +129,9 @@ async function addResourcePopup() {
     drawing = document.getElementById("drawing");
     if (material.checked){
         resourceType = material.value;
-        console.log("material");
     } else if (drawing.checked){
         resourceType = drawing.value;
-        console.log("drawing");
     }
-    console.log("type: " + resourceType);
 
     file = document.querySelector('#resourceImage').files[0];
     fileSize = file.size / 1024 / 1024;

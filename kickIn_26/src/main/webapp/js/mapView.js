@@ -114,7 +114,6 @@ materialsList = null;
 
 getAllMaterials(function () {
     materialsList = JSON.parse(this.responseText);
-    console.log(materialsList);
 })
 
 
@@ -262,8 +261,6 @@ function exitFreeDraw() {
  */
 function getGeoJSON() {
     imgGroup.forEach(function (image) {
-        console.log('{corners: [' + image.getCorners()
-            + '], url: ' + image._url + '}');
     })
 }
 
@@ -298,7 +295,6 @@ function listItems() {
     let mapId, returnedItems, col, key, table, th, tr, i, j, tableCell;
     mapId = window.location.search.split("=")[1];
     generateReportForMap(mapId, function () {
-        console.log(this.responseText);
 
         returnedItems = JSON.parse(this.responseText);
 
@@ -326,14 +322,11 @@ function listItems() {
             tr.appendChild(th);
         }
 
-        console.log(returnedItems.length);
-        console.log(col.length);
         for (i = 0; i < returnedItems.length; i++) {
 
             tr = table.insertRow(-1); // adds a new row
             for (j = 0; j < col.length; j++) {
                 tableCell = tr.insertCell(-1);
-                console.log("data: " + returnedItems[i][col[j]])
                 tableCell.innerHTML = returnedItems[i][col[j].toLowerCase()]; // adds the required data to the table
             }
         }
@@ -355,7 +348,6 @@ function getMapNameAndDescription() {
         jsonData = JSON.parse(this.responseText);
         document.getElementById("mapName").innerHTML = jsonData.name;
         document.getElementById("description").innerHTML = jsonData.description;
-        console.log(this.responseText);
     })
 }
 
