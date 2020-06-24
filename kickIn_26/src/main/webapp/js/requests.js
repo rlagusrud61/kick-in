@@ -423,15 +423,18 @@ function addEventMap(eventMap, callback) {
  * @description This method takes the ID of the required event as a parameter. This ID is then
  * appended to the URL to request the deletion of the maps linked to it on the back-end. A DELETE
  * request is sent to the RESTful service provider with the given URL. The method then calls the callback function on
- * 'xhr' if the deletion was successful, by using the handleResponse method, else an alert is shown with the error
- * message.
+ * 'xhr' if the deletion was successful.
  */
 function clearMapsForEvent(eventId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/eventMap/event/" + eventId, true);
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4) {
-			handleResponse(xhr, callback);
+			if (xhr.status === 404 || xhr.status === 204) {
+				callback.apply(xhr);
+			} else {
+				handleResponse(xhr, callback);
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
