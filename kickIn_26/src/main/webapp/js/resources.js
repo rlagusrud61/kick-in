@@ -203,3 +203,13 @@ const toBase64 = file => new Promise((resolve, reject) => {
     reader.onerror = error => reject(error);
 });
 
+/**
+ * @summary This method clears the form for adding a new resource to the database.
+ */
+function clearForm() {
+    document.getElementById("resourceDescription").value = "";
+    document.getElementById("resourceName").value = "";
+    document.getElementById("material").checked = false;
+    document.getElementById("drawing").checked = false;
+    document.getElementById("resourceImage").value = '';
+}
