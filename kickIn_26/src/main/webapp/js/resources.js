@@ -142,6 +142,10 @@ async function addResourcePopup() {
         alert("File Size Exceeds 1MB- Icons should not be that big.");
         clearForm();
         return;
+    } else if (file.name.split(".")[1] !== "png") {
+        alert("Only png is supported due to smaller size.")
+        clearForm();
+        return;
     }
 
     image =  await toBase64(file);
