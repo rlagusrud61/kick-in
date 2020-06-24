@@ -56,9 +56,13 @@ public class TestResources {
     driver.findElement(By.id("searchTable")).click();
     driver.findElement(By.id("searchTable")).sendKeys("skittles");
     Thread.sleep(7000);
-    driver.findElement(By.id("searchTable")).clear();
     driver.findElement(By.id("searchTable")).click();
+    driver.findElement(By.id("searchTable")).clear();
     driver.findElement(By.id("searchTable")).sendKeys("does not exist");
+    Thread.sleep(7000);
+    driver.findElement(By.id("searchTable")).click();
+    driver.findElement(By.id("searchTable")).clear();
+    driver.findElement(By.id("searchTable")).sendKeys("d");
     Thread.sleep(7000);
   }
 }
