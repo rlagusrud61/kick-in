@@ -17,8 +17,24 @@ function getEvent(eventId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/event/" + eventId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 200:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -46,8 +62,19 @@ function updateEvent(event, callback) {
 	xhr = new XMLHttpRequest();
 	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/event/" + eventId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 204)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("Access denied");
+			case 204:
+				callback.apply(xhr);
+			case 403:
+				alert("Acces denied");
+			case 500:
+				alert("Server error");
+			case 404:
+				alert("Not found");
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -71,8 +98,24 @@ function deleteEvent(eventId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/event/" + eventId , true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 204)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 204:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -92,8 +135,21 @@ function getAllEvents(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/events" , true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 200:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -117,8 +173,24 @@ function addEvent(event, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/events" , true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 201)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 201:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -139,8 +211,21 @@ function deleteAllEvents(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/events" , true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 204)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 204:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -166,8 +251,24 @@ function getMap(mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/map/" + mapId , true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 200:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -195,8 +296,24 @@ function updateMap(map, callback) {
 	xhr = new XMLHttpRequest();
 	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/map/" + mapId , true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 204)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 204:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -220,8 +337,24 @@ function deleteMap(mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/map/" + mapId , true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 204)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 204:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -242,8 +375,21 @@ function getAllMaps(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/maps" , true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 200:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -267,8 +413,19 @@ function addMap(map, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/maps" , true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 201)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("Access denied");
+			case 201:
+				callback.apply(xhr);
+			case 403:
+				alert("Acces denied");
+			case 500:
+				alert("Server error");
+			case 404:
+				alert("Not found");
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -289,8 +446,21 @@ function deleteAllMaps(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/maps" , true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 204)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 204:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -316,8 +486,21 @@ function getAllMapsForEvent(eventId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/eventMap/event/" + eventId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 200:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -341,8 +524,21 @@ function getAllEventsForMap(mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/eventMap/map/" + mapId , true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 200:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -367,8 +563,24 @@ function addEventMap(eventMap, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/eventMap", true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 201)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 201:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -392,8 +604,24 @@ function clearMapsForEvent(eventId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/eventMap/event/" + eventId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 204)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 204:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				callback.apply(xhr);
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -420,8 +648,24 @@ function deleteEventMap(eventId, mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/eventMap/" + eventId + "/" + mapId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 204)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 204:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -442,8 +686,21 @@ function deleteAllRelations(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/eventMap", true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 204)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 204:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -470,8 +727,24 @@ function getObject(objectId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/object/" + objectId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 200:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -498,8 +771,24 @@ function updateObject(mapObject, callback) {
 	objectId = mapObject.objectId;
 	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/object/" + objectId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 204)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 204:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -523,8 +812,24 @@ function deleteObject(objectId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/object/" + objectId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 204)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 204:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -551,8 +856,24 @@ function deleteObjects(deleteObjectArray, mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/objects/selected/"+mapId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 204 || xhr.status === 418)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 204:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -578,8 +899,24 @@ function updateObjects(putObjectArray, mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/objects/selected/"+mapId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 204 || xhr.status === 418)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 204:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -603,8 +940,21 @@ function getAllObjectsForMap(mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/objects/" + mapId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 200:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -628,8 +978,24 @@ function generateReportForMap(mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/objects/" + mapId + "/report", true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 200:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -655,8 +1021,24 @@ function addObjectsToMap(mapObjectsArray, mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/objects/"+mapId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 204)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 201:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -681,8 +1063,24 @@ function clearMap(mapId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/objects/" + mapId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 204)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 204:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -703,8 +1101,21 @@ function clearAllMaps(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/objects", true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 204)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 204:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -733,8 +1144,24 @@ function updateDrawing(drawing, callback) {
 	drawingId = drawing.resourceId;
 	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/resources/drawing/" + drawingId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 204)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 204:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -758,8 +1185,24 @@ function addDrawing(drawing, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/resources/drawing", true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 201)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 201:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -779,8 +1222,21 @@ function getAllDrawings(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/resources/drawing", true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 200:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -809,8 +1265,24 @@ function updateMaterial(material, callback) {
 	materialId = material.resourceId;
 	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/resources/material/" + materialId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 204)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 204:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -830,8 +1302,21 @@ function getAllMaterials(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/resources/material", true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 200:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -855,8 +1340,24 @@ function addMaterial(material, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/resources/material", true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 201)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 201:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -882,8 +1383,24 @@ function getResource(resourceId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/resource/" + resourceId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 200:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -907,8 +1424,24 @@ function deleteResource(resourceId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/resource/" + resourceId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 204)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 204:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -928,8 +1461,21 @@ function getAllResources(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/resources", true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 200:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -949,8 +1495,21 @@ function deleteAllResources(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/resources", true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 204)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 204:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -976,8 +1535,24 @@ function getUser(userId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/user/" + userId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 200:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -1005,8 +1580,24 @@ function updateUser(user, callback) {
 	userId = user.userId;
 	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/user/" + userId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 204)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 204:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -1030,8 +1621,24 @@ function deleteUser(userId, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/user/" + userId, true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 204)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 204:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -1051,8 +1658,24 @@ function getAllUsers(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/users", true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 200)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 200:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -1076,8 +1699,24 @@ function addUser(user, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('POST', "http://localhost:8080/kickInTeam26/rest/users", true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 201)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 201:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -1098,8 +1737,24 @@ function deleteAllUsers(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/users", true);
 	xhr.onreadystatechange = function() {
-		if ((xhr.readyState === 4) && (xhr.status === 204)) {
-			callback.apply(xhr);
+		if (xhr.readyState === 4) {
+			switch (xhr.status) {
+			case 400:
+				alert("You are not logged in");
+				break;
+			case 204:
+				callback.apply(xhr);
+				break;
+			case 403:
+				alert("Acces denied");
+				break;
+			case 500:
+				alert("Server error");
+				break;
+			case 404:
+				alert("Not found");
+				break;
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
