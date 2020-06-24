@@ -136,7 +136,8 @@ function openModalMapDelete(mapId) {
 }
 
 function removeMap(mapId) {
-    deleteMap(mapId, function () {
+	eventId = window.location.search.split("=")[1];
+    deleteEventMap(eventId, mapId, function () {
         location.reload();
     })
 }
