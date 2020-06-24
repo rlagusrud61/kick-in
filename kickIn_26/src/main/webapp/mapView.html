@@ -66,19 +66,21 @@
 <div id="details" class="container" style="background-color: #ffffff;">
     <div class="card-body">
         <div class="row">
-            <h1 id="mapName" class="text-left" style="padding-left: 13px;">Map_Name</h1>
+            <h1 id="mapName" class="text-left" style="padding-left: 13px;"></h1>
             <a id = "mapEditBtn" class="glyphicon glyphicon-pencil text-success align-mapname" ></a>
             <a href="#" class="glyphicon glyphicon-trash text-success align-mapname" id="deleteEvent"></a>
         </div>
-        <div class="specific">
-            <p id="description" class="text-left"></p>
+        <div class="row">
+            <div class = "col-sm-6">
+                <p id="description" class="text-left"></p>
+            </div>
+            <div class = "col-sm-6" id="listItems">
+                    <h2>List of Items</h2>
+            </div>
         </div>
     </div>
     <div id="mapContainer">
         <div id="mapid" style="height: 100vh"></div>
-    </div>
-    <div id="listItems" style="width: 50%">
-        <h2>List of Items</h2>
     </div>
 </div>
 
