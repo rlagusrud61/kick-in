@@ -32,14 +32,15 @@ public class EventsDao extends Dao implements DaoInterface<Event> {
     public void save(Event valueObject) throws NotFoundException, SQLException {
         try(Connection conn = Constants.getConnection()) {
             String sql = "UPDATE Events SET name = ?, description = ?, location = ?, "
-                    + "lastEditedBy = ? WHERE (eventId = ? ) ";
+                    + "lastEditedBy = ?, date = ?::date WHERE (eventId = ? ) ";
             beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, valueObject.getName());
                 stmt.setString(2, valueObject.getDescription());
                 stmt.setString(3, valueObject.getLocation());
                 stmt.setLong(4, valueObject.getLastEditedBy());
-                stmt.setLong(5, valueObject.getEventId());
+                stmt.setString(5, valueObject.getDate());
+                stmt.setLong(6, valueObject.getEventId());
                 databaseUpdate(conn, stmt);
             }
         }
