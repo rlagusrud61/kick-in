@@ -69,7 +69,7 @@ function addItems() {
         numInput = row.insertCell(1);
         addButton = row.insertCell(2);
         label.innerHTML = '<label>' + resourceName + '</label>';
-        numInput.innerHTML = '<input id ="input' + id + '" type = "number" name = "quantity"/>';
+        numInput.innerHTML = '<input id ="input' + id + '" type = "number" min="0" name = "quantity"/>';
         addButton.innerHTML = '<button type="button" class="btn btn-light-green" onclick ="addResourcesToMap(' + id + ')">+</button>';
     });
     document.getElementById("itemlist").appendChild(table);
