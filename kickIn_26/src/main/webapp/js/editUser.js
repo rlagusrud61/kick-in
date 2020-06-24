@@ -34,9 +34,7 @@ function updateUserData() {
         "clearanceLevel": clearanceLevel,
         "userId": userId,
     };
-    console.log(JSON.stringify(userJSON));
     updateUser(userJSON, function() {
-        console.log(this.responseText);
         window.location.href = "users.html";
     })
 }

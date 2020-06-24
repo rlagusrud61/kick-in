@@ -50,7 +50,6 @@ function loadTable() {
     getAllEvents(function () {
         table = document.getElementById("eventTable");
         events = JSON.parse(this.responseText);
-        console.log(events);
         header = [];
         header.push('Name');
         header.push('Date Of Event')

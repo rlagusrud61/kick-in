@@ -140,3 +140,7 @@ input[type=number]:hover {
     border: 1px solid #89BD26;
     box-shadow: 0 1px 0 0 #89BD26;
 }
+
+.w3-green .w3-hover-green:hover{
+    background-color: #89BD26;
+}

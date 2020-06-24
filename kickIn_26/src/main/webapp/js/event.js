@@ -85,7 +85,6 @@ function displayEventInfo() {
 
         maps = JSON.parse(this.responseText);
         table = document.getElementById("mapTable");
-        console.log(maps);
 
         header = [];
         header.push('Name');
@@ -146,7 +145,6 @@ function removeMap(mapId) {
 function openModalMapDataEdit(mapId) {
     editBtn.setAttribute("onclick", "updateMapData(" + mapId + ")");
     modalMapInfoEdit.style.display = "block";
-    console.log("hellotherefriend");
 
 }
 
@@ -161,7 +159,6 @@ function updateMapData(mapId) {
         "mapId": mapId,
         "description": mapDescription
     };
-    console.log(mapJSON);
     updateMap(mapJSON, function () {
         window.location.href = "event.html?id=" + eventId;
     })
