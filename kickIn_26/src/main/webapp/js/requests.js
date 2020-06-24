@@ -1030,7 +1030,7 @@ function addObjectsToMap(mapObjectsArray, mapId, callback) {
 				callback.apply(xhr);
 				break;
 			case 403:
-				alert("Acces denied");
+				alert("Access denied");
 				break;
 			case 500:
 				alert("Server error");

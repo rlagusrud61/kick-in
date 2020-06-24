@@ -62,7 +62,7 @@ public class ObjectsResource {
         long userId = Utils.getUserFromContext(securityContext);
         mapObjectsDao.createMany(newObjectToAdd);
         mapsDao.saveLastEditedBy(mapId, userId);
-        return Utils.returnNoContent();
+        return Utils.returnCreated();
     }
 
     @DELETE

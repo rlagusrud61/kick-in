@@ -1,5 +1,5 @@
 let mapId, modal, trash, closeDelete, closeDelete2, map, printer, imgGroup,
-    modal2;
+    modal2, printPlugin;
 
 mapId = window.location.search.split("=")[1];
 // Get the modal
@@ -10,7 +10,6 @@ trash = document.getElementById("deleteEvent");
 closeDelete = document.getElementsByClassName("close")[0];
 //Closing by pressing "No"
 closeDelete2 = document.getElementById("no");
-
 trash.onclick = function () {
     modal.style.display = "block";
 }
@@ -46,6 +45,9 @@ function initMap() {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     });
     tiles.addTo(newMap);
+    L.easyPrint({
+        sizeModes: ['A4Landscape']
+    }).addTo(newMap);
     return newMap;
 }
 function parseLatLangs(stringyLatLangs) {
@@ -59,12 +61,6 @@ function parseLatLangs(stringyLatLangs) {
 
 //inits the map and properties.
 map = initMap();
-printer = L.easyPrint({
-    sizeModes: ['Current'],
-    filename: 'myMap',
-    exportOnly: true,
-    hideControlContainer: true
-}).addTo(map);
 imgGroup = [];
 //all available resources
 resources = new Map();

@@ -91,5 +91,7 @@
     <orderEntry type="library" name="Maven: de.mkammerer:argon2-jvm:2.5" level="project" />
     <orderEntry type="library" name="Maven: net.java.dev.jna:jna:4.5.2" level="project" />
     <orderEntry type="library" name="leaflet.fullscreen" level="application" />
+    <orderEntry type="library" name="leaflet-easyprint" level="application" />
+    <orderEntry type="library" name="html2canvas" level="application" />
   </component>
 </module>
