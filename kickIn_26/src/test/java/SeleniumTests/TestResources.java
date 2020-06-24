@@ -37,29 +37,51 @@ public class TestResources {
   public void tearDown() {
     driver.quit();
   }
+
   @Test
+  // Adding, editing and deleting a resource could not be tested with Selenium. If a resource is deleted during the test,
+  // it cannot be found when the test is run later. Adding and editing a resource cannot be tested because we are required
+  // to upload an image which is not possible to test with Selenium.
   public void testResources() throws InterruptedException {
     driver.get("http://localhost:8080/kickInTeam26/");
+
+    // Log in
     driver.findElement(By.id("inputEmail")).sendKeys("priya@email.com");
     driver.findElement(By.id("inputPassword")).click();
     driver.findElement(By.id("inputPassword")).sendKeys("priya");
     driver.findElement(By.id("inputPassword")).sendKeys(Keys.ENTER);
     Thread.sleep(7000);
+
+    // Go to resources page.
     driver.findElement(By.cssSelector(".glyphicon-cog")).click();
     Thread.sleep(7000);
+
+    // Open then close the image of a resource.
     driver.findElement(By.cssSelector("tr:nth-child(2) .glyphicon-eye-open")).click();
     Thread.sleep(7000);
     driver.findElement(By.cssSelector("#imageModal .close")).click();
+
+    // Open then close the image of another resource.
     driver.findElement(By.cssSelector("tr:nth-child(3) .glyphicon-eye-open")).click();
     Thread.sleep(7000);
     driver.findElement(By.cssSelector("#imageModal .close")).click();
+
+    // Search for the resource with the name "skittles" and opens its image.
     driver.findElement(By.id("searchTable")).click();
     driver.findElement(By.id("searchTable")).sendKeys("skittles");
+    driver.findElement(By.cssSelector("tr:nth-child(12) .glyphicon-eye-open")).click();
     Thread.sleep(7000);
+    driver.findElement(By.cssSelector("#imageModal .close")).click();
+
+    // Clear the input box and search for a resource with the name "does not exist" which is not in the database
+    // so an empty table is given.
     driver.findElement(By.id("searchTable")).click();
     driver.findElement(By.id("searchTable")).clear();
     driver.findElement(By.id("searchTable")).sendKeys("does not exist");
     Thread.sleep(7000);
+
+    // Clear the input box and search for a resource with the name "d". All resources that contain the letter "d" in the
+    // name can be found in the table.
     driver.findElement(By.id("searchTable")).click();
     driver.findElement(By.id("searchTable")).clear();
     driver.findElement(By.id("searchTable")).sendKeys("d");
