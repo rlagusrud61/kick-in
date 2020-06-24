@@ -1,4 +1,4 @@
-let modal, imageModal, btn, span, yesBtn, deleteModal, close;
+let resources, modal, imageModal, btn, span, yesBtn, deleteModal, close;
 
 // Get the modal
 modal = document.getElementById("addResource");
@@ -12,6 +12,8 @@ yesBtn = document.getElementById("yesDeleteButton");
 span = document.getElementsByClassName("close close_multi")[0];
 span2 = document.getElementsByClassName("close close_multi")[1];
 span3 = document.getElementsByClassName("close close_multi")[2];
+//init resources
+resources = new Map();
 
 btn.onclick = function () {
     modal.style.display = "block";
@@ -55,11 +57,14 @@ window.onclick = function (event) {
  */
 //TODO edit resource
 function loadTable() {
-    let header, tr, th, i, table, resources, row, name, description, action;
+    let header, tr, th, i, table, response, row, name, description, action;
     getAllResources(function () {
         table = document.getElementById("resourceTable");
-        resources = JSON.parse(this.responseText);
-        console.log(resources);
+        response = JSON.parse(this.responseText);
+        response.forEach(function (resource) {
+            resources.set(resource.resourceId, resource)
+        });
+        console.log(response);
         header = [];
         header.push('Name');
         header.push('Description');
@@ -72,16 +77,16 @@ function loadTable() {
             tr.appendChild(th);
         }
 
-        for (i = 0; i < resources.length; i++) {
+        for (i = 0; i < response.length; i++) {
             row = table.insertRow(-1);
             name = row.insertCell(0);
             description = row.insertCell(1);
             action = row.insertCell(2);
-            name.innerHTML = resources[i].name;
-            description.innerHTML = resources[i].description;
-            action.innerHTML = "<a href='javascript: window.viewResource(" + resources[i].resourceId + ")' class='text-success'>" +
+            name.innerHTML = response[i].name;
+            description.innerHTML = response[i].description;
+            action.innerHTML = "<a href='javascript: window.viewResource(" + response[i].resourceId + ")' class='text-success'>" +
                 "<i class='glyphicon glyphicon-eye-open' style='font-size:20px;'></i></a><a href='javascript: window.confirmDelete(" +
-                resources[i].resourceId + ")'" + "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
+                response[i].resourceId + ")'" + "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
         }
     });
 }
@@ -97,25 +102,36 @@ window.onload = loadTable;
  * the required resource as a parameter, the image of the resource is displayed in the popup.
  */
 function viewResource(resourceId) {
-    let resourcePicture, resource;
+    let resourcePicture;
     resourcePicture = document.getElementById("resourcePicture");
-    getResource(resourceId, function () {
-        resource = JSON.parse(this.responseText);
-        resourcePicture.setAttribute("src", resource.image);
-        imageModal.style.display = "block";
-    });
+    resourcePicture.setAttribute("src", resources.get(resourceId).image);
+    // resourcePicture.setAttribute("width", "100%");
+    imageModal.style.display = "block";
+}
+
+/**
+ * @summary This method clears the form for adding a new resource to the database.
+ */
+function clearForm() {
+    document.getElementById("resourceDescription").value = "";
+    document.getElementById("resourceName").value = "";
+    document.getElementById("material").checked = false;
+    document.getElementById("drawing").checked = false;
+    document.getElementById("resourceImage").value = '';
 }
 
 /**
  * @summary This method is used to add a new resource to the database.
  *
- * @description The name, description and image of the resource is retrieved from the popup. Then, a JSON object
- * is created from the information retrieved and either the 'addMaterial' or 'addResource' function is called depending
- * on the type of the resource with this JSON object as a parameter. If the resource was successfully added to the database,
- * the page is reloaded.
+ * @description The name, description and image of the resource is retrieved from the popup. The image is first converted to base64 if
+ * the file size is less than 1MB and if it is in PNG format. If the file is not in PNG format or if it is greater than 1MB in size,
+ * an alert message is displayed to the user and the form is cleared. If the file is less than 1MB in size and is in PNG format,
+ * a JSON object is created from the information retrieved and either the 'addMaterial' or 'addResource' function is called
+ * depending on the type of the resource with this JSON object as a parameter. If the resource was successfully added to
+ * the database, the page is reloaded.
  */
-function addResourcePopup() {
-    let description, resourceImage, resourceName, resourceType, resourceJSON, material, drawing;
+async function addResourcePopup() {
+    let description, resourceImage, resourceName, resourceType, resourceJSON, material, drawing, file, fileSize;
     description = document.getElementById("resourceDescription").value;
     resourceName = document.getElementById("resourceName").value;
     material = document.getElementById("material");
@@ -130,25 +146,51 @@ function addResourcePopup() {
         console.log("drawing");
     }
     console.log("type: " + resourceType);
-    var fileInput = document.getElementById("resourceImage");
-    var reader = new FileReader();
-    reader.readAsDataURL(fileInput.files[0]);
+
+    file = document.querySelector('#resourceImage').files[0];
+    fileSize = file.size / 1024 / 1024;
+    if (fileSize > 1) {
+        alert("File Size Exceeds 1MB- Icons should not be that big.");
+        clearForm();
+        return;
+    }
+    // } else if (file.name.match(/.(png)$/i)) {
+    //     alert('This file format is not yet supported.');
+    //     clearForm();
+    //     return;
+    // }
+
+    let image =  await toBase64(file);
     resourceJSON = {
         "name": resourceName,
         "description": description,
-        "image": reader.result,
+        "image": image,
     };
-    console.log(reader.result);
     if (resourceType === "drawing"){
         addDrawing(resourceJSON, function () {
             location.reload();
         });
-    } else if (resourceType === "material"){
+    } else if (resourceType === "material") {
         addMaterial(resourceJSON, function () {
             location.reload();
         });
     }
 }
+
+/**
+ *
+ * @param {Blob} file - The image to be converted to base64.
+ *
+ * @summary This method is used to convert the file taken as a parameter into base64.
+ *
+ * @returns {Promise<unknown>} - The image in base64.
+ */
+const toBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+});
 
 /**
  * @param {number} resourceId - the ID of the resource for which the trash button was clicked.

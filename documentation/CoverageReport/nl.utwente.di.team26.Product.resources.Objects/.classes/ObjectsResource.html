@@ -1,0 +1,183 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ObjectsResource</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">nl.utwente.di.team26.Product.resources.Objects</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ObjectsResource (nl.utwente.di.team26.Product.resources.Objects)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ObjectsResource</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87.5%
+  </span>
+  <span class="absValue">
+    (7/ 8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    91.3%
+  </span>
+  <span class="absValue">
+    (21/ 23)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package nl.utwente.di.team26.Product.resources.Objects;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
+<i>4</i>&nbsp;import nl.utwente.di.team26.Product.dao.Maps.MapObjectsDao;
+<i>5</i>&nbsp;import nl.utwente.di.team26.Product.dao.Maps.MapsDao;
+<i>6</i>&nbsp;import nl.utwente.di.team26.Product.model.Map.MapObject;
+<i>7</i>&nbsp;import nl.utwente.di.team26.Security.Filters.Secured;
+<i>8</i>&nbsp;import nl.utwente.di.team26.Security.User.Roles;
+<i>9</i>&nbsp;import nl.utwente.di.team26.Utils;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;import javax.print.attribute.standard.Media;
+<i>12</i>&nbsp;import javax.ws.rs.*;
+<i>13</i>&nbsp;import javax.ws.rs.core.Context;
+<i>14</i>&nbsp;import javax.ws.rs.core.MediaType;
+<i>15</i>&nbsp;import javax.ws.rs.core.Response;
+<i>16</i>&nbsp;import javax.ws.rs.core.SecurityContext;
+<i>17</i>&nbsp;import java.sql.SQLException;
+<i>18</i>&nbsp;import java.util.List;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;@Path(&quot;/objects&quot;)
+<b class="fc"><i>21</i>&nbsp;public class ObjectsResource {</b>
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    @Context
+<i>24</i>&nbsp;    SecurityContext securityContext;
+<i>25</i>&nbsp;
+<b class="fc"><i>26</i>&nbsp;    MapObjectsDao mapObjectsDao = new MapObjectsDao();</b>
+<b class="fc"><i>27</i>&nbsp;    MapsDao mapsDao = new MapsDao();</b>
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;    @GET
+<i>30</i>&nbsp;    @Secured(Roles.VISITOR)
+<i>31</i>&nbsp;    @Path(&quot;{mapId}&quot;)
+<i>32</i>&nbsp;    @Produces(MediaType.APPLICATION_JSON)
+<i>33</i>&nbsp;    public Response getAllObjectsForMap(@PathParam(&quot;mapId&quot;) long mapId) throws NotFoundException, SQLException {
+<b class="fc"><i>34</i>&nbsp;        String allObjectsOnMap = mapObjectsDao.getAllObjectsOnMap(mapId);</b>
+<b class="fc"><i>35</i>&nbsp;        return Utils.returnOkResponse(allObjectsOnMap);</b>
+<i>36</i>&nbsp;    }
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    @DELETE
+<i>39</i>&nbsp;    @Secured(Roles.EDITOR)
+<i>40</i>&nbsp;    @Path(&quot;{mapId}&quot;)
+<i>41</i>&nbsp;    @Produces(MediaType.APPLICATION_JSON)
+<i>42</i>&nbsp;    public Response clearMap(@PathParam(&quot;mapId&quot;) long mapId) throws NotFoundException, SQLException {
+<b class="fc"><i>43</i>&nbsp;        mapObjectsDao.deleteAllForMap(mapId);</b>
+<b class="fc"><i>44</i>&nbsp;        return Utils.returnNoContent();</b>
+<i>45</i>&nbsp;    }
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;    @GET
+<i>48</i>&nbsp;    @Secured(Roles.VISITOR)
+<i>49</i>&nbsp;    @Path(&quot;{mapId}/report&quot;)
+<i>50</i>&nbsp;    @Produces(MediaType.APPLICATION_JSON)
+<i>51</i>&nbsp;    public Response generateReportForMap(@PathParam(&quot;mapId&quot;) long mapId) throws NotFoundException, SQLException {
+<b class="fc"><i>52</i>&nbsp;        String allObjectsOnMap = mapObjectsDao.generateReport(mapId);</b>
+<b class="fc"><i>53</i>&nbsp;        return Utils.returnOkResponse(allObjectsOnMap);</b>
+<i>54</i>&nbsp;    }
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;    @POST
+<i>57</i>&nbsp;    @Path(&quot;{mapId}&quot;)
+<i>58</i>&nbsp;    @Secured(Roles.EDITOR)
+<i>59</i>&nbsp;    @Consumes(MediaType.APPLICATION_JSON)
+<i>60</i>&nbsp;    @Produces(MediaType.APPLICATION_JSON)
+<i>61</i>&nbsp;    public Response addObjectToMap(@PathParam(&quot;mapId&quot;) long mapId, MapObject[] newObjectToAdd) throws NotFoundException, SQLException {
+<b class="fc"><i>62</i>&nbsp;        long userId = Utils.getUserFromContext(securityContext);</b>
+<b class="fc"><i>63</i>&nbsp;        mapObjectsDao.createMany(newObjectToAdd);</b>
+<b class="fc"><i>64</i>&nbsp;        mapsDao.saveLastEditedBy(mapId, userId);</b>
+<b class="fc"><i>65</i>&nbsp;        return Utils.returnNoContent();</b>
+<i>66</i>&nbsp;    }
+<i>67</i>&nbsp;
+<i>68</i>&nbsp;    @DELETE
+<i>69</i>&nbsp;    @Path(&quot;selected/{mapId}&quot;)
+<i>70</i>&nbsp;    @Secured(Roles.EDITOR)
+<i>71</i>&nbsp;    @Consumes(MediaType.APPLICATION_JSON)
+<i>72</i>&nbsp;    @Produces(MediaType.APPLICATION_JSON)
+<i>73</i>&nbsp;    public Response deleteSelected(@PathParam(&quot;mapId&quot;) long mapId, Long[] arrayOfObjectsToDelete) throws NotFoundException, SQLException {
+<b class="fc"><i>74</i>&nbsp;        long userId = Utils.getUserFromContext(securityContext);</b>
+<b class="fc"><i>75</i>&nbsp;        mapsDao.saveLastEditedBy(mapId, userId);</b>
+<b class="fc"><i>76</i>&nbsp;        mapObjectsDao.deleteSelected(arrayOfObjectsToDelete);</b>
+<b class="fc"><i>77</i>&nbsp;        return Utils.returnNoContent();</b>
+<i>78</i>&nbsp;    }
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;    @PUT
+<i>81</i>&nbsp;    @Path(&quot;selected/{mapId}&quot;)
+<i>82</i>&nbsp;    @Secured(Roles.EDITOR)
+<i>83</i>&nbsp;    @Consumes(MediaType.APPLICATION_JSON)
+<i>84</i>&nbsp;    @Produces(MediaType.APPLICATION_JSON)
+<i>85</i>&nbsp;    public Response putSelected(@PathParam(&quot;mapId&quot;) long mapId, MapObject[] arrayOfObjectsToPut) throws NotFoundException, SQLException {
+<b class="fc"><i>86</i>&nbsp;        long userId = Utils.getUserFromContext(securityContext);</b>
+<b class="fc"><i>87</i>&nbsp;        mapsDao.saveLastEditedBy(mapId, userId);</b>
+<b class="fc"><i>88</i>&nbsp;        mapObjectsDao.putSelected(arrayOfObjectsToPut);</b>
+<b class="fc"><i>89</i>&nbsp;        return Utils.returnNoContent();</b>
+<i>90</i>&nbsp;    }
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;    @DELETE
+<i>93</i>&nbsp;    @Secured(Roles.ADMIN)
+<i>94</i>&nbsp;    @Produces(MediaType.APPLICATION_JSON)
+<i>95</i>&nbsp;    public Response clearAllMaps() throws SQLException, NotFoundException {
+<b class="nc"><i>96</i>&nbsp;        mapObjectsDao.deleteAll();</b>
+<b class="nc"><i>97</i>&nbsp;        return Utils.returnNoContent();</b>
+<i>98</i>&nbsp;    }
+<i>99</i>&nbsp;
+<i>100</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-23 15:28</div>
+</div>
+</body>
+</html>

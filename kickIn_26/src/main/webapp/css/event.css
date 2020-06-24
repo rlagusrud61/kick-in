@@ -30,6 +30,11 @@ body{
     overflow-y: auto;
 }
 
+.btn.btn-lg{
+    padding: 1.5rem 3rem;
+    font-size: 1.5rem;
+}
+
 table th {
     font-size: 1.8rem;
 }

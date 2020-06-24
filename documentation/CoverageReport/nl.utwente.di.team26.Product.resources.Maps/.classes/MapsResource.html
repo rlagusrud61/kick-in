@@ -1,0 +1,139 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: MapsResource</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">nl.utwente.di.team26.Product.resources.Maps</a> ]
+</div>
+
+<h1>Coverage Summary for Class: MapsResource (nl.utwente.di.team26.Product.resources.Maps)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MapsResource</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (3/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    81.8%
+  </span>
+  <span class="absValue">
+    (9/ 11)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package nl.utwente.di.team26.Product.resources.Maps;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
+<i>4</i>&nbsp;import nl.utwente.di.team26.Product.dao.Maps.MapsDao;
+<i>5</i>&nbsp;import nl.utwente.di.team26.Product.model.Map.Map;
+<i>6</i>&nbsp;import nl.utwente.di.team26.Security.Filters.Secured;
+<i>7</i>&nbsp;import nl.utwente.di.team26.Security.User.Roles;
+<i>8</i>&nbsp;import nl.utwente.di.team26.Utils;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import javax.ws.rs.*;
+<i>11</i>&nbsp;import javax.ws.rs.core.*;
+<i>12</i>&nbsp;import java.sql.SQLException;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;@Path(&quot;/maps&quot;)
+<b class="fc"><i>15</i>&nbsp;public class MapsResource {</b>
+<i>16</i>&nbsp;
+<b class="fc"><i>17</i>&nbsp;    MapsDao mapsDao = new MapsDao();</b>
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    @Context
+<i>20</i>&nbsp;    HttpHeaders httpHeaders;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    @Context
+<i>23</i>&nbsp;    SecurityContext securityContext;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    @GET
+<i>26</i>&nbsp;    @Secured(Roles.VISITOR)
+<i>27</i>&nbsp;    @Produces(MediaType.APPLICATION_JSON)
+<i>28</i>&nbsp;    public Response getAllMaps() throws NotFoundException, SQLException {
+<b class="fc"><i>29</i>&nbsp;        String allMaps = mapsDao.getAllMaps();</b>
+<b class="fc"><i>30</i>&nbsp;        return Utils.returnOkResponse(allMaps);</b>
+<i>31</i>&nbsp;    }
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    @POST
+<i>34</i>&nbsp;    @Secured(Roles.EDITOR)
+<i>35</i>&nbsp;    @Consumes(MediaType.APPLICATION_JSON)
+<i>36</i>&nbsp;    @Produces(MediaType.APPLICATION_JSON)
+<i>37</i>&nbsp;    public Response addNewMap(Map mapToAdd) throws SQLException {
+<i>38</i>&nbsp;
+<b class="fc"><i>39</i>&nbsp;        long userId = Utils.getUserFromContext(securityContext);</b>
+<i>40</i>&nbsp;
+<b class="fc"><i>41</i>&nbsp;        mapToAdd.setCreatedBy(userId);</b>
+<b class="fc"><i>42</i>&nbsp;        mapToAdd.setLastEditedBy(userId);</b>
+<i>43</i>&nbsp;
+<b class="fc"><i>44</i>&nbsp;        long mapId = mapsDao.create(mapToAdd);</b>
+<b class="fc"><i>45</i>&nbsp;        return Utils.returnCreated(mapId);</b>
+<i>46</i>&nbsp;    }
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;    @DELETE
+<i>49</i>&nbsp;    @Secured(Roles.ADMIN)
+<i>50</i>&nbsp;    @Produces(MediaType.APPLICATION_JSON)
+<i>51</i>&nbsp;    public Response deleteAllMaps() throws SQLException, NotFoundException {
+<b class="nc"><i>52</i>&nbsp;        mapsDao.deleteAll();</b>
+<b class="nc"><i>53</i>&nbsp;        return Utils.returnNoContent();</b>
+<i>54</i>&nbsp;    }
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-23 15:28</div>
+</div>
+</body>
+</html>

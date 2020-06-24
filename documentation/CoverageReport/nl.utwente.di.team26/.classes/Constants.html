@@ -1,0 +1,120 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Constants</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">nl.utwente.di.team26</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Constants (nl.utwente.di.team26)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Constants</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (4/ 8)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package nl.utwente.di.team26;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import javax.ws.rs.InternalServerErrorException;
+<i>4</i>&nbsp;import java.sql.Connection;
+<i>5</i>&nbsp;import java.sql.DriverManager;
+<i>6</i>&nbsp;import java.sql.SQLException;
+<i>7</i>&nbsp;
+<b class="nc"><i>8</i>&nbsp;public class Constants {</b>
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;    public static final String loginUrl = &quot;jdbc:postgresql://bronto.ewi.utwente.nl:5432/dab_di19202b_27&quot;;
+<i>11</i>&nbsp;    public static final String loginUser = &quot;dab_di19202b_27&quot;;
+<i>12</i>&nbsp;    public static final String loginPasswd = &quot;e0z19ZX/Hq9Ip5qp&quot;;
+<i>13</i>&nbsp;    public static final String SCHEMA = &quot;idb_kick_in_team_26&quot;;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    public static final String COOKIENAME = &quot;securityTeam26&quot;;
+<i>16</i>&nbsp;    public static final String SECRET = &quot;securityTeam26IWILLBESECUREENOUGH!!@@&quot;;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    public static final String SUCCESS = &quot;Successful&quot;;
+<i>19</i>&nbsp;    public static final String FAILURE = &quot;Failure&quot;;
+<i>20</i>&nbsp;    public static final String ISSUER = &quot;http://localhost:8080/kickInTeam26/&quot;;
+<i>21</i>&nbsp;    public static final long TTK = 7200000;
+<i>22</i>&nbsp;    public static final String AUTH_SCHEME = &quot;JWT-TOKEN&quot;;
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    public static Connection getConnection() throws InternalServerErrorException {
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;        try {
+<b class="fc"><i>27</i>&nbsp;            Class.forName(&quot;org.postgresql.Driver&quot;);</b>
+<b class="fc"><i>28</i>&nbsp;            Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);</b>
+<b class="fc"><i>29</i>&nbsp;            dbcon.setSchema(SCHEMA);</b>
+<b class="fc"><i>30</i>&nbsp;            return dbcon;</b>
+<b class="nc"><i>31</i>&nbsp;        } catch (ClassNotFoundException | SQLException e) {</b>
+<b class="nc"><i>32</i>&nbsp;            e.printStackTrace();</b>
+<b class="nc"><i>33</i>&nbsp;            throw new InternalServerErrorException(&quot;SQL failed&quot;);</b>
+<i>34</i>&nbsp;        }
+<i>35</i>&nbsp;    }
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-23 15:28</div>
+</div>
+</body>
+</html>

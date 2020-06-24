@@ -1,0 +1,203 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: AuthenticationEndpoint</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">nl.utwente.di.team26.Security</a> ]
+</div>
+
+<h1>Coverage Summary for Class: AuthenticationEndpoint (nl.utwente.di.team26.Security)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AuthenticationEndpoint</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/ 8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (39/ 39)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package nl.utwente.di.team26.Security;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import io.jsonwebtoken.JwtBuilder;
+<i>4</i>&nbsp;import io.jsonwebtoken.Jwts;
+<i>5</i>&nbsp;import io.jsonwebtoken.SignatureAlgorithm;
+<i>6</i>&nbsp;import nl.utwente.di.team26.Constants;
+<i>7</i>&nbsp;import nl.utwente.di.team26.Exception.Exceptions.AuthenticationDeniedException;
+<i>8</i>&nbsp;import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
+<i>9</i>&nbsp;import nl.utwente.di.team26.Product.dao.Authentication.SessionDao;
+<i>10</i>&nbsp;import nl.utwente.di.team26.Product.dao.Authentication.UserDao;
+<i>11</i>&nbsp;import nl.utwente.di.team26.Product.model.Authentication.Credentials;
+<i>12</i>&nbsp;import nl.utwente.di.team26.Product.model.Authentication.Session;
+<i>13</i>&nbsp;import nl.utwente.di.team26.Product.model.Authentication.User;
+<i>14</i>&nbsp;import nl.utwente.di.team26.Security.Filters.Secured;
+<i>15</i>&nbsp;import nl.utwente.di.team26.Utils;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;import javax.crypto.spec.SecretKeySpec;
+<i>18</i>&nbsp;import javax.servlet.http.HttpServletRequest;
+<i>19</i>&nbsp;import javax.servlet.http.HttpServletResponse;
+<i>20</i>&nbsp;import javax.ws.rs.*;
+<i>21</i>&nbsp;import javax.ws.rs.core.*;
+<i>22</i>&nbsp;import java.security.Key;
+<i>23</i>&nbsp;import java.sql.Connection;
+<i>24</i>&nbsp;import java.sql.SQLException;
+<i>25</i>&nbsp;import java.util.Date;
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;@Path(&quot;/authentication&quot;)
+<b class="fc"><i>28</i>&nbsp;public class AuthenticationEndpoint {</b>
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    @Context
+<i>31</i>&nbsp;    HttpServletResponse response;
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    @Context
+<i>34</i>&nbsp;    HttpServletRequest request;
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;    @Context
+<i>37</i>&nbsp;    SecurityContext securityContext;
+<i>38</i>&nbsp;    @Context
+<i>39</i>&nbsp;    UriInfo uriInfo;
+<i>40</i>&nbsp;
+<b class="fc"><i>41</i>&nbsp;    UserDao userDao = new UserDao();</b>
+<b class="fc"><i>42</i>&nbsp;    SessionDao sessionDao = new SessionDao();</b>
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    @POST
+<i>45</i>&nbsp;    @Consumes(MediaType.APPLICATION_JSON)
+<i>46</i>&nbsp;    @Produces(MediaType.APPLICATION_JSON)
+<i>47</i>&nbsp;    public Response authenticateUser(Credentials credentials) throws AuthenticationDeniedException, SQLException {
+<b class="fc"><i>48</i>&nbsp;        User user = authenticateCredentials(credentials);</b>
+<b class="fc"><i>49</i>&nbsp;        String cookie = createCookie(user.getUserId());</b>
+<b class="fc"><i>50</i>&nbsp;        return Response</b>
+<b class="fc"><i>51</i>&nbsp;                .noContent()</b>
+<b class="fc"><i>52</i>&nbsp;                .header(&quot;Set-Cookie&quot;, cookie).build();</b>
+<i>53</i>&nbsp;    }
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;    @Secured
+<i>56</i>&nbsp;    @DELETE
+<i>57</i>&nbsp;    @Produces(MediaType.APPLICATION_JSON)
+<i>58</i>&nbsp;    public Response deleteToken(@Context HttpHeaders headers) throws SQLException, NotFoundException {
+<b class="fc"><i>59</i>&nbsp;        long userId = Utils.getUserFromContext(securityContext);</b>
+<b class="fc"><i>60</i>&nbsp;        sessionDao.clearTokensForUser(userId);</b>
+<b class="fc"><i>61</i>&nbsp;        String cookie = createRemovalCookie();</b>
+<b class="fc"><i>62</i>&nbsp;        return Response.noContent().header(&quot;Set-Cookie&quot;, cookie).build();</b>
+<i>63</i>&nbsp;    }
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;    private User authenticateCredentials(Credentials credentials) throws AuthenticationDeniedException, SQLException {
+<i>66</i>&nbsp;        // Authenticate against a database, LDAP, file or whatever
+<i>67</i>&nbsp;        // Throw an Exception if the credentials are invalid
+<b class="fc"><i>68</i>&nbsp;        User userInstance = userDao.getUserByEmail(credentials);</b>
+<b class="fc"><i>69</i>&nbsp;        if (Utils.verifyHash(userInstance.getPassword(), credentials.getPassword())) {</b>
+<b class="fc"><i>70</i>&nbsp;            return userInstance;</b>
+<i>71</i>&nbsp;        } else {
+<b class="fc"><i>72</i>&nbsp;            throw new AuthenticationDeniedException(&quot;Credentials could not be verified to be true.&quot;);</b>
+<i>73</i>&nbsp;        }
+<i>74</i>&nbsp;    }
+<i>75</i>&nbsp;
+<i>76</i>&nbsp;    private String createCookie(long userId) throws SQLException {
+<b class="fc"><i>77</i>&nbsp;        String tokenId = getMaxId() + 1;</b>
+<b class="fc"><i>78</i>&nbsp;        String token = createJWT(String.valueOf(userId), tokenId);</b>
+<i>79</i>&nbsp;
+<b class="fc"><i>80</i>&nbsp;        try (Connection conn = Constants.getConnection()) {</b>
+<b class="fc"><i>81</i>&nbsp;            sessionDao.create(new Session(token, userId));</b>
+<b class="fc"><i>82</i>&nbsp;        }</b>
+<b class="fc"><i>83</i>&nbsp;        return String.format(&quot;%s=%s;Path=%s;Max-Age=&quot;+ Constants.TTK+&quot;;HttpOnly&quot;, Constants.COOKIENAME, token, &quot;/&quot;);</b>
+<i>84</i>&nbsp;    }
+<i>85</i>&nbsp;
+<i>86</i>&nbsp;    private String createRemovalCookie() {
+<b class="fc"><i>87</i>&nbsp;        return Constants.COOKIENAME +&quot;=;Path=/;Expires=Thu, 01-Jan-1970 00:00:10 GMT;Max-Age=0&quot;;</b>
+<i>88</i>&nbsp;    }
+<i>89</i>&nbsp;
+<i>90</i>&nbsp;    private String getMaxId() throws SQLException {
+<i>91</i>&nbsp;        String maxIdSet;
+<b class="fc"><i>92</i>&nbsp;        maxIdSet = String.valueOf(sessionDao.maxId());</b>
+<b class="fc"><i>93</i>&nbsp;        return maxIdSet;</b>
+<i>94</i>&nbsp;    }
+<i>95</i>&nbsp;
+<i>96</i>&nbsp;    public static String createJWT(String subject, String count) {
+<i>97</i>&nbsp;
+<i>98</i>&nbsp;        //The JWT signature algorithm we will be using to sign the token
+<b class="fc"><i>99</i>&nbsp;        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;</b>
+<b class="fc"><i>100</i>&nbsp;        Key signingKey = new SecretKeySpec(Constants.SECRET.getBytes(), signatureAlgorithm.getJcaName());</b>
+<i>101</i>&nbsp;
+<b class="fc"><i>102</i>&nbsp;        long nowMillis = System.currentTimeMillis();</b>
+<b class="fc"><i>103</i>&nbsp;        long expMillis = nowMillis + Constants.TTK;</b>
+<b class="fc"><i>104</i>&nbsp;        Date now = new Date(nowMillis);</b>
+<b class="fc"><i>105</i>&nbsp;        Date exp = new Date(expMillis);</b>
+<i>106</i>&nbsp;
+<i>107</i>&nbsp;        //Let&#39;s set the JWT Claims
+<b class="fc"><i>108</i>&nbsp;        JwtBuilder builder = Jwts.builder()</b>
+<b class="fc"><i>109</i>&nbsp;                .setId(count)</b>
+<b class="fc"><i>110</i>&nbsp;                .setIssuer(Constants.ISSUER)</b>
+<b class="fc"><i>111</i>&nbsp;                .setSubject(subject)</b>
+<b class="fc"><i>112</i>&nbsp;                .setIssuedAt(now)</b>
+<b class="fc"><i>113</i>&nbsp;                .setExpiration(exp)</b>
+<b class="fc"><i>114</i>&nbsp;                .signWith(signingKey, signatureAlgorithm);</b>
+<i>115</i>&nbsp;
+<i>116</i>&nbsp;        //Builds the JWT and serializes it to a compact, URL-safe string
+<b class="fc"><i>117</i>&nbsp;        return builder.compact();</b>
+<i>118</i>&nbsp;    }
+<i>119</i>&nbsp;
+<i>120</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-23 15:28</div>
+</div>
+</body>
+</html>

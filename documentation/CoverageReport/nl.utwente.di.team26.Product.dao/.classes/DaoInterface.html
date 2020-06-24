@@ -1,0 +1,106 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: DaoInterface</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">nl.utwente.di.team26.Product.dao</a> ]
+</div>
+
+<h1>Coverage Summary for Class: DaoInterface (nl.utwente.di.team26.Product.dao)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">DaoInterface</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package nl.utwente.di.team26.Product.dao;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import java.sql.SQLException;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;public interface DaoInterface&lt;T&gt; {
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;    /**
+<i>10</i>&nbsp;     * create-method. This will create new row in database according to supplied
+<i>11</i>&nbsp;     * valueObject contents. Make sure that values for all NOT NULL columns are
+<i>12</i>&nbsp;     * correctly specified. Also, if this table does not use automatic surrogate-keys
+<i>13</i>&nbsp;     * the primary-key must be specified. After INSERT command this method will
+<i>14</i>&nbsp;     * read the generated primary-key back to valueObject if automatic surrogate-keys
+<i>15</i>&nbsp;     * were used.
+<i>16</i>&nbsp;     *
+<i>17</i>&nbsp;     * @param valueObject This parameter contains the class instance to be created.
+<i>18</i>&nbsp;     *                    If automatic surrogate-keys are not used the Primary-key
+<i>19</i>&nbsp;     *                    field must be set for this to work properly.
+<i>20</i>&nbsp;     */
+<i>21</i>&nbsp;    long create(T valueObject) throws SQLException;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    /**
+<i>24</i>&nbsp;     * save-method. This method will save the current state of valueObject to database.
+<i>25</i>&nbsp;     * Save can not be used to create new instances in database, so upper layer must
+<i>26</i>&nbsp;     * make sure that the primary-key is correctly specified. Primary-key will indicate
+<i>27</i>&nbsp;     * which instance is going to be updated in database. If save can not find matching
+<i>28</i>&nbsp;     * row, NotFoundException will be thrown.
+<i>29</i>&nbsp;     *
+<i>30</i>&nbsp;     * @param valueObject This parameter contains the class instance to be saved.
+<i>31</i>&nbsp;     *                    Primary-key field must be set for this to work properly.
+<i>32</i>&nbsp;     */
+<i>33</i>&nbsp;    void save(T valueObject) throws NotFoundException, SQLException;
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    /**
+<i>36</i>&nbsp;     * delete-method. This method will remove the information from database as identified by
+<i>37</i>&nbsp;     * by primary-key in supplied valueObject. Once valueObject has been deleted it can not
+<i>38</i>&nbsp;     * be restored by calling save. Restoring can only be done using create method but if
+<i>39</i>&nbsp;     * database is using automatic surrogate-keys, the resulting object will have different
+<i>40</i>&nbsp;     * primary-key than what it was in the deleted object. If delete can not find matching row,
+<i>41</i>&nbsp;     * NotFoundException will be thrown.
+<i>42</i>&nbsp;     *
+<i>43</i>&nbsp;     * @param valueObject This parameter is the primary key of the resource to be deleted.
+<i>44</i>&nbsp;     *                    Primary-key field must be set for this to work properly.
+<i>45</i>&nbsp;     */
+<i>46</i>&nbsp;    void delete(T valueObject) throws NotFoundException, SQLException;
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;    /**
+<i>49</i>&nbsp;     * deleteAll-method. This method will remove all information from the table that matches
+<i>50</i>&nbsp;     * this Dao and ValueObject couple. This should be the most efficient way to clear table.
+<i>51</i>&nbsp;     * Once deleteAll has been called, no valueObject that has been created before can be
+<i>52</i>&nbsp;     * restored by calling save. Restoring can only be done using create method but if database
+<i>53</i>&nbsp;     * is using automatic surrogate-keys, the resulting object will have different primary-key
+<i>54</i>&nbsp;     * than what it was in the deleted object. (Note, the implementation of this method should
+<i>55</i>&nbsp;     * be different with different DB backends.)
+<i>56</i>&nbsp;     *
+<i>57</i>&nbsp;     */
+<i>58</i>&nbsp;    void deleteAll() throws SQLException, NotFoundException;
+<i>59</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-23 15:28</div>
+</div>
+</body>
+</html>
