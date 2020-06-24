@@ -9,6 +9,9 @@ html, body, #mapContainer, #mapid, #content {
     overflow: hidden;
 }
 
+.w3-green .w3-hover-green:hover{
+    background-color: #89BD26;
+}
 
 .state-remove-markers,
 .state-add-markers {
