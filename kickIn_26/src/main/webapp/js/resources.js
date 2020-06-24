@@ -64,7 +64,7 @@ function loadTable() {
         response.forEach(function (resource) {
             resources.set(resource.resourceId, resource)
         });
-        console.log(response);
+
         header = [];
         header.push('Name');
         header.push('Description');
@@ -129,12 +129,9 @@ async function addResourcePopup() {
     drawing = document.getElementById("drawing");
     if (material.checked){
         resourceType = material.value;
-        console.log("material");
     } else if (drawing.checked){
         resourceType = drawing.value;
-        console.log("drawing");
     }
-    console.log("type: " + resourceType);
 
     file = document.querySelector('#resourceImage').files[0];
     fileSize = file.size / 1024 / 1024;
@@ -207,3 +204,13 @@ const toBase64 = file => new Promise((resolve, reject) => {
     reader.onerror = error => reject(error);
 });
 
+/**
+ * @summary This method clears the form for adding a new resource to the database.
+ */
+function clearForm() {
+    document.getElementById("resourceDescription").value = "";
+    document.getElementById("resourceName").value = "";
+    document.getElementById("material").checked = false;
+    document.getElementById("drawing").checked = false;
+    document.getElementById("resourceImage").value = '';
+}

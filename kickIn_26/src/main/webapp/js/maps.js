@@ -48,7 +48,7 @@ function loadTable() {
     getAllMaps(function () {
         table = document.getElementById("mapTable");
         maps = JSON.parse(this.responseText);
-        console.log(maps);
+
         header = [];
         header.push('Name');
         header.push('Description');
