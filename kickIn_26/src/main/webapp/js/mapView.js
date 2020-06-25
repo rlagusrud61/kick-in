@@ -31,10 +31,10 @@ window.onclick = function (event) {
 }
 
 /**
- * @summary this is the initializing function for the map on the html page, it uses the leaflet
+ * @summary This is the initializing function for the map on the 'mapView.html' page and it uses the leaflet
  * library.
  *
- * @returns {L.map}
+ * @returns {L.map} newMap - This is an instance of a new leaflet map.
  */
 function initMap() {
     let newMap, tiles;
@@ -63,13 +63,13 @@ function initMap() {
 }
 
 /**
- * @summary Due to how latLangs are also a JSONArray, parsing the only the top level object
- * does not parse the latLangs to a JSONArray as well, this needs to be done separately, and is done in this method.
+ * @param {String} stringyLatLangs - the latLangs given as a String.
  *
- * @param {String} stringyLatLangs the latLangs in a Stirng.
+ * @summary Since the latLangs are also an array of JSON objects, parsing only the top level object does not parse the
+ * latLangs to an array of JSON objects as well. This needs to be done separately and is done in this method.
  *
- * @returns {L.latLng[]} the array of LeafletPoints which are needed by the distprtableImageOverlay
- * to add objects to the map.
+ * @returns {json | Object} coords - the array of LeafletPoints which are needed by 'distortableImageOverlay' to add
+ * objects to the map.
  */
 function parseLatLangs(stringyLatLangs) {
     let latLangArray, coords;
@@ -91,9 +91,9 @@ images = new Map();
 mapObjects = new Map();
 
 /**
- * @summary loads all the objects stored for the map as stored on the database, and displays them onto the map.
+ * @param {number} mapId - The ID of the map for which the objects are required.
  *
- * @param {number} mapId
+ * @summary This method loads all the objects stored for the map as stored in the database and displays them on the map.
  */
 function bringAllObjectsForMap(mapId) {
     let response;
@@ -107,7 +107,7 @@ function bringAllObjectsForMap(mapId) {
 }
 
 /**
- * @summary It iterates through the all the mapObjects, theses are the objects as loaded from the database,
+ * @summary This method iterates through the all the mapObjects. These are the objects as loaded from the database
  * and inserts them into the map.
  */
 function insertObjectsToMap() {
@@ -115,9 +115,9 @@ function insertObjectsToMap() {
 }
 
 /**
- * @summary Insert the object on to the map.
+ * @param {json | Object} object - The map object to be added to the map.
  *
- * @param {Object} object the to add.
+ * @summary This method inserts the object onto the map.
  */
 function insertObjectIntoMap(object) {
     let corners, newImage;
@@ -134,10 +134,9 @@ function insertObjectIntoMap(object) {
 }
 
 /**
- * @summary brings all the resources that are currently in offer in the
- * database to be added on to the map. It creates a map for the images and the resource names
- * so that they can be called independently as required by different functions, like displaying the list of resources
- * adding a new image on the map.
+ * @summary This method brings all the resources that are currently in offer in the database to be added on to the map.
+ * It creates a map for the images and the resource names so that they can be called independently as required by
+ * different functions, like displaying the list of resources and adding a new image on the map.
  */
 function bringAllResources() {
     let response;
@@ -176,8 +175,8 @@ window.onload = initPage;
  *
  * @description First, the ID of the required map is extracted from the URL. Then, the 'generateReportForMap' method is
  * called with the map ID as a parameter. If a successful result is received from the back-end, a table is built with
- * the information received. This table has two columns 'Name' and 'Quantity', where the column 'Name' gives the name of
- * the item that was placed on the map and the column 'Quantity' gives the count of each item that was placed on the map.
+ * the information received. This table has two columns 'Name' and 'Count', where the column 'Name' gives the name of
+ * the item that was placed on the map and the column 'Count' gives the count of each item that was placed on the map.
  */
 function listItems(report) {
     let returnedItems, col, key, table, th, tr, i, j, tableCell;
