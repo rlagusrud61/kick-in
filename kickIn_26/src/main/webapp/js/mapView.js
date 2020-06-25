@@ -1,5 +1,5 @@
 let mapId, modal, trash, closeDelete, closeDelete2, map, printer, imgGroup,
-    modal2;
+    modal2, exportButton, mapName;
 
 mapId = window.location.search.split("=")[1];
 // Get the modal
@@ -30,6 +30,12 @@ window.onclick = function (event) {
     }
 }
 
+/**
+ * @summary this is the initializing function for the map on the html page, it uses the leaflet
+ * library.
+ *
+ * @returns {L.map}
+ */
 function initMap() {
     let newMap, tiles;
      newMap = L.map('mapid', {
@@ -46,12 +52,25 @@ function initMap() {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     });
     tiles.addTo(newMap);
-    L.easyPrint({
-        sizeModes: ['A4Landscape']
+    printer = L.easyPrint({
+        tileLayer: tiles,
+        sizeModes: ['A4Landscape'],
+        filename: mapName,
+        exportOnly: true,
+        hideControlContainer: true
     }).addTo(newMap);
     return newMap;
 }
 
+/**
+ * @summary Due to how latLangs are also a JSONArray, parsing the only the top level object
+ * does not parse the latLangs to a JSONArray as well, this needs to be done separately, and is done in this method.
+ *
+ * @param {String} stringyLatLangs the latLangs in a Stirng.
+ *
+ * @returns {L.latLng[]} the array of LeafletPoints which are needed by the distprtableImageOverlay
+ * to add objects to the map.
+ */
 function parseLatLangs(stringyLatLangs) {
     let latLangArray, coords;
      latLangArray = JSON.parse(stringyLatLangs);
@@ -71,6 +90,11 @@ resources = new Map();
 images = new Map();
 mapObjects = new Map();
 
+/**
+ * @summary loads all the objects stored for the map as stored on the database, and displays them onto the map.
+ *
+ * @param {number} mapId
+ */
 function bringAllObjectsForMap(mapId) {
     let response;
     getAllObjectsForMap(mapId, function () {
@@ -81,9 +105,20 @@ function bringAllObjectsForMap(mapId) {
         insertObjectsToMap();
     })
 }
+
+/**
+ * @summary It iterates through the all the mapObjects, theses are the objects as loaded from the database,
+ * and inserts them into the map.
+ */
 function insertObjectsToMap() {
     mapObjects.forEach(insertObjectIntoMap)
 }
+
+/**
+ * @summary Insert the object on to the map.
+ *
+ * @param {Object} object the to add.
+ */
 function insertObjectIntoMap(object) {
     let corners, newImage;
     corners = parseLatLangs(object.latLangs);
@@ -97,6 +132,13 @@ function insertObjectIntoMap(object) {
     imgGroup.push(newImage);
     newImage.addTo(map);
 }
+
+/**
+ * @summary brings all the resources that are currently in offer in the
+ * database to be added on to the map. It creates a map for the images and the resource names
+ * so that they can be called independently as required by different functions, like displaying the list of resources
+ * adding a new image on the map.
+ */
 function bringAllResources() {
     let response;
     getAllResources(function () {
@@ -117,8 +159,9 @@ function initPage() {
     getMap(mapId, function () {
         bringAllResources();
          mapEditBtn = document.getElementById("mapEditBtn");
-        mapEditBtn.href = "mapEdit.html?mapId=" + mapId;
+         mapEditBtn.href = "mapEdit.html?mapId=" + mapId;
          mapData = JSON.parse(this.responseText);
+         mapName = mapData.name;
         document.getElementById("mapName").innerHTML = mapData.name;
         document.getElementById("description").innerHTML = mapData.description;
         listItems(mapData.report);
