@@ -31,6 +31,62 @@
     <link href="css/mapEdit.css" rel="stylesheet">
 </head>
 
+<style>
+    table {
+        border: none;
+        width: 100%;
+    }
+
+    table td {
+        font-size: 18px;
+    !important;
+        font-weight: normal;
+    !important;
+    }
+
+    button {
+        font-family: inherit;
+        font-size: 18px;
+        color: white;
+    }
+
+    .w3-green, .w3-hover-green:hover {
+        color: #fff !important;
+        background-color: #89BD26 !important;
+    }
+
+    input[type=number] {
+        width: 50%;
+    !important;
+    }
+
+    input[type=number]:focus {
+        border: 1px solid #89BD26;
+    !important;
+    }
+
+    input[type=number]:hover {
+        border: 1px solid #89BD26;
+    !important;
+    }
+
+    #side::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Hide scrollbar for IE and Edge */
+    #side {
+        -ms-overflow-style: none;
+    }
+
+    label {
+        font-weight: 100;
+    !important;
+    }
+
+
+</style>
+
 <body>
 
 <!-- Top Nav -->
@@ -47,42 +103,47 @@
 
     <!-- Sidebar -->
     <div class="w3-sidebar w3-white w3-bar-block" style="width:25%">
-        <h3 class="w3-bar-item">Menu</h3>
-        <button class="w3-bar-item w3-button" onclick="addFenceToMap()">Add Fence</button>
-        <button class="w3-bar-item w3-button" onclick="saveState()">Save Objects</button>
-        <button class="w3-bar-item w3-button" onclick="openAccordion('availableItemsTab')">Available Resources</button>
-        <!--Available Items Tab-->
-        <div class="w3-container w3-hide" id="availableItemsTab">
-            <br>
-            <!-- Search Bar-->
-            <div class="md-form mt-0 col-md-8 active-green">
-                <input aria-label="Search" class="form-control" id="searchItems"
-                       onkeyup="searchTables('addItems','searchItems')"
-                       placeholder="Search" type="text">
-            </div>
-            <!--List of Available Items Table-->
-            <div class="col-md-12">
-                <div id="itemlist"></div>
-            </div>
-        </div>
+        <h1 class="w3-bar-item">Menu</h1>
 
-        <button class="w3-bar-item w3-button" onclick="openAccordion('addedItemsTab')">Added Items</button>
+            <button class="w3-bar-item w3-button" onclick="addFenceToMap()">Add Fence</button>
+            <button class="w3-bar-item w3-button" onclick="saveState()">Save Objects</button>
+            <button class="w3-bar-item w3-button" onclick="openAccordion('availableItemsTab')">Available Resources
+            </button>
+            <!--Available Items Tab-->
+            <div class="w3-container w3-hide" id="availableItemsTab">
+                <br>
+                <!-- Search Bar-->
+                <div class="md-form mt-0 col-md-8 active-green">
+                    <input aria-label="Search" class="form-control" id="searchItems"
+                           onkeyup="searchTables('addItems','searchItems')"
+                           placeholder="Search" type="text">
+                </div>
+                <!--List of Available Items Table-->
+                <div class="col-md-12">
+                    <div id="itemlist"></div>
+                    <br>
+                </div>
+            </div>
 
-        <!--Added Items Tab-->
-        <div class="w3-container w3-hide" id="addedItemsTab">
-            <br>
-            <div id="displayitems">Your list is currently empty.</div>
-        </div>
-    </div>
+
+            <button class="w3-bar-item w3-button" onclick="openAccordion('addedItemsTab')">Added Items</button>
+
+            <!--Added Items Tab-->
+            <div class="w3-container w3-hide" id="addedItemsTab">
+                <br>
+                <div id="displayitems">Your list is currently empty.</div>
+                <br><br>
+            </div>
+    </div> <!--End of Sidebar-->
 
 
     <div id="mapContainer" style="margin-left:25%">
         <div id="mapid">
         </div>
     </div>
-</div>
-<script src = "js/requests.js"></script>
-<script src = "js/utils.js"></script>
-<script src = "js/mapEdit.js"></script>
+</div> <!-- End of Container-->
+<script src="js/requests.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/mapEdit.js"></script>
 </body>
 </html>
