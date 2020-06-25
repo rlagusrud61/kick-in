@@ -119,7 +119,11 @@ function getAllEvents(callback) {
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/events" , true);
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4) {
-			handleResponse(xhr, callback);
+			if (xhr.status === 404 || xhr.status === 200) {
+				callback.apply(xhr);
+			} else {
+				handleResponse(xhr, callback);
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -275,7 +279,11 @@ function getAllMaps(callback) {
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/maps" , true);
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4) {
-			handleResponse(xhr, callback);
+			if (xhr.status === 404 || xhr.status === 200) {
+				callback.apply(xhr);
+			} else {
+				handleResponse(xhr, callback);
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -352,7 +360,11 @@ function getAllMapsForEvent(eventId, callback) {
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/eventMap/event/" + eventId, true);
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4) {
-			handleResponse(xhr, callback);
+			if (xhr.status === 404 || xhr.status === 200) {
+				callback.apply(xhr);
+			} else {
+				handleResponse(xhr, callback);
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -378,7 +390,11 @@ function getAllEventsForMap(mapId, callback) {
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/eventMap/map/" + mapId , true);
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4) {
-			handleResponse(xhr, callback);
+			if (xhr.status === 404 || xhr.status === 200) {
+				callback.apply(xhr);
+			} else {
+				handleResponse(xhr, callback);
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -653,7 +669,11 @@ function getAllObjectsForMap(mapId, callback) {
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/objects/" + mapId, true);
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4) {
-			handleResponse(xhr, callback);
+			if (xhr.status === 404 || xhr.status === 200) {
+				callback.apply(xhr);
+			} else {
+				handleResponse(xhr, callback);
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -836,7 +856,11 @@ function getAllDrawings(callback) {
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/resources/drawing", true);
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4) {
-			handleResponse(xhr, callback);
+			if (xhr.status === 404 || xhr.status === 200) {
+				callback.apply(xhr);
+			} else {
+				handleResponse(xhr, callback);
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -888,7 +912,11 @@ function getAllMaterials(callback) {
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/resources/material", true);
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4) {
-			handleResponse(xhr, callback);
+			if (xhr.status === 404 || xhr.status === 200) {
+				callback.apply(xhr);
+			} else {
+				handleResponse(xhr, callback);
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -990,7 +1018,11 @@ function getAllResources(callback) {
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/resources", true);
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4) {
-			handleResponse(xhr, callback);
+			if (xhr.status === 404 || xhr.status === 200) {
+				callback.apply(xhr);
+			} else {
+				handleResponse(xhr, callback);
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -1118,7 +1150,11 @@ function getAllUsers(callback) {
 	xhr.open('GET', "http://localhost:8080/kickInTeam26/rest/users", true);
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4) {
-			handleResponse(xhr, callback);
+			if (xhr.status === 404 || xhr.status === 200) {
+				callback.apply(xhr);
+			} else {
+				handleResponse(xhr, callback);
+			}
 		}
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
