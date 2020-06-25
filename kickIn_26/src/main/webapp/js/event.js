@@ -1,7 +1,12 @@
-let yesBtn, noBtn, deleteMapModal, span1, editBtn, modalMapInfoEdit, span2, span3, span4 , selectMapModal, listBtn , existingMapBtn , modalAddMap, addMapBtn;
+let yesBtn, noBtn, deleteMapModal, span1, editBtn, modalMapInfoEdit, span2, span3, span4 , span5, selectMapModal, listBtn , existingMapBtn , modalAddMap, addMapBtn, yes, no,
+modalEventDelete, deleteEvent;
 yesBtn = document.getElementById("yesDeleteButton");
 noBtn = document.getElementById("noBtn");
 editBtn = document.getElementById("editBtn");
+yes = document.getElementById("yes");
+no = document.getElementById("no");
+modalEventDelete = document.getElementById("modalEventDelete");
+deleteEvent = document.getElementById("deleteEvent");
 addMapBtn = document.getElementById("addMap");
 listBtn = document.getElementById("addMapsToEvent");
 existingMapBtn = document.getElementById("existingMapBtn");
@@ -13,7 +18,11 @@ span1 = document.getElementById("closeMapInfoEdit");
 span2 = document.getElementById("closeMapSelect");
 span3 = document.getElementById("closeMapDelete");
 span4 = document.getElementById("closeAddMap");
+span5 = document.getElementById("closeEventDelete");
 
+deleteEvent.onclick = function() {
+    modalEventDelete.style.display = "block";
+}
 
 addMapBtn.onclick = function() {
     modalAddMap.style.display = "block";
@@ -30,6 +39,9 @@ listBtn.onclick = function () {
 noBtn.onclick = function () {
     deleteMapModal.style.display = "none";
 };
+no.onclick = function() {
+    modalEventDelete.style.display = "none";
+}
 
 //Close the modal if user clicks on close (x) button
 span1.onclick = function () {
@@ -44,6 +56,9 @@ span3.onclick = function () {
 span4.onclick = function () {
     modalAddMap.style.display = "none";
 };
+span5.onclick = function () {
+    modalEventDelete.style.display = "none";
+};
 
 //Close the modal if user clicks outside the modal window
 window.onclick = function (event) {
@@ -55,6 +70,9 @@ window.onclick = function (event) {
         selectMapModal.style.display = "none";
     } else if (event.target === modalAddMap) {
         modalAddMap.style.display = "none";
+    }
+    else if (event.target === modalEventDelete) {
+        modalEventDelete.style.display = "none";
     }
 };
 
