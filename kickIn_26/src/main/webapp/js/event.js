@@ -121,7 +121,7 @@ function displayEventInfo() {
 }
 
 /**
- * @param {number} mapId - the ID of the map for which the trash glyphicon was clicked.
+ * @param {number} mapId - the ID of the map for which the trash button was clicked.
  *
  * @summary This method is used to delete the required map from the database and reloads the page.
  *

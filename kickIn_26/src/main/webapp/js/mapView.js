@@ -1,34 +1,40 @@
-let mapId, modal, trash, closeDelete, closeDelete2, map, printer, imgGroup,
-    modal2, mapName;
+let yesBtn, mapId, modal, trash, closeDelete, closeDelete2, map, printer, imgGroup, mapName;
 
 mapId = window.location.search.split("=")[1];
 // Get the modal
 modal = document.getElementById("popupMapDelete");
 // Button for deletion
-trash = document.getElementById("deleteEvent");
+trash = document.getElementById("deleteMap");
 // Closing popup
 closeDelete = document.getElementsByClassName("close")[0];
 //Closing by pressing "No"
 closeDelete2 = document.getElementById("no");
-trash.onclick = function () {
+yesBtn = document.getElementById("yes");
+
+trash.onclick = function(){
+    let id = window.location.search.split("=")[1];
+    openModalMapDelete(id);
+};
+
+function openModalMapDelete(mapId) {
+    yesBtn.setAttribute("onclick", "removeMap(" + mapId + ")");
     modal.style.display = "block";
 }
+
+function removeMap(mapId) {
+    deleteMap( mapId, function () {
+        location.reload();
+    })
+}
+
 closeDelete.onclick = function () {
     modal.style.display = "none";
-}
-closeDelete2.onclick = function () {
-    modal.style.display = "none";
-}
+};
 window.onclick = function (event) {
     if (event.target === modal) {
         modal.style.display = "none";
     }
-}
-window.onclick = function (event) {
-    if (event.target === modal2) {
-        modal2.style.display = "none";
-    }
-}
+};
 
 /**
  * @summary this is the initializing function for the map on the html page, it uses the leaflet
@@ -159,11 +165,11 @@ function initPage() {
         mapEditBtn.href = "mapEdit.html?mapId=" + mapId;
         mapData = JSON.parse(this.responseText);
         mapName = mapData.name;
+        map = initMap();
         document.getElementById("mapName").innerHTML = mapData.name;
         document.getElementById("description").innerHTML = mapData.description;
         listItems(mapData.report);
         //inits the map and properties.
-        map = initMap();
     })
 }
 
@@ -209,9 +215,7 @@ function listItems(report) {
  * @description After the ID of the map is retrieved from the URL, the 'deleteMap' function is called with the ID of the
  * map to be deleted as a parameter. If the map was successfully deleted, the user is redirected to the 'list.html' page.
  */
-function removeMap() {
-    let mapId;
-    mapId = window.location.search.split("=")[1];
+function removeMap(mapId) {
     deleteMap(mapId, function () {
         window.location.href = "list.html";
     })
