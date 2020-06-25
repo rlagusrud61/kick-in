@@ -1,5 +1,5 @@
 let mapId, modal, trash, closeDelete, closeDelete2, map, printer, imgGroup,
-    modal2, exportButton, mapName;
+    modal2, mapName;
 
 mapId = window.location.search.split("=")[1];
 // Get the modal
@@ -80,9 +80,6 @@ function parseLatLangs(stringyLatLangs) {
     })
     return coords;
 }
-
-//inits the map and properties.
-map = initMap();
 imgGroup = [];
 //all available resources
 resources = new Map();
@@ -158,13 +155,15 @@ function initPage() {
     let mapEditBtn, mapData;
     getMap(mapId, function () {
         bringAllResources();
-         mapEditBtn = document.getElementById("mapEditBtn");
-         mapEditBtn.href = "mapEdit.html?mapId=" + mapId;
-         mapData = JSON.parse(this.responseText);
-         mapName = mapData.name;
+        mapEditBtn = document.getElementById("mapEditBtn");
+        mapEditBtn.href = "mapEdit.html?mapId=" + mapId;
+        mapData = JSON.parse(this.responseText);
+        mapName = mapData.name;
         document.getElementById("mapName").innerHTML = mapData.name;
         document.getElementById("description").innerHTML = mapData.description;
         listItems(mapData.report);
+        //inits the map and properties.
+        map = initMap();
     })
 }
 
