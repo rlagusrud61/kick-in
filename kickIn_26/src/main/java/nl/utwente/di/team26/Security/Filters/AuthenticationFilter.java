@@ -9,6 +9,7 @@ import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Exception.Exceptions.SessionNotFoundException;
 import nl.utwente.di.team26.Exception.Exceptions.TokenInvalidException;
 import nl.utwente.di.team26.Exception.Exceptions.TokenObsoleteException;
+import nl.utwente.di.team26.Exception.Util.ErrorMessage;
 import nl.utwente.di.team26.Product.dao.Authentication.SessionDao;
 import nl.utwente.di.team26.Product.dao.Authentication.UserDao;
 import nl.utwente.di.team26.Product.model.Authentication.User;
@@ -104,15 +105,15 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     }
 
     private void sendCause(ContainerRequestContext requestContext, String msg) {
-        requestContext.abortWith(Response.status(Response.Status.BAD_REQUEST).entity(msg).build());
+        requestContext.abortWith(Response.status(Response.Status.BAD_REQUEST).entity(new ErrorMessage(Response.Status.BAD_REQUEST, msg)).build());
     }
 
     private void sendUnauthorized(ContainerRequestContext requestContext, String msg) {
-        requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity(msg).build());
+        requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity(new ErrorMessage(Response.Status.UNAUTHORIZED, msg)).build());
     }
 
     private void sendError(ContainerRequestContext requestContext, String msg) {
-        requestContext.abortWith(Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(msg).build());
+        requestContext.abortWith(Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ErrorMessage(Response.Status.INTERNAL_SERVER_ERROR, msg)).build());
     }
 
     private String validateToken(String token) throws TokenObsoleteException, SQLException, TokenInvalidException {
