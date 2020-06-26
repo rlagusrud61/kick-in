@@ -20,6 +20,8 @@ public class Constants {
     public static final String ISSUER = "http://localhost:8080/kickInTeam26/";
     public static final long TTK = 7200000;
     public static final String AUTH_SCHEME = "JWT-TOKEN";
+    
+    public static final String CHROME_DRIVER = "D:\\TCS\\Module 4\\Selenium\\chromedriver.exe";
 
     public static Connection getConnection() throws InternalServerErrorException {
 
