@@ -1,5 +1,7 @@
-let modal, btn, span, yesBtn, deleteModal, close;
+let modal, btn, span, yesBtn, deleteModal, close,editBtn,modalMapInfoEdit,span3;
 
+editBtn = document.getElementById("editBtn");
+modalMapInfoEdit = document.getElementById("modalMapInfoEdit");
 // Get the modal
 modal = document.getElementById("addMap");
 deleteModal = document.getElementById("mapDeleteModal");
@@ -8,7 +10,11 @@ noBtn = document.getElementById("noBtn");
 yesBtn = document.getElementById("yesDeleteButton");
 span = document.getElementsByClassName("close close_multi")[0];
 span2 = document.getElementsByClassName("close close_multi")[1];
+span3 = document.getElementById("closeModalMapInfoEdit");
 
+span3.onclick = function() {
+    modalMapInfoEdit.style.display="none";
+}
 btn.onclick = function(){
     modal.style.display = "block";
 }
@@ -31,6 +37,8 @@ window.onclick = function (event) {
         modal.style.display = "none";
     } else if (event.target === deleteModal) {
         deleteModal.style.display = "none";
+    } else if (event.target === modalMapInfoEdit){
+        modalMapInfoEdit.style.display = "none";
     }
 }
 
@@ -79,9 +87,34 @@ function loadTable() {
                 "style='font-size:20px;'></i></a><a href='mapEdit.html?id=" +
                 maps[i].mapId + "' class='text-success'><i class='glyphicon glyphicon-pencil' " +
                 "style='font-size:20px;'></i></a><a href='javascript: window.confirmDelete(" + maps[i].mapId + ")'" +
-                "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>";
+                "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>" +
+                "<a href='javascript: window.openModalMapDataEdit(" + maps[i].mapId + ")' class='text-success'>"+
+                "<i class='glyphicon glyphicon-wrench' style='font-size:20px'></i></a>";
         }
     });
+}
+
+//Open popup for edit
+function openModalMapDataEdit(mapId) {
+    editBtn.setAttribute("onclick", "updateMapData(" + mapId + ")");
+    modalMapInfoEdit.style.display = "block";
+
+}
+
+//Update the Information of the Map
+function updateMapData(mapId) {
+    let mapName, mapDescription, eventId, mapJSON;
+    mapName = document.getElementById("editName").value;
+    mapDescription = document.getElementById("editDescription").value;
+    eventId = window.location.search.split("=")[1];
+    mapJSON = {
+        "name": mapName,
+        "mapId": mapId,
+        "description": mapDescription
+    };
+    updateMap(mapJSON, function () {
+        window.location.href = "maps.html";
+    })
 }
 
 window.onload = loadTable;
@@ -93,7 +126,7 @@ window.onload = loadTable;
  * is created from the information retrieved and the 'addMap' function is called with this JSON object as a parameter.
  * If the map was successfully added to the database, the page is reloaded.
  */
-//TODO checkbox stuff
+
 function addMapPopup() {
     let description, mapName, mapJSON;
     description = document.getElementById("mapDescription").value;

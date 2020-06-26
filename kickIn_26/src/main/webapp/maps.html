@@ -42,7 +42,7 @@
 
     <!-- Trigger/Open The Popup -->
     <!-- The Popup -->
-    <div class="modal modal_multi" id="addMap">
+    <div class="modal" id="addMap">
         <!-- Popup content -->
         <div class="modal-content">
             <span class="close close_multi">&times;</span>
@@ -86,8 +86,36 @@
             </div>
         </div>
     </div>
-
 </div>
+
+<!-- The Map Information Edit Modal -->
+<div class="modal" id="modalMapInfoEdit">
+    <!-- Popup content -->
+    <div class="modal-content">
+        <span class="close" id="closeMapInfoEdit">&times;</span>
+        <h2>Edit Map Information</h2>
+        <div>
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label" for="editName">Name</label>
+                <div class="col-md-3">
+                    <input class="form-control" id="editName" onkeyup="XSSInputSanitation('editName')"
+                           placeholder="Name"
+                           type="text">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label" for="editDescription">Description</label>
+                <div class="col-md-8">
+                        <textarea class="form-control" id="editDescription"
+                                  onkeyup="XSSInputSanitation('editDescription')" rows="5"></textarea>
+                </div>
+            </div>
+            <div class="bottomright" style="display: flex; justify-content: flex-end;">
+                <button class="btn btn-success btn-circle btn-xl align-self-end" id="editBtn">EDIT</button>
+            </div>
+        </div>
+    </div>
+</div> <!--End of Modal-->
 
 <div class="container">
     <!-- Search Bar -->
