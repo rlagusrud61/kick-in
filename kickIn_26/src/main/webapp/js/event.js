@@ -235,12 +235,16 @@ function generateReport() {
         event = JSON.parse(this.responseText);
         report = event.report;
         doc = new jsPDF();
-        report.forEach(function(item, i){
-            doc.text(20, 10 + (i * 10),
-                "Name: " + item.name + " | " +
-                "Count: " + item.count);
-        });
-        doc.save('EventReport.pdf');
+        if (report !== null){
+            report.forEach(function(item, i){
+                doc.text(20, 10 + (i * 10),
+                    "Name: " + item.name + " | " +
+                    "Count: " + item.count);
+            });
+            doc.save('EventReport.pdf');
+        } else {
+            alert("There are no items on maps for this event.");
+        }
     });
 }
 
