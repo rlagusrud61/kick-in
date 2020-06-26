@@ -16,6 +16,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import nl.utwente.di.team26.Constants;
+
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.Keys;
@@ -28,7 +31,7 @@ public class MapsTest {
   JavascriptExecutor js;
   @Before
   public void setUp() {
-    System.setProperty("webdriver.chrome.driver", "C:\\Users\\Priya\\Desktop\\Module 4\\Project\\chromedriver_win32\\chromedriver.exe");
+    System.setProperty("webdriver.chrome.driver", Constants.CHROME_DRIVER);
     driver = new ChromeDriver();
     js = (JavascriptExecutor) driver;
     vars = new HashMap<String, Object>();
