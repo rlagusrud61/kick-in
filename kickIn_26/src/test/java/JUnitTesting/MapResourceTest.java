@@ -1,10 +1,10 @@
-package Tests;
+package JUnitTesting;
 
 import kong.unirest.Cookie;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
-import nl.utwente.di.team26.Product.model.Event.Event;
+import nl.utwente.di.team26.Product.model.Map.Map;
 import nl.utwente.di.team26.Security.User.Roles;
 import org.junit.After;
 import org.junit.Before;
@@ -18,19 +18,18 @@ import static java.net.HttpURLConnection.*;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
-public class EventsResourceTest extends Tests {
+public class MapResourceTest extends Tests{
 
     long eid;
+    long[] mids;
 
     @Before
-    public void setUp() throws SQLException {
+    public void setUp() {
         addThreeUsers();
-        eid = addTestEvent();
     }
 
     @After
-    public void tearDown() throws NotFoundException, SQLException {
-        deleteTestEvent(eid);
+    public void tearDown() {
         destroyUsers();
     }
 
@@ -38,12 +37,13 @@ public class EventsResourceTest extends Tests {
     public TestName name = new TestName();
 
     @Test
-    public void getEvents() {
+    public void getMap() throws NotFoundException, SQLException {
+        mids = addTestMaps();
         for (Roles role : roles) {
             System.out.println("Test " + name.getMethodName() + " for role: " + role.toString());
             Cookie loginCookie = getLoginCookie(role.getLevel());
             HttpResponse<String> getEvent = Unirest
-                    .get(getURIString("events"))
+                    .get(getURIString("map/" + mids[0]))
                     .header("Content-Type", "application/json")
                     .header("Cookie", loginCookie.toString())
                     .asString();
@@ -52,83 +52,60 @@ public class EventsResourceTest extends Tests {
                 case EDITOR:
                 case ADMIN:
                     assertEquals(HTTP_OK, getEvent.getStatus());
-                    assertTrue(getEvent.getBody().contains("TestEvent"));
+                    assertTrue(getEvent.getBody().contains("TestMap1"));
                     break;
             }
         }
+        deleteTestMap(mids);
     }
-
     @Test
-    public void postEvent() throws NotFoundException, SQLException {
-        long eid2;
+    public void putMap() throws NotFoundException, SQLException {
+        String newDescription = "Test Map1 Description Has now been edited.";
+        String newName = "Test Map1-Edited.";
         for (Roles role : roles) {
+            mids = addTestMaps();
             System.out.println("Test " + name.getMethodName() + " for role: " + role.toString());
             Cookie loginCookie = getLoginCookie(role.getLevel());
-            HttpResponse<String> postEvent = Unirest
-                    .post(getURIString("events"))
+            HttpResponse<String> putEvent = Unirest
+                    .put(getURIString("map/" + mids[0]))
                     .header("Content-Type", "application/json")
                     .header("Cookie", loginCookie.toString())
-                    .body(testEventInstance)
+                    .body(new Map(mids[0], newName, newDescription))
                     .asString();
             switch (role) {
                 case VISITOR:
-                    assertEquals(HTTP_FORBIDDEN, postEvent.getStatus());
+                    assertEquals(HTTP_FORBIDDEN, putEvent.getStatus());
                     break;
                 case EDITOR:
                 case ADMIN:
-                    assertEquals(HTTP_CREATED, postEvent.getStatus());
-                    eid2 = Long.parseLong(postEvent.getBody());
-                    deleteTestEvent(eid2);
+                    assertEquals(HTTP_NO_CONTENT, putEvent.getStatus());
                     break;
             }
+            deleteTestMap(mids);
         }
     }
-
     @Test
-    public void postEventWrongFormat() {
+    public void deleteMap() throws NotFoundException, SQLException {
         for (Roles role : roles) {
-            System.out.println("Test " + name.getMethodName() + " for role: " + role.toString());
-            Cookie loginCookie = getLoginCookie(role.getLevel());
-            HttpResponse<String> postEvent = Unirest
-                    .post(getURIString("events"))
-                    .header("Content-Type", "application/json")
-                    .header("Cookie", loginCookie.toString())
-                    .body(new Event("wrongDate", "wrongDate", "On Campus", "1-234-32"))
-                    .asString();
-            switch (role) {
-                case VISITOR:
-                    assertEquals(HTTP_FORBIDDEN, postEvent.getStatus());
-                    break;
-                case EDITOR:
-                case ADMIN:
-                    assertEquals(HTTP_BAD_REQUEST, postEvent.getStatus());
-                    assertTrue(postEvent.getBody().toLowerCase().contains("date"));
-                    break;
-            }
-        }
-    }
-
-/*
-    @Test
-    public void deleteAllEvents() {
-        for (Roles role : roles) {
+            mids = addTestMaps();
             System.out.println("Test " + name.getMethodName() + " for role: " + role.toString());
             Cookie loginCookie = getLoginCookie(role.getLevel());
             HttpResponse<String> deleteEvent = Unirest
-                    .delete(getURIString("events"))
+                    .delete(getURIString("map/" + mids[0]))
                     .header("Content-Type", "application/json")
                     .header("Cookie", loginCookie.toString())
                     .asString();
             switch (role) {
                 case VISITOR:
                     assertEquals(HTTP_FORBIDDEN, deleteEvent.getStatus());
+                    deleteTestMap(mids);
                     break;
                 case EDITOR:
                 case ADMIN:
                     assertEquals(HTTP_NO_CONTENT, deleteEvent.getStatus());
+                    deleteTestMap(new long[]{mids[1]});
                     break;
             }
         }
     }
-*/
 }

@@ -1,11 +1,10 @@
-package Tests;
+package JUnitTesting;
 
 import kong.unirest.Cookie;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import nl.utwente.di.team26.Constants;
 import nl.utwente.di.team26.Product.model.Authentication.Credentials;
-import nl.utwente.di.team26.Product.model.Map.Map;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

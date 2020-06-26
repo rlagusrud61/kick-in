@@ -1,4 +1,4 @@
-package Tests;
+package JUnitTesting;
 
 import kong.unirest.Cookie;
 import kong.unirest.HttpResponse;
