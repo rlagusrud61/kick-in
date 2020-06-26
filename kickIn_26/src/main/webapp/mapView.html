@@ -3,6 +3,9 @@
 <head>
     <meta charset="utf-8">
 
+    <!-- JS PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
+
     <script
             src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <!-- Latest compiled and minified CSS -->
@@ -69,6 +72,7 @@
             <h1 id="mapName" class="text-left" style="padding-left: 13px;"></h1>
             <a id = "mapEditBtn" class="glyphicon glyphicon-pencil text-success align-mapname" ></a>
             <a class="glyphicon glyphicon-trash text-success align-mapname" id="deleteMap"></a>
+            <a id="downloadReport" class="glyphicon glyphicon-download-alt text-success align-mapname" onclick="javascript: generateReport()"></a>
         </div>
         <div class="row">
             <div class = "col-sm-6">

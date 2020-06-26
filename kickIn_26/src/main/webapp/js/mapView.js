@@ -219,3 +219,19 @@ function removeMap(mapId) {
         window.location.href = "list.html";
     })
 }
+
+function generateReport() {
+    let id, map, report, doc;
+    id = window.location.search.split("=")[1];
+    getMap(id, function () {
+        map = JSON.parse(this.responseText);
+        report = map.report;
+        doc = new jsPDF();
+        report.forEach(function(item, i){
+            doc.text(20, 10 + (i * 10),
+                "Name: " + item.name + " | " +
+                "Count: " + item.count);
+        });
+        doc.save('MapReport.pdf');
+    });
+}
