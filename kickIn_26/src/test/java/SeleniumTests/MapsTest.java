@@ -50,7 +50,7 @@ public class MapsTest {
     driver.findElement(By.id("inputPassword")).sendKeys(Keys.ENTER);
     Thread.sleep(7000);
 
-    // Go to the list of maps page.
+    // Go to the list of maps page
     driver.findElement(By.cssSelector(".glyphicon-globe")).click();
     Thread.sleep(7000);
 
@@ -61,7 +61,7 @@ public class MapsTest {
     driver.findElement(By.cssSelector("tr:nth-child(23) .glyphicon-eye-open")).click();
     Thread.sleep(7000);
 
-    // Go back to the list of maps page
+    // Go back to the list of maps page.
     driver.findElement(By.cssSelector(".glyphicon-arrow-left")).click();
     Thread.sleep(7000);
 
