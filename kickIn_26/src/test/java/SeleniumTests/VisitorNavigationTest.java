@@ -31,7 +31,7 @@ public class VisitorNavigationTest {
   JavascriptExecutor js;
   @Before
   public void setUp() {
-    System.setProperty("webdriver.chrome.driver", Constants.CHROME_DRIVER);
+    System.setProperty("webdriver.chrome.driver", "C:\\Users\\Priya\\Desktop\\Module 4\\Project\\chromedriver_win32\\chromedriver.exe");
     driver = new ChromeDriver();
     js = (JavascriptExecutor) driver;
     vars = new HashMap<String, Object>();
@@ -41,15 +41,21 @@ public class VisitorNavigationTest {
     driver.quit();
   }
   @Test
-  public void visitorNavigation() {
-    driver.get("http://localhost:8080/kickInTeam26/login.html");
-    driver.manage().window().setSize(new Dimension(840, 772));
+  public void visitorNavigation() throws InterruptedException {
+    driver.get("http://localhost:8080/kickInTeam26/");
+
     driver.findElement(By.id("inputEmail")).sendKeys("vicsitor@email.com");
     driver.findElement(By.id("inputPassword")).sendKeys("vicsitorpassword");
     driver.findElement(By.id("inputPassword")).sendKeys(Keys.ENTER);
+    Thread.sleep(7000);
+
     driver.findElement(By.cssSelector("tr:nth-child(5) .glyphicon-trash")).click();
     driver.findElement(By.id("yesDeleteButton")).click();
+    Thread.sleep(7000);
+
     driver.findElement(By.id("noBtn")).click();
+    Thread.sleep(7000);
+
     driver.findElement(By.id("addEventBtn")).click();
     driver.findElement(By.id("eventName")).click();
     driver.findElement(By.id("eventName")).sendKeys("New event");
@@ -79,95 +85,17 @@ public class VisitorNavigationTest {
     }
     driver.findElement(By.cssSelector(".bottomright > .align-self-end")).click();
     driver.findElement(By.cssSelector("#addEvent .close")).click();
+    Thread.sleep(7000);
+
     driver.findElement(By.cssSelector("tr:nth-child(2) .glyphicon-eye-open")).click();
-    driver.findElement(By.cssSelector(".glyphicon-eye-open")).click();
+    Thread.sleep(7000);
+
     driver.findElement(By.id("deleteEvent")).click();
     driver.findElement(By.id("yes")).click();
-    driver.findElement(By.cssSelector("#popupMapDelete .close")).click();
-    driver.findElement(By.id("mapEditBtn")).click();
-    driver.findElement(By.id("mapEditBtn")).click();
-    {
-      WebElement element = driver.findElement(By.cssSelector(".leaflet-drag-target"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).clickAndHold().perform();
-    }
-    {
-      WebElement element = driver.findElement(By.cssSelector(".leaflet-drag-target"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).perform();
-    }
-    {
-      WebElement element = driver.findElement(By.cssSelector(".leaflet-drag-target"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).release().perform();
-    }
-    driver.findElement(By.cssSelector(".leaflet-image-layer:nth-child(11)")).click();
-    {
-      WebElement element = driver.findElement(By.cssSelector(".leaflet-drag-target"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).clickAndHold().perform();
-    }
-    {
-      WebElement element = driver.findElement(By.cssSelector(".leaflet-drag-target"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).perform();
-    }
-    {
-      WebElement element = driver.findElement(By.cssSelector(".leaflet-drag-target"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).release().perform();
-    }
-    driver.findElement(By.cssSelector(".leaflet-image-layer:nth-child(11)")).click();
-    driver.findElement(By.cssSelector(".w3-bar-item:nth-child(3)")).click();
-    driver.findElement(By.cssSelector(".leaflet-image-layer:nth-child(1)")).click();
-    {
-      WebElement element = driver.findElement(By.cssSelector(".leaflet-drag-target"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).clickAndHold().perform();
-    }
-    {
-      WebElement element = driver.findElement(By.cssSelector(".leaflet-drag-target"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).perform();
-    }
-    {
-      WebElement element = driver.findElement(By.cssSelector(".leaflet-drag-target"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).release().perform();
-    }
-    driver.findElement(By.cssSelector(".leaflet-marker-icon:nth-child(4)")).click();
-    driver.findElement(By.cssSelector(".w3-bar-item:nth-child(3)")).click();
-    {
-      WebElement element = driver.findElement(By.cssSelector("html"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).clickAndHold().perform();
-    }
-    {
-      WebElement element = driver.findElement(By.cssSelector("html"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).perform();
-    }
-    {
-      WebElement element = driver.findElement(By.cssSelector("html"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).release().perform();
-    }
-    driver.findElement(By.cssSelector("html")).click();
-    driver.findElement(By.cssSelector(".glyphicon-cog")).click();
-    driver.findElement(By.id("addResourceBtn")).click();
-    driver.findElement(By.id("resourceName")).click();
-    driver.findElement(By.id("resourceName")).sendKeys("New Resource");
-    driver.findElement(By.id("resourceDescription")).click();
-    driver.findElement(By.id("resourceDescription")).sendKeys("Add");
-    driver.findElement(By.cssSelector(".custom-control:nth-child(1) > .custom-control-label")).click();
-    driver.findElement(By.id("resourceImage")).click();
-    driver.findElement(By.cssSelector(".bottomright > .align-self-end")).click();
-    driver.findElement(By.cssSelector("#addResource > .modal-content")).click();
-    driver.findElement(By.cssSelector("#addResource .close")).click();
-    driver.findElement(By.id("resources")).click();
-    driver.findElement(By.id("addResourceBtn")).click();
-    driver.findElement(By.cssSelector("#addResource .close")).click();
-    driver.findElement(By.cssSelector(".col-8")).click();
+    Thread.sleep(7000);
+    driver.findElement(By.id("closeEventDelete")).click();
+    Thread.sleep(7000);
+
     driver.findElement(By.cssSelector(".glyphicon-globe")).click();
     driver.findElement(By.id("addMapBtn")).click();
     driver.findElement(By.id("mapName")).click();
@@ -175,7 +103,12 @@ public class VisitorNavigationTest {
     driver.findElement(By.id("mapDescription")).sendKeys("As visitor");
     driver.findElement(By.cssSelector(".bottomright > .align-self-end")).click();
     driver.findElement(By.cssSelector("#addMap .close")).click();
+    Thread.sleep(7000);
+
     driver.findElement(By.cssSelector(".glyphicon-user")).click();
+    Thread.sleep(7000);
+
     driver.findElement(By.id("logout")).click();
+    Thread.sleep(7000);
   }
 }
