@@ -1,12 +1,12 @@
 let yesBtn, noBtn, deleteMapModal, span1, editBtn, modalMapInfoEdit, span2, span3, span4 , span5, selectMapModal, listBtn , existingMapBtn , modalAddMap, addMapBtn, yes, no,
-modalEventDelete, deleteEvent;
+    modalEventDelete, deleteEventBtn;
 yesBtn = document.getElementById("yesDeleteButton");
 noBtn = document.getElementById("noBtn");
 editBtn = document.getElementById("editBtn");
 yes = document.getElementById("yes");
 no = document.getElementById("no");
 modalEventDelete = document.getElementById("modalEventDelete");
-deleteEvent = document.getElementById("deleteEvent");
+deleteEventBtn = document.getElementById("deleteEvent");
 addMapBtn = document.getElementById("addMap");
 listBtn = document.getElementById("addMapsToEvent");
 existingMapBtn = document.getElementById("existingMapBtn");
@@ -20,7 +20,7 @@ span3 = document.getElementById("closeMapDelete");
 span4 = document.getElementById("closeAddMap");
 span5 = document.getElementById("closeEventDelete");
 
-deleteEvent.onclick = function() {
+deleteEventBtn.onclick = function() {
     modalEventDelete.style.display = "block";
 }
 
@@ -97,7 +97,7 @@ function displayEventInfo() {
         document.getElementById("eventname").innerHTML = event.name;
         document.getElementById("eventdate").innerHTML = event.date;
         document.getElementById("addNewMap").href = "http://localhost:8080/kickInTeam26/newMap.html?id=" + event.eventId;
-    })
+    });
 
     getAllMapsForEvent(id, function () {
 
@@ -226,5 +226,21 @@ function loadMaps() {
     })
 }
 
-window.onload = loadMaps();
+window.onload = loadMaps;
+
+function generateReport() {
+    let id, event, report, doc;
+    id = window.location.search.split("=")[1];
+    getEvent(id, function () {
+        event = JSON.parse(this.responseText);
+        report = event.report;
+        doc = new jsPDF();
+        report.forEach(function(item, i){
+            doc.text(20, 10 + (i * 10),
+                "Name: " + item.name + " | " +
+                "Count: " + item.count);
+        });
+        doc.save('EventReport.pdf');
+    });
+}
 
