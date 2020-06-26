@@ -42,7 +42,7 @@ public class AdminNavigationTest {
   }
   @Test
   public void adminNavigation() throws InterruptedException {
-    driver.get("http://localhost:8080/kickInTeam26/login.html");
+    driver.get("http://localhost:8080/kickInTeam26/");
     driver.manage().window().setSize(new Dimension(838, 770));
     driver.findElement(By.id("inputEmail")).sendKeys("admin@gmail.com");
     driver.findElement(By.id("inputPassword")).sendKeys("adminpass");
