@@ -227,11 +227,15 @@ function generateReport() {
         map = JSON.parse(this.responseText);
         report = map.report;
         doc = new jsPDF();
-        report.forEach(function(item, i){
-            doc.text(20, 10 + (i * 10),
-                "Name: " + item.name + " | " +
-                "Count: " + item.count);
-        });
-        doc.save('MapReport.pdf');
+        if (report !== null){
+            report.forEach(function(item, i){
+                doc.text(20, 10 + (i * 10),
+                    "Name: " + item.name + " | " +
+                    "Count: " + item.count);
+            });
+            doc.save('MapReport.pdf');
+        }else {
+            alert("There are no items on this map.");
+        }
     });
 }
