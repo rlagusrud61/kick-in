@@ -1,4 +1,4 @@
-let modal, btn, span, yesBtn, deleteModal, close,editBtn,modalMapInfoEdit,span3;
+let modal, btn, span, yesBtn, deleteModal, close,editBtn,modalMapInfoEdit,span2, span3;
 
 editBtn = document.getElementById("editBtn");
 modalMapInfoEdit = document.getElementById("modalMapInfoEdit");
@@ -10,7 +10,7 @@ noBtn = document.getElementById("noBtn");
 yesBtn = document.getElementById("yesDeleteButton");
 span = document.getElementsByClassName("close close_multi")[0];
 span2 = document.getElementsByClassName("close close_multi")[1];
-span3 = document.getElementById("closeModalMapInfoEdit");
+span3 = document.getElementById("closeMapInfoEdit");
 
 span3.onclick = function() {
     modalMapInfoEdit.style.display="none";
