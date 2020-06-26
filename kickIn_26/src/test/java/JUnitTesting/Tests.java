@@ -1,4 +1,4 @@
-package Tests;
+package JUnitTesting;
 
 import kong.unirest.Cookie;
 import kong.unirest.HttpResponse;
@@ -26,7 +26,6 @@ import nl.utwente.di.team26.Utils;
 import javax.ws.rs.core.UriBuilder;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Arrays;
 
 public class Tests {
 
@@ -48,7 +47,7 @@ public class Tests {
     protected final User testUserInstance = new User("testuser@email.com", "password", "TestUser", 2);
 
     String defaultPassword = "password";
-    String[] userNames = {"visitor", "editor", "admin"};
+    String[] userNames = {"visitorJUINT", "editorJUINT", "adminJUNIT"};
     long[] userIds;
 
     protected Cookie getLoginCookie(int level) {

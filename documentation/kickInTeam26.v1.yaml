@@ -11,7 +11,7 @@ info:
     url: 'https://www.kick-in.nl/cache/img/header_theme_picture/uploads/event/img/5e4509fc74503_logogrootmetthema.png'
     altText: KickIn-Logo
 servers:
-  - url: 'http://localhost:8080/kickInTeam26/'
+  - url: 'http://localhost:8080/kickInTeam26/rest'
     description: For tesing locally on home computers.
 tags:
   - name: events
@@ -19,7 +19,7 @@ tags:
   - name: maps
     description: everything about the maps.
   - name: authentication
-    description: all about that auth, auth.
+    description: 'all about that auth, auth.'
 x-tagGroups:
   - name: Authentication
     tags:
@@ -36,49 +36,69 @@ paths:
       summary: Sign-Out
       operationId: delete-authentication
       responses:
-        '200':
-          description: OK
-        '406':
-          description: Not Acceptable
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
           content:
-            text/plain:
+            application/json:
               schema:
-                type: string
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Invalid token passed:
-                  value: Token is not Valid
+                  value:
+                    errorCode: 403
+                    errorMessage: InvalidToken
                 Logging out without a token:
-                  value: 'You currently are not part of a Session, please Login before continuing'
+                  value:
+                    errorCode: 400
+                    errorMessage: 'You are currently not part of a session, please login before continuing.'
       description: 'Logs You out of the session, which is basically revoking your current token.'
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Cookie
+          description: The login cookie that you obtained when you loggen in
+          required: true
     post:
       tags:
         - authentication
       summary: Sign-In
       operationId: post-authentication
       responses:
-        '200':
-          description: OK
+        '204':
+          description: No Content
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+              description: 'The login cookie, which contains the token for future authentication'
+              required: true
         '401':
           description: Unauthorized
           content:
-            text/html:
+            application/json:
               schema:
-                type: string
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Invalid Crednetials:
-                  value: 'Sorry, your credentials do not Match, please contact your administrator if you have lost your Credentials.'
+                  value:
+                    errorCode: 403
+                    errorMessage: 'Sorry, your credentials do not Match, please contact your administrator if you have lost your Credentials.'
       description: 'Provide your login credentials here, which will then be checked against the databse to produce a cookie which will attached to the response so that the token generated can be validated for each request and also used accordingly for authorization.'
       requestBody:
         content:
           application/json:
             schema:
-              type: object
-              properties: {}
+              $ref: '#/components/schemas/Credentials'
             examples:
               AdminLogin:
                 value:
                   email: admin@gmail.com
                   password: adminpass
+        description: The credentials needed for the login.
+      parameters: []
   /events:
     get:
       tags:
@@ -90,7 +110,9 @@ paths:
           content:
             application/json:
               schema:
-                type: string
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
               examples:
                 Get All Events:
                   value:
@@ -113,7 +135,12 @@ paths:
           content:
             application/json:
               schema:
-                type: string
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                No Events in the map:
+                  value:
+                    errorCode: '404'
+                    errorMessage: Either this object does not exist in the database or the database is emepty
         '500':
           description: Internal Server Error
           content:
@@ -122,7 +149,13 @@ paths:
                 type: string
       operationId: get-events
       description: Returns all the elements in the Database.
-      parameters: []
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Cookie
+          description: Your login cookie
+          required: true
     post:
       tags:
         - events
@@ -135,6 +168,8 @@ paths:
             application/json:
               schema:
                 type: integer
+                exclusiveMinimum: false
+                example: 0
               examples:
                 First Event:
                   value: 1
@@ -145,8 +180,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties: {}
+              $ref: '#/components/schemas/Event'
             examples:
               Add a New Event 1:
                 value:
@@ -155,6 +189,12 @@ paths:
                   location: Somewhere
                   date: '2020-01-01'
         description: The event details.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Cookie
+          description: Your login cookie
     delete:
       tags:
         - events
@@ -166,6 +206,12 @@ paths:
         '500':
           description: Internal Server Error
       description: Deleted all the events in the Database.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Cookie
+          description: Your login cookie
   '/event/{eventId}':
     get:
       tags:
@@ -177,8 +223,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties: {}
+                $ref: '#/components/schemas/Event'
               examples:
                 Event1:
                   value:
@@ -212,6 +257,11 @@ paths:
           description: Internal Server Error
       operationId: get-event
       description: Get a specific event from the Database.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Cookie
     put:
       tags:
         - events
@@ -279,11 +329,11 @@ paths:
       description: Deletes a specific event from the database.
     parameters:
       - schema:
-          type: number
+          type: integer
         name: eventId
         in: path
-        description: 'the id of the event to be modified, as stored in the databse.'
         required: true
+        description: the event to modify
   /maps:
     get:
       summary: Get all the Maps.
@@ -295,8 +345,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties: {}
+                $ref: '#/components/schemas/Map'
               examples:
                 All Maps:
                   value:
@@ -321,6 +370,11 @@ paths:
           description: Internal Server Error
       operationId: get-maps
       description: Gets all the maps stored in the database.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Cookie
     post:
       tags:
         - maps
@@ -330,12 +384,12 @@ paths:
         '201':
           description: Created
           content:
-            text/plain:
+            application/json:
               schema:
                 type: integer
               examples:
                 mapId Returned:
-                  value: '1'
+                  value: 1
         '500':
           description: Internal Server Error
       description: Adds a new Map to the database.
@@ -343,14 +397,20 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties: {}
+              $ref: '#/components/schemas/Map'
             examples:
               First Map:
                 value:
                   name: FirstMap
                   description: FirstMap
         description: The new Map to be added to the database.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Cookie
+          description: Your login cookie
+          required: true
     delete:
       tags:
         - maps
@@ -362,6 +422,13 @@ paths:
         '500':
           description: Internal Server Error
       description: deletes all the maps to the database.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Cookie
+          description: Your login cookie
+          required: true
   '/map/{mapId}':
     parameters:
       - schema:
@@ -380,8 +447,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties: {}
+                $ref: '#/components/schemas/Map'
               examples:
                 Map 1:
                   value:
@@ -409,6 +475,13 @@ paths:
           description: Internal Server Error
       operationId: get-map-mapId
       description: Get the particular map in the database.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Cookie
+          description: Your login cookie
+          required: true
     post:
       tags:
         - maps
@@ -422,11 +495,12 @@ paths:
           content:
             text/plain:
               schema:
-                type: object
-                properties: {}
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Error Example:
-                  value: 'Object could not be saved! (PrimaryKey not found)'
+                  value:
+                    errorCode: 400
+                    errorMessage: 'Object could not be saved! (PrimaryKey not found)'
         '500':
           description: Internal Server Error
       description: Update the map details.
@@ -434,8 +508,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties: {}
+              $ref: '#/components/schemas/Map'
             examples:
               UpdatedInfo for Map1:
                 value:
@@ -443,6 +516,13 @@ paths:
                   name: FirstMap
                   description: FirstMap- I have now been edited
         description: The new map info.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Cookie
+          description: Your login cookie
+          required: true
     delete:
       tags:
         - maps
@@ -465,5 +545,148 @@ paths:
           description: Internal Server Error
       description: Delete the specific map from the database.
 components:
-  schemas: {}
+  schemas:
+    User:
+      title: User
+      type: object
+      x-examples:
+        example-1: {}
+      properties:
+        userId:
+          type: integer
+        email:
+          type: string
+        password:
+          type: string
+        nickname:
+          type: string
+        clearancelevel:
+          type: integer
+      required:
+        - email
+        - password
+        - nickname
+        - clearancelevel
+    Map:
+      title: Map
+      type: object
+      properties:
+        mapId:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        createdBy:
+          type: integer
+        lastEditedBy:
+          type: integer
+      required:
+        - name
+    Event:
+      title: Event
+      type: object
+      properties:
+        eventId:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        date:
+          type: string
+        createdBy:
+          type: string
+        lastEditedBy:
+          type: string
+      required:
+        - name
+    EventMap:
+      title: EventMap
+      type: object
+      properties:
+        eventId:
+          type: integer
+        mapId:
+          type: integer
+      required:
+        - eventId
+        - mapId
+    MapObject:
+      title: MapObject
+      type: object
+      properties:
+        objectId:
+          type: integer
+        mapId:
+          type: integer
+        resourceId:
+          type: integer
+        latLangs:
+          type: string
+      required:
+        - mapId
+        - resourceId
+        - latLangs
+    Credentials:
+      title: Crednetials
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - email
+        - password
+    Session:
+      title: Session
+      type: object
+      properties:
+        userId:
+          type: integer
+        token:
+          type: string
+      required:
+        - userId
+        - token
+    Drawing:
+      title: Drawing
+      type: object
+      properties:
+        resourceId:
+          type: string
+        name:
+          type: string
+        decription:
+          type: string
+        url:
+          type: string
+      required:
+        - name
+    Material:
+      title: Material
+      type: object
+      properties:
+        resourceId:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        image:
+          type: string
+      required:
+        - name
+    ErrorMessage:
+      title: ErrorMessage
+      type: object
+      properties:
+        errorCode:
+          type: string
+        errorMessage:
+          type: string
+      required:
+        - errorCode
+        - errorMessage
   securitySchemes: {}

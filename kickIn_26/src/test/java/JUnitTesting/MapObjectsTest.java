@@ -1,9 +1,8 @@
-package Tests;
+package JUnitTesting;
 
 import kong.unirest.Cookie;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
-import kong.unirest.json.JSONObject;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.model.Map.MapObject;
 import nl.utwente.di.team26.Security.User.Roles;

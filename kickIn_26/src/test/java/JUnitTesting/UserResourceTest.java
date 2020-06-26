@@ -1,10 +1,10 @@
-package Tests;
+package JUnitTesting;
 
 import kong.unirest.Cookie;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
-import nl.utwente.di.team26.Product.model.Event.Event;
+import nl.utwente.di.team26.Product.model.Authentication.User;
 import nl.utwente.di.team26.Security.User.Roles;
 import org.junit.After;
 import org.junit.Before;
@@ -18,9 +18,7 @@ import static java.net.HttpURLConnection.*;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
-public class EventResourceTest extends Tests{
-
-    long eid;
+public class UserResourceTest extends Tests{
 
     @Before
     public void setUp() {
@@ -36,74 +34,77 @@ public class EventResourceTest extends Tests{
     public TestName name = new TestName();
 
     @Test
-    public void getEvent() throws NotFoundException, SQLException {
-        eid = addTestEvent();
+    public void getUser() throws NotFoundException, SQLException {
+        long uid = addTestUser();
         for (Roles role : roles) {
             System.out.println("Test " + name.getMethodName() + " for role: " + role.toString());
             Cookie loginCookie = getLoginCookie(role.getLevel());
-            HttpResponse<String> getEvent = Unirest
-                    .get(getURIString("event/" + eid))
+            HttpResponse<String> getUser = Unirest
+                    .get(getURIString("user/" + uid))
                     .header("Content-Type", "application/json")
                     .header("Cookie", loginCookie.toString())
                     .asString();
             switch (role) {
                 case VISITOR:
                 case EDITOR:
+                    assertEquals(HTTP_FORBIDDEN, getUser.getStatus());
+                    break;
                 case ADMIN:
-                    assertEquals(HTTP_OK, getEvent.getStatus());
-                    assertTrue(getEvent.getBody().contains("TestEvent"));
+                    assertEquals(HTTP_OK, getUser.getStatus());
+                    assertTrue(getUser.getBody().contains("TestUser"));
                     break;
             }
         }
-        deleteTestEvent(eid);
+        deleteTestUser(uid);
     }
 
     @Test
-    public void putEvent() throws NotFoundException, SQLException {
-        String newDescription = "Test Event Description Has now been edited.";
-        String newEventName = "Test Event Title-Edited.";
+    public void putUser() throws NotFoundException, SQLException {
+        String newUserPassword = "password-2";
+        String newUserEmail = "testusernewemail@email.com";
+        String newUserNickname = "TestUser-Edited";
         for (Roles role : roles) {
-            eid = addTestEvent();
+            long uid = addTestUser();
             System.out.println("Test " + name.getMethodName() + " for role: " + role.toString());
             Cookie loginCookie = getLoginCookie(role.getLevel());
-            HttpResponse<String> putEvent = Unirest
-                    .put(getURIString("event/" + eid))
+            HttpResponse<String> putUser = Unirest
+                    .put(getURIString("user/" + uid))
                     .header("Content-Type", "application/json")
                     .header("Cookie", loginCookie.toString())
-                    .body(new Event(eid, newEventName, newDescription, "OnCampus", "2020-01-01"))
+                    .body(new User(uid, newUserEmail, newUserPassword, newUserNickname, 1))
                     .asString();
             switch (role) {
                 case VISITOR:
-                    assertEquals(HTTP_FORBIDDEN, putEvent.getStatus());
-                    break;
                 case EDITOR:
+                    assertEquals(HTTP_FORBIDDEN, putUser.getStatus());
+                    break;
                 case ADMIN:
-                    assertEquals(HTTP_NO_CONTENT, putEvent.getStatus());
+                    assertEquals(HTTP_NO_CONTENT, putUser.getStatus());
                     break;
             }
-            deleteTestEvent(eid);
+            deleteTestUser(uid);
         }
     }
 
     @Test
-    public void deleteEvent() throws NotFoundException, SQLException {
+    public void deleteUser() throws NotFoundException, SQLException {
         for (Roles role : roles) {
-            eid = addTestEvent();
+            long uid = addTestUser();
             System.out.println("Test " + name.getMethodName() + " for role: " + role.toString());
             Cookie loginCookie = getLoginCookie(role.getLevel());
-            HttpResponse<String> deleteEvent = Unirest
-                    .delete(getURIString("event/" + eid))
+            HttpResponse<String> deleteUser = Unirest
+                    .delete(getURIString("user/" + uid))
                     .header("Content-Type", "application/json")
                     .header("Cookie", loginCookie.toString())
                     .asString();
             switch (role) {
                 case VISITOR:
-                    assertEquals(HTTP_FORBIDDEN, deleteEvent.getStatus());
-                    deleteTestEvent(eid);
-                    break;
                 case EDITOR:
+                    assertEquals(HTTP_FORBIDDEN, deleteUser.getStatus());
+                    deleteTestUser(uid);
+                    break;
                 case ADMIN:
-                    assertEquals(HTTP_NO_CONTENT, deleteEvent.getStatus());
+                    assertEquals(HTTP_NO_CONTENT, deleteUser.getStatus());
                     break;
             }
         }
