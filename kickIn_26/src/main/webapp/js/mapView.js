@@ -1,4 +1,4 @@
-let yesBtn, mapId, modal, trash, closeDelete, closeDelete2, map, printer, imgGroup, mapName;
+let yesBtn, mapId, modal, trash, closeDelete, closeDelete2, map, zoomControl, imgGroup, mapName;
 
 mapId = window.location.search.split("=")[1];
 // Get the modal
@@ -19,12 +19,6 @@ trash.onclick = function(){
 function openModalMapDelete(mapId) {
     yesBtn.setAttribute("onclick", "removeMap(" + mapId + ")");
     modal.style.display = "block";
-}
-
-function removeMap(mapId) {
-    deleteMap( mapId, function () {
-        location.reload();
-    })
 }
 
 closeDelete.onclick = function () {
@@ -58,14 +52,29 @@ function initMap() {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     });
     tiles.addTo(newMap);
-    printer = L.easyPrint({
-        tileLayer: tiles,
-        sizeModes: ['A4Landscape'],
-        filename: mapName,
-        exportOnly: true,
-        hideControlContainer: true
-    }).addTo(newMap);
     return newMap;
+}
+
+function screenshot() {
+    map.removeControl(zoomControl);
+    domtoimage.toPng(map.getContainer(), {
+        width: map.getSize().x,
+        height: map.getSize().y
+    }).then(function(img) {
+        const a = document.createElement("a"); //Create <a>
+        a.href = img; //Image Base64 Goes here
+        a.download = "Image.png"; //File name Here
+        a.click();
+        map.addControl(zoomControl);
+    })
+}
+
+function getMapBounds() {
+    mapObjects.forEach()
+}
+
+function fitMapBounds() {
+    map.fitBounds(getMapBounds())
 }
 
 /**
@@ -165,6 +174,7 @@ function initPage() {
         mapData = JSON.parse(this.responseText);
         mapName = mapData.name;
         map = initMap();
+        zoomControl = map.zoomControl;
         document.getElementById("mapName").innerHTML = mapData.name;
         document.getElementById("description").innerHTML = mapData.description;
         listItems(mapData.report);
