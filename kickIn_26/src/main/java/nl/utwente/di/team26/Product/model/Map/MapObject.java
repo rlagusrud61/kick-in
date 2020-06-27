@@ -2,6 +2,7 @@ package nl.utwente.di.team26.Product.model.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * MapObject Value Object.
@@ -18,7 +19,7 @@ public class MapObject implements Serializable {
     private long objectId;
     private long mapId;
     private long resourceId;
-    private String latLangs;
+    private LatLang[] latLangs;
 
     /**
      * Constructors. DaoGen generates two constructors by default.
@@ -35,13 +36,13 @@ public class MapObject implements Serializable {
         this.objectId = objectIdIn;
     }
 
-    public MapObject(long mapId, long resourceId, String latLangs) {
+    public MapObject(long mapId, long resourceId, LatLang[] latLangs) {
         this.mapId = mapId;
         this.resourceId = resourceId;
         this.latLangs = latLangs;
     }
 
-    public MapObject(long objectId, long mapId, long resourceId, String latLangs) {
+    public MapObject(long objectId, long mapId, long resourceId, LatLang[] latLangs) {
         this.objectId = objectId;
         this.mapId = mapId;
         this.resourceId = resourceId;
@@ -78,11 +79,11 @@ public class MapObject implements Serializable {
         this.resourceId = resourceIdIn;
     }
 
-    public String getLatLangs() {
+    public LatLang[] getLatLangs() {
         return this.latLangs;
     }
 
-    public void setLatLangs(String latLangsIn) {
+    public void setLatLangs(LatLang[] latLangsIn) {
         this.latLangs = latLangsIn;
     }
 
@@ -97,7 +98,7 @@ public class MapObject implements Serializable {
                 "objectId = " + this.objectId + "\n" +
                 "mapId = " + this.mapId + "\n" +
                 "resourceId = " + this.resourceId + "\n" +
-                "latLangs = " + this.latLangs + "\n";
+                "latLangs = " + Arrays.toString(this.latLangs) + "\n";
     }
 
 }

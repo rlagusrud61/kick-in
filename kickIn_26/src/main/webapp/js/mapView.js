@@ -1,4 +1,4 @@
-let yesBtn, mapId, modal, trash, closeDelete, closeDelete2, map, zoomControl, imgGroup, mapName;
+let yesBtn, mapId, modal, trash, closeDelete, closeDelete2, map, printer, imgGroup, mapName;
 
 mapId = window.location.search.split("=")[1];
 // Get the modal
@@ -52,6 +52,13 @@ function initMap() {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     });
     tiles.addTo(newMap);
+    printer = L.easyPrint({
+        tileLayer: tiles,
+        sizeModes: ['A4Landscape'],
+        filename: mapName,
+        exportOnly: true,
+        hideControlContainer: true
+    }).addTo(newMap);
     return newMap;
 }
 
