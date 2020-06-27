@@ -1,4 +1,4 @@
-let yesBtn, mapId, modal, trash, closeDelete, closeDelete2, map, printer, imgGroup, mapName;
+let yesBtn, mapId, modal, trash, closeDelete, closeDelete2, map, imgGroup, mapName;
 
 mapId = window.location.search.split("=")[1];
 // Get the modal
@@ -37,9 +37,10 @@ window.onclick = function (event) {
  * @returns {L.map} newMap - This is an instance of a new leaflet map.
  */
 function initMap() {
-    let newMap, tiles;
+    let newMap, tileLayer;
      newMap = L.map('mapid', {
         center: [52.2413, -353.1531],
+        zoomSnap: 0,
         zoom: 16,
         keyboard: false,
         fullscreenControl: true,
@@ -47,61 +48,14 @@ function initMap() {
             position: 'topleft'
         }
     });
-     tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+     tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     });
-    tiles.addTo(newMap);
-    printer = L.easyPrint({
-        tileLayer: tiles,
-        sizeModes: ['A4Landscape'],
-        filename: mapName,
-        exportOnly: true,
-        hideControlContainer: true
-    }).addTo(newMap);
+    tileLayer.addTo(newMap);
     return newMap;
 }
 
-function screenshot() {
-    map.removeControl(zoomControl);
-    domtoimage.toPng(map.getContainer(), {
-        width: map.getSize().x,
-        height: map.getSize().y
-    }).then(function(img) {
-        const a = document.createElement("a"); //Create <a>
-        a.href = img; //Image Base64 Goes here
-        a.download = "Image.png"; //File name Here
-        a.click();
-        map.addControl(zoomControl);
-    })
-}
-
-function getMapBounds() {
-    mapObjects.forEach()
-}
-
-function fitMapBounds() {
-    map.fitBounds(getMapBounds())
-}
-
-/**
- * @param {String} stringyLatLangs - the latLangs given as a String.
- *
- * @summary Since the latLangs are also an array of JSON objects, parsing only the top level object does not parse the
- * latLangs to an array of JSON objects as well. This needs to be done separately and is done in this method.
- *
- * @returns {json | Object} coords - the array of LeafletPoints which are needed by 'distortableImageOverlay' to add
- * objects to the map.
- */
-function parseLatLangs(stringyLatLangs) {
-    let latLangArray, coords;
-     latLangArray = JSON.parse(stringyLatLangs);
-     coords = [];
-    latLangArray.forEach(function (point) {
-        coords.push(L.latLng(point.lat, point.lng))
-    })
-    return coords;
-}
 imgGroup = [];
 //all available resources
 resources = new Map();
@@ -140,7 +94,7 @@ function insertObjectsToMap() {
  */
 function insertObjectIntoMap(object) {
     let corners, newImage;
-    corners = parseLatLangs(object.latLangs);
+    corners = JSON.parse(object.latLangs);
     newImage = L.distortableImageOverlay(images.get(object.resourceId), {
         editable: false,
         actions: [],
@@ -235,6 +189,15 @@ function removeMap(mapId) {
     deleteMap(mapId, function () {
         window.location.href = "list.html";
     })
+}
+
+function downloadPNG() {
+    screenshot(function (image) {
+        const a = document.createElement("a"); //Create <a>
+        a.href = image
+        a.download = mapName + ".png"; //File name Here
+        a.click();
+    });
 }
 
 function generateReport() {

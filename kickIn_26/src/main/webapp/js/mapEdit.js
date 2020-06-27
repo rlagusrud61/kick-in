@@ -1,8 +1,10 @@
-let localReport, map, mapId, resources, images, mapObjects, imgGroup, newObjects, deletedObjects;
+let localReport, map, mapId, resources, images, mapObjects, imgGroup, newObjects, deletedObjects, zoomControl, mapName;
 
 localReport = new Map();
 map = initMap();
+zoomControl = map.zoomControl;
 mapId = window.location.search.split("=")[1];
+mapName = mapId;
 //all available resources
 resources = new Map();
 //their images
@@ -99,6 +101,7 @@ function initMap() {
     let newMap, tiles;
     newMap = L.map('mapid', {
         center: [52.2413, -353.1531],
+        zoomSnap: 0,
         zoom: 16,
         keyboard: false
     });
@@ -224,10 +227,22 @@ function saveState() {
     massDelete(deletedObjects, function () {
         massPost(function () {
             massUpdate(function () {
-                bringAllObjectsForMap(mapId);
+                postNewImage(function () {
+                    bringAllObjectsForMap(mapId);
+                });
             });
         });
     });
+}
+
+function postNewImage(callback) {
+    screenshot(function (image) {
+        const a = document.createElement("a"); //Create <a>
+        a.href = image
+        a.download = mapName + ".png"; //File name Here
+        a.click();
+        callback();
+    })
 }
 
 /**
