@@ -67,25 +67,6 @@ function initMap() {
     }).addTo(newMap);
     return newMap;
 }
-
-/**
- * @param {String} stringyLatLangs - the latLangs given as a String.
- *
- * @summary Since the latLangs are also an array of JSON objects, parsing only the top level object does not parse the
- * latLangs to an array of JSON objects as well. This needs to be done separately and is done in this method.
- *
- * @returns {json | Object} coords - the array of LeafletPoints which are needed by 'distortableImageOverlay' to add
- * objects to the map.
- */
-function parseLatLangs(stringyLatLangs) {
-    let latLangArray, coords;
-     latLangArray = JSON.parse(stringyLatLangs);
-     coords = [];
-    latLangArray.forEach(function (point) {
-        coords.push(L.latLng(point.lat, point.lng))
-    })
-    return coords;
-}
 imgGroup = [];
 //all available resources
 resources = new Map();
@@ -124,10 +105,8 @@ function insertObjectsToMap() {
  */
 function insertObjectIntoMap(object) {
     let corners, newImage;
-    corners = parseLatLangs(object.latLangs);
+    corners = JSON.parse(object.latLangs);
     newImage = L.distortableImageOverlay(images.get(object.resourceId), {
-        editable: false,
-        actions: [],
         corners: corners
     })
     newImage.objectId = object.objectId;

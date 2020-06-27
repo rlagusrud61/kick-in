@@ -154,7 +154,7 @@ function goBack() {
 function searchTables(tableID, searchBoxID) {
     // Declare variables
     let searchValue, filter, table, tr, td, i, txtValue;
-    searchValue = XSSInputSanitation(searchBoxID);
+    searchValue = document.getElementById(searchBoxID).value;
     filter = searchValue.toUpperCase();
     table = document.getElementById(tableID);
     tr = table.getElementsByTagName("tr");
