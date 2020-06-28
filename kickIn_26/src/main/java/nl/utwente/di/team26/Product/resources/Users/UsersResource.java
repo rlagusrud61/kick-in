@@ -30,7 +30,9 @@ public class UsersResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addNewUser(User userToAdd) throws SQLException {
-        userToAdd.setPassword(Utils.hashPassword(userToAdd.getPassword()));
+        String password = Utils.generatePassayPassword();
+        userToAdd.setPassword(Utils.hashPassword(password));
+        EmailSender.send(password);
         long userId = usersDao.create(userToAdd);
         return Utils.returnCreated(userId);
     }
