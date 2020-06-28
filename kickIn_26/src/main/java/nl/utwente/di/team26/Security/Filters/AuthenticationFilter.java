@@ -105,15 +105,27 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     }
 
     private void sendCause(ContainerRequestContext requestContext, String msg) {
-        requestContext.abortWith(Response.status(Response.Status.BAD_REQUEST).entity(new ErrorMessage(Response.Status.BAD_REQUEST, msg)).build());
+        requestContext.abortWith(Response
+                .status(Response.Status.BAD_REQUEST)
+                .entity(new ErrorMessage(Response.Status.BAD_REQUEST, msg))
+                .build()
+        );
     }
 
     private void sendUnauthorized(ContainerRequestContext requestContext, String msg) {
-        requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity(new ErrorMessage(Response.Status.UNAUTHORIZED, msg)).build());
+        requestContext.abortWith(Response
+                .status(Response.Status.UNAUTHORIZED)
+                .entity(new ErrorMessage(Response.Status.UNAUTHORIZED, msg))
+                .build()
+        );
     }
 
     private void sendError(ContainerRequestContext requestContext, String msg) {
-        requestContext.abortWith(Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ErrorMessage(Response.Status.INTERNAL_SERVER_ERROR, msg)).build());
+        requestContext.abortWith(Response
+                .status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(new ErrorMessage(Response.Status.INTERNAL_SERVER_ERROR, msg))
+                .build()
+        );
     }
 
     private String validateToken(String token) throws TokenObsoleteException, SQLException, TokenInvalidException {
