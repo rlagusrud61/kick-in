@@ -13,6 +13,7 @@ import nl.utwente.di.team26.Exception.Util.ErrorMessage;
 import nl.utwente.di.team26.Product.dao.Authentication.SessionDao;
 import nl.utwente.di.team26.Product.dao.Authentication.UserDao;
 import nl.utwente.di.team26.Product.model.Authentication.User;
+import nl.utwente.di.team26.Utils;
 
 import javax.annotation.Priority;
 import javax.crypto.spec.SecretKeySpec;
@@ -35,7 +36,6 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     @Context
     UriInfo uriInfo;
 
-    private final UserDao userDao = new UserDao();
     private final SessionDao sessionDao = new SessionDao();
 
     @Override
@@ -54,7 +54,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
             try {
                 // Validate the token
                 authenticatedUserId = validateToken(token);
-                authenticatedUser = findUser(Long.parseLong(authenticatedUserId));
+                authenticatedUser = Utils.findUser(Long.parseLong(authenticatedUserId));
             } catch (TokenObsoleteException | TokenInvalidException e) {
                 sendCause(requestContext, e.getMessage());
             } catch (NotFoundException e) {
@@ -143,14 +143,6 @@ public class AuthenticationFilter implements ContainerRequestFilter {
                 .build()
                 .parseClaimsJws(jwt)
                 .getBody();
-    }
-
-    private User findUser(long userId) throws SQLException, NotFoundException {
-        // Hit the the database or a service to find a user by its username and return it
-        // Return the UserDao instance
-        User user = null;
-        user = userDao.getUserInstance(userId);
-        return user;
     }
 
     private void checkTokenExists(String token) throws SessionNotFoundException, SQLException {

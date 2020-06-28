@@ -1,3 +1,5 @@
+let userId;
+userId = window.location.search.split("=")[1];
 /**
  * @summary This method is used to update the information on a specific user.
  *
@@ -7,11 +9,9 @@
  * updated in the database. Once the information is updated, the user is redirected to the 'users.html' page.
  */
 function updateUserData() {
-    let userId, userName, email, password, level, levelDescription, clearanceLevel, userJSON;
-    userId = window.location.search.split("=")[1];
+    let userName, email, level, levelDescription, clearanceLevel, userJSON;
     userName = document.getElementById("userName").value;
     email = document.getElementById("email").value;
-    password = document.getElementById("password").value;
     level = document.getElementById("clearanceLevel");
     levelDescription = level.options[level.selectedIndex].value;
     switch(levelDescription) {
@@ -30,11 +30,16 @@ function updateUserData() {
     userJSON = {
         "nickname": userName,
         "email": email,
-        "password": password,
         "clearanceLevel": clearanceLevel,
         "userId": userId,
     };
     updateUser(userJSON, function() {
+        window.location.href = "users.html";
+    })
+}
+
+function resetPassword() {
+    sendPasswordReset(userId, function() {
         window.location.href = "users.html";
     })
 }

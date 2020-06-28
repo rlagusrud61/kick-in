@@ -3,6 +3,7 @@ package nl.utwente.di.team26.Product.resources.Users;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Authentication.UserDao;
 import nl.utwente.di.team26.Product.model.Authentication.User;
+import nl.utwente.di.team26.Security.EmailSender.EmailSender;
 import nl.utwente.di.team26.Security.Filters.Secured;
 import nl.utwente.di.team26.Security.User.Roles;
 import nl.utwente.di.team26.Utils;
@@ -16,6 +17,7 @@ import java.sql.SQLException;
 public class UsersResource {
 
     UserDao usersDao = new UserDao();
+    EmailSender emailSender = new EmailSender();
 
     @GET
     @Secured(Roles.EDITOR)
@@ -32,8 +34,8 @@ public class UsersResource {
     public Response addNewUser(User userToAdd) throws SQLException {
         String password = Utils.generatePassayPassword();
         userToAdd.setPassword(Utils.hashPassword(password));
-        EmailSender.send(password);
         long userId = usersDao.create(userToAdd);
+        emailSender.sendMail(password, userToAdd);
         return Utils.returnCreated(userId);
     }
 

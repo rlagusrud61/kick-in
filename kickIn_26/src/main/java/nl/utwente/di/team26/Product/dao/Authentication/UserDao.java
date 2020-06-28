@@ -36,15 +36,27 @@ public class UserDao extends Dao implements DaoInterface<User> {
     @Override
     public void save(User user) throws NotFoundException, SQLException {
         try(Connection conn = Constants.getConnection()) {
-            String sql = "UPDATE Users SET email = ?, password = ?, nickname = ?, clearanceLevel = ? WHERE (userId = ?) ";
+            String sql = "UPDATE Users SET email = ?, nickname = ?, clearanceLevel = ? WHERE (userId = ?) ";
             beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, user.getEmail());
-                stmt.setString(2, user.getPassword());
-                stmt.setString(3, user.getNickname());
-                stmt.setInt(4, user.getClearanceLevel());
+                stmt.setString(2, user.getNickname());
+                stmt.setInt(3, user.getClearanceLevel());
 
-                stmt.setLong(5, user.getUserId());
+                stmt.setLong(4, user.getUserId());
+                databaseUpdate(conn, stmt);
+            }
+        }
+    }
+
+    public void resetPassword(long userId, String password) throws NotFoundException, SQLException {
+        try(Connection conn = Constants.getConnection()) {
+            String sql = "UPDATE Users SET password = ? WHERE (userId = ?) ";
+            beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, password);
+
+                stmt.setLong(2, userId);
                 databaseUpdate(conn, stmt);
             }
         }

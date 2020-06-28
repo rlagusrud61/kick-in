@@ -5,6 +5,9 @@ import de.mkammerer.argon2.Argon2Factory;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
+import nl.utwente.di.team26.Product.dao.Authentication.UserDao;
+import nl.utwente.di.team26.Product.model.Authentication.User;
 import org.passay.CharacterData;
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
@@ -14,6 +17,7 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import java.security.Key;
+import java.sql.SQLException;
 import java.util.Arrays;
 
 import static org.passay.AllowedRegexRule.ERROR_CODE;
@@ -78,6 +82,13 @@ public class Utils {
 
         return gen.generatePassword(15, splCharRule, lowerCaseRule,
                 upperCaseRule, digitRule);
+    }
+
+    public static User findUser(long userId) throws SQLException, NotFoundException {
+        // Hit the the database or a service to find a user by its username and return it
+        // Return the UserDao instance
+        UserDao userDao = new UserDao();
+        return userDao.getUserInstance(userId);
     }
 
     public static void main(String[] args) {
