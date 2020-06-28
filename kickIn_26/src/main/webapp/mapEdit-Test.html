@@ -20,6 +20,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-measure-path@1.4.2/leaflet-measure-path.css">
+    <link rel="stylesheet" href="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.css" />
+    <script src="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/leaflet-measure-path@1.4.2/leaflet-measure-path.js"></script>
 
     <style>
@@ -50,8 +52,81 @@
     </div>
 </body>
 <script>
-    let map, mapObjects, measurementObjects, imgGroup, id, actions, zindex;
+    let map, mapObjects, measurementObjects, imgGroup, id, actions, zindex, options;
     actions = [L.DragAction, L.ScaleAction, L.RotateAction, L.DeleteAction];
+    options = {
+        position: 'topleft',            // Position to show the control. Values: 'topright', 'topleft', 'bottomright', 'bottomleft'
+        unit: 'metres',                 // Show imperial or metric distances. Values: 'metres', 'landmiles', 'nauticalmiles'
+        clearMeasurementsOnStop: false,  // Clear all the measurements when the control is unselected
+        showBearings: false,            // Whether bearings are displayed within the tooltips
+        bearingTextIn: 'In',             // language dependend label for inbound bearings
+        bearingTextOut: 'Out',          // language dependend label for outbound bearings
+        tooltipTextFinish: 'Click to <b>finish line</b><br>',
+        tooltipTextDelete: 'Press SHIFT-key and click to <b>delete point</b>',
+        tooltipTextMove: 'Click and drag to <b>move point</b><br>',
+        tooltipTextResume: '<br>Press CTRL-key and click to <b>resume line</b>',
+        tooltipTextAdd: 'Press CTRL-key and click to <b>add point</b>',
+        // language dependend labels for point's tooltips
+        measureControlTitleOn: 'Turn on PolylineMeasure',   // Title for the control going to be switched on
+        measureControlTitleOff: 'Turn off PolylineMeasure', // Title for the control going to be switched off
+        measureControlLabel: '&#8614;', // Label of the Measure control (maybe a unicode symbol)
+        measureControlClasses: [],      // Classes to apply to the Measure control
+        showClearControl: true,        // Show a control to clear all the measurements
+        clearControlTitle: 'Clear Measurements', // Title text to show on the clear measurements control button
+        clearControlLabel: '&times',    // Label of the Clear control (maybe a unicode symbol)
+        clearControlClasses: [],        // Classes to apply to clear control button
+        showUnitControl: false,         // Show a control to change the units of measurements
+        distanceShowSameUnit: false,    // Keep same unit in tooltips in case of distance less then 1 km/mi/nm
+        unitControlTitle: {             // Title texts to show on the Unit Control button
+            text: 'Change Units',
+            metres: 'metres',
+            landmiles: 'land miles',
+            nauticalmiles: 'nautical miles'
+        },
+        unitControlLabel: {             // Unit symbols to show in the Unit Control button and measurement labels
+            metres: 'm',
+            kilometres: 'km',
+            feet: 'ft',
+            landmiles: 'mi',
+            nauticalmiles: 'nm'
+        },
+        tempLine: {                     // Styling settings for the temporary dashed line
+            color: '#00f',              // Dashed line color
+            weight: 2                   // Dashed line weight
+        },
+        fixedLine: {                    // Styling for the solid line
+            color: '#006',              // Solid line color
+            weight: 2                   // Solid line weight
+        },
+        startCircle: {                  // Style settings for circle marker indicating the starting point of the polyline
+            color: '#000',              // Color of the border of the circle
+            weight: 1,                  // Weight of the circle
+            fillColor: '#0f0',          // Fill color of the circle
+            fillOpacity: 1,             // Fill opacity of the circle
+            radius: 3                   // Radius of the circle
+        },
+        intermedCircle: {               // Style settings for all circle markers between startCircle and endCircle
+            color: '#000',              // Color of the border of the circle
+            weight: 1,                  // Weight of the circle
+            fillColor: '#ff0',          // Fill color of the circle
+            fillOpacity: 1,             // Fill opacity of the circle
+            radius: 3                   // Radius of the circle
+        },
+        currentCircle: {                // Style settings for circle marker indicating the latest point of the polyline during drawing a line
+            color: '#000',              // Color of the border of the circle
+            weight: 1,                  // Weight of the circle
+            fillColor: '#f0f',          // Fill color of the circle
+            fillOpacity: 1,             // Fill opacity of the circle
+            radius: 3                   // Radius of the circle
+        },
+        endCircle: {                    // Style settings for circle marker indicating the last point of the polyline
+            color: '#000',              // Color of the border of the circle
+            weight: 1,                  // Weight of the circle
+            fillColor: '#f00',          // Fill color of the circle
+            fillOpacity: 1,             // Fill opacity of the circle
+            radius: 3                   // Radius of the circle
+        },
+    };
     mapObjects = new Map();
     measurementObjects = new Map();
     imgGroup = [];
@@ -59,7 +134,7 @@
     id = 1;
     zindex = 250;
     function initMap() {
-        let newMap, tiles;
+        let newMap, tiles, lengthMeasurer;
         newMap = L.map('mapid', {
             center: [52.2413, -353.1531],
             zoomSnap: 0,
@@ -73,6 +148,8 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         });
         tiles.addTo(newMap);
+        lengthMeasurer = L.control.polylineMeasure(options);
+        lengthMeasurer.addTo(newMap);
         return newMap;
     }
 

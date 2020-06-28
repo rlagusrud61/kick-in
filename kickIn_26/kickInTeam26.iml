@@ -176,5 +176,6 @@
     <orderEntry type="library" name="Maven: org.seleniumhq.selenium:selenium-safari-driver:4.0.0-alpha-3" level="project" />
     <orderEntry type="library" name="Maven: org.seleniumhq.selenium:selenium-support:4.0.0-alpha-3" level="project" />
     <orderEntry type="library" name="leaflet-measure-path" level="application" />
+    <orderEntry type="library" name="Leaflet.PolylineMeasure" level="application" />
   </component>
 </module>
