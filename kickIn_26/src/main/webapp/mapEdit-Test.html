@@ -166,8 +166,9 @@
         image.on('update', function () {
             measurementObjects.forEach(function (measurer) {
                 if (measurer.objectId !== image.objectId) {
-                    measurer.hideMeasurements();
+                    map.removeLayer(measurer);
                 } else {
+                    map.addLayer(measurer);
                     measurer.showMeasurements({showArea: false});
                     measurer.setLatLngs([image.getCorner(0), image.getCorner(1), image.getCorner(3), image.getCorner(2)]);
                 }
