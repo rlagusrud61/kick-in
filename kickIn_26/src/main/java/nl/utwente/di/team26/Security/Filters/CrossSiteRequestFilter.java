@@ -49,9 +49,7 @@ public class CrossSiteRequestFilter implements ContainerRequestFilter {
                 }
 
                 JsonElement jsonElement = new JsonParser().parse(json);
-                System.out.println("Before: " + json);
                 json = clean(jsonElement).toString();
-                System.out.println("After: " + json);
 
                 // replace input stream for Jersey as we've already read it
                 InputStream in = IOUtils.toInputStream(json, Charsets.UTF_8);
@@ -65,7 +63,11 @@ public class CrossSiteRequestFilter implements ContainerRequestFilter {
 
     boolean isJson(ContainerRequestContext request) {
         // define rules when to read body
-        return request.getMediaType().toString().contains("application/json");
+        if (request.getMediaType() != null) {
+            return request.getMediaType().toString().contains("application/json");
+        } else {
+            return false;
+        }
     }
 
     private static JsonElement clean(JsonElement elem) {
