@@ -47,6 +47,18 @@ public class MapsDao extends Dao implements DaoInterface<Map> {
         }
     }
 
+    public void setNewImage(Map mapToUpdate) throws NotFoundException, SQLException {
+        try(Connection conn = Constants.getConnection()) {
+            String sql = "UPDATE Maps SET image = ? WHERE (mapId = ? ) ";
+            beginTransaction(conn, Connection.TRANSACTION_READ_COMMITTED);
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, mapToUpdate.getImage());
+                stmt.setLong(2, mapToUpdate.getMapId());
+                databaseUpdate(conn, stmt);
+            }
+        }
+    }
+
     @Override
     public void delete(Map valueObject) throws NotFoundException, SQLException {
         try(Connection conn = Constants.getConnection()) {
@@ -91,6 +103,17 @@ public class MapsDao extends Dao implements DaoInterface<Map> {
         }
     }
 
+    public String getMapImage(long mapId) throws NotFoundException, SQLException {
+        try(Connection conn = Constants.getConnection()) {
+            String sql = "SELECT getMapImage(?)";
+            beginTransaction(conn, Connection.TRANSACTION_SERIALIZABLE);
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setLong(1, mapId);
+                return getResultOfQuery(conn, stmt);
+            }
+        }
+    }
+
     public void saveLastEditedBy(long mapId, long userId) throws SQLException, NotFoundException {
         try(Connection conn = Constants.getConnection()) {
             String sql = "UPDATE Maps SET lastEditedBy = ? WHERE (mapId = ?) ";
@@ -103,5 +126,4 @@ public class MapsDao extends Dao implements DaoInterface<Map> {
             }
         }
     }
-
 }

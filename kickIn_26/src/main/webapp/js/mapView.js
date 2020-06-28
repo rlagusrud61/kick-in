@@ -1,4 +1,4 @@
-let yesBtn, mapId, modal, trash, closeDelete, closeDelete2, map, imgGroup, mapName;
+let yesBtn, mapId, modal, trash, closeDelete, closeDelete2, map, imgGroup, mapName, fullScreenControl;
 
 mapId = window.location.search.split("=")[1];
 // Get the modal
@@ -42,16 +42,18 @@ function initMap() {
         center: [52.2413, -353.1531],
         zoomSnap: 0,
         zoom: 16,
-        keyboard: false,
-        fullscreenControl: true,
-        fullscreenControlOptions: {
-            position: 'topleft'
-        }
+        keyboard: false
     });
      tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     });
+     fullScreenControl = L.control.fullscreen({
+         position: 'topleft', // change the position of the button can be topleft, topright, bottomright or bottomleft, defaut topleft
+         title: 'Show me the fullscreen !', // change the title of the button, default Full Screen
+         titleCancel: 'Exit fullscreen mode'
+     })
+    fullScreenControl.addTo(newMap);
     tileLayer.addTo(newMap);
     return newMap;
 }
@@ -192,11 +194,13 @@ function removeMap(mapId) {
 }
 
 function downloadPNG() {
+    map.removeControl(fullScreenControl);
     screenshot(function (image) {
         const a = document.createElement("a"); //Create <a>
         a.href = image
         a.download = mapName + ".png"; //File name Here
         a.click();
+        map.addControl(fullScreenControl);
     });
 }
 

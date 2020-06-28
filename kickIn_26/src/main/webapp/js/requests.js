@@ -237,6 +237,20 @@ function updateMap(map, callback) {
 	xhr.send(JSON.stringify(map));
 }
 
+function updateMapImage(map, callback) {
+	let xhr, mapId;
+	mapId = map.mapId;
+	xhr = new XMLHttpRequest();
+	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/map/image/" + mapId , true);
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4) {
+			handleResponse(xhr, callback);
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send(JSON.stringify(map));
+}
+
 /**
  * @param {number} mapId - The ID of the map to be deleted from the database.
  *

@@ -224,6 +224,7 @@ function massPost(callback) {
  * get the updates in case someone else also edits the map.
  */
 function saveState() {
+    disableEditingForAll();
     massDelete(deletedObjects, function () {
         massPost(function () {
             massUpdate(function () {
@@ -237,12 +238,16 @@ function saveState() {
 
 function postNewImage(callback) {
     screenshot(function (image) {
-        const a = document.createElement("a"); //Create <a>
-        a.href = image
-        a.download = mapName + ".png"; //File name Here
-        a.click();
-        callback();
-    })
+        updateMapImage({mapId: mapId, image: image}, function () {
+            if (this.responseText) {
+                response = JSON.parse(this.responseText);
+                console.log(response);
+                callback();
+            } else {
+                callback();
+            }
+        })
+    });
 }
 
 /**
