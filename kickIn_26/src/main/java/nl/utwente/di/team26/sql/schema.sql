@@ -4879,7 +4879,7 @@ begin
         from (
                  select jsonb_build_object(
                                 'mapId', m.mapId,
-                                'image', m.image
+                                'image', coalesce(m.image, '')
                             ) as mapData
                  from maps m
                  where m.mapId = mid) map
