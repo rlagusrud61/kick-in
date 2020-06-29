@@ -220,26 +220,6 @@ function removeMap(mapId) {
     })
 }
 
-function generateReport() {
-    let id, map, report, doc;
-    id = window.location.search.split("=")[1];
-    getMap(id, function () {
-        map = JSON.parse(this.responseText);
-        report = map.report;
-        doc = new jsPDF();
-        if (report !== null){
-            report.forEach(function(item, i){
-                doc.text(20, 10 + (i * 10),
-                    "Name: " + item.name + " | " +
-                    "Count: " + item.count);
-            });
-            doc.save('MapReport.pdf');
-        }else {
-            alert("There are no items on this map.");
-        }
-    });
-}
-
 /**
  * @summary This method is used to download a report of the items placed on the map and their respective quantities.
  *

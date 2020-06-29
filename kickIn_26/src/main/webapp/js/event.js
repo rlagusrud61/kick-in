@@ -1,10 +1,10 @@
-let eventid, yesBtn, noBtn, deleteMapModal, span1, editBtn, modalMapInfoEdit, span2, span3, span4, span5,
+let yesBtn, noBtn, deleteMapModal, span1, editBtn, modalMapInfoEdit, span2, span3, span4, span5,
     selectMapModal, listBtn, existingMapBtn, modalAddMap, addMapBtn, yes, no,
     modalEventDelete;
 yesBtn = document.getElementById("yesMapDelete");
 noBtn = document.getElementById("noBtn");
 editBtn = document.getElementById("editBtn");
-yes = document.getElementById("yesEventDelete");
+yes = document.getElementById("yesEventDelete"); // this
 no = document.getElementById("no");
 modalEventDelete = document.getElementById("modalEventDelete");
 addMapBtn = document.getElementById("addMap");
@@ -20,21 +20,6 @@ span3 = document.getElementById("closeMapDelete");
 span4 = document.getElementById("closeAddMap");
 span5 = document.getElementById("closeEventDelete");
 
-
-eventid = window.location.search.split("=")[1];
-
-function openModalEventDelete() {
-    yes.setAttribute("onclick", "removeEvent(" + eventid + ")");
-    modalEventDelete.style.display = "block";
-}
-
-function removeEvent(eventId) {
-    eventId = window.location.search.split("=")[1];
-    deleteEvent(eventId, function () {
-        window.location.href = "list.html";
-    })
-}
-
 addMapBtn.onclick = function () {
     modalAddMap.style.display = "block";
 };
@@ -43,13 +28,16 @@ existingMapBtn.onclick = function () {
     modalAddMap.style.display = "none";
     selectMapModal.style.display = "block";
 };
+
 listBtn.onclick = function () {
     selectMapModal.style.display = "block";
 };
+
 //Close the modal if user clicks on NO button
 noBtn.onclick = function () {
     deleteMapModal.style.display = "none";
 };
+
 no.onclick = function () {
     modalEventDelete.style.display = "none";
 };
@@ -58,15 +46,19 @@ no.onclick = function () {
 span1.onclick = function () {
     modalMapInfoEdit.style.display = "none";
 };
+
 span2.onclick = function () {
     selectMapModal.style.display = "none";
 };
+
 span3.onclick = function () {
     deleteMapModal.style.display = "none";
 };
+
 span4.onclick = function () {
     modalAddMap.style.display = "none";
 };
+
 span5.onclick = function () {
     modalEventDelete.style.display = "none";
 };
@@ -148,35 +140,93 @@ function displayEventInfo() {
     })
 }
 
+window.onload = displayEventInfo;
+
 /**
  * @param {number} mapId - the ID of the map for which the trash button was clicked.
  *
- * @summary This method is used to delete the required map from the database and reloads the page.
+ * @summary This method is used to set the attribute of the 'YES' button such that the map is deleted
+ * when the button is clicked.
  *
- * @description When the 'YES' button is clicked in the map deletion confirmation popup, the 'deleteMap'
- * function is called with the ID of the map as a parameter so that it can be deleted from the database and the
- * page is reloaded.
+ * @description When the 'YES' button is clicked in the map deletion confirmation popup, the 'removeMap'
+ * function is called with the ID of the map as a parameter so that it can be deleted from the database.
  */
 function openModalMapDelete(mapId) {
     yesBtn.setAttribute("onclick", "removeMap(" + mapId + ")");
     deleteMapModal.style.display = "block";
 }
 
+/**
+ * @param {number} mapId - The ID of the map for which the link to the event is to be deleted.
+ *
+ * @summary This method deletes the association between the map and the event.
+ *
+ * @description The ID of the event is retrieved from the URL. Then, the function 'deleteEventMap' is called which takes
+ * both the ID of the map and the event as parameters and deletes the link between the map and the event. After that, the
+ * page is reloaded.
+ */
 function removeMap(mapId) {
+    let eventId;
     eventId = window.location.search.split("=")[1];
     deleteEventMap(eventId, mapId, function () {
         location.reload();
     })
 }
 
-//Open popup for edit
+/**
+ * @summary This method is used to set the attribute of the 'YES' button such that the event is deleted
+ * when the button is clicked.
+ *
+ * @description When the 'YES' button is clicked in the event deletion confirmation popup, the 'removeEvent'
+ * function is called with the ID of the event as a parameter so that it can be deleted from the database.
+ */
+function openModalEventDelete() {
+    let eventId;
+    eventId = window.location.search.split("=")[1];
+    yes.setAttribute("onclick", "removeEvent(" + eventId + ")");
+    modalEventDelete.style.display = "block";
+}
+
+/**
+ * @param {number} eventId - The ID of the event which is to be deleted from the database.
+ *
+ * @summary This method deletes the required event from the database.
+ *
+ * @description The ID of the event is retrieved from the URL. Then, the function 'deleteEvent' is called which takes
+ * the ID of the event as a parameter and deletes the event from the database. After that, the user is redirected to the
+ * 'list.html' page.
+ */
+function removeEvent(eventId) {
+    deleteEvent(eventId, function () {
+        window.location.href = "list.html";
+    })
+}
+
+/**
+ * @param {number} mapId - the ID of the map for which the wrench button was clicked.
+ *
+ * @summary This method is used to update the data of the required map in the database.
+ *
+ * @description When the 'YES' button is clicked in the map data editing popup, the 'updateMapData'
+ * function is called with the ID of the map as a parameter so that it can be updated in the database.
+ */
 function openModalMapDataEdit(mapId) {
     editBtn.setAttribute("onclick", "updateMapData(" + mapId + ")");
     modalMapInfoEdit.style.display = "block";
 
 }
 
-//Update the Information of the Map
+/**
+ * @param {number} mapId - The ID of the map whose name and description is to be updated in the database.
+ *
+ * @summary This method is used to update the information on a specific map.
+ *
+ * @description The values of the description and name of the map are retrieved from the popup
+ * and the ID of the event to which map is linked is retrieved from the URL. The map name, description and ID is then
+ * used to create a JSON object which is taken as a parameter to the function 'updateMap' so that the information on the
+ * map can be updated in the database. Once the information is updated, the user is redirected to the page of the event to
+ * which the map is linked.
+ */
 function updateMapData(mapId) {
     let mapName, mapDescription, eventId, mapJSON;
     mapName = document.getElementById("mapName").value;
@@ -192,11 +242,18 @@ function updateMapData(mapId) {
     })
 }
 
-var mapsize;
-
+/**
+ * @summary This method is used to link maps to the event at hand.
+ *
+ * @description First, the ID of the event at hand is retrieved from the URL. Then, if a check box is checked, the ID of
+ * the map for which the check box was checked is retrieved. A JSON object is then created with both the event and map IDs
+ * and this JSON object is taken as a parameter to the 'addEventMap' function where the association between the map and event
+ * is created and the page is reloaded.
+ */
 function checkMaps() {
+    let eventId, checkboxes, i, eventMapJSON;
     eventId = window.location.search.split("=")[1];
-    checkboxes = document.getElementsByName("nicecheckbox");
+    checkboxes = document.getElementsByName("checkBox");
     clearMapsForEvent(eventId, function () {
         for (i = 0; i < checkboxes.length; i++) {
             if (checkboxes[i].checked) {
@@ -204,7 +261,7 @@ function checkMaps() {
                 eventMapJSON = {
                     "eventId": eventId,
                     "mapId": mapId
-                };
+                }
                 addEventMap(eventMapJSON, function () {
                     location.reload();
                 })
@@ -213,18 +270,26 @@ function checkMaps() {
     })
 }
 
+/**
+ * @summary This method is used to create a table that displays the information on the maps linked to the event at hand.
+ *
+ * @description The ID od the event is first retrieved from the URL. Then, all the maps that are in the database are
+ * retrieved using the 'getAllMaps' function and used to fill a check list that the user can use to link different maps
+ * to the specific event. Once that is done, the method 'getAllMapsForEvent' is called which takes the ID of the event
+ * as a parameter. Once all the maps for the event are retrieved, these maps are checked in the check list.
+ */
 function loadMaps() {
+    let eventId, allMaps, mapCheckList, i, tiedMaps, mapSize, mapBox;
     eventId = window.location.search.split("=")[1];
     getAllMaps(function () {
-        let maps, mapCheckList;
         allMaps = JSON.parse(this.responseText);
         mapCheckList = document.getElementById("mapCheckList");
         mapCheckList.innerHTML = "";
         displayEventInfo();
-        mapsize = allMaps.length;
-        for (let i = 0; i < allMaps.length; i++) {
+        mapSize = allMaps.length;
+        for (i = 0; i < allMaps.length; i++) {
             mapCheckList.innerHTML += '<div class="custom-control custom-checkbox">' +
-                '<input name = "nicecheckbox" type="checkbox" class="custom-control-input" id="mapBox_' + allMaps[i].mapId + '">' +
+                '<input name = "checkBox" type="checkbox" class="custom-control-input" id="mapBox_' + allMaps[i].mapId + '">' +
                 '<label class="custom-control-label checkboxtext" for="mapBox_' + allMaps[i].mapId + '">' + allMaps[i].name + '</label></div>'
         }
         getAllMapsForEvent(eventId, function () {
@@ -234,29 +299,46 @@ function loadMaps() {
                 mapBox.checked = true;
             }
 
-        })
-    })
+        });
+    });
 }
 
 window.onload = loadMaps;
 
-function generateReport() {
-    let id, event, report, doc;
+/**
+ * @summary This method is used to download a report of the items placed on the maps and their respective quantities for the
+ * specific event.
+ *
+ * @description First, the ID of the event is retrieved from the URL. This ID is then used as a parameter of the 'getEvent'
+ * function. Once the data on the event is retrieved, the value of the 'report' key is retrieved. If it is empty, an alert
+ * message is displayed. If not, a .json file is created and downloaded which contains the name of the items placed on the
+ * maps along with their respective quantities.
+ */
+function generateReportInJSON() {
+    let a, json, blob, url, data, fileName, event, id;
     id = window.location.search.split("=")[1];
     getEvent(id, function () {
         event = JSON.parse(this.responseText);
-        report = event.report;
-        doc = new jsPDF();
-        if (report !== null) {
-            report.forEach(function (item, i) {
-                doc.text(20, 10 + (i * 10),
-                    "Name: " + item.name + " | " +
-                    "Count: " + item.count);
-            });
-            doc.save('EventReport.pdf');
+        data = event.report;
+        if (data !== null) {
+            fileName = "Event" + id + "Report.json";
+            a = document.createElement("a");
+            document.body.appendChild(a);
+            a.style = "display: none";
+            json = JSON.stringify(data);
+            blob = new Blob([json], {type: "octet/stream"});
+            url = window.URL.createObjectURL(blob);
+            a.href = url;
+            a.download = fileName;
+            a.click();
+            window.URL.revokeObjectURL(url);
         } else {
             alert("There are no items on maps for this event.");
         }
     });
 }
+
+
+
+
 
