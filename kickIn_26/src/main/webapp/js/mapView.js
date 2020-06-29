@@ -188,8 +188,8 @@ function listItems(report) {
     returnedItems = report;
     col = ["Name", "Count"];
     table = document.createElement("table"); // creates the table
-    table.setAttribute("id", "resources")
-    table.setAttribute("class", "table table-hover")
+    table.setAttribute("id", "resourceList");
+    table.setAttribute("class", "table table-hover");
     tr = table.insertRow(-1); // add a row to the table
 
     for (i = 0; i < col.length; i++) {
