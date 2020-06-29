@@ -20,8 +20,7 @@ function handleResponse(xhr, callback) {
 	}
 }
 
-var baseURL = "http://env-di-team26.paas.hosted-by-previder.com/";
-var baseURL = "http://localhost:8080/kickInTeam26"
+var baseUrl = "http://env-di-team26.paas.hosted-by-previder.com";
 
 //Event functions
 
