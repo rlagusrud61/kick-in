@@ -1,12 +1,12 @@
-let yesBtn, noBtn, deleteMapModal, span1, editBtn, modalMapInfoEdit, span2, span3, span4 , span5, selectMapModal, listBtn , existingMapBtn , modalAddMap, addMapBtn, yes, no,
-    modalEventDelete, deleteEventBtn;
-yesBtn = document.getElementById("yesDeleteButton");
+let eventid, yesBtn, noBtn, deleteMapModal, span1, editBtn, modalMapInfoEdit, span2, span3, span4, span5,
+    selectMapModal, listBtn, existingMapBtn, modalAddMap, addMapBtn, yes, no,
+    modalEventDelete;
+yesBtn = document.getElementById("yesMapDelete");
 noBtn = document.getElementById("noBtn");
 editBtn = document.getElementById("editBtn");
-yes = document.getElementById("yes");
+yes = document.getElementById("yesEventDelete");
 no = document.getElementById("no");
 modalEventDelete = document.getElementById("modalEventDelete");
-deleteEventBtn = document.getElementById("deleteEvent");
 addMapBtn = document.getElementById("addMap");
 listBtn = document.getElementById("addMapsToEvent");
 existingMapBtn = document.getElementById("existingMapBtn");
@@ -20,15 +20,26 @@ span3 = document.getElementById("closeMapDelete");
 span4 = document.getElementById("closeAddMap");
 span5 = document.getElementById("closeEventDelete");
 
-deleteEventBtn.onclick = function() {
+
+eventid = window.location.search.split("=")[1];
+
+function openModalEventDelete() {
+    yes.setAttribute("onclick", "removeEvent(" + eventid + ")");
     modalEventDelete.style.display = "block";
 }
 
-addMapBtn.onclick = function() {
-    modalAddMap.style.display = "block";
+function removeEvent(eventId) {
+    eventId = window.location.search.split("=")[1];
+    deleteEvent(eventId, function () {
+        window.location.href = "list.html";
+    })
 }
 
-existingMapBtn.onclick = function() {
+addMapBtn.onclick = function () {
+    modalAddMap.style.display = "block";
+};
+
+existingMapBtn.onclick = function () {
     modalAddMap.style.display = "none";
     selectMapModal.style.display = "block";
 };
@@ -39,9 +50,9 @@ listBtn.onclick = function () {
 noBtn.onclick = function () {
     deleteMapModal.style.display = "none";
 };
-no.onclick = function() {
+no.onclick = function () {
     modalEventDelete.style.display = "none";
-}
+};
 
 //Close the modal if user clicks on close (x) button
 span1.onclick = function () {
@@ -70,8 +81,7 @@ window.onclick = function (event) {
         selectMapModal.style.display = "none";
     } else if (event.target === modalAddMap) {
         modalAddMap.style.display = "none";
-    }
-    else if (event.target === modalEventDelete) {
+    } else if (event.target === modalEventDelete) {
         modalEventDelete.style.display = "none";
     }
 };
@@ -153,7 +163,7 @@ function openModalMapDelete(mapId) {
 }
 
 function removeMap(mapId) {
-	eventId = window.location.search.split("=")[1];
+    eventId = window.location.search.split("=")[1];
     deleteEventMap(eventId, mapId, function () {
         location.reload();
     })
@@ -181,28 +191,30 @@ function updateMapData(mapId) {
         window.location.href = "event.html?id=" + eventId;
     })
 }
+
 var mapsize;
 
 function checkMaps() {
-	eventId = window.location.search.split("=")[1];
-	checkboxes = document.getElementsByName("nicecheckbox");
-	clearMapsForEvent(eventId, function() {
-		for (i = 0; i < checkboxes.length; i++) {
-			if (checkboxes[i].checked) {
-				mapId = parseInt(checkboxes[i].id.split("_")[1]);
-				eventMapJSON = {
-						"eventId": eventId,
-						"mapId": mapId
-				}
-				addEventMap(eventMapJSON, function() {
-					location.reload();
-				})
-			}
-		}
-	})	
+    eventId = window.location.search.split("=")[1];
+    checkboxes = document.getElementsByName("nicecheckbox");
+    clearMapsForEvent(eventId, function () {
+        for (i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                mapId = parseInt(checkboxes[i].id.split("_")[1]);
+                eventMapJSON = {
+                    "eventId": eventId,
+                    "mapId": mapId
+                };
+                addEventMap(eventMapJSON, function () {
+                    location.reload();
+                })
+            }
+        }
+    })
 }
+
 function loadMaps() {
-	eventId = window.location.search.split("=")[1];
+    eventId = window.location.search.split("=")[1];
     getAllMaps(function () {
         let maps, mapCheckList;
         allMaps = JSON.parse(this.responseText);
@@ -212,16 +224,16 @@ function loadMaps() {
         mapsize = allMaps.length;
         for (let i = 0; i < allMaps.length; i++) {
             mapCheckList.innerHTML += '<div class="custom-control custom-checkbox">' +
-                '<input name = "nicecheckbox" type="checkbox" class="custom-control-input" id="mapBox_'+ allMaps[i].mapId +'">' +
-                '<label class="custom-control-label checkboxtext" for="mapBox_'+ allMaps[i].mapId +'">' + allMaps[i].name + '</label></div>'
+                '<input name = "nicecheckbox" type="checkbox" class="custom-control-input" id="mapBox_' + allMaps[i].mapId + '">' +
+                '<label class="custom-control-label checkboxtext" for="mapBox_' + allMaps[i].mapId + '">' + allMaps[i].name + '</label></div>'
         }
-        getAllMapsForEvent(eventId, function() {
-        	tiedMaps = JSON.parse(this.responseText);
-        	for (i = 0; i < tiedMaps.length; i++) {
-        		mapBox = document.getElementById("mapBox_" + tiedMaps[i].mapId);
-        		mapBox.checked = true;
-        	}
-        
+        getAllMapsForEvent(eventId, function () {
+            tiedMaps = JSON.parse(this.responseText);
+            for (i = 0; i < tiedMaps.length; i++) {
+                mapBox = document.getElementById("mapBox_" + tiedMaps[i].mapId);
+                mapBox.checked = true;
+            }
+
         })
     })
 }
@@ -235,8 +247,8 @@ function generateReport() {
         event = JSON.parse(this.responseText);
         report = event.report;
         doc = new jsPDF();
-        if (report !== null){
-            report.forEach(function(item, i){
+        if (report !== null) {
+            report.forEach(function (item, i) {
                 doc.text(20, 10 + (i * 10),
                     "Name: " + item.name + " | " +
                     "Count: " + item.count);
