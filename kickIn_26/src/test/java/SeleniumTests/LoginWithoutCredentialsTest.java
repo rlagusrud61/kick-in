@@ -49,7 +49,6 @@ public class LoginWithoutCredentialsTest {
       Actions builder = new Actions(driver);
       builder.moveToElement(element).perform();
     }
-    driver.get("http://env-di-team26.paas.hosted-by-previder.com/kickInTeam26");
 
     // Log in without credentials
     driver.findElement(By.cssSelector(".btn")).click();
