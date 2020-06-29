@@ -55,12 +55,13 @@ after the artifact has been deployed successfully).
   - email: admin@gmail.com
   - password: adminpass
   
-  #For Running Tests
+  # For Running Tests #
 1. Run the server using the instructions above, but using coverage option.
 2. Under kickIn_26/src/test/java/Tests, run all the tests.
 3. After tests have finished running, stop the server. It should generate a Coverage Report with test pass/fail result.
 
-  #If You are not using our credentials for the database.
+  # If You are not using our credentials for the database. #
 1. Under kickIn_26/src/main/java/nl/utwente/di/team26 -> CONSTANTS.java, change only the loginUser, loginPasswd, and in the loginUrl use your username instead of dab_di1920_27.
 	Please note: our current deployment still only works for PostgresSQL database.
 2. Run schema.sql found under kickIn_26/design, on your database for configuring a new and empty database. Notice: it automatically adds the active material list provided by our Product Owner, so this data is already there.
+
