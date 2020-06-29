@@ -4,6 +4,7 @@ import kong.unirest.Cookie;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
+import nl.utwente.di.team26.Product.model.Map.LatLang;
 import nl.utwente.di.team26.Product.model.Map.MapObject;
 import nl.utwente.di.team26.Security.User.Roles;
 import org.junit.After;
@@ -45,7 +46,7 @@ public class MapObjectsTest extends Tests {
                     .post(getURIString("objects/"+mids[0]))
                     .header("Content-Type", "application/json")
                     .header("Cookie", loginCookie.toString())
-                    .body(new MapObject[]{new MapObject(mids[0], 23, "Corners")})
+                    .body(new MapObject[]{new MapObject(mids[0], 23, new LatLang[]{new LatLang(1,2)})})
                     .asString();
             HttpResponse<String> allObjOnMap = Unirest
                     .get(getURIString("objects/"+mids[0]))
@@ -148,7 +149,7 @@ public class MapObjectsTest extends Tests {
                     .put(getURIString("objects/selected/"+mids[0]))
                     .header("Content-Type", "application/json")
                     .header("Cookie", loginCookie.toString())
-                    .body(new MapObject[]{new MapObject(oid, mids[0], 23, "Corners-2")})
+                    .body(new MapObject[]{new MapObject(oid, mids[0], 23, new LatLang[]{new LatLang(2,1)})})
                     .asString();
             switch (role) {
                 case VISITOR:

@@ -9,6 +9,7 @@ import nl.utwente.di.team26.Product.model.Map.MapObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -28,7 +29,7 @@ public class MapObjectsDao extends Dao implements DaoInterface<MapObject> {
 
                 stmt.setLong(1, mapObject.getMapId());
                 stmt.setLong(2, mapObject.getResourceId());
-                stmt.setString(3, mapObject.getLatLangs());
+                stmt.setString(3, Arrays.toString(mapObject.getLatLangs()));
                 return executeCreate(conn, stmt);
             }
         }
@@ -51,7 +52,7 @@ public class MapObjectsDao extends Dao implements DaoInterface<MapObject> {
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setLong(1, mapObject.getMapId());
                 stmt.setLong(2, mapObject.getResourceId());
-                stmt.setString(3, mapObject.getLatLangs());
+                stmt.setString(3, Arrays.toString(mapObject.getLatLangs()));
                 stmt.setLong(4, mapObject.getObjectId());
                 databaseUpdate(conn, stmt);
             }

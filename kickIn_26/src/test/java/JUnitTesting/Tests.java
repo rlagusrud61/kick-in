@@ -15,6 +15,7 @@ import nl.utwente.di.team26.Product.model.Authentication.Credentials;
 import nl.utwente.di.team26.Product.model.Authentication.User;
 import nl.utwente.di.team26.Product.model.Event.Event;
 import nl.utwente.di.team26.Product.model.Event.EventMap;
+import nl.utwente.di.team26.Product.model.Map.LatLang;
 import nl.utwente.di.team26.Product.model.Map.Map;
 import nl.utwente.di.team26.Product.model.Map.MapObject;
 import nl.utwente.di.team26.Product.model.TypeOfResource.Drawing;
@@ -142,7 +143,7 @@ public class Tests {
         mapObjectsDao.deleteAllForMap(mid);
     }
     protected long addObjectsToMap(long mid) throws SQLException {
-        return mapObjectsDao.create(new MapObject(mid, 23, "Corners"));
+        return mapObjectsDao.create(new MapObject(mid, 23, new LatLang[]{new LatLang(1,2)}));
     }
 
     protected long[] addResources() throws SQLException {
