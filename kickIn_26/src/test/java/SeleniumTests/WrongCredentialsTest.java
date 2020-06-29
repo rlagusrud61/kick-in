@@ -42,8 +42,7 @@ public class WrongCredentialsTest {
   }
   @Test
   public void wrongCredentials() throws InterruptedException {
-    driver.get("http://localhost:8080/kickInTeam26/login.html");
-    driver.manage().window().setSize(new Dimension(840, 773));
+    driver.get(Constants.ISSUER);
     driver.findElement(By.id("inputEmail")).sendKeys("hk@gmail.com");
     {
       WebElement element = driver.findElement(By.cssSelector(".btn"));
@@ -52,14 +51,9 @@ public class WrongCredentialsTest {
     }
     driver.findElement(By.id("inputPassword")).sendKeys("wrongpassword");
     driver.findElement(By.cssSelector(".btn")).click();
-    Thread.sleep(700);
-    {
-      WebElement element = driver.findElement(By.tagName("body"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element, 0, 0).perform();
-    }
-    driver.findElement(By.id("inputPassword")).click();
-    driver.findElement(By.cssSelector(".form-label-group:nth-child(2)")).click();
+    Thread.sleep(7000);
+
+    // Log in again with wrong password.
     driver.findElement(By.id("inputEmail")).click();
     driver.findElement(By.id("inputEmail")).sendKeys("hk@gmail.com");
     {
@@ -69,7 +63,7 @@ public class WrongCredentialsTest {
     }
     driver.findElement(By.id("inputPassword")).sendKeys("no");
     driver.findElement(By.cssSelector(".btn")).click();
-    Thread.sleep(700);
-    driver.close();
+    Thread.sleep(7000);
+
   }
 }

@@ -42,14 +42,17 @@ public class UsersToLogoutTest {
   }
   @Test
   public void usersToLogout() throws InterruptedException {
-    driver.get("http://localhost:8080/kickInTeam26/");
-    driver.manage().window().setSize(new Dimension(842, 773));
+    driver.get(Constants.ISSUER);
     driver.findElement(By.id("inputEmail")).sendKeys("hk@gmail.com");
     driver.findElement(By.id("inputPassword")).sendKeys("hk");
     driver.findElement(By.id("inputPassword")).sendKeys(Keys.ENTER);
     Thread.sleep(7000);
+
+    // Go to the users page.
     driver.findElement(By.cssSelector(".glyphicon-user")).click();
     Thread.sleep(7000);
+
+    // Log out.
     driver.findElement(By.id("logout")).click();
     Thread.sleep(7000);
   }

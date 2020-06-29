@@ -1,5 +1,6 @@
 package SeleniumTests;
 
+import com.sun.xml.bind.v2.runtime.reflect.opt.Const;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
@@ -43,21 +44,25 @@ public class CreateMapTest {
   }
   @Test
   public void createMap() throws InterruptedException {
-    driver.get("http://localhost:8080/kickInTeam26/");
+    driver.get(Constants.ISSUER);
     driver.findElement(By.id("inputEmail")).sendKeys("joep@gmail.com");
     driver.findElement(By.id("inputPassword")).click();
     driver.findElement(By.id("inputPassword")).sendKeys("joep");
     driver.findElement(By.id("inputPassword")).sendKeys(Keys.ENTER);
     Thread.sleep(7000);
+
+    // View the map of the event.
     driver.findElement(By.cssSelector("tr:nth-child(2) .glyphicon-eye-open")).click();
-    Thread.sleep(2000);
+    Thread.sleep(7000);
+
+    // Add a map.
     driver.findElement(By.id("addMap")).click();
-    Thread.sleep(2000);
+    Thread.sleep(7000);
     driver.findElement(By.cssSelector("#addNewMap > .btn")).click();
     driver.findElement(By.id("mapName")).click();
     driver.findElement(By.id("mapName")).sendKeys("Huh");
     driver.findElement(By.id("description")).sendKeys("Cool");
     driver.findElement(By.cssSelector(".myButton")).click();
-    Thread.sleep(2000);
+    Thread.sleep(7000);
   }
 }

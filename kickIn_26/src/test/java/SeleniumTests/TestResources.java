@@ -46,7 +46,7 @@ public class TestResources {
   // it cannot be found when the test is run later. Adding and editing a resource cannot be tested because we are required
   // to upload an image which is not possible to test with Selenium.
   public void testResources() throws InterruptedException {
-    driver.get("http://localhost:8080/kickInTeam26/");
+    driver.get(Constants.ISSUER);
 
     // Log in
     driver.findElement(By.id("inputEmail")).sendKeys("priya@email.com");
