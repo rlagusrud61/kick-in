@@ -37,7 +37,7 @@ function login() {
  */
 function checkKeyPress() {
     let password, emailAddress;
-    password = XSSInputSanitation('inputPassword');
+    password = document.getElementById('inputPassword').value;
     emailAddress = document.getElementById('inputEmail').value;
 	if (event.keyCode === 13 && password !== "" && emailAddress !== "") {
 		login();

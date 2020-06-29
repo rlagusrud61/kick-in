@@ -1,31 +1,25 @@
 let yesBtn, mapId, modal, trash, closeDelete, closeDelete2, map, printer, imgGroup, mapName;
 
 mapId = window.location.search.split("=")[1];
+
 // Get the modal
 modal = document.getElementById("popupMapDelete");
+
 // Button for deletion
 trash = document.getElementById("deleteMap");
+
 // Closing popup
 closeDelete = document.getElementsByClassName("close")[0];
+
 //Closing by pressing "No"
 closeDelete2 = document.getElementById("no");
+
 yesBtn = document.getElementById("yes");
 
 trash.onclick = function(){
     let id = window.location.search.split("=")[1];
     openModalMapDelete(id);
 };
-
-function openModalMapDelete(mapId) {
-    yesBtn.setAttribute("onclick", "removeMap(" + mapId + ")");
-    modal.style.display = "block";
-}
-
-function removeMap(mapId) {
-    deleteMap( mapId, function () {
-        location.reload();
-    })
-}
 
 closeDelete.onclick = function () {
     modal.style.display = "none";
@@ -35,6 +29,33 @@ window.onclick = function (event) {
         modal.style.display = "none";
     }
 };
+
+/**
+ * @param {number} mapId - the ID of the map for which the trash button was clicked.
+ *
+ * @summary This method is used to delete the required map from the database and reloads the page.
+ *
+ * @description When the 'YES' button is clicked in the map deletion confirmation popup, the 'deleteMap'
+ * function is called with the ID of the map as a parameter so that it can be deleted from the database.
+ */
+function openModalMapDelete(mapId) {
+    yesBtn.setAttribute("onclick", "removeMap(" + mapId + ")");
+    modal.style.display = "block";
+}
+
+/**
+ * @param {number} mapId - The ID of the map that is to be deleted from the database.
+ *
+ * @summary This method deletes the required map from the database.
+ *
+ * @description The function 'deleteMap' is called which takes the ID of the map as a parameter and deletes the map from
+ * the database. After that, the page is reloaded.
+ */
+function removeMap(mapId) {
+    deleteMap( mapId, function () {
+        location.reload();
+    })
+}
 
 /**
  * @summary This is the initializing function for the map on the 'mapView.html' page and it uses the leaflet
@@ -66,25 +87,6 @@ function initMap() {
         hideControlContainer: true
     }).addTo(newMap);
     return newMap;
-}
-
-/**
- * @param {String} stringyLatLangs - the latLangs given as a String.
- *
- * @summary Since the latLangs are also an array of JSON objects, parsing only the top level object does not parse the
- * latLangs to an array of JSON objects as well. This needs to be done separately and is done in this method.
- *
- * @returns {json | Object} coords - the array of LeafletPoints which are needed by 'distortableImageOverlay' to add
- * objects to the map.
- */
-function parseLatLangs(stringyLatLangs) {
-    let latLangArray, coords;
-     latLangArray = JSON.parse(stringyLatLangs);
-     coords = [];
-    latLangArray.forEach(function (point) {
-        coords.push(L.latLng(point.lat, point.lng))
-    })
-    return coords;
 }
 imgGroup = [];
 //all available resources
@@ -124,10 +126,8 @@ function insertObjectsToMap() {
  */
 function insertObjectIntoMap(object) {
     let corners, newImage;
-    corners = parseLatLangs(object.latLangs);
+    corners = JSON.parse(object.latLangs);
     newImage = L.distortableImageOverlay(images.get(object.resourceId), {
-        editable: false,
-        actions: [],
         corners: corners
     })
     newImage.objectId = object.objectId;
@@ -235,6 +235,38 @@ function generateReport() {
             });
             doc.save('MapReport.pdf');
         }else {
+            alert("There are no items on this map.");
+        }
+    });
+}
+
+/**
+ * @summary This method is used to download a report of the items placed on the map and their respective quantities.
+ *
+ * @description First, the ID of the map is retrieved from the URL. This ID is then used as a parameter of the 'getMap'
+ * function. Once the data on the map is retrieved, the value of the 'report' key is retrieved. If it is empty, an alert
+ * message is displayed. If not, a .json file is created and downloaded which contains the name of the items placed on the
+ * map along with their respective quantities.
+ */
+function generateReportInJSON() {
+    let a, json, blob, url, data, fileName, map, id;
+    id = window.location.search.split("=")[1];
+    getMap(id, function () {
+        map = JSON.parse(this.responseText);
+        data = map.report;
+        if (data !== null) {
+            fileName = "Map" + id + "Report.json";
+            a = document.createElement("a");
+            document.body.appendChild(a);
+            a.style = "display: none";
+            json = JSON.stringify(data);
+            blob = new Blob([json], {type: "octet/stream"});
+            url = window.URL.createObjectURL(blob);
+            a.href = url;
+            a.download = fileName;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        } else {
             alert("There are no items on this map.");
         }
     });

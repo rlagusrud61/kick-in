@@ -6,6 +6,7 @@ import nl.utwente.di.team26.Product.model.Event.Event;
 import nl.utwente.di.team26.Security.Filters.Secured;
 import nl.utwente.di.team26.Security.User.Roles;
 import nl.utwente.di.team26.Utils;
+import org.springframework.web.util.HtmlUtils;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -37,10 +38,10 @@ public class EventsResource {
     public Response addNewEvent(Event eventToAdd) throws SQLException {
         //get the userId stored into the security Context during authentication.
         long userId = Utils.getUserFromContext(securityContext);
-
+        eventToAdd.setName(HtmlUtils.htmlEscape(eventToAdd.getName()));
         eventToAdd.setCreatedBy(userId);
         eventToAdd.setLastEditedBy(userId);
-
+        System.out.println(HtmlUtils.htmlEscape(eventToAdd.toString()));
         long eventId = eventsDao.create(eventToAdd);
         return Utils.returnCreated(eventId);
     }

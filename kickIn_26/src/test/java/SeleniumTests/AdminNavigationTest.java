@@ -31,7 +31,7 @@ public class AdminNavigationTest {
   JavascriptExecutor js;
   @Before
   public void setUp() {
-    System.setProperty("webdriver.chrome.driver", Constants.CHROME_DRIVER);
+    System.setProperty("webdriver.chrome.driver", "C:\\Users\\Priya\\Desktop\\Module 4\\Project\\chromedriver_win32\\chromedriver.exe");
     driver = new ChromeDriver();
     js = (JavascriptExecutor) driver;
     vars = new HashMap<String, Object>();
@@ -43,7 +43,7 @@ public class AdminNavigationTest {
   @Test
   public void adminNavigation() throws InterruptedException {
     driver.get("http://localhost:8080/kickInTeam26/");
-    driver.manage().window().setSize(new Dimension(838, 770));
+
     driver.findElement(By.id("inputEmail")).sendKeys("admin@gmail.com");
     driver.findElement(By.id("inputPassword")).sendKeys("adminpass");
     driver.findElement(By.id("inputPassword")).sendKeys(Keys.ENTER);
@@ -54,27 +54,29 @@ public class AdminNavigationTest {
     driver.findElement(By.id("eventName")).sendKeys("Adding Event");
     driver.findElement(By.id("eventDescription")).sendKeys("As an Admin");
     driver.findElement(By.id("eventDate")).click();
+    driver.findElement(By.id("eventDate")).clear();
     driver.findElement(By.id("eventDate")).sendKeys("2020-06-24");
-    driver.findElement(By.cssSelector(".bottomright > .align-self-end")).click();
-    driver.findElement(By.cssSelector("tr:nth-child(5) .glyphicon-pencil")).click();
-    driver.findElement(By.id("eventName")).click();
-    driver.findElement(By.id("eventName")).sendKeys("Editing Event");
-    driver.findElement(By.id("eventDescription")).sendKeys("As an Admin");
-    driver.findElement(By.id("eventDate")).click();
-    driver.findElement(By.id("eventDate")).sendKeys("2020-06-26");
     driver.findElement(By.id("eventLocation")).click();
     {
       WebElement dropdown = driver.findElement(By.id("eventLocation"));
       dropdown.findElement(By.xpath("//option[. = 'Outside Campus (City)']")).click();
     }
-    driver.findElement(By.id("eventLocation")).click();
-    driver.findElement(By.id("myBtn")).click();
+    driver.findElement(By.cssSelector(".bottomright > .align-self-end")).click();
+    Thread.sleep(7000);
+
     driver.findElement(By.id("deleteEvent")).click();
-    driver.findElement(By.id("deleteEvent")).click();
+    Thread.sleep(7000);
+
     driver.findElement(By.id("home")).click();
+    Thread.sleep(7000);
+
     driver.findElement(By.cssSelector("tr:nth-child(5) .glyphicon-trash")).click();
     driver.findElement(By.id("yesDeleteButton")).click();
+    Thread.sleep(7000);
+
     driver.findElement(By.cssSelector(".glyphicon-user")).click();
+    Thread.sleep(7000);
+
     driver.findElement(By.id("myBtn")).click();
     driver.findElement(By.id("userName")).click();
     driver.findElement(By.id("userName")).sendKeys("NewUser");
@@ -87,22 +89,29 @@ public class AdminNavigationTest {
     }
     driver.findElement(By.id("clearanceLevel")).click();
     driver.findElement(By.cssSelector(".bottomright > .align-self-end")).click();
-    driver.findElement(By.cssSelector(".glyphicon-home")).click();
+    Thread.sleep(7000);
+
     driver.findElement(By.cssSelector(".glyphicon-globe")).click();
+    Thread.sleep(7000);
+
     driver.findElement(By.id("addMapBtn")).click();
     driver.findElement(By.id("mapName")).click();
     driver.findElement(By.id("mapName")).sendKeys("New Map");
     driver.findElement(By.id("mapDescription")).sendKeys("Adding New Map As Admin");
     driver.findElement(By.cssSelector(".bottomright > .align-self-end")).click();
+    Thread.sleep(7000);
+
     driver.findElement(By.cssSelector("tr:nth-child(24) .glyphicon-trash")).click();
     driver.findElement(By.id("yesDeleteButton")).click();
+    Thread.sleep(7000);
+
     driver.findElement(By.cssSelector(".glyphicon-cog")).click();
-    {
-      WebElement element = driver.findElement(By.cssSelector(".glyphicon-cog"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).perform();
-    }
+    Thread.sleep(7000);
+
     driver.findElement(By.cssSelector(".glyphicon-home")).click();
+    Thread.sleep(7000);
+
     driver.findElement(By.id("logout")).click();
+    Thread.sleep(7000);
   }
 }
