@@ -41,14 +41,25 @@ public class TestEvent {
     driver.quit();
   }
   @Test
-  public void tesst() {
-    driver.get("http://localhost:8080/kickInTeam26/list.html");
-    driver.manage().window().setSize(new Dimension(1920, 1039));
+  public void testEvent() throws InterruptedException {
+    driver.get("http://localhost:8080/kickInTeam26/");
+
+    // Log in.
+    driver.findElement(By.id("inputEmail")).sendKeys("priya@email.com");
+    driver.findElement(By.id("inputPassword")).click();
+    driver.findElement(By.id("inputPassword")).sendKeys("priya");
+    driver.findElement(By.id("inputPassword")).sendKeys(Keys.ENTER);
+    Thread.sleep(7000);
+
+    // Add a new event.
     driver.findElement(By.id("addEventBtn")).click();
     driver.findElement(By.id("eventName")).click();
     driver.findElement(By.id("eventName")).sendKeys("Test event");
+    driver.findElement(By.id("eventName")).sendKeys(Keys.TAB);
     driver.findElement(By.id("eventDescription")).sendKeys("event test description");
-    driver.findElement(By.id("eventDate")).sendKeys("2020-06-26");
+    driver.findElement(By.id("eventDescription")).sendKeys(Keys.TAB);
+    driver.findElement(By.id("eventDate")).clear();
+    driver.findElement(By.id("eventDate")).sendKeys("2020-06-24");
     driver.findElement(By.id("eventLocation")).click();
     {
       WebElement dropdown = driver.findElement(By.id("eventLocation"));
@@ -56,36 +67,65 @@ public class TestEvent {
     }
     driver.findElement(By.id("eventLocation")).click();
     driver.findElement(By.cssSelector(".bottomright > .align-self-end")).click();
-    driver.findElement(By.cssSelector("tr:nth-child(10) .glyphicon-pencil")).click();
+    Thread.sleep(7000);
+
+    // Edit an event.
+    driver.findElement(By.cssSelector("tr:nth-child(2) .glyphicon-pencil")).click();
+    Thread.sleep(7000);
     driver.findElement(By.id("eventName")).click();
     driver.findElement(By.id("eventName")).sendKeys("test event edit");
+    driver.findElement(By.id("eventName")).sendKeys(Keys.TAB);
     driver.findElement(By.id("eventDescription")).sendKeys("edited");
-    driver.findElement(By.id("eventDate")).click();
-    driver.findElement(By.id("eventDate")).sendKeys("2020-06-26");
-    driver.findElement(By.id("eventDate")).click();
+    driver.findElement(By.id("eventDescription")).sendKeys(Keys.TAB);
+    driver.findElement(By.id("eventDate")).clear();
     driver.findElement(By.id("eventDate")).sendKeys("2020-06-30");
     driver.findElement(By.id("eventLocation")).click();
     {
       WebElement dropdown = driver.findElement(By.id("eventLocation"));
       dropdown.findElement(By.xpath("//option[. = 'Both']")).click();
     }
-    driver.findElement(By.id("eventLocation")).click();
-    driver.findElement(By.cssSelector(".form-group:nth-child(2)")).click();
     driver.findElement(By.id("myBtn")).click();
-    driver.findElement(By.cssSelector(".col-md-6")).click();
+    Thread.sleep(7000);
+
+    // Link map to event.
     driver.findElement(By.id("addMapsToEvent")).click();
-    driver.findElement(By.cssSelector(".custom-control:nth-child(10) > .custom-control-label")).click();
+    Thread.sleep(7000);
+    driver.findElement(By.cssSelector(".custom-control:nth-child(3) > .custom-control-label")).click();
     driver.findElement(By.cssSelector(".bottomright:nth-child(4) > .btn")).click();
+    Thread.sleep(7000);
+
+    // View map.
     driver.findElement(By.cssSelector(".glyphicon-eye-open")).click();
+    Thread.sleep(7000);
+
+    // Go back to 'list of events' page
     driver.findElement(By.cssSelector(".glyphicon-home")).click();
+    Thread.sleep(7000);
+
+    // Try to sort the list of events in the 4 possible ways.
     driver.findElement(By.cssSelector(".dropdown-toggle")).click();
     driver.findElement(By.linkText("A - Z")).click();
+    Thread.sleep(7000);
     driver.findElement(By.cssSelector(".dropdown-toggle")).click();
     driver.findElement(By.linkText("Z - A")).click();
+    Thread.sleep(7000);
     driver.findElement(By.cssSelector(".dropdown-toggle")).click();
     driver.findElement(By.linkText("Event Date (New - Old)")).click();
+    Thread.sleep(7000);
     driver.findElement(By.cssSelector(".dropdown-toggle")).click();
     driver.findElement(By.linkText("Event Date (Old - New)")).click();
+    Thread.sleep(7000);
+
+    // Search for an existing event.
     driver.findElement(By.id("searchTable")).click();
+    driver.findElement(By.id("searchTable")).clear();
+    driver.findElement(By.id("searchTable")).sendKeys("event");
+    Thread.sleep(7000);
+
+    // Search for an inexistent event.
+    driver.findElement(By.id("searchTable")).click();
+    driver.findElement(By.id("searchTable")).clear();
+    driver.findElement(By.id("searchTable")).sendKeys("does not exist");
+    Thread.sleep(7000);
   }
 }

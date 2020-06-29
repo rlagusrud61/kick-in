@@ -22,6 +22,8 @@ import nl.utwente.di.team26.Constants;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.Keys;
+
+import javax.naming.CompositeName;
 import java.util.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -31,7 +33,7 @@ public class AdminNavigationTest {
   JavascriptExecutor js;
   @Before
   public void setUp() {
-    System.setProperty("webdriver.chrome.driver", "C:\\Users\\Priya\\Desktop\\Module 4\\Project\\chromedriver_win32\\chromedriver.exe");
+    System.setProperty("webdriver.chrome.driver", Constants.CHROME_DRIVER);
     driver = new ChromeDriver();
     js = (JavascriptExecutor) driver;
     vars = new HashMap<String, Object>();
@@ -44,16 +46,19 @@ public class AdminNavigationTest {
   public void adminNavigation() throws InterruptedException {
     driver.get("http://localhost:8080/kickInTeam26/");
 
+    // Log in.
     driver.findElement(By.id("inputEmail")).sendKeys("admin@gmail.com");
     driver.findElement(By.id("inputPassword")).sendKeys("adminpass");
     driver.findElement(By.id("inputPassword")).sendKeys(Keys.ENTER);
     Thread.sleep(7000);
 
+    // Add a new event.
     driver.findElement(By.id("addEventBtn")).click();
     driver.findElement(By.id("eventName")).click();
     driver.findElement(By.id("eventName")).sendKeys("Adding Event");
+    driver.findElement(By.id("eventName")).sendKeys(Keys.TAB);
     driver.findElement(By.id("eventDescription")).sendKeys("As an Admin");
-    driver.findElement(By.id("eventDate")).click();
+    driver.findElement(By.id("eventDescription")).sendKeys(Keys.TAB);
     driver.findElement(By.id("eventDate")).clear();
     driver.findElement(By.id("eventDate")).sendKeys("2020-06-24");
     driver.findElement(By.id("eventLocation")).click();
@@ -64,19 +69,16 @@ public class AdminNavigationTest {
     driver.findElement(By.cssSelector(".bottomright > .align-self-end")).click();
     Thread.sleep(7000);
 
-    driver.findElement(By.id("deleteEvent")).click();
-    Thread.sleep(7000);
-
-    driver.findElement(By.id("home")).click();
-    Thread.sleep(7000);
-
+    // Delete an event.
     driver.findElement(By.cssSelector("tr:nth-child(5) .glyphicon-trash")).click();
     driver.findElement(By.id("yesDeleteButton")).click();
     Thread.sleep(7000);
 
+    // Go to the users page.
     driver.findElement(By.cssSelector(".glyphicon-user")).click();
     Thread.sleep(7000);
 
+    // Add a user.
     driver.findElement(By.id("myBtn")).click();
     driver.findElement(By.id("userName")).click();
     driver.findElement(By.id("userName")).sendKeys("NewUser");
@@ -91,9 +93,11 @@ public class AdminNavigationTest {
     driver.findElement(By.cssSelector(".bottomright > .align-self-end")).click();
     Thread.sleep(7000);
 
+    // Go to the maps page.
     driver.findElement(By.cssSelector(".glyphicon-globe")).click();
     Thread.sleep(7000);
 
+    // Add a map.
     driver.findElement(By.id("addMapBtn")).click();
     driver.findElement(By.id("mapName")).click();
     driver.findElement(By.id("mapName")).sendKeys("New Map");
@@ -101,16 +105,20 @@ public class AdminNavigationTest {
     driver.findElement(By.cssSelector(".bottomright > .align-self-end")).click();
     Thread.sleep(7000);
 
-    driver.findElement(By.cssSelector("tr:nth-child(24) .glyphicon-trash")).click();
+    // Delete a map.
+    driver.findElement(By.cssSelector("tr:nth-child(2) .glyphicon-trash")).click();
     driver.findElement(By.id("yesDeleteButton")).click();
     Thread.sleep(7000);
 
+    // Go to the resources page.
     driver.findElement(By.cssSelector(".glyphicon-cog")).click();
     Thread.sleep(7000);
 
+    // Go back to the list of events page.
     driver.findElement(By.cssSelector(".glyphicon-home")).click();
     Thread.sleep(7000);
 
+    // Log out.
     driver.findElement(By.id("logout")).click();
     Thread.sleep(7000);
   }
