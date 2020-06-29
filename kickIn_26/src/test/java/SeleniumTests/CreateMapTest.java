@@ -1,5 +1,6 @@
 package SeleniumTests;
 
+import com.sun.xml.bind.v2.runtime.reflect.opt.Const;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
@@ -43,7 +44,7 @@ public class CreateMapTest {
   }
   @Test
   public void createMap() throws InterruptedException {
-    driver.get("http://localhost:8080/kickInTeam26/");
+    driver.get(Constants.ISSUER);
     driver.findElement(By.id("inputEmail")).sendKeys("joep@gmail.com");
     driver.findElement(By.id("inputPassword")).click();
     driver.findElement(By.id("inputPassword")).sendKeys("joep");

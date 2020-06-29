@@ -42,7 +42,7 @@ public class WrongCredentialsTest {
   }
   @Test
   public void wrongCredentials() throws InterruptedException {
-    driver.get("http://localhost:8080/kickInTeam26/login.html");
+    driver.get(Constants.ISSUER);
     driver.manage().window().setSize(new Dimension(840, 773));
     driver.findElement(By.id("inputEmail")).sendKeys("hk@gmail.com");
     {

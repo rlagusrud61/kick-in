@@ -42,7 +42,7 @@ public class LoginWithoutCredentialsTest {
   }
   @Test
   public void enteringNothing() throws InterruptedException {
-    driver.get("http://localhost:8080/kickInTeam26/login.html");
+    driver.get(Constants.ISSUER);
     driver.manage().window().setSize(new Dimension(838, 770));
     {
       WebElement element = driver.findElement(By.cssSelector(".btn"));

@@ -42,7 +42,7 @@ public class MapsTest {
   }
   @Test
   public void mapsTest() throws InterruptedException {
-    driver.get("http://localhost:8080/kickInTeam26/");
+    driver.get(Constants.ISSUER);
 
     // Log in
     driver.findElement(By.id("inputEmail")).sendKeys("priya@email.com");

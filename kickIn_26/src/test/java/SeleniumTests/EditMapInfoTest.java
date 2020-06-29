@@ -58,7 +58,7 @@ public class EditMapInfoTest {
   }
   @Test
   public void editMapInfo2() throws InterruptedException {
-    driver.get("http://localhost:8080/kickInTeam26/");
+    driver.get(Constants.ISSUER);
     driver.findElement(By.id("inputEmail")).sendKeys("joep@gmail.com");
     driver.findElement(By.id("inputPassword")).click();
     driver.findElement(By.id("inputPassword")).sendKeys("joep");

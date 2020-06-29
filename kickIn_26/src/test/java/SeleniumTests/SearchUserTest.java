@@ -43,7 +43,7 @@ public class SearchUserTest {
   }
   @Test
   public void searchUser() throws InterruptedException {
-    driver.get("http://localhost:8080/kickInTeam26/");
+    driver.get(Constants.ISSUER);
     driver.findElement(By.id("inputEmail")).sendKeys("joep@gmail.com");
     driver.findElement(By.id("inputPassword")).sendKeys("joep");
     driver.findElement(By.id("inputPassword")).sendKeys(Keys.ENTER);

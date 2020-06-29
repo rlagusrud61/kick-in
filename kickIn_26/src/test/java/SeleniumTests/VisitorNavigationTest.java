@@ -44,7 +44,7 @@ public class VisitorNavigationTest {
   }
   @Test
   public void visitorNavigation() throws InterruptedException {
-    driver.get("http://localhost:8080/kickInTeam26/");
+    driver.get(Constants.ISSUER);
 
     driver.findElement(By.id("inputEmail")).sendKeys("vicsitor@email.com");
     driver.findElement(By.id("inputPassword")).sendKeys("vicsitorpassword");

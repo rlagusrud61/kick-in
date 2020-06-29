@@ -42,7 +42,7 @@ public class PreviousPageTest {
   }
   @Test
   public void previousPage() throws InterruptedException {
-    driver.get("http://localhost:8080/kickInTeam26/");
+    driver.get(Constants.ISSUER);
     driver.manage().window().setSize(new Dimension(838, 770));
     driver.findElement(By.id("inputEmail")).sendKeys("hk@gmail.com");
     {
