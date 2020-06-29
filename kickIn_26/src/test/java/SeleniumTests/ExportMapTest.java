@@ -44,13 +44,22 @@ public class ExportMapTest {
   @Test
   public void exportMap() throws InterruptedException {
     driver.get("http://localhost:8080/kickInTeam26/");
+
+    // Log in.
     driver.findElement(By.id("inputEmail")).sendKeys("joep@gmail.com");
     driver.findElement(By.id("inputPassword")).sendKeys("joep");
     driver.findElement(By.id("inputPassword")).sendKeys(Keys.ENTER);
     Thread.sleep(7000);
+
+    // Go to the maps page.
     driver.findElement(By.cssSelector(".glyphicon-globe")).click();
-    Thread.sleep(2000);
+    Thread.sleep(7000);
+
+    // View a map.
     driver.findElement(By.cssSelector("tr:nth-child(2) .glyphicon-eye-open")).click();
+    Thread.sleep(7000);
+
+    // Download the report for the map.
     {
       WebElement element = driver.findElement(By.id("downloadReport"));
       Actions builder = new Actions(driver);
@@ -61,10 +70,14 @@ public class ExportMapTest {
       Actions builder = new Actions(driver);
       builder.moveToElement(element, 0, 0).perform();
     }
+
+    // Look at map.
     js.executeScript("window.scrollTo(0,398.3999938964844)");
-    Thread.sleep(2000);
+    Thread.sleep(7000);
     driver.findElement(By.id("leafletEasyPrint")).click();
+
+    // Log out.
     driver.findElement(By.id("logout")).click();
-    Thread.sleep(2000);
+    Thread.sleep(7000);
   }
 }

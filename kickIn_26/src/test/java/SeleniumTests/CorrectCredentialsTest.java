@@ -42,12 +42,17 @@ public class CorrectCredentialsTest {
   }
   @Test
   public void correctCredentials() throws InterruptedException {
-    driver.get("http://localhost:8080/kickInTeam26/login.html");
+    driver.get("http://localhost:8080/kickInTeam26/");
+
+    // Log in with correct credentials.
     driver.findElement(By.id("inputEmail")).sendKeys("hk@gmail.com");
     driver.findElement(By.id("inputPassword")).sendKeys("hk");
     driver.findElement(By.id("inputPassword")).sendKeys(Keys.ENTER);
     driver.findElement(By.cssSelector(".btn")).click();
     Thread.sleep(7000);
+
+    // Log out.
     driver.findElement(By.id("logout")).click();
+    Thread.sleep(7000);
   }
 }

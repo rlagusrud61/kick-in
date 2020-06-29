@@ -44,15 +44,22 @@ public class SearchUserTest {
   @Test
   public void searchUser() throws InterruptedException {
     driver.get("http://localhost:8080/kickInTeam26/");
+
+    // Log in.
     driver.findElement(By.id("inputEmail")).sendKeys("joep@gmail.com");
     driver.findElement(By.id("inputPassword")).sendKeys("joep");
     driver.findElement(By.id("inputPassword")).sendKeys(Keys.ENTER);
     Thread.sleep(7000);
+
+    // Go to the users page.
     driver.findElement(By.cssSelector(".glyphicon-user")).click();
+    Thread.sleep(7000);
+
+    // Search for the user with the name "Victor".
     driver.findElement(By.id("searchTable")).click();
-    Thread.sleep(2000);
+    driver.findElement(By.id("searchTable")).clear();
     driver.findElement(By.id("searchTable")).sendKeys("Victor");
-    Thread.sleep(2000);
+    Thread.sleep(7000);
   }
 }
 
