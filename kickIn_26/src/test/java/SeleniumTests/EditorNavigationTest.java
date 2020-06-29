@@ -41,23 +41,25 @@ public class EditorNavigationTest {
     driver.quit();
   }
   @Test
-  public void editorNavigation() {
+  public void editorNavigation() throws InterruptedException {
     driver.get("http://localhost:8080/kickInTeam26/login.html");
-    driver.findElement(By.id("inputEmail")).sendKeys("editor@email.com");
-    driver.findElement(By.id("inputPassword")).sendKeys("editorpassword");
+    driver.findElement(By.id("inputEmail")).sendKeys("editor@gmail.com");
+    driver.findElement(By.id("inputPassword")).sendKeys("editor");
     driver.findElement(By.id("inputPassword")).sendKeys(Keys.ENTER);
+    Thread.sleep(7000);
     driver.findElement(By.id("addEventBtn")).click();
     driver.findElement(By.id("eventName")).click();
     driver.findElement(By.id("eventName")).sendKeys("AddEvent");
     driver.findElement(By.id("eventDescription")).sendKeys("As Editor");
     driver.findElement(By.id("eventDate")).sendKeys("2020-06-25");
     driver.findElement(By.cssSelector(".bottomright > .align-self-end")).click();
+    Thread.sleep(4000);
     driver.findElement(By.cssSelector("tr:nth-child(9) .glyphicon-eye-open")).click();
+    Thread.sleep(2000);
     driver.findElement(By.id("editEvent")).click();
     driver.findElement(By.id("eventName")).click();
     driver.findElement(By.id("eventName")).sendKeys("Edit Event");
     driver.findElement(By.id("eventDescription")).sendKeys("As an Editor");
-    driver.findElement(By.id("eventDate")).click();
     driver.findElement(By.id("eventDate")).sendKeys("2020-06-26");
     driver.findElement(By.id("eventLocation")).click();
     {
@@ -66,19 +68,24 @@ public class EditorNavigationTest {
     }
     driver.findElement(By.id("eventLocation")).click();
     driver.findElement(By.id("myBtn")).click();
+    Thread.sleep(2000);
     driver.findElement(By.id("addMap")).click();
     driver.findElement(By.cssSelector("#addNewMap > .btn")).click();
     driver.findElement(By.id("mapName")).click();
     driver.findElement(By.id("mapName")).sendKeys("New Map");
     driver.findElement(By.id("description")).sendKeys("Editor");
     driver.findElement(By.cssSelector(".myButton")).click();
+    Thread.sleep(2000);
     driver.findElement(By.cssSelector(".glyphicon-trash:nth-child(1)")).click();
     driver.findElement(By.id("yesDeleteButton")).click();
+    Thread.sleep(2000);
     driver.findElement(By.id("arrow")).click();
     driver.findElement(By.cssSelector(".glyphicon-home")).click();
     driver.findElement(By.cssSelector("tr:nth-child(9) .glyphicon-trash")).click();
     driver.findElement(By.id("yesDeleteButton")).click();
+    Thread.sleep(2000);
     driver.findElement(By.cssSelector(".glyphicon-user")).click();
+    Thread.sleep(2000);
     driver.findElement(By.cssSelector("tr:nth-child(2) .glyphicon")).click();
     driver.findElement(By.cssSelector("tr:nth-child(3) .glyphicon")).click();
     driver.findElement(By.cssSelector("tr:nth-child(3) .glyphicon")).click();
@@ -88,6 +95,7 @@ public class EditorNavigationTest {
       builder.doubleClick(element).perform();
     }
     driver.findElement(By.id("myBtn")).click();
+    Thread.sleep(2000);
     driver.findElement(By.id("userName")).click();
     driver.findElement(By.id("userName")).sendKeys("New User");
     driver.findElement(By.id("email")).sendKeys("newuser@emai.com");
@@ -98,6 +106,7 @@ public class EditorNavigationTest {
       dropdown.findElement(By.xpath("//option[. = 'Admin']")).click();
     }
     driver.findElement(By.id("clearanceLevel")).click();
+    Thread.sleep(2000);
     driver.findElement(By.cssSelector(".bottomright > .align-self-end")).click();
     driver.findElement(By.cssSelector(".bottomright > .align-self-end")).click();
     driver.findElement(By.cssSelector("#myModal .close")).click();
@@ -108,6 +117,7 @@ public class EditorNavigationTest {
     driver.findElement(By.id("resourceDescription")).sendKeys("As Editor");
     driver.findElement(By.cssSelector(".custom-control:nth-child(1) > .custom-control-label")).click();
     driver.findElement(By.cssSelector(".bottomright > .align-self-end")).click();
+    Thread.sleep(2000);
     driver.findElement(By.cssSelector("#addResource .close")).click();
     driver.findElement(By.id("logout")).click();
   }
