@@ -64,13 +64,17 @@ public class EditMapInfoTest {
     driver.findElement(By.id("inputPassword")).sendKeys("joep");
     driver.findElement(By.id("inputPassword")).sendKeys(Keys.ENTER);
     Thread.sleep(7000);
+
+    // Go to the maps page.
     driver.findElement(By.cssSelector(".glyphicon-globe")).click();
-    Thread.sleep(2000);
+    Thread.sleep(7000);
+
+    // Edit the name and description of the map.
     driver.findElement(By.cssSelector("tr:nth-child(3) .glyphicon-wrench")).click();
     driver.findElement(By.id("editName")).click();
     driver.findElement(By.id("editName")).sendKeys("updatedInfo");
     driver.findElement(By.id("editDescription")).sendKeys("updatedInfo");
     driver.findElement(By.id("editBtn")).click();
-    Thread.sleep(2000);
+    Thread.sleep(7000);
   }
 }

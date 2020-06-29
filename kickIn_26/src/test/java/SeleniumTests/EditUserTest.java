@@ -48,10 +48,14 @@ public class EditUserTest {
     driver.findElement(By.id("inputPassword")).sendKeys("joep");
     driver.findElement(By.id("inputPassword")).sendKeys(Keys.ENTER);
     Thread.sleep(7000);
+
+    // Go to the users page.
     driver.findElement(By.cssSelector(".glyphicon-user")).click();
-    Thread.sleep(2000);
+    Thread.sleep(7000);
+
+    // Edit a user.
     driver.findElement(By.cssSelector("tr:nth-child(2) .glyphicon")).click();
-    Thread.sleep(2000);
+    Thread.sleep(7000);
     driver.findElement(By.cssSelector(".glyphicon-pencil")).click();
     driver.findElement(By.id("userName")).click();
     driver.findElement(By.id("userName")).sendKeys("Eddie the Editor");
@@ -64,7 +68,7 @@ public class EditUserTest {
     }
     driver.findElement(By.id("clearanceLevel")).click();
     driver.findElement(By.id("myBtn")).click();
-    Thread.sleep(2000);
+    Thread.sleep(7000);
   }
 }
 

@@ -48,6 +48,8 @@ public class ListToLogoutTest {
     driver.findElement(By.id("inputPassword")).sendKeys("hk");
     driver.findElement(By.id("inputPassword")).sendKeys(Keys.ENTER);
     Thread.sleep(7000);
+
+    // Log out.
     driver.findElement(By.id("logout")).click();
     Thread.sleep(7000);
   }

@@ -49,42 +49,20 @@ public class LoginWithoutCredentialsTest {
       Actions builder = new Actions(driver);
       builder.moveToElement(element).perform();
     }
+    driver.get("http://localhost:8080/kickInTeam26/");
+
+    // Log in without credentials
     driver.findElement(By.cssSelector(".btn")).click();
     Thread.sleep(7000);
-    {
-      WebElement element = driver.findElement(By.tagName("body"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element, 0, 0).perform();
-    }
-    driver.findElement(By.id("inputEmail")).click();
-    {
-      WebElement element = driver.findElement(By.cssSelector(".btn"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).perform();
-    }
+
+    // Log in with only email.
     driver.findElement(By.id("inputEmail")).sendKeys("hk@gmail.com");
     driver.findElement(By.cssSelector(".btn")).click();
     Thread.sleep(7000);
-    {
-      WebElement element = driver.findElement(By.tagName("body"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element, 0, 0).perform();
-    }
-    driver.findElement(By.id("inputEmail")).click();
-    driver.findElement(By.id("inputPassword")).click();
-    {
-      WebElement element = driver.findElement(By.cssSelector(".btn"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).perform();
-    }
-    Thread.sleep(7000);
+
+    // Log in with only password.
     driver.findElement(By.id("inputPassword")).sendKeys("password");
     driver.findElement(By.cssSelector(".btn")).click();
-    {
-      WebElement element = driver.findElement(By.tagName("body"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element, 0, 0).perform();
-    }
     Thread.sleep(7000);
   }
 }
