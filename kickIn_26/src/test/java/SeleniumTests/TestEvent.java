@@ -48,7 +48,6 @@ public class TestEvent {
     driver.findElement(By.id("eventName")).click();
     driver.findElement(By.id("eventName")).sendKeys("Test event");
     driver.findElement(By.id("eventDescription")).sendKeys("event test description");
-    driver.findElement(By.id("eventDate")).click();
     driver.findElement(By.id("eventDate")).sendKeys("2020-06-26");
     driver.findElement(By.id("eventLocation")).click();
     {
