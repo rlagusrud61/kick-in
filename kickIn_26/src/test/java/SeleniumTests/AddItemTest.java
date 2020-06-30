@@ -43,20 +43,26 @@ public class AddItemTest {
   }
   @Test
   public void addItem() throws InterruptedException {
-    driver.get("http://localhost:8080/kickInTeam26/");
+    driver.get(Constants.ISSUER);
     driver.findElement(By.id("inputEmail")).sendKeys("joep@gmail.com");
     driver.findElement(By.id("inputPassword")).sendKeys("joep");
     driver.findElement(By.id("inputPassword")).sendKeys(Keys.ENTER);
     Thread.sleep(7000);
+
+    // Go to the maps page.
     driver.findElement(By.cssSelector(".glyphicon-globe")).click();
-    Thread.sleep(2000);
+    Thread.sleep(7000);
+
+    // Edit a map.
     driver.findElement(By.cssSelector("tr:nth-child(2) .glyphicon-pencil")).click();
+
+    // Add an item to the map.
     driver.findElement(By.cssSelector(".w3-bar-item:nth-child(4)")).click();
     js.executeScript("window.scrollTo(0,0)");
     Thread.sleep(7000);
     driver.findElement(By.id("input649")).click();
     driver.findElement(By.id("input649")).sendKeys("1");
     driver.findElement(By.cssSelector("tr:nth-child(1) .btn")).click();
-    Thread.sleep(2000);
+    Thread.sleep(7000);
   }
 }

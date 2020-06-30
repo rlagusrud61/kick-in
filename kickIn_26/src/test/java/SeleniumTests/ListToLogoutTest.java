@@ -42,12 +42,14 @@ public class ListToLogoutTest {
   }
   @Test
   public void ListToLogout() throws InterruptedException {
-    driver.get("http://localhost:8080/kickInTeam26/login.html");
+    driver.get(Constants.ISSUER + "login.html");
     driver.manage().window().setSize(new Dimension(840, 771));
     driver.findElement(By.id("inputEmail")).sendKeys("hk@gmail.com");
     driver.findElement(By.id("inputPassword")).sendKeys("hk");
     driver.findElement(By.id("inputPassword")).sendKeys(Keys.ENTER);
     Thread.sleep(7000);
+
+    // Log out.
     driver.findElement(By.id("logout")).click();
     Thread.sleep(7000);
   }

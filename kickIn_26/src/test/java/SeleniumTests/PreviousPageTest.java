@@ -42,8 +42,9 @@ public class PreviousPageTest {
   }
   @Test
   public void previousPage() throws InterruptedException {
-    driver.get("http://localhost:8080/kickInTeam26/");
-    driver.manage().window().setSize(new Dimension(838, 770));
+    driver.get(Constants.ISSUER);
+
+    // Log in.
     driver.findElement(By.id("inputEmail")).sendKeys("hk@gmail.com");
     {
       WebElement element = driver.findElement(By.cssSelector(".btn"));
@@ -53,22 +54,28 @@ public class PreviousPageTest {
     driver.findElement(By.id("inputPassword")).sendKeys("hk");
     driver.findElement(By.cssSelector(".btn")).click();
     Thread.sleep(7000);
-//    driver.findElement(By.cssSelector(".glyphicon-user")).click();
+
+    // Go to the users page.
     driver.findElement(By.id("users")).click();
     Thread.sleep(7000);
-//    driver.findElement(By.cssSelector(".glyphicon-arrow-left")).click();
+
+    // Go back to the previous page (users page).
     driver.findElement(By.id("arrow")).click();
     Thread.sleep(7000);
-//    driver.findElement(By.cssSelector(".glyphicon-globe")).click();
+
+    // Go to the maps page.
     driver.findElement(By.id("maps")).click();
     Thread.sleep(7000);
-//    driver.findElement(By.cssSelector(".glyphicon-arrow-left")).click();
+
+    // Go back to the previous page (maps page).
     driver.findElement(By.id("arrow")).click();
     Thread.sleep(7000);
-//    driver.findElement(By.cssSelector(".glyphicon-cog")).click();
+
+    // Go to the resources page.
     driver.findElement(By.id("resources")).click();
     Thread.sleep(7000);
-//    driver.findElement(By.cssSelector(".glyphicon-arrow-left")).click();
+
+    // Go back to the previous page (resources page).
     driver.findElement(By.id("arrow")).click();
     Thread.sleep(7000);
   }

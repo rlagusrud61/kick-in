@@ -33,7 +33,7 @@ public class VisitorNavigationTest {
   JavascriptExecutor js;
   @Before
   public void setUp() {
-    System.setProperty("webdriver.chrome.driver", Constants.CHROME_DRIVER);
+    System.setProperty("webdriver.chrome.driver", "C:\\Users\\Priya\\Desktop\\Module 4\\Project\\chromedriver_win32\\chromedriver.exe");
     driver = new ChromeDriver();
     js = (JavascriptExecutor) driver;
     vars = new HashMap<String, Object>();
@@ -44,25 +44,30 @@ public class VisitorNavigationTest {
   }
   @Test
   public void visitorNavigation() throws InterruptedException {
-    driver.get("http://localhost:8080/kickInTeam26/");
+    driver.get(Constants.ISSUER);
 
+    // Log in.
     driver.findElement(By.id("inputEmail")).sendKeys("vicsitor@email.com");
     driver.findElement(By.id("inputPassword")).sendKeys("vicsitorpassword");
     driver.findElement(By.id("inputPassword")).sendKeys(Keys.ENTER);
-    Thread.sleep(7000);
+    Thread.sleep(20000);
 
-    driver.findElement(By.cssSelector("tr:nth-child(5) .glyphicon-trash")).click();
+    // Delete an event.
+    driver.findElement(By.cssSelector("tr:nth-child(2) .glyphicon-trash")).click();
     driver.findElement(By.id("yesDeleteButton")).click();
     Thread.sleep(7000);
 
+    // Cannot delete event so no button pressed.
     driver.findElement(By.id("noBtn")).click();
     Thread.sleep(7000);
 
+    // Add an event which cannot be done.
     driver.findElement(By.id("addEventBtn")).click();
     driver.findElement(By.id("eventName")).click();
     driver.findElement(By.id("eventName")).sendKeys("New event");
     driver.findElement(By.id("eventDescription")).sendKeys("as Visitor");
-    driver.findElement(By.id("eventDate")).click();
+    driver.findElement(By.id("eventDescription")).sendKeys(Keys.TAB);
+    driver.findElement(By.id("eventDate")).clear();
     driver.findElement(By.id("eventDate")).sendKeys("2020-07-02");
     driver.findElement(By.id("eventLocation")).click();
     {
@@ -75,30 +80,26 @@ public class VisitorNavigationTest {
       Actions builder = new Actions(driver);
       builder.moveToElement(element).clickAndHold().perform();
     }
-    {
-      WebElement element = driver.findElement(By.cssSelector(".bottomright > .align-self-end"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).perform();
-    }
-    {
-      WebElement element = driver.findElement(By.cssSelector(".bottomright > .align-self-end"));
-      Actions builder = new Actions(driver);
-      builder.moveToElement(element).release().perform();
-    }
     driver.findElement(By.cssSelector(".bottomright > .align-self-end")).click();
     driver.findElement(By.cssSelector("#addEvent .close")).click();
     Thread.sleep(7000);
 
+    // View an event.
     driver.findElement(By.cssSelector("tr:nth-child(2) .glyphicon-eye-open")).click();
     Thread.sleep(7000);
 
+    // Delete an event which is not possible.
     driver.findElement(By.id("deleteEvent")).click();
-    driver.findElement(By.id("yes")).click();
+    driver.findElement(By.id("yesEventDelete")).click();
     Thread.sleep(7000);
-    driver.findElement(By.id("closeEventDelete")).click();
+    driver.findElement(By.id("no")).click();
     Thread.sleep(7000);
 
+    // Go to the maps page.
     driver.findElement(By.cssSelector(".glyphicon-globe")).click();
+    Thread.sleep(7000);
+
+    // Add a map which is not possible.
     driver.findElement(By.id("addMapBtn")).click();
     driver.findElement(By.id("mapName")).click();
     driver.findElement(By.id("mapName")).sendKeys("New Map");
@@ -107,9 +108,11 @@ public class VisitorNavigationTest {
     driver.findElement(By.cssSelector("#addMap .close")).click();
     Thread.sleep(7000);
 
+    // Go to the users page.
     driver.findElement(By.cssSelector(".glyphicon-user")).click();
     Thread.sleep(7000);
 
+    // Log out.
     driver.findElement(By.id("logout")).click();
     Thread.sleep(7000);
   }

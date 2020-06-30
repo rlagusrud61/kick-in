@@ -2,10 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-
-    <!-- JS PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
-
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <!-- Latest compiled and minified CSS -->
@@ -60,12 +56,12 @@
                 <a class="glyphicon glyphicon-pencil text-success"
                    id="editEvent"
                    style="font-size:20px; padding-top: 7%; padding-left: 5%;"></a>
-                <a class="glyphicon glyphicon-trash text-success" id="deleteEvent"
+                <a class="glyphicon glyphicon-trash text-success" id="deleteEvent" onclick="openModalEventDelete()"
                    style="font-size:20px; padding-top: 7%; padding-left: 5%;"></a>
                 <a class="glyphicon glyphicon-th-list text-success" id="addMapsToEvent"
                    style="font-size:20px; padding-top: 7%; padding-left: 5%;"></a>
                 <a class="glyphicon glyphicon-download-alt text-success" id="downloadReport"
-                   style="font-size:20px; padding-top: 7%; padding-left: 5%;" onclick="javascript: generateReport()"></a>
+                   style="font-size:20px; padding-top: 7%; padding-left: 5%;" onclick="generateReportInJSON()"></a>
             </div>
         </div>
         <div id="intro">
@@ -92,9 +88,9 @@
     <!-- Modal content -->
     <div class="modal-content">
         <span class="close" id="closeEventDelete">&times;</span>
-        <h2>Do you really want to delete this map?</h2>
+        <h2>Do you really want to delete this event?</h2>
         <div class="bottomright" style="display: flex; justify-content: center;">
-            <button class="btn btn-success btn-circle btn-xl align-self-center" id="yes"
+            <button class="btn btn-success btn-circle btn-xl align-self-center" id="yesEventDelete"
                     type="submit">YES
             </button>
             <button class="btn_multi btn btn-success btn-circle btn-xl align-self-center" id="no" type="button">NO
@@ -143,7 +139,7 @@
         <span class="close" id="closeMapDelete">&times;</span>
         <h2>Do you really want to delete this map?</h2>
         <div class="bottomright" style="display: flex; justify-content: center;">
-            <button class="btn btn-success btn-circle btn-xl align-self-center" id="yesDeleteButton"
+            <button class="btn btn-success btn-circle btn-xl align-self-center" id="yesMapDelete"
                     type="submit">YES
             </button>
             <button class="btn_multi btn btn-success btn-circle btn-xl align-self-center" id="noBtn" type="button">NO
@@ -164,7 +160,7 @@
             <div class="form-group row">
                 <label class="col-md-2 col-form-label" for="mapName">Name</label>
                 <div class="col-md-3">
-                    <input class="form-control" id="mapName"
+                    <input class="form-control" id="mapName" onkeyup="XSSInputSanitation('mapName')"
                            placeholder="Name"
                            type="text">
                 </div>
@@ -173,7 +169,7 @@
                 <label class="col-md-2 col-form-label" for="mapDescription">Description</label>
                 <div class="col-md-8">
                         <textarea class="form-control" id="mapDescription"
-                                  rows="5"></textarea>
+                                  onkeyup="XSSInputSanitation('mapDescription')" rows="5"></textarea>
                 </div>
             </div>
             <div class="bottomright" style="display: flex; justify-content: flex-end;">

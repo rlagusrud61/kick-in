@@ -43,19 +43,24 @@ public class CreateUserTest {
   }
   @Test
   public void createUser() throws InterruptedException {
-    driver.get("http://localhost:8080/kickInTeam26/");
+    driver.get(Constants.ISSUER);
     driver.findElement(By.id("inputEmail")).sendKeys("joep@gmail.com");
     driver.findElement(By.id("inputPassword")).sendKeys("joep");
     driver.findElement(By.id("inputPassword")).sendKeys(Keys.ENTER);
     Thread.sleep(7000);
+
+    // Go to the users page.
     driver.findElement(By.cssSelector(".glyphicon-user")).click();
+    Thread.sleep(7000);
+
+    // Add a user.
     driver.findElement(By.id("myBtn")).click();
     driver.findElement(By.id("userName")).click();
     driver.findElement(By.id("userName")).sendKeys("niceUser");
     driver.findElement(By.id("email")).sendKeys("niceUser@gmail.com");
     driver.findElement(By.id("password")).sendKeys("niceUser");
     driver.findElement(By.cssSelector(".bottomright > .align-self-end")).click();
-    Thread.sleep(2000);
+    Thread.sleep(7000);
   }
 }
 

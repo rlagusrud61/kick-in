@@ -20,6 +20,9 @@ public class Constants {
     public static final String PASSWORD = "ihqvjwzhtpnlhcfy";
 
     public static final String ISSUER = "http://localhost:8080/kickInTeam26/";
+    public static final String SUCCESS = "Successful";
+    public static final String FAILURE = "Failure";
+    public static final String ISSUER = "http://env-di-team26.paas.hosted-by-previder.com/kickInTeam26";
     public static final long TTK = 7200000;
     public static final String AUTH_SCHEME = "JWT-TOKEN";
     
