@@ -8,7 +8,7 @@
  */
 function login() {
     //Disables the SIGN IN button after clicking/pressing enter
-    disableBtnAfterClick();
+    document.getElementById("signIn").disabled = true;
     let emailAddress, password, credentialsJSON;
 
     emailAddress = document.getElementById("inputEmail").value;
@@ -19,12 +19,14 @@ function login() {
         "password": password
     };
     loginUser(credentialsJSON, function () {
+        document.getElementById("signIn").disabled = false;
         if (this.status === 204) {
             window.location.href = "list.html";
         } else if (this.status === 403) {
             document.getElementById("inputEmail").value = "";
             document.getElementById("inputPassword").value = "";
-            document.getElementById("incorrectCredentials").innerHTML = "The credentials entered were incorrect. Try again."
+            document.getElementById("incorrectCredentials").innerHTML = "The credentials entered were incorrect. Try again.";
+            document.getElementById("signIn").disabled = false;
         }
     });
 }
@@ -44,8 +46,4 @@ function checkKeyPress() {
     if (event.keyCode === 13 && password !== "" && emailAddress !== "") {
         login();
     }
-}
-
-function disableBtnAfterClick() {
-document.getElementById("signIn").disabled = true;
 }

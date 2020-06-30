@@ -1,4 +1,4 @@
-const baseUrlPrevider = "http://env-di-team26.paas.hosted-by-previder.com/kickInTeam26";
+const baseUrl = "http://env-di-team26.paas.hosted-by-previder.com/kickInTeam26";
 
 /**
  * @param {XMLHttpRequest} xhr - the XmlHTTPRequest response.
@@ -1272,13 +1272,14 @@ function loginUser(credentials, callback) {
     xhr.open('POST', baseUrl + "/rest/authentication", true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
+            document.getElementById("signIn").disabled = false;
             if (xhr.status === 204 || xhr.status === 403) {
                 callback.apply(xhr);
             } else {
             	handleResponse(xhr, callback);
 			}
         }
-    }
+    };
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(JSON.stringify(credentials));
 }
