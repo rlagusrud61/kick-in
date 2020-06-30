@@ -20,6 +20,7 @@ public class Map implements Serializable {
     private String description;
     private long createdBy;
     private long lastEditedBy;
+    private String image;
 
 
     /**
@@ -46,6 +47,11 @@ public class Map implements Serializable {
         this.mapId = mapId;
         this.name = name;
         this.description = description;
+    }
+
+    public Map(long mapId, String image) {
+        this.mapId = mapId;
+        this.image = image;
     }
 
     /**
@@ -92,6 +98,14 @@ public class Map implements Serializable {
 
     public void setLastEditedBy(long lastEditedByIn) {
         this.lastEditedBy = lastEditedByIn;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     /**

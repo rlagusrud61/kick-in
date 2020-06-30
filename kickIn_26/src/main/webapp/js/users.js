@@ -157,10 +157,9 @@ function viewUser(userId) {
  * successfully added to the database, the page is reloaded.
  */
 function addUserPopup() {
-    let userName, email, password, level, levelDescription, clearanceLevel, userJSON;
+    let userName, email, level, levelDescription, clearanceLevel, userJSON;
 	userName = document.getElementById("userName").value;
     email = document.getElementById("email").value;
-    password = document.getElementById("password").value;
     level = document.getElementById("clearanceLevel");
     levelDescription = level.options[level.selectedIndex].value;
     switch(levelDescription) {
@@ -179,7 +178,6 @@ function addUserPopup() {
     userJSON = {
         "nickname": userName,
         "email": email,
-        "password": password,
         "clearanceLevel": clearanceLevel,
     };
     addUser(userJSON, function() {

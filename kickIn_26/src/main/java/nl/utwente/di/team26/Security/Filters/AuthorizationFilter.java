@@ -1,5 +1,6 @@
 package nl.utwente.di.team26.Security.Filters;
 
+import nl.utwente.di.team26.Exception.Util.ErrorMessage;
 import nl.utwente.di.team26.Product.dao.Authentication.UserDao;
 import nl.utwente.di.team26.Security.User.Roles;
 
@@ -31,8 +32,6 @@ public class AuthorizationFilter implements ContainerRequestFilter {
     @Context
     private SecurityContext securityContext;
 
-    UserDao userDao = new UserDao();
-
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
 
@@ -57,8 +56,11 @@ public class AuthorizationFilter implements ContainerRequestFilter {
             }
 
         } catch (NotAuthorizedException e) {
-            requestContext.abortWith(
-                    Response.status(Response.Status.FORBIDDEN).build());
+            requestContext.abortWith(Response
+                            .status(Response.Status.FORBIDDEN)
+                            .entity(new ErrorMessage(Response.Status.FORBIDDEN, e.getMessage()))
+                            .build()
+            );
         }
     }
 

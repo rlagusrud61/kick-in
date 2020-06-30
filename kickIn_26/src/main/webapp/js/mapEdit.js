@@ -1,14 +1,93 @@
-let localReport, map, mapId, resources, images, mapObjects, imgGroup, newObjects, deletedObjects;
+let localReport, map, lengthMeasurer, mapId, resources, images, mapObjects, measurementObjects,
+    imgGroup, newObjects, deletedObjects, zoomControl, mapName, actions, options, zindex;
 
 localReport = new Map();
+actions = [L.DragAction, L.ScaleAction, L.RotateAction, L.DeleteAction];
+options = {
+    position: 'topleft',            // Position to show the control. Values: 'topright', 'topleft', 'bottomright', 'bottomleft'
+    unit: 'metres',                 // Show imperial or metric distances. Values: 'metres', 'landmiles', 'nauticalmiles'
+    clearMeasurementsOnStop: true,  // Clear all the measurements when the control is unselected
+    showBearings: false,            // Whether bearings are displayed within the tooltips
+    bearingTextIn: 'In',             // language dependend label for inbound bearings
+    bearingTextOut: 'Out',          // language dependend label for outbound bearings
+    tooltipTextFinish: 'Click to <b>finish line</b><br>',
+    tooltipTextDelete: 'Press SHIFT-key and click to <b>delete point</b>',
+    tooltipTextMove: 'Click and drag to <b>move point</b><br>',
+    tooltipTextResume: '<br>Press CTRL-key and click to <b>resume line</b>',
+    tooltipTextAdd: 'Press CTRL-key and click to <b>add point</b>',
+    // language dependend labels for point's tooltips
+    measureControlTitleOn: 'Turn on PolylineMeasure',   // Title for the control going to be switched on
+    measureControlTitleOff: 'Turn off PolylineMeasure', // Title for the control going to be switched off
+    measureControlLabel: '&#8614;', // Label of the Measure control (maybe a unicode symbol)
+    measureControlClasses: [],      // Classes to apply to the Measure control
+    showClearControl: false,        // Show a control to clear all the measurements
+    clearControlTitle: 'Clear Measurements', // Title text to show on the clear measurements control button
+    clearControlLabel: '&times',    // Label of the Clear control (maybe a unicode symbol)
+    clearControlClasses: [],        // Classes to apply to clear control button
+    showUnitControl: false,         // Show a control to change the units of measurements
+    distanceShowSameUnit: false,    // Keep same unit in tooltips in case of distance less then 1 km/mi/nm
+    unitControlTitle: {             // Title texts to show on the Unit Control button
+        text: 'Change Units',
+        metres: 'metres',
+        landmiles: 'land miles',
+        nauticalmiles: 'nautical miles'
+    },
+    unitControlLabel: {             // Unit symbols to show in the Unit Control button and measurement labels
+        metres: 'm',
+        kilometres: 'km',
+        feet: 'ft',
+        landmiles: 'mi',
+        nauticalmiles: 'nm'
+    },
+    tempLine: {                     // Styling settings for the temporary dashed line
+        color: '#00f',              // Dashed line color
+        weight: 2                   // Dashed line weight
+    },
+    fixedLine: {                    // Styling for the solid line
+        color: '#006',              // Solid line color
+        weight: 2                   // Solid line weight
+    },
+    startCircle: {                  // Style settings for circle marker indicating the starting point of the polyline
+        color: '#000',              // Color of the border of the circle
+        weight: 1,                  // Weight of the circle
+        fillColor: '#0f0',          // Fill color of the circle
+        fillOpacity: 1,             // Fill opacity of the circle
+        radius: 3                   // Radius of the circle
+    },
+    intermedCircle: {               // Style settings for all circle markers between startCircle and endCircle
+        color: '#000',              // Color of the border of the circle
+        weight: 1,                  // Weight of the circle
+        fillColor: '#ff0',          // Fill color of the circle
+        fillOpacity: 1,             // Fill opacity of the circle
+        radius: 3                   // Radius of the circle
+    },
+    currentCircle: {                // Style settings for circle marker indicating the latest point of the polyline during drawing a line
+        color: '#000',              // Color of the border of the circle
+        weight: 1,                  // Weight of the circle
+        fillColor: '#f0f',          // Fill color of the circle
+        fillOpacity: 1,             // Fill opacity of the circle
+        radius: 3                   // Radius of the circle
+    },
+    endCircle: {                    // Style settings for circle marker indicating the last point of the polyline
+        color: '#000',              // Color of the border of the circle
+        weight: 1,                  // Weight of the circle
+        fillColor: '#f00',          // Fill color of the circle
+        fillOpacity: 1,             // Fill opacity of the circle
+        radius: 3                   // Radius of the circle
+    },
+};
+zindex = 250;
 map = initMap();
+zoomControl = map.zoomControl;
 mapId = window.location.search.split("=")[1];
+mapName = mapId;
 //all available resources
 resources = new Map();
 //their images
 images = new Map();
 //stuff on the map
 mapObjects = new Map();
+measurementObjects = new Map();
 //the image group for the library
 imgGroup = [];
 //new objects added to the map.
@@ -99,7 +178,10 @@ function initMap() {
     let newMap, tiles;
     newMap = L.map('mapid', {
         center: [52.2413, -353.1531],
+        zoomSnap: 0,
         zoom: 16,
+        maxZoom: 19,
+        maxNativeZoom: 18,
         keyboard: false
     });
     tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -107,6 +189,13 @@ function initMap() {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     });
     tiles.addTo(newMap);
+    lengthMeasurer = L.control.polylineMeasure(options);
+    lengthMeasurer.addTo(newMap);
+    newMap.on('click', function () {
+        measurementObjects.forEach(function (measureTool) {
+            newMap.removeLayer(measureTool);
+        })
+    })
     return newMap;
 }
 
@@ -221,12 +310,35 @@ function massPost(callback) {
  * get the updates in case someone else also edits the map.
  */
 function saveState() {
+    disableEditingForAll();
     massDelete(deletedObjects, function () {
         massPost(function () {
             massUpdate(function () {
-                bringAllObjectsForMap(mapId);
+                postNewImage(function () {
+                    bringAllObjectsForMap(mapId);
+                });
             });
         });
+    });
+}
+
+function postNewImage(callback) {
+    map.removeControl(lengthMeasurer);
+    measurementObjects.forEach(function (measurer) {
+        measurer.hideMeasurements();
+    })
+    screenshot(function (image) {
+        updateMapImage({mapId: mapId, image: image}, function () {
+            if (this.responseText) {
+                response = JSON.parse(this.responseText);
+                console.log(response);
+                map.addControl(lengthMeasurer);
+                callback();
+            } else {
+                map.addControl(lengthMeasurer);
+                callback();
+            }
+        })
     });
 }
 
@@ -242,16 +354,18 @@ function saveState() {
  * objects may not have been saved in the database yet, hence do not exist in the mapObjects map.
  */
 function addResourceToMap(rid) {
-    let woof;
-    woof = L.distortableImageOverlay(images.get(rid)).addTo(map);
-    woof.on('remove', function () {
-        const index = newObjects.indexOf(woof);
+    let newResourceImage;
+    newResourceImage = L.distortableImageOverlay(images.get(rid), {
+        actions: actions,
+    }).addTo(map);
+    newResourceImage.on('remove', function () {
+        const index = newObjects.indexOf(newResourceImage);
         if (index !== -1) {
             newObjects.splice(index, 1);
         }
     });
-    woof.resourceId = rid;
-    newObjects.push(woof);
+    newResourceImage.resourceId = rid;
+    newObjects.push(newResourceImage);
 }
 
 /**
@@ -335,6 +449,7 @@ function bringAllObjectsForMap(mapId) {
         })
         insertObjectsToMap();
         updateLocalReport();
+        addMeasurements();
         enableEditingForAll();
     })
 }
@@ -376,7 +491,19 @@ function insertObjectsToMap() {
  * by leaflet whenever the user deletes an image and image overlay is removed.
  */
 function pushToMap(newImage, object) {
+    newImage.on('update', function () {
+        measurementObjects.forEach(function (measurer) {
+            if (measurer.objectId !== newImage.objectId) {
+                map.removeLayer(measurer);
+            } else {
+                map.addLayer(measurer);
+                measurer.showMeasurements({showArea: false});
+                measurer.setLatLngs([newImage.getCorner(0), newImage.getCorner(1), newImage.getCorner(3), newImage.getCorner(2)]);
+            }
+        })
+    });
     newImage.on('remove', function () {
+        measurementObjects.get(newImage.objectId).remove();
         deletedObjects.add(object);
         mapObjects.delete(newImage.objectId);
         const index = imgGroup.indexOf(newImage);
@@ -394,12 +521,28 @@ function pushToMap(newImage, object) {
  * @summary This method insert the object on to the map.
  */
 function insertObjectIntoMap(object) {
-    let corners, newImage;
+    let image, corners;
     corners = JSON.parse(object.latLangs);
-    newImage = L.distortableImageOverlay(images.get(object.resourceId), {
+    image = L.distortableImageOverlay(images.get(object.resourceId), {
+        actions: actions,
         corners: corners
     })
-    newImage.objectId = object.objectId;
-    newImage.resourceId = object.resourceId;
-    pushToMap(newImage, object);
+    image.objectId = object.objectId;
+    image.resourceId = object.resourceId;
+    image.setZIndex(zindex);
+    image.edgeMinWidth = 10;
+    pushToMap(image, object)
+    zindex++;
+}
+
+function addMeasurements() {
+    imgGroup.forEach(function (image) {
+        let newMeasurement = L.polygon([image.getCorner(0), image.getCorner(1), image.getCorner(3), image.getCorner(2)],
+            {fill: false, weight: 2, color: '#000'})
+            .addTo(map)
+            .hideMeasurements();
+        newMeasurement.objectId = image.objectId;
+        measurementObjects.set(image.objectId, newMeasurement);
+        map.removeLayer(newMeasurement);
+    })
 }

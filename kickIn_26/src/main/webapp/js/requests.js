@@ -1,3 +1,5 @@
+const baseUrlPrevider = "http://env-di-team26.paas.hosted-by-previder.com/kickInTeam26";
+
 /**
  * @param {XMLHttpRequest} xhr - the XmlHTTPRequest response.
  *
@@ -230,6 +232,20 @@ function updateMap(map, callback) {
 	mapId = map.mapId;
 	xhr = new XMLHttpRequest();
 	xhr.open('PUT', baseUrl + "/rest/map/" + mapId , true);
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4) {
+			handleResponse(xhr, callback);
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send(JSON.stringify(map));
+}
+
+function updateMapImage(map, callback) {
+	let xhr, mapId;
+	mapId = map.mapId;
+	xhr = new XMLHttpRequest();
+	xhr.open('PUT', "http://env-di-team26.paas.hosted-by-previder.com/kickInTeam26/rest/map/image/" + mapId , true);
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4) {
 			handleResponse(xhr, callback);
@@ -1109,6 +1125,34 @@ function updateUser(user, callback) {
 	}
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.send(JSON.stringify(user));
+}
+
+/**
+ * @param {number} userId - The user to be updated.
+ *
+ * @param {function} callback - Once an response from the RESTful service provider has been
+ * received, this function is called to analyse the response.
+ *
+ * @summary This method resets the password of the matching user in the database.
+ *
+ * @description This method takes the userId of the user for whom the password has to be
+ * reset as a parameter. This ID is then appended to the URL to request the update on the back-end.
+ * A PUT request is sent to the RESTful service provider with the given URL.
+ * The method then calls the callback function on 'xhr' if the update request was
+ * successful, by using the handleResponse method, else an alert is shown with the error
+ * message.
+ */
+function sendPasswordReset(userId, callback) {
+	let xhr;
+	xhr = new XMLHttpRequest();
+	xhr.open('PUT', "http://env-di-team26.paas.hosted-by-previder.com/kickInTeam26/rest/credential/reset/" + userId, true);
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4) {
+			handleResponse(xhr, callback);
+		}
+	}
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
 }
 
 /**

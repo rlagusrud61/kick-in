@@ -61,7 +61,7 @@ public class Tests {
     }
 
     protected String getURIString(String path) {
-        return UriBuilder.fromUri("http://env-di-team26.paas.hosted-by-previder.com/kickInTeam26/rest").path(path).build().toString();
+        return UriBuilder.fromUri("http://localhost:8080/kickInTeam26/rest").path(path).build().toString();
     }
 
     protected void addThreeUsers() {

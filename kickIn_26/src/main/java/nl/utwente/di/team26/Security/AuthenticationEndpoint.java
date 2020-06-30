@@ -68,9 +68,8 @@ public class AuthenticationEndpoint {
         User userInstance = userDao.getUserByEmail(credentials);
         if (Utils.verifyHash(userInstance.getPassword(), credentials.getPassword())) {
             return userInstance;
-        } else {
-            throw new AuthenticationDeniedException("Credentials could not be verified to be true.");
         }
+        throw new AuthenticationDeniedException("Credentials could not be verified to be true.");
     }
 
     private String createCookie(long userId) throws SQLException {

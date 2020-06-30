@@ -100,7 +100,7 @@ function sortTableDescending(tableId, sortCriteria) {
  */
 function logout() {
     let xhr = new XMLHttpRequest();
-    xhr.open('DELETE', "http://env-di-team26.paas.hosted-by-previder.com/kickInTeam26/rest/authentication", true);
+    xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/authentication", true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4) {
             window.location.href = "login.html";
@@ -170,4 +170,62 @@ function searchTables(tableID, searchBoxID) {
             }
         }
     }
+}
+
+/**
+ * Takes a picture of the map after fitting all objects on the map into the frame.
+ */
+function screenshot(callback) {
+    map.removeControl(zoomControl);
+    fitMapBounds(function () {
+        domtoimage.toPng(map.getContainer(), {
+            width: map.getSize().x,
+            height: map.getSize().y
+        }).then(function(img) {
+            map.addControl(zoomControl);
+            callback(img);
+        });
+    })
+}
+
+/**
+ * Util function for finding the bounds that fit all the objects.
+ * @returns {({lng: number, lat: number})[]|*[]}
+ */
+function getMapBounds() {
+    const topLeft = {lat:Infinity, lng:Infinity}
+    const bottomRight = {lat:-Infinity, lng:-Infinity};
+    if (mapObjects.size >= 1) {
+        mapObjects.forEach(function (object) {
+            const corners = JSON.parse(object.latLangs);
+            corners.forEach(function (latLng) {
+                if (latLng.lat < topLeft.lat) {
+                    topLeft.lat = latLng.lat;
+                }
+                if (latLng.lng < topLeft.lng) {
+                    topLeft.lng = latLng.lng;
+                }
+                if (latLng.lat > bottomRight.lat) {
+                    bottomRight.lat = latLng.lat;
+                }
+                if (latLng.lng > bottomRight.lng) {
+                    bottomRight.lng = latLng.lng;
+                }
+            })
+        })
+    } else {
+        map.panTo([52.2413, -353.1531]);
+        map.setZoom(16);
+        return [map.containerPointToLatLng([0,0]), map.containerPointToLatLng([map.getSize().x, map.getSize().y])];
+    }
+    return [topLeft, bottomRight]
+}
+
+/**
+ * Pans the map to fit the map exactly all the objects.
+ */
+async function fitMapBounds(callback) {
+    map.fitBounds(getMapBounds())
+    await new Promise(r => setTimeout(r, 500));
+    callback();
 }

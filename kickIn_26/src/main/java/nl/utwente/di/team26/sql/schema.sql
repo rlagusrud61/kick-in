@@ -21,7 +21,7 @@ create table session
 CREATE TABLE Events
 (
     eventId      bigserial NOT NULL,
-    name         text,
+    name         text NOT NULL ,
     description  text,
     date         date,
     location     text,
@@ -34,10 +34,11 @@ CREATE TABLE Events
 CREATE TABLE Maps
 (
     mapId        bigserial NOT NULL,
-    name         text,
+    name         text NOT NULL,
     description  text,
     createdBy    bigint,
     lastEditedBy bigint,
+    image        text,
     PRIMARY KEY (mapId),
     FOREIGN KEY (createdBy) REFERENCES users(userid) ON DELETE CASCADE,
     FOREIGN KEY (lastEditedBy) REFERENCES users(userid) ON DELETE CASCADE
@@ -45,21 +46,21 @@ CREATE TABLE Maps
 CREATE TABLE TypeOfResource
 (
     resourceId  bigserial NOT NULL,
-    name        text,
+    name        text NOT NULL,
     description text,
     PRIMARY KEY (resourceId)
 );
 CREATE TABLE Materials
 (
     resourceId bigint NOT NULL,
-    image      text,
+    image      text NOT NULL,
     PRIMARY KEY (resourceId),
     FOREIGN KEY (resourceId) REFERENCES TypeOfResource (resourceId) ON DELETE CASCADE
 );
 CREATE TABLE Drawing
 (
     resourceId bigint NOT NULL,
-    image      text,
+    image      text NOT NULL,
     PRIMARY KEY (resourceId),
     FOREIGN KEY (resourceId) REFERENCES TypeOfResource (resourceId) ON DELETE CASCADE
 );
@@ -74,9 +75,9 @@ CREATE TABLE EventMap
 CREATE TABLE MapObjects
 (
     objectId   bigserial NOT NULL,
-    mapId      bigint,
-    resourceId bigint,
-    latLangs   text,
+    mapId      bigint NOT NULL,
+    resourceId bigint NOT NULL,
+    latLangs   text NOT NULL,
     PRIMARY KEY (objectId),
     FOREIGN KEY (mapId) REFERENCES Maps (mapId) ON DELETE CASCADE,
     FOREIGN KEY (resourceId) REFERENCES TypeOfResource (resourceId) ON DELETE CASCADE
@@ -4844,8 +4845,7 @@ begin
     );
 end;
 $$;
-create or replace function getMap(mid bigint)
-    returns text
+create function getmap(mid bigint) returns text
     language plpgsql
 as
 $$
@@ -4856,7 +4856,7 @@ begin
                  select jsonb_build_object(
                                 'mapId', m.mapId,
                                 'name', m.name,
-                                'description', m.description,
+                                'description', coalesce(m.description, ''),
                                 'createdBy', cb.nickname,
                                 'lastEditedBy', leb.nickname,
                                 'report', generateMapReportJSON(mid)) as mapData
@@ -4864,6 +4864,23 @@ begin
                  where m.createdBy = cb.userid
                    and m.lastEditedBy = leb.userid
                    and m.mapId = mid) map
+    );
+end;
+$$;
+create function getMapImage(mid bigint) returns text
+    language plpgsql
+as
+$$
+begin
+    return (
+        select map.mapData::text
+        from (
+                 select jsonb_build_object(
+                                'mapId', m.mapId,
+                                'image', coalesce(m.image, '')
+                            ) as mapData
+                 from maps m
+                 where m.mapId = mid) map
     );
 end;
 $$;

@@ -23,6 +23,20 @@ public class User {
         this.clearanceLevel = clearanceLevel;
     }
 
+    public User(String email, int clearanceLevel, String nickname) {
+        this.email = email;
+        this.nickname = nickname;
+        this.clearanceLevel = clearanceLevel;
+    }
+
+    public User(long userId, String email, String nickname, int clearanceLevel) {
+        this.userId = userId;
+        this.email = email;
+        this.nickname = nickname;
+        this.clearanceLevel = clearanceLevel;
+    }
+
+    @Deprecated
     public User(String email, String password, int clearanceLevel) {
         this.email = email;
         this.password = password;
