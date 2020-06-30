@@ -41,13 +41,20 @@ public class EditorNavigationTest {
   public void tearDown() {
     driver.quit();
   }
+
+
   @Test
+  // A few parts of this test fail due to the alert messages since testing with Selenium does not work well with alerts.
   public void editorNavigation() throws InterruptedException {
-    driver.get("http://localhost:8080/kickInTeam26/login.html");
+    driver.get(Constants.ISSUER);
+
+    // Log in.
     driver.findElement(By.id("inputEmail")).sendKeys("editor@gmail.com");
     driver.findElement(By.id("inputPassword")).sendKeys("editor");
     driver.findElement(By.id("inputPassword")).sendKeys(Keys.ENTER);
     Thread.sleep(7000);
+
+    // Add an event which is not possible as an editor.
     driver.findElement(By.id("addEventBtn")).click();
     driver.findElement(By.id("eventName")).click();
     driver.findElement(By.id("eventName")).sendKeys("AddEvent");
@@ -55,13 +62,19 @@ public class EditorNavigationTest {
     driver.findElement(By.id("eventDate")).sendKeys("25-06-2020");
     driver.findElement(By.cssSelector(".bottomright > .align-self-end")).click();
     Thread.sleep(12000);
-    driver.findElement(By.cssSelector("tr:nth-child(9) .glyphicon-eye-open")).click();
-    Thread.sleep(4000);
+
+    // View an event.
+    driver.findElement(By.cssSelector("tr:nth-child(2) .glyphicon-eye-open")).click();
+    Thread.sleep(7000);
+
+    // Edit an event.
     driver.findElement(By.id("editEvent")).click();
-    Thread.sleep(2000);
+    Thread.sleep(7000);
     driver.findElement(By.id("eventName")).click();
     driver.findElement(By.id("eventName")).sendKeys("Edit Event");
     driver.findElement(By.id("eventDescription")).sendKeys("As an Editor");
+    driver.findElement(By.id("eventDescription")).sendKeys(Keys.TAB);
+    driver.findElement(By.id("eventDate")).clear();
     driver.findElement(By.id("eventDate")).sendKeys("26-06-2020");
     driver.findElement(By.id("eventLocation")).click();
     {
@@ -70,40 +83,58 @@ public class EditorNavigationTest {
     }
     driver.findElement(By.id("eventLocation")).click();
     driver.findElement(By.id("myBtn")).click();
-    Thread.sleep(5000);
+    Thread.sleep(7000);
+
+    // Add a map which is not possible.
     driver.findElement(By.id("addMap")).click();
-    Thread.sleep(3000);
+    Thread.sleep(7000);
     driver.findElement(By.cssSelector("#addNewMap > .btn")).click();
-    Thread.sleep(3000);
+    Thread.sleep(7000);
     driver.findElement(By.id("mapName")).click();
     driver.findElement(By.id("mapName")).sendKeys("New Map");
     driver.findElement(By.id("description")).sendKeys("Editor");
     driver.findElement(By.cssSelector(".myButton")).click();
     Thread.sleep(12000);
+
+    // Delete a map.
     driver.findElement(By.cssSelector(".glyphicon-trash:nth-child(1)")).click();
-    Thread.sleep(6000);
+    Thread.sleep(7000);
     driver.findElement(By.id("yesMapDelete")).click();
-    Thread.sleep(8000);
+    Thread.sleep(12000);
+
+    // Go back to the previous page.
     driver.findElement(By.id("arrow")).click();
-    Thread.sleep(2000);
+    Thread.sleep(7000);
+
+    // Go back to the home page.
     driver.findElement(By.cssSelector(".glyphicon-home")).click();
-    Thread.sleep(8000);
-    driver.findElement(By.cssSelector("tr:nth-child(9) .glyphicon-trash")).click();
+    Thread.sleep(12000);
+
+    // Delete an event.
+    driver.findElement(By.cssSelector("tr:nth-child(2) .glyphicon-trash")).click();
     driver.findElement(By.id("yesDeleteButton")).click();
-    Thread.sleep(5000);
+    Thread.sleep(7000);
+
+    // Go to the users page.
     driver.findElement(By.cssSelector(".glyphicon-user")).click();
-    Thread.sleep(5000);
+    Thread.sleep(7000);
+
+    // Go to the resources page.
     driver.findElement(By.cssSelector(".glyphicon-cog")).click();
-    Thread.sleep(4000);
+    Thread.sleep(7000);
+
+    // Add a resource which is not possible.
     driver.findElement(By.id("addResourceBtn")).click();
     driver.findElement(By.id("resourceName")).click();
     driver.findElement(By.id("resourceName")).sendKeys("New Resource");
     driver.findElement(By.id("resourceDescription")).sendKeys("As Editor");
     driver.findElement(By.cssSelector(".custom-control:nth-child(1) > .custom-control-label")).click();
-    Thread.sleep(4000);
+    Thread.sleep(7000);
     driver.findElement(By.cssSelector(".bottomright > .align-self-end")).click();
-    Thread.sleep(4000);
+    Thread.sleep(7000);
     driver.findElement(By.cssSelector("#addResource .close")).click();
+
+    // Log out.
     driver.findElement(By.id("logout")).click();
   }
 }
