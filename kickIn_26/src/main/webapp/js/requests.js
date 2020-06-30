@@ -1,3 +1,5 @@
+const baseUrl = "http://env-di-team26.paas.hosted-by-previder.com/kickInTeam26";
+
 /**
  * @param {XMLHttpRequest} xhr - the XmlHTTPRequest response.
  *
@@ -19,8 +21,6 @@ function handleResponse(xhr, callback) {
 			);
 	}
 }
-
-var baseUrl = "http://env-di-team26.paas.hosted-by-previder.com/kickInTeam26";
 
 //Event functions
 
