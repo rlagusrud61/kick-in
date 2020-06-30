@@ -194,6 +194,7 @@ function screenshot(callback) {
 
 /**
  * @summary This is a util function for finding the bounds that fit all the objects.
+ *
  * @returns {L.point | Array} - The maximum and minimum coordinates between which the user has placed any object.
  */
 function getMapBounds() {
