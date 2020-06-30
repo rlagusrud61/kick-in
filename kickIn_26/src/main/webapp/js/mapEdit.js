@@ -355,7 +355,9 @@ function postNewImage(callback) {
  */
 function addResourceToMap(rid) {
     let newResourceImage;
-    newResourceImage = L.distortableImageOverlay(images.get(rid)).addTo(map);
+    newResourceImage = L.distortableImageOverlay(images.get(rid), {
+        actions: actions,
+    }).addTo(map);
     newResourceImage.on('remove', function () {
         const index = newObjects.indexOf(newResourceImage);
         if (index !== -1) {
