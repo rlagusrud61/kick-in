@@ -64,30 +64,27 @@ function removeMap(mapId) {
  * @returns {L.map} newMap - This is an instance of a new leaflet map.
  */
 function initMap() {
-    let newMap, tiles;
+    let newMap, tileLayer;
      newMap = L.map('mapid', {
         center: [52.2413, -353.1531],
+        zoomSnap: 0,
         zoom: 16,
-        keyboard: false,
-        fullscreenControl: true,
-        fullscreenControlOptions: {
-            position: 'topleft'
-        }
+        keyboard: false
     });
-     tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+     tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     });
-    tiles.addTo(newMap);
-    printer = L.easyPrint({
-        tileLayer: tiles,
-        sizeModes: ['A4Landscape'],
-        filename: mapName,
-        exportOnly: true,
-        hideControlContainer: true
-    }).addTo(newMap);
+     fullScreenControl = L.control.fullscreen({
+         position: 'topleft', // change the position of the button can be topleft, topright, bottomright or bottomleft, defaut topleft
+         title: 'Show me the fullscreen !', // change the title of the button, default Full Screen
+         titleCancel: 'Exit fullscreen mode'
+     })
+    fullScreenControl.addTo(newMap);
+    tileLayer.addTo(newMap);
     return newMap;
 }
+
 imgGroup = [];
 //all available resources
 resources = new Map();
@@ -128,6 +125,8 @@ function insertObjectIntoMap(object) {
     let corners, newImage;
     corners = JSON.parse(object.latLangs);
     newImage = L.distortableImageOverlay(images.get(object.resourceId), {
+        editable: false,
+        actions: [],
         corners: corners
     })
     newImage.objectId = object.objectId;
@@ -165,6 +164,7 @@ function initPage() {
         mapData = JSON.parse(this.responseText);
         mapName = mapData.name;
         map = initMap();
+        zoomControl = map.zoomControl;
         document.getElementById("mapName").innerHTML = mapData.name;
         document.getElementById("description").innerHTML = mapData.description;
         listItems(mapData.report);
@@ -218,6 +218,17 @@ function removeMap(mapId) {
     deleteMap(mapId, function () {
         window.location.href = "list.html";
     })
+}
+
+function downloadPNG() {
+    map.removeControl(fullScreenControl);
+    screenshot(function (image) {
+        const a = document.createElement("a"); //Create <a>
+        a.href = image
+        a.download = mapName + ".png"; //File name Here
+        a.click();
+        map.addControl(fullScreenControl);
+    });
 }
 
 /**

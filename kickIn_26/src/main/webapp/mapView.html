@@ -35,11 +35,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/leaflet.distortableimage.css">
     <script src="https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/leaflet.distortableimage.js"></script>
     <script src='https://cdn.jsdelivr.net/npm/leaflet-distortableimage@0.16.6/dist/leaflet.distortableimage.js.map'></script>
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@1.6.0/Control.FullScreen.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.6.0/Control.FullScreen.css"/>
-    <script src="https://cdn.jsdelivr.net/npm/leaflet-easyprint@2.1.9/dist/bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
     <link rel="stylesheet" href="css/mapView.css"> <!-- link to css file-->
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -68,7 +66,8 @@
             <h1 id="mapName" class="text-left" style="padding-left: 13px;"></h1>
             <a id = "mapEditBtn" class="glyphicon glyphicon-pencil text-success align-mapname" ></a>
             <a class="glyphicon glyphicon-trash text-success align-mapname" id="deleteMap"></a>
-            <a id="downloadReport" class="glyphicon glyphicon-download-alt text-success align-mapname" onclick="javascript: generateReportInJSON()"></a>
+            <a id="downloadReport" class="glyphicon glyphicon-download-alt text-success align-mapname" onclick="generateReportInJSON()"></a>
+            <a id="exportToPNG" class="glyphicon glyphicon-download text-success align-mapname" title="Download Map as PNG" onclick="downloadPNG()"></a>
         </div>
         <div class="row">
             <div class = "col-sm-6">
