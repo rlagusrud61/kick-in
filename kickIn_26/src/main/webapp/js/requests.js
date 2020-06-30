@@ -1265,7 +1265,7 @@ function deleteAllUsers(callback) {
  * @description A POST request is sent to the RESTful service provider with the given URL, where the content of the
  * body is the JSON object that was taken as the parameter. The method then calls the callback function on 'xhr' if the
  * authentication was successful or if wrong credentials were entered, by using the handleResponse method, else an alert is shown with the error
- * message.
+ * message. The sign in button is also re-enabled when the response is received from the server.
  */
 function loginUser(credentials, callback) {
     let xhr = new XMLHttpRequest();
