@@ -7,6 +7,8 @@
  * is unsuccessful, the password and email fields are emptied and an error message is displayed.
  */
 function login() {
+    //Disables the SIGN IN button after clicking/pressing enter
+    disableBtnAfterClick();
     let emailAddress, password, credentialsJSON;
 
     emailAddress = document.getElementById("inputEmail").value;
@@ -16,10 +18,10 @@ function login() {
         "email": emailAddress,
         "password": password
     };
-    loginUser(credentialsJSON, function() {
-        if (this.status === 204){
+    loginUser(credentialsJSON, function () {
+        if (this.status === 204) {
             window.location.href = "list.html";
-        } else if (this.status === 403){
+        } else if (this.status === 403) {
             document.getElementById("inputEmail").value = "";
             document.getElementById("inputPassword").value = "";
             document.getElementById("incorrectCredentials").innerHTML = "The credentials entered were incorrect. Try again."
@@ -39,7 +41,11 @@ function checkKeyPress() {
     let password, emailAddress;
     password = document.getElementById('inputPassword').value;
     emailAddress = document.getElementById('inputEmail').value;
-	if (event.keyCode === 13 && password !== "" && emailAddress !== "") {
-		login();
-	}
+    if (event.keyCode === 13 && password !== "" && emailAddress !== "") {
+        login();
+    }
+}
+
+function disableBtnAfterClick() {
+document.getElementById("signIn").disabled = true;
 }

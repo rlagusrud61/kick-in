@@ -1,6 +1,6 @@
 # Kick-In26
 
-## For Eclipse users: ##
+# [Localhost] For Eclipse users:
 
 1. Download our project into an empty folder from our git page: 
    https://git.snt.utwente.nl/di20-26/kick-in26
@@ -23,7 +23,7 @@
    - email: admin@gmail.com
    - password: adminpass
 
-## If you are an IntelliJ user (great choice!) : ##
+# [Localhost] If you are an IntelliJ user : 
 
 1. Download our project into an empty folder from our git page: 
    https://git.snt.utwente.nl/di20-26/kick-in26
@@ -55,13 +55,25 @@ after the artifact has been deployed successfully).
   - email: admin@gmail.com
   - password: adminpass
   
-  # For Running Tests #
+# Server from Previder
+
+1. Go to http://env-di-team26.paas.hosted-by-previder.com/kickInTeam26/
+2. Log in with the following credentials:
+    - email: admin@gmail.com
+    - password : adminpass
+
+Notes:
+
+30/6/2020 (17:15) UPDATE : The project is currently connected to the database for development (idb_kick_in_team_26), but it will be connected with the new schema later on (kickin26).
+
+  # For Running Tests
 1. Run the server using the instructions above, but using coverage option.
 2. Under kickIn_26/src/test/java/Tests, run all the tests.
 3. After tests have finished running, stop the server. It should generate a Coverage Report with test pass/fail result.
 
-  # If You are not using our credentials for the database. #
-1. Under kickIn_26/src/main/java/nl/utwente/di/team26 -> CONSTANTS.java, change only the loginUser, loginPasswd, and in the loginUrl use your username instead of dab_di1920_27.
-	Please note: our current deployment still only works for PostgresSQL database.
+  # If You are not using our credentials for the database.
+1. Under kickIn_26/src/main/java/nl/utwente/di/team26 -> Constants.java, change only the loginUser, loginPasswd, and in the loginUrl use your username instead of dab_di1920_27.
+	Please note: our current deployment still only works for PostgreSQL database.
 2. Run schema.sql found under kickIn_26/design, on your database for configuring a new and empty database. Notice: it automatically adds the active material list provided by our Product Owner, so this data is already there.
+
 
