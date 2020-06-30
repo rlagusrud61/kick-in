@@ -10,7 +10,7 @@ public class Constants {
     public static final String loginUrl = "jdbc:postgresql://bronto.ewi.utwente.nl:5432/dab_di19202b_27";
     public static final String loginUser = "dab_di19202b_27";
     public static final String loginPasswd = "e0z19ZX/Hq9Ip5qp";
-    public static final String SCHEMA = "idb_kick_in_team_26";
+    public static final String SCHEMA = "kickin26";
 
     public static final String COOKIENAME = "securityTeam26";
     public static final String SECRET = "securityTeam26IWILLBESECUREENOUGH!!@@";
@@ -24,7 +24,6 @@ public class Constants {
     public static final String ISSUER = "http://env-di-team26.paas.hosted-by-previder.com/kickInTeam26";
     public static final long TTK = 7200000;
     public static final String AUTH_SCHEME = "JWT-TOKEN";
-    
     public static final String CHROME_DRIVER = "D:\\TCS\\Module 4\\Selenium\\chromedriver.exe";
 
     public static Connection getConnection() throws InternalServerErrorException {

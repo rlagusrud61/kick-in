@@ -173,7 +173,11 @@ function searchTables(tableID, searchBoxID) {
 }
 
 /**
- * Takes a picture of the map after fitting all objects on the map into the frame.
+ * @param {function} callback - Once an response from the RESTful service provider has been
+ * received, this function is called to analyse the response.
+ *
+ * @summary This method takes a picture of the map after fitting all objects on the map
+ * into the frame.
  */
 function screenshot(callback) {
     map.removeControl(zoomControl);
@@ -189,8 +193,9 @@ function screenshot(callback) {
 }
 
 /**
- * Util function for finding the bounds that fit all the objects.
- * @returns {({lng: number, lat: number})[]|*[]}
+ * @summary This is a util function for finding the bounds that fit all the objects.
+ *
+ * @returns {L.point | Array} - The maximum and minimum coordinates between which the user has placed any object.
  */
 function getMapBounds() {
     const topLeft = {lat:Infinity, lng:Infinity}
@@ -222,7 +227,10 @@ function getMapBounds() {
 }
 
 /**
- * Pans the map to fit the map exactly all the objects.
+ * @param {function} callback - Once an response from the RESTful service provider has been
+ * received, this function is called to analyse the response.
+ *
+ * @summary This pans the map to fit the map exactly all the objects.
  */
 async function fitMapBounds(callback) {
     map.fitBounds(getMapBounds())
