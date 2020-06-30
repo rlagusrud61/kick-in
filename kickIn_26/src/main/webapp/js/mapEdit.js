@@ -314,6 +314,7 @@ function saveState() {
             massUpdate(function () {
                 postNewImage(function () {
                     bringAllObjectsForMap(mapId);
+                    alert("Your Map has been saved!");
                 });
             });
         });
