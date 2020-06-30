@@ -25,9 +25,8 @@ public class EmailSender {
                 .from("kickInTeam26", Constants.EMAIL)
                 .to(to.getNickname(), to.getEmail())
                 .withSubject("Your Login Credentials")
-                .withPlainText(password)
+                .withPlainText("Your login is for this email is: " + password)
                 .buildEmail();
-
         mailer.sendMail(email);
     }
 
