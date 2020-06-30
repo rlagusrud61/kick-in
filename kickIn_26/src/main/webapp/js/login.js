@@ -1,15 +1,16 @@
 /**
  * @summary This function is used to log into the website.
  *
- * @description First, the email address and password of the user are retrieved from the web page. This information is
- * then used to create a JSON object which is taken as a parameter to the function 'loginUser' so that the credentials
+ * @description First, the sign in button is disabled and the email address and password of the user are retrieved from the web page.
+ * This information is then used to create a JSON object which is taken as a parameter to the function 'loginUser' so that the credentials
  * can be authenticated and the user redirected to the 'list.html' page if the authentication was a success. If the authentication
- * is unsuccessful, the password and email fields are emptied and an error message is displayed.
+ * is unsuccessful, the password and email fields are emptied and an error message is displayed. The sign in button is also re-enabled.
  */
 function login() {
-    //Disables the SIGN IN button after clicking/pressing enter
-    disableBtnAfterClick();
     let emailAddress, password, credentialsJSON;
+
+    //Disables the SIGN IN button after single click or press enter.
+    document.getElementById("signIn").disabled = true;
 
     emailAddress = document.getElementById("inputEmail").value;
     password = document.getElementById("inputPassword").value;
@@ -18,15 +19,18 @@ function login() {
         "email": emailAddress,
         "password": password
     };
+
     loginUser(credentialsJSON, function () {
+        document.getElementById("signIn").disabled = false;
         if (this.status === 204) {
             window.location.href = "list.html";
         } else if (this.status === 403) {
             document.getElementById("inputEmail").value = "";
             document.getElementById("inputPassword").value = "";
-            document.getElementById("incorrectCredentials").innerHTML = "The credentials entered were incorrect. Try again."
+            document.getElementById("incorrectCredentials").innerHTML = "The credentials entered were incorrect. Try again.";
         }
     });
+
 }
 
 /**
@@ -44,8 +48,4 @@ function checkKeyPress() {
     if (event.keyCode === 13 && password !== "" && emailAddress !== "") {
         login();
     }
-}
-
-function disableBtnAfterClick() {
-document.getElementById("signIn").disabled = true;
 }

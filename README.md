@@ -63,8 +63,10 @@ after the artifact has been deployed successfully).
     - password : adminpass
 
 Notes:
+**The schema for Development is called "idb_kick_in_team_26", and the new schema is "kickin26". To use the new schema, go to Constants.java under kickIn_26/src/main/java/nl/utwente/di/team26 and change SCHEMA to "kickin26".**
 
 30/6/2020 (17:15) UPDATE : The project is currently connected to the database for development (idb_kick_in_team_26), but it will be connected with the new schema later on (kickin26).
+
 
   # For Running Tests
 1. Run the server using the instructions above, but using coverage option.

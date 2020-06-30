@@ -1,5 +1,4 @@
-const baseUrlPrevider = "http://env-di-team26.paas.hosted-by-previder.com/kickInTeam26";
-const baseUrl = "http://localhost:8080/kickInTeam26";
+const baseUrl = "http://env-di-team26.paas.hosted-by-previder.com/kickInTeam26";
 
 /**
  * @param {XMLHttpRequest} xhr - the XmlHTTPRequest response.
@@ -1266,20 +1265,21 @@ function deleteAllUsers(callback) {
  * @description A POST request is sent to the RESTful service provider with the given URL, where the content of the
  * body is the JSON object that was taken as the parameter. The method then calls the callback function on 'xhr' if the
  * authentication was successful or if wrong credentials were entered, by using the handleResponse method, else an alert is shown with the error
- * message.
+ * message. The sign in button is also re-enabled when the response is received from the server.
  */
 function loginUser(credentials, callback) {
     let xhr = new XMLHttpRequest();
     xhr.open('POST', baseUrl + "/rest/authentication", true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
+            document.getElementById("signIn").disabled = false;
             if (xhr.status === 204 || xhr.status === 403) {
                 callback.apply(xhr);
             } else {
             	handleResponse(xhr, callback);
 			}
         }
-    }
+    };
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(JSON.stringify(credentials));
 }

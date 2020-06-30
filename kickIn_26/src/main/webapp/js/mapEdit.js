@@ -200,9 +200,7 @@ function initMap() {
 }
 
 /**
- * This method adds a fence to the map. This is test function, and needs to be removed.
- *
- * @deprecated
+ * @summary This method adds a fence to the map.
  */
 function addFenceToMap() {
     addResourceToMap(23);
@@ -316,6 +314,7 @@ function saveState() {
             massUpdate(function () {
                 postNewImage(function () {
                     bringAllObjectsForMap(mapId);
+                    alert("The state of the map has been saved.");
                 });
             });
         });
