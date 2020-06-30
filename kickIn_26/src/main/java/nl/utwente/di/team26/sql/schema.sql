@@ -48,8 +48,6 @@ CREATE TABLE TypeOfResource
     resourceId  bigserial NOT NULL,
     name        text NOT NULL,
     description text,
-    width       numeric,
-    height      numeric,
     PRIMARY KEY (resourceId)
 );
 CREATE TABLE Materials
