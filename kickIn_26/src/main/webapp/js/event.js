@@ -297,6 +297,7 @@ function loadMaps() {
             for (i = 0; i < tiedMaps.length; i++) {
                 mapBox = document.getElementById("mapBox_" + tiedMaps[i].mapId);
                 mapBox.checked = true;
+                mapBox.disabled = true;
             }
 
         });
