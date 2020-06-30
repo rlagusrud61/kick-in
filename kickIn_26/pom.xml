@@ -211,6 +211,13 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-catalina</artifactId>
+			<version>8.5.55</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
 			<version>4.0.0-alpha-3</version>

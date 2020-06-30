@@ -155,7 +155,6 @@ public class UserDao extends Dao implements DaoInterface<User> {
         return new User(
                 rs.getLong("userId"),
                 rs.getString("email"),
-                rs.getString("password"),
                 rs.getString("nickname"),
                 rs.getInt("clearanceLevel")
         );
