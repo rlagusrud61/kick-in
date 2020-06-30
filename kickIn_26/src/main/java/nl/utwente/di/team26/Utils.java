@@ -92,9 +92,6 @@ public class Utils {
     }
 
     public static void main(String[] args) {
-        Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
-        for (int i = 0; i< 1; i++) {
-            System.out.println(hashPassword("hk"));
-        }
+        System.out.println(verifyHash("$argon2id$v=19$m=1048576,t=4,p=8$+gojZnkDa2hoVV9c6NToHw$AJBOOK1tKfqnCa8C9E6fwhwoId3YgIPATtJycq9uUFg", "password"));
     }
 }

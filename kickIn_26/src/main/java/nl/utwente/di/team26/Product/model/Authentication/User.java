@@ -43,7 +43,6 @@ public class User {
         this.clearanceLevel = clearanceLevel;
     }
 
-    @Deprecated
     public User(long userId, String email, String password, String nickname, int clearanceLevel) {
         this.userId = userId;
         this.email = email;

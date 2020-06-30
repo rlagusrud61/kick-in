@@ -48,8 +48,10 @@ public class CrossSiteRequestFilter implements ContainerRequestFilter {
                     return;
                 }
 
+                System.out.println("before: " + json);
                 JsonElement jsonElement = new JsonParser().parse(json);
                 json = clean(jsonElement).toString();
+                System.out.println("after: " + json);
 
                 // replace input stream for Jersey as we've already read it
                 InputStream in = IOUtils.toInputStream(json, Charsets.UTF_8);

@@ -41,10 +41,18 @@ public class AuthenticationEndpoint {
     UserDao userDao = new UserDao();
     SessionDao sessionDao = new SessionDao();
 
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response echo(Credentials credentials) {
+        return Response.ok(credentials).build();
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response authenticateUser(Credentials credentials) throws AuthenticationDeniedException, SQLException {
+        System.out.println(credentials);
         User user = authenticateCredentials(credentials);
         String cookie = createCookie(user.getUserId());
         return Response
@@ -68,9 +76,10 @@ public class AuthenticationEndpoint {
         User userInstance = userDao.getUserByEmail(credentials);
         if (Utils.verifyHash(userInstance.getPassword(), credentials.getPassword())) {
             return userInstance;
-        } else {
-            throw new AuthenticationDeniedException("Credentials could not be verified to be true.");
         }
+        throw new AuthenticationDeniedException("Credentials could not be verified to be true." +
+                "hash: " + userInstance.getPassword()  + "  " +
+                "pass: " + credentials.getPassword());
     }
 
     private String createCookie(long userId) throws SQLException {
