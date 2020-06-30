@@ -1,24 +1,22 @@
 package nl.utwente.di.team26;
 
-import de.mkammerer.argon2.Argon2;
-import de.mkammerer.argon2.Argon2Factory;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import nl.utwente.di.team26.Exception.Exceptions.NotFoundException;
 import nl.utwente.di.team26.Product.dao.Authentication.UserDao;
 import nl.utwente.di.team26.Product.model.Authentication.User;
+import org.apache.commons.codec.binary.Hex;
 import org.passay.CharacterData;
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
 import org.passay.PasswordGenerator;
 
-import javax.crypto.spec.SecretKeySpec;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
-import java.util.Arrays;
 
 import static org.passay.AllowedRegexRule.ERROR_CODE;
 
@@ -45,13 +43,26 @@ public class Utils {
     }
 
     public static String hashPassword(String password) {
-        Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
-        return argon2.hash(4, 1024 * 1024, 8, password);
+        char[] passwordChars = password.toCharArray();
+        byte[] saltBytes = Constants.SECRET.getBytes();
+
+        byte[] hashedBytes = genHash(passwordChars, saltBytes, Constants.ITERATION, Constants.KEY_LENGTH);
+        return Hex.encodeHexString(hashedBytes);
+    }
+
+    public static byte[] genHash(final char[] password, final byte[] salt, final int iterations, final int keyLength) {
+        try {
+            SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
+            PBEKeySpec spec = new PBEKeySpec(password, salt, iterations, keyLength);
+            SecretKey key = skf.generateSecret( spec );
+            return key.getEncoded( );
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static boolean verifyHash(String hash, String password) {
-        Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
-        return argon2.verify(hash, password);
+        return hash.equals(hashPassword(password));
     }
 
     public static String generatePassayPassword() {
@@ -92,6 +103,6 @@ public class Utils {
     }
 
     public static void main(String[] args) {
-        System.out.println(verifyHash("$argon2id$v=19$m=1048576,t=4,p=8$+gojZnkDa2hoVV9c6NToHw$AJBOOK1tKfqnCa8C9E6fwhwoId3YgIPATtJycq9uUFg", "password"));
+        System.out.println(hashPassword("hk"));
     }
 }

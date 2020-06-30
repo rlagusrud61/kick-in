@@ -123,7 +123,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     private void sendError(ContainerRequestContext requestContext, String msg) {
         requestContext.abortWith(Response
                 .status(Response.Status.INTERNAL_SERVER_ERROR)
-                .entity(msg)
+                .entity(new ErrorMessage(Response.Status.INTERNAL_SERVER_ERROR, msg))
                 .build()
         );
     }

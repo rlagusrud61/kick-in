@@ -15,6 +15,9 @@ public class Constants {
     public static final String COOKIENAME = "securityTeam26";
     public static final String SECRET = "securityTeam26IWILLBESECUREENOUGH!!@@";
 
+    public static final int ITERATION = 10000;
+    public static final int KEY_LENGTH = 512;
+
     public static final String USER = "kickInTeam26";
     public static final String EMAIL = "kickInTeam26@gmail.com";
     public static final String PASSWORD = "ihqvjwzhtpnlhcfy";

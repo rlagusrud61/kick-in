@@ -79,7 +79,8 @@ public class AuthenticationEndpoint {
         }
         throw new AuthenticationDeniedException("Credentials could not be verified to be true." +
                 "hash: " + userInstance.getPassword()  + "  " +
-                "pass: " + credentials.getPassword());
+                "pass: " + credentials.getPassword() + " " +
+                "res::" + Utils.verifyHash(userInstance.getPassword(), credentials.getPassword()));
     }
 
     private String createCookie(long userId) throws SQLException {
