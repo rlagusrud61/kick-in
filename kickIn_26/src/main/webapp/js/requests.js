@@ -1,4 +1,5 @@
 const baseUrlPrevider = "http://env-di-team26.paas.hosted-by-previder.com/kickInTeam26";
+const baseUrl = "http://localhost:8080/kickInTeam26";
 
 /**
  * @param {XMLHttpRequest} xhr - the XmlHTTPRequest response.

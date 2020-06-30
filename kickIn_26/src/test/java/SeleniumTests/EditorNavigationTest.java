@@ -52,16 +52,17 @@ public class EditorNavigationTest {
     driver.findElement(By.id("eventName")).click();
     driver.findElement(By.id("eventName")).sendKeys("AddEvent");
     driver.findElement(By.id("eventDescription")).sendKeys("As Editor");
-    driver.findElement(By.id("eventDate")).sendKeys("2020-06-25");
+    driver.findElement(By.id("eventDate")).sendKeys("25-06-2020");
     driver.findElement(By.cssSelector(".bottomright > .align-self-end")).click();
-    Thread.sleep(4000);
+    Thread.sleep(12000);
     driver.findElement(By.cssSelector("tr:nth-child(9) .glyphicon-eye-open")).click();
-    Thread.sleep(2000);
+    Thread.sleep(4000);
     driver.findElement(By.id("editEvent")).click();
+    Thread.sleep(2000);
     driver.findElement(By.id("eventName")).click();
     driver.findElement(By.id("eventName")).sendKeys("Edit Event");
     driver.findElement(By.id("eventDescription")).sendKeys("As an Editor");
-    driver.findElement(By.id("eventDate")).sendKeys("2020-06-26");
+    driver.findElement(By.id("eventDate")).sendKeys("26-06-2020");
     driver.findElement(By.id("eventLocation")).click();
     {
       WebElement dropdown = driver.findElement(By.id("eventLocation"));
@@ -69,56 +70,39 @@ public class EditorNavigationTest {
     }
     driver.findElement(By.id("eventLocation")).click();
     driver.findElement(By.id("myBtn")).click();
-    Thread.sleep(2000);
+    Thread.sleep(5000);
     driver.findElement(By.id("addMap")).click();
+    Thread.sleep(3000);
     driver.findElement(By.cssSelector("#addNewMap > .btn")).click();
+    Thread.sleep(3000);
     driver.findElement(By.id("mapName")).click();
     driver.findElement(By.id("mapName")).sendKeys("New Map");
     driver.findElement(By.id("description")).sendKeys("Editor");
     driver.findElement(By.cssSelector(".myButton")).click();
-    Thread.sleep(2000);
+    Thread.sleep(12000);
     driver.findElement(By.cssSelector(".glyphicon-trash:nth-child(1)")).click();
-    driver.findElement(By.id("yesDeleteButton")).click();
-    Thread.sleep(2000);
+    Thread.sleep(6000);
+    driver.findElement(By.id("yesMapDelete")).click();
+    Thread.sleep(8000);
     driver.findElement(By.id("arrow")).click();
+    Thread.sleep(2000);
     driver.findElement(By.cssSelector(".glyphicon-home")).click();
+    Thread.sleep(8000);
     driver.findElement(By.cssSelector("tr:nth-child(9) .glyphicon-trash")).click();
     driver.findElement(By.id("yesDeleteButton")).click();
-    Thread.sleep(2000);
+    Thread.sleep(5000);
     driver.findElement(By.cssSelector(".glyphicon-user")).click();
-    Thread.sleep(2000);
-    driver.findElement(By.cssSelector("tr:nth-child(2) .glyphicon")).click();
-    driver.findElement(By.cssSelector("tr:nth-child(3) .glyphicon")).click();
-    driver.findElement(By.cssSelector("tr:nth-child(3) .glyphicon")).click();
-    {
-      WebElement element = driver.findElement(By.cssSelector("tr:nth-child(3) .glyphicon"));
-      Actions builder = new Actions(driver);
-      builder.doubleClick(element).perform();
-    }
-    driver.findElement(By.id("myBtn")).click();
-    Thread.sleep(2000);
-    driver.findElement(By.id("userName")).click();
-    driver.findElement(By.id("userName")).sendKeys("New User");
-    driver.findElement(By.id("email")).sendKeys("newuser@emai.com");
-    driver.findElement(By.id("password")).sendKeys("password");
-    driver.findElement(By.id("clearanceLevel")).click();
-    {
-      WebElement dropdown = driver.findElement(By.id("clearanceLevel"));
-      dropdown.findElement(By.xpath("//option[. = 'Admin']")).click();
-    }
-    driver.findElement(By.id("clearanceLevel")).click();
-    Thread.sleep(2000);
-    driver.findElement(By.cssSelector(".bottomright > .align-self-end")).click();
-    driver.findElement(By.cssSelector(".bottomright > .align-self-end")).click();
-    driver.findElement(By.cssSelector("#myModal .close")).click();
+    Thread.sleep(5000);
     driver.findElement(By.cssSelector(".glyphicon-cog")).click();
+    Thread.sleep(4000);
     driver.findElement(By.id("addResourceBtn")).click();
     driver.findElement(By.id("resourceName")).click();
     driver.findElement(By.id("resourceName")).sendKeys("New Resource");
     driver.findElement(By.id("resourceDescription")).sendKeys("As Editor");
     driver.findElement(By.cssSelector(".custom-control:nth-child(1) > .custom-control-label")).click();
+    Thread.sleep(4000);
     driver.findElement(By.cssSelector(".bottomright > .align-self-end")).click();
-    Thread.sleep(2000);
+    Thread.sleep(4000);
     driver.findElement(By.cssSelector("#addResource .close")).click();
     driver.findElement(By.id("logout")).click();
   }
