@@ -4,7 +4,7 @@ let yesBtn, noBtn, deleteMapModal, span1, editBtn, modalMapInfoEdit, span2, span
 yesBtn = document.getElementById("yesMapDelete");
 noBtn = document.getElementById("noBtn");
 editBtn = document.getElementById("editBtn");
-yes = document.getElementById("yesEventDelete"); // this
+yes = document.getElementById("yesEventDelete");
 no = document.getElementById("no");
 modalEventDelete = document.getElementById("modalEventDelete");
 addMapBtn = document.getElementById("addMap");
