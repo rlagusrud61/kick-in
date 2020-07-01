@@ -21,7 +21,7 @@ public class Constants {
     public static final String USER = "kickInTeam26";
     public static final String EMAIL = "kickInTeam26@gmail.com";
     public static final String PASSWORD = "ihqvjwzhtpnlhcfy";
-    public static final String ISSUER = "http://localhost:8080/kickInTeam26";
+    public static final String ISSUER = "http://env-di-team26.paas.hosted-by-previder.com/kickInTeam26";
     public static final long TTK = 7200000;
     public static final String AUTH_SCHEME = "JWT-TOKEN";
     public static final String CHROME_DRIVER = "D:\\TCS\\Module 4\\Selenium\\chromedriver.exe";

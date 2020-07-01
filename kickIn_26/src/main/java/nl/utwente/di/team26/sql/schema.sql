@@ -4742,7 +4742,8 @@ begin
                                      'resourceId', dtor.resourceId,
                                      'name', dtor.name,
                                      'description', dtor.description,
-                                     'image', d.image
+                                     'image', d.image,
+                                     'type', 'drawing'
                                  ) as resourceInfo
                       from typeofresource dtor inner join drawing d on dtor.resourceId = d.resourceid)
                      union
@@ -4750,7 +4751,8 @@ begin
                                      'resourceId', mtor.resourceId,
                                      'name', mtor.name,
                                      'description', mtor.description,
-                                     'image', m.image
+                                     'image', m.image,
+                                     'type', 'material'
                                  ) as resourceInfo
                       from typeofresource mtor inner join materials m on mtor.resourceId = m.resourceid)
                  ) resources
