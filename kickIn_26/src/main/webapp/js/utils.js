@@ -100,7 +100,7 @@ function sortTableDescending(tableId, sortCriteria) {
  */
 function logout() {
     let xhr = new XMLHttpRequest();
-    xhr.open('DELETE', "http://env-di-team26.paas.hosted-by-previder.com/kickInTeam26/rest/authentication", true);
+    xhr.open('DELETE', "http://localhost:8080/kickInTeam26/rest/authentication", true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4) {
             window.location.href = "login.html";

@@ -1,5 +1,5 @@
-create schema kickin26;
-SET search_path = "kickin26";
+create schema idb_kick_in_team_26;
+SET search_path = "idb_kick_in_team_26";
 
 create table users
 (
@@ -4805,6 +4805,7 @@ $$
 begin
     return (select jsonb_agg(
                            jsonb_build_object(
+                                   'mapId', m.mapId,
                                    'name', m.name,
                                    'description', m.description,
                                    'createdBy', cbm.nickname,

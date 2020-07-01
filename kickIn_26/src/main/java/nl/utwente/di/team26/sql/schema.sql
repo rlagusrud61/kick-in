@@ -4805,6 +4805,7 @@ $$
 begin
     return (select jsonb_agg(
                            jsonb_build_object(
+                                   'mapId', m.mapId,
                                    'name', m.name,
                                    'description', m.description,
                                    'createdBy', cbm.nickname,

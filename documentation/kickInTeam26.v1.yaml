@@ -75,8 +75,8 @@ paths:
                 type: string
               description: 'The login cookie, which contains the token for future authentication'
               required: true
-        '401':
-          description: Unauthorized
+        '403':
+          description: Forbidden
           content:
             application/json:
               schema:
@@ -211,7 +211,8 @@ paths:
             type: string
           in: header
           name: Cookie
-          description: Your login cookie
+          description: The login cookie that you obtained when you logged in
+          required: true
   '/event/{eventId}':
     get:
       tags:
@@ -248,13 +249,16 @@ paths:
           content:
             text/plain:
               schema:
-                type: object
-                properties: {}
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 example-1:
                   value: 'No Result Returned, no Event of ID: 7 in the Database'
         '500':
           description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
       operationId: get-event
       description: Get a specific event from the Database.
       parameters:
@@ -262,6 +266,8 @@ paths:
             type: string
           in: header
           name: Cookie
+          description: The login cookie that you obtained when you logged in
+          required: true
     put:
       tags:
         - events
@@ -482,7 +488,7 @@ paths:
           name: Cookie
           description: Your login cookie
           required: true
-    post:
+    put:
       tags:
         - maps
       summary: Update an existing map.
@@ -567,6 +573,7 @@ components:
         - password
         - nickname
         - clearancelevel
+      description: the schema of a user.
     Map:
       title: Map
       type: object
@@ -581,14 +588,22 @@ components:
           type: integer
         lastEditedBy:
           type: integer
+        image:
+          type: string
+        report:
+          type: array
+          items:
+            $ref: '#/components/schemas/Report'
       required:
         - name
+      description: the schema for the map
     Event:
       title: Event
       type: object
+      description: the schema for an event
       properties:
         eventId:
-          type: string
+          type: integer
         name:
           type: string
         description:
@@ -596,9 +611,17 @@ components:
         date:
           type: string
         createdBy:
-          type: string
+          type: integer
         lastEditedBy:
-          type: string
+          type: integer
+        maps:
+          type: array
+          items:
+            $ref: '#/components/schemas/Map'
+        report:
+          type: array
+          items:
+            $ref: '#/components/schemas/Report'
       required:
         - name
     EventMap:
@@ -612,6 +635,7 @@ components:
       required:
         - eventId
         - mapId
+      description: the schema for sreating a relation between two events and maps
     MapObject:
       title: MapObject
       type: object
@@ -623,11 +647,14 @@ components:
         resourceId:
           type: integer
         latLangs:
-          type: string
+          type: array
+          items:
+            $ref: '#/components/schemas/LatLng'
       required:
         - mapId
         - resourceId
         - latLangs
+      description: the schema for an object on the map
     Credentials:
       title: Crednetials
       type: object
@@ -639,6 +666,7 @@ components:
       required:
         - email
         - password
+      description: The login schema
     Session:
       title: Session
       type: object
@@ -650,12 +678,14 @@ components:
       required:
         - userId
         - token
+      description: the schema of a session
     Drawing:
       title: Drawing
       type: object
+      description: the drawing resource.
       properties:
         resourceId:
-          type: string
+          type: integer
         name:
           type: string
         decription:
@@ -678,15 +708,38 @@ components:
           type: string
       required:
         - name
+      description: the schema for a material
     ErrorMessage:
       title: ErrorMessage
       type: object
       properties:
         errorCode:
-          type: string
+          type: integer
         errorMessage:
           type: string
       required:
         - errorCode
         - errorMessage
+      description: the schema for the error message
+    Report:
+      title: ReportItem
+      type: object
+      properties:
+        name:
+          type: string
+        count:
+          type: integer
+      description: "A particular item with it's count."
+    LatLng:
+      title: LatLng
+      type: object
+      properties:
+        lat:
+          type: number
+        lng:
+          type: number
+      required:
+        - lat
+        - lng
+      description: the way the coords for a corner of an item stored on the map is stored
   securitySchemes: {}

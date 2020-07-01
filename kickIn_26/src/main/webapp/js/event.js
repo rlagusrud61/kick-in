@@ -90,20 +90,22 @@ function displayEventInfo() {
     let id, event, maps, table, header, th, tr, row, i, mapName, creator, lastEditor, action;
 
     id = window.location.search.split("=")[1];
-    document.getElementById("editEvent").href = "http://env-di-team26.paas.hosted-by-previder.com/kickInTeam26/editEvent.html?id=" + id;
+    document.getElementById("editEvent").href = "http://localhost:8080/kickInTeam26/editEvent.html?id=" + id;
 
     getEvent(id, function () {
         event = JSON.parse(this.responseText);
+        console.log(event);
         document.getElementById("introtext").innerHTML = event.description;
         document.getElementById("eventlocation").innerHTML = event.location;
         document.getElementById("eventname").innerHTML = event.name;
         document.getElementById("eventdate").innerHTML = event.date;
-        document.getElementById("addNewMap").href = "http://env-di-team26.paas.hosted-by-previder.com/kickInTeam26/newMap.html?id=" + event.eventId;
+        document.getElementById("addNewMap").href = "http://localhost:8080/kickInTeam26/newMap.html?id=" + event.eventId;
     });
 
     getAllMapsForEvent(id, function () {
 
         maps = JSON.parse(this.responseText);
+        console.log(maps);
         table = document.getElementById("mapTable");
 
         header = [];
@@ -128,9 +130,9 @@ function displayEventInfo() {
             mapName.innerHTML = maps[i].name;
             creator.innerHTML = maps[i].createdBy;
             lastEditor.innerHTML = maps[i].lastEditedBy;
-            action.innerHTML = "<a href='http://env-di-team26.paas.hosted-by-previder.com/kickInTeam26/mapView.html?mapId=" +
+            action.innerHTML = "<a href='http://localhost:8080/kickInTeam26/mapView.html?mapId=" +
                 maps[i].mapId + "' class='text-success'><i class='glyphicon glyphicon-eye-open' " +
-                "style='font-size:20px;'></i></a><a href='http://env-di-team26.paas.hosted-by-previder.com/kickInTeam26/mapEdit.html?id=" +
+                "style='font-size:20px;'></i></a><a href='http://localhost:8080/kickInTeam26/mapEdit.html?id=" +
                 maps[i].mapId + "' class='text-success'><i class='glyphicon glyphicon-pencil' " +
                 "style='font-size:20px;'></i></a><a href='javascript: window.openModalMapDelete(" + maps[i].mapId + ")'" +
                 "class='text-success'><i class='glyphicon glyphicon-trash' style='font-size:20px;'></i></a>" +

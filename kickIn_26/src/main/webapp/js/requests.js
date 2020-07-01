@@ -1,4 +1,4 @@
-const baseUrl = "http://env-di-team26.paas.hosted-by-previder.com/kickInTeam26";
+const baseUrl = "http://localhost:8080/kickInTeam26";
 
 /**
  * @param {XMLHttpRequest} xhr - the XmlHTTPRequest response.
@@ -243,7 +243,7 @@ function updateMapImage(map, callback) {
 	let xhr, mapId;
 	mapId = map.mapId;
 	xhr = new XMLHttpRequest();
-	xhr.open('PUT', "http://env-di-team26.paas.hosted-by-previder.com/kickInTeam26/rest/map/image/" + mapId , true);
+	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/map/image/" + mapId , true);
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4) {
 			handleResponse(xhr, callback);
@@ -1143,7 +1143,7 @@ function updateUser(user, callback) {
 function sendPasswordReset(userId, callback) {
 	let xhr;
 	xhr = new XMLHttpRequest();
-	xhr.open('PUT', "http://env-di-team26.paas.hosted-by-previder.com/kickInTeam26/rest/credential/reset/" + userId, true);
+	xhr.open('PUT', "http://localhost:8080/kickInTeam26/rest/credential/reset/" + userId, true);
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4) {
 			handleResponse(xhr, callback);
