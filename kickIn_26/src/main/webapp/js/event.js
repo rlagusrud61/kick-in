@@ -4,7 +4,7 @@ let yesBtn, noBtn, deleteMapModal, span1, editBtn, modalMapInfoEdit, span2, span
 yesBtn = document.getElementById("yesMapDelete");
 noBtn = document.getElementById("noBtn");
 editBtn = document.getElementById("editBtn");
-yes = document.getElementById("yesEventDelete"); // this
+yes = document.getElementById("yesEventDelete");
 no = document.getElementById("no");
 modalEventDelete = document.getElementById("modalEventDelete");
 addMapBtn = document.getElementById("addMap");
@@ -139,7 +139,7 @@ function displayEventInfo() {
                 "<a href='javascript: window.openModalMapDataEdit(" + maps[i].mapId + ")' class='text-success'>" +
                 "<i class='glyphicon glyphicon-wrench' style='font-size:20px'></i></a>";
         }
-    })
+    });
 }
 
 window.onload = displayEventInfo;
@@ -172,7 +172,7 @@ function removeMap(mapId) {
     eventId = window.location.search.split("=")[1];
     deleteEventMap(eventId, mapId, function () {
         location.reload();
-    })
+    });
 }
 
 /**
@@ -201,7 +201,7 @@ function openModalEventDelete() {
 function removeEvent(eventId) {
     deleteEvent(eventId, function () {
         window.location.href = "list.html";
-    })
+    });
 }
 
 /**
@@ -241,7 +241,7 @@ function updateMapData(mapId) {
     };
     updateMap(mapJSON, function () {
         window.location.href = "event.html?id=" + eventId;
-    })
+    });
 }
 
 /**
@@ -266,10 +266,10 @@ function checkMaps() {
                 }
                 addEventMap(eventMapJSON, function () {
                     location.reload();
-                })
+                });
             }
         }
-    })
+    });
 }
 
 /**
