@@ -85,7 +85,7 @@ public class EditorNavigationTest {
     driver.findElement(By.id("myBtn")).click();
     Thread.sleep(7000);
 
-    // Add a map which is not possible.
+    // Add a map.
     driver.findElement(By.id("addMap")).click();
     Thread.sleep(7000);
     driver.findElement(By.cssSelector("#addNewMap > .btn")).click();
@@ -123,7 +123,7 @@ public class EditorNavigationTest {
     driver.findElement(By.cssSelector(".glyphicon-cog")).click();
     Thread.sleep(7000);
 
-    // Add a resource which is not possible.
+    // Add a resource.
     driver.findElement(By.id("addResourceBtn")).click();
     driver.findElement(By.id("resourceName")).click();
     driver.findElement(By.id("resourceName")).sendKeys("New Resource");
