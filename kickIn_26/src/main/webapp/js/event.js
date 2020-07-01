@@ -137,7 +137,7 @@ function displayEventInfo() {
                 "<a href='javascript: window.openModalMapDataEdit(" + maps[i].mapId + ")' class='text-success'>" +
                 "<i class='glyphicon glyphicon-wrench' style='font-size:20px'></i></a>";
         }
-    })
+    });
 }
 
 window.onload = displayEventInfo;
@@ -170,7 +170,7 @@ function removeMap(mapId) {
     eventId = window.location.search.split("=")[1];
     deleteEventMap(eventId, mapId, function () {
         location.reload();
-    })
+    });
 }
 
 /**
@@ -199,7 +199,7 @@ function openModalEventDelete() {
 function removeEvent(eventId) {
     deleteEvent(eventId, function () {
         window.location.href = "list.html";
-    })
+    });
 }
 
 /**
@@ -239,7 +239,7 @@ function updateMapData(mapId) {
     };
     updateMap(mapJSON, function () {
         window.location.href = "event.html?id=" + eventId;
-    })
+    });
 }
 
 /**
@@ -264,10 +264,10 @@ function checkMaps() {
                 }
                 addEventMap(eventMapJSON, function () {
                     location.reload();
-                })
+                });
             }
         }
-    })
+    });
 }
 
 /**
